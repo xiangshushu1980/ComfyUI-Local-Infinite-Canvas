@@ -13,6 +13,7 @@
 - [运行环境边界](runtime-boundary.md)：纯 WSL 部署、Gateway 和 ComfyUI 的安全约束。
 - [分阶段计划](rebuild-plan.md)：阶段、完成条件与回滚要求。
 - [知识归属](knowledge-governance.md)：仅记录本项目特定的文档/历史来源约定；常规管理由用户级 `project-memory` Skill 执行。
+- [旧项目来源索引](legacy-source-index.md)：按保留、摘录、拒绝继承的方式归类历史研究。
 
 ## 历史与证据
 - [ARCHITECTURE.md](ARCHITECTURE.md) 是参考 fork **v0.22.12 的历史说明**，不是当前实现权威。
