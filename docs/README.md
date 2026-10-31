@@ -5,7 +5,10 @@
 ## 开始阅读
 - [起点与 Git 基线](restart-baseline.md)：当前代码来源、版本、未提交修改边界。
 - [功能审查](feature-audit.md)：保留、适配、剥离候选及依赖风险。
-- [核心链路静态定位](source-path-audit.md)：文件级入口；需要进一步代码审查和测试。
+- [核心链路静态定位](source-path-audit.md)：画布、Gateway、ComfyUI 与回写的文件级调用链。
+- [Agent 职责审查](agent-boundary-audit.md)：Canvas Agent 与源码修复助手的边界。
+- [WSL 验证协议](wsl-validation-protocol.md)：测试命令、副作用、分层验收。
+- [Project Memory 接入核查](project-memory-audit.md)：用户级技能、Hindsight 服务健康和未完成的 bank 归属。
 - [验证矩阵](validation-matrix.md)：哪些仅存在于源码，哪些实际测试通过。
 - [运行环境边界](runtime-boundary.md)：纯 WSL 部署、Gateway 和 ComfyUI 的安全约束。
 - [分阶段计划](rebuild-plan.md)：阶段、完成条件与回滚要求。

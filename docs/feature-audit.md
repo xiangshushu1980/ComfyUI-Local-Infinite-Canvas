@@ -34,6 +34,12 @@
 | 自更新与发布工具 | `src/update.js`、`tools/`、`update.json` | 剥离/隔离候选 | 目录与文档 | 和启动、版本提示、保护数据路径耦合；不能直接删除 |
 | 皮肤、商业业务与提示词功能 | `skin-unlocks.js`、`prompt-optimizer.js` 等 | 待确认 | 文件存在 | 查找使用者、相关 UI 和测试；保留两个既有未提交修改 |
 
+## 2026-11-01 专项补证
+- XIA-22：Gateway 已定位到 `server.js` → Registry/Bindings → Runner → ComfyUI 的静态执行链；见 `source-path-audit.md`。图片/视频真实回写仍待运行验证。
+- XIA-23：原生 Canvas Agent 保留；根目录 `assistant/` 属源码修复用途，暂不删除。见 `agent-boundary-audit.md`。
+- XIA-24：纯 WSL 安全验证协议已成文；见 `wsl-validation-protocol.md`。
+- XIA-25：Hindsight 服务健康返回 200，但本项目 bank/工具访问未证实；见 `project-memory-audit.md`。
+
 ## 删除前必过检查
 1. 用 CodeGraph `callers`/`impact` 检查入口与下游依赖，再用源码确认。
 2. 列出关联的前端路由/卡片、Gateway 接口、注册工作流、持久化字段、测试与启动器逻辑。

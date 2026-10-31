@@ -33,6 +33,11 @@
 | V16 | 上游 v0.24.0 合并 | T+R / 合并、前端 build 与 Gateway 启动通过 | 新增 Krea2 四视图、Qwen 步数、批量图片卡、资源识别/修复、插帧取消/进度及云端兼容；检查回归与外部资源前置条件 | `ecd2cbf` merge 无冲突；前端 typecheck/build 通过；Gateway v0.24.0 health 正常；Gateway 测试未执行；四视图依赖模型、LoRA 与节点 |
 | V17 | XIA-26 / M1 用户验收与服务启动 | R+U / 服务健康已检查，用户确认 M1 完成 | Local Only 已完全移除；前端、Gateway、Canvas Agent 与 ComfyUI 连通；记录未覆盖的逐项证据 | `107504a` 移除门控并升级 Vite；`ecd2cbf` 合并 upstream v0.24.0；`96cde5e` 重建 dist。全仓源码及 dist 搜索 `LOCAL_ONLY|VITE_LOCAL_ONLY` 无命中。2026-10-31 前端、Gateway v0.24.0、Agent、ComfyUI 均有健康响应；Gateway tasks=0、ComfyUI queue 为空。用户确认已测试基础能力与 Agent 链接，并确认 M1 完成；未提供逐项日志/截图。未执行 GPU 生成或本次新增测试。 |
 
+## XIA-26 历史验收补充（2026-11-01 登记）
+- Linear XIA-26 为 Done；记录用户确认 M1 基础画布与 Agent 链接验收通过。关联提交 `107504a`、`ecd2cbf`、`96cde5e`，当前 HEAD 为 `480fd6e`；使用 Vite `^8.3.5`。
+- 当次记录：前端 typecheck 通过、build 成功、Gateway 定向测试 15/15；全量 Gateway 测试遇继承的 HOST 与 Linux/Windows 路径断言问题，不能标记通过。后来服务健康核对包括画布、Gateway、Canvas Agent 和 ComfyUI，未提交 GPU 生成；详见 Linear XIA-26 原始记录。
+- 这些是 **XIA-26 任务的历史测试/用户验收证据**，不是本轮重新执行；真实生成、复杂工作流和回写仍未验证。V02、V03、V11、V12 在本矩阵中不因这些局部记录自动升级为完整通过。
+
 ## 每条实验必须记录
 日期与环境；commit / dirty 状态；前置模型与依赖；命令和参数；期望结果；实际结果；日志/截图/生成文件位置；是否改变运行环境；回滚办法。
 
