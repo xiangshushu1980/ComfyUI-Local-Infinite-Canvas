@@ -305,7 +305,7 @@
 ## v0.20.0 - 2026-10-25
 
 + [新增] 接入本地 `comfyui-gateway`：把 ComfyUI 工作流注册为模型，画布渠道直接指向本机网关。
-+ [新增] 本地模式 `LOCAL_ONLY`：隐藏云端渠道、Agent、WebDAV、提示词库等非本地入口；`VITE_LOCAL_ONLY=0` 可恢复完整界面。
++ [变更] 本地与云端渠道、Agent、WebDAV、提示词库统一在同一界面开放。
 + [新增] 图像工作流：Z-Image Turbo、Krea2 Aesthetics、MOSS SFT 8 步 / 50 步、Qwen Image 2.1 多图编辑 / 局部重绘 / 扩图。
 + [新增] MOSS 区域布局：bbox 编辑器、Layout JSON、中文显示列表，支持已有框拖拽移动。
 + [新增] H3 三档视频：文生 / 首尾帧 / 多参共用文戏均衡工作流，接入采样预览。
