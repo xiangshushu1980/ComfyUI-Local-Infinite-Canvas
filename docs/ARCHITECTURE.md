@@ -1,5 +1,7 @@
 # 无界工作台 · 程序架构
 
+> **历史参考文档，非当前 Rebuild 的权威验证记录。纯 WSL 部署不采用其 Windows Launcher 方案。** 本文标注 v0.22.12，当前参考 fork 基线为 v0.23.1（`9e6d56b`），本工作树 HEAD 为 `dd07e55`。文中版本数字、测试结果、Windows 环境说明及 `docs/HANDOFF.md` 等链接均属于原参考项目历史语境，不能视为当前工作树已验证。新项目判断请结合 [`restart-baseline.md`](restart-baseline.md)、[`feature-audit.md`](feature-audit.md)、[`validation-matrix.md`](validation-matrix.md) 与现有源码核实。
+
 > 截至 2026-10-30，对应发布版本 **v0.22.12**（发布树 `07842353-release-staging`）。
 > 本文件是架构层权威说明，已纳入 staging git（`docs/ARCHITECTURE.md`），不进发布包。状态与待办见 `docs/HANDOFF.md`，历史见 `docs/RELEASE-HISTORY.md`。
 > 版本/索引/路由/包数等数字为 2026-10-30 实测（网关单测 189/189、启动器 9/9；v0.22.12 含升级保护工作流、子目录模型识别与多角度随包节点；v0.22.10 含关停取消在途任务、引导退出清理与 /health 版本修复）；`docs/` 不入发布包。

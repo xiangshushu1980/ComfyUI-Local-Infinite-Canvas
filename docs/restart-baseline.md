@@ -16,6 +16,14 @@ This worktree is the separate reference-based route for testing and selectively 
 
 The source branch was fetched from the configured fork remote immediately before initialization. The older local-only commit `7d4f558` is retained in a separate worktree for rollback/comparison and is not part of this latest-fork base.
 
+## Current checkout confirmation (2026-10-31)
+
+- Current HEAD: `dd07e559ac2dcf28cf4dc45a47e9191dc0d09eac` (`[项目] 更新基线至 fork 最新版本`), one local commit ahead of `origin/main`.
+- Actual branch reported by Git: `codex/canvas-lab-rebuild` (the earlier starting-point branch name above records initialization history).
+- Existing uncommitted modifications remain in `comfyui-gateway/prompts/image-prompt-enhance.json` and `comfyui-gateway/src/prompt-optimizer.js`; these must not be overwritten without review.
+- `.codegraph/` is untracked; index reported up to date. Do not confuse the local index with application test evidence.
+- See `feature-audit.md`, `validation-matrix.md`, and `rebuild-plan.md` for this worktree's new review and verification records.
+
 ## CodeGraph
 
 Initialized for this worktree on 2026-10-31. Check the current index with `codegraph status`; sync or rebuild it after relevant code changes.
