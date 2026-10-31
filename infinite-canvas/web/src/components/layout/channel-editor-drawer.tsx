@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { defaultBaseUrlForApiFormat, guessCapability, normalizeChannelModels, type ApiCallFormat, type ChannelModel, type ModelCapability, type ModelChannel } from "@/stores/use-config-store";
-import { LOCAL_ONLY } from "@/constant/app-mode";
 import { ModelScriptEditor } from "./model-script-editor";
 import { ModelSelectModal } from "./model-select-modal";
 
@@ -19,7 +18,7 @@ export function ChannelEditorDrawer({ open, channel, onSave, onClose }: { open: 
         { label: "OpenAI", value: "openai" },
         { label: "Gemini", value: "gemini" },
     ];
-    const capabilityOptions: Array<{ label: string; value: ModelCapability }> = (LOCAL_ONLY ? ["image", "video"] : ["image", "video", "text", "audio"]).map((value) => ({ label: t(`config.channelEditor.capabilities.${value}`), value: value as ModelCapability }));
+    const capabilityOptions: Array<{ label: string; value: ModelCapability }> = ["image", "video", "text", "audio"].map((value) => ({ label: t(`config.channelEditor.capabilities.${value}`), value: value as ModelCapability }));
 
     useEffect(() => {
         if (open && channel) setDraft(channel);
@@ -38,7 +37,7 @@ export function ChannelEditorDrawer({ open, channel, onSave, onClose }: { open: 
     const applySelection = (names: string[]) => {
         const map = new Map(draft.models.map((model) => [model.name, model]));
         const next = names.map((name) => map.get(name) || { name, capability: guessCapability(name) });
-        setModels(LOCAL_ONLY ? next.filter((model) => model.capability === "image" || model.capability === "video") : next);
+        setModels(next);
     };
 
     const setCapability = (name: string, capability: ModelCapability) => setModels(draft.models.map((model) => (model.name === name ? { ...model, capability } : model)));
@@ -49,8 +48,8 @@ export function ChannelEditorDrawer({ open, channel, onSave, onClose }: { open: 
         onSave({
             ...draft,
             name: draft.name.trim() || t("config.channels.unnamed"),
-            apiFormat: LOCAL_ONLY ? "openai" : draft.apiFormat,
-            apiKey: LOCAL_ONLY ? "local" : draft.apiKey,
+            apiFormat: draft.apiFormat,
+            apiKey: draft.apiKey,
             models: normalizeChannelModels(draft.models),
         });
         onClose();
@@ -79,29 +78,23 @@ export function ChannelEditorDrawer({ open, channel, onSave, onClose }: { open: 
                 </label>
                 <div className="block">
                     <span className="mb-1 block text-sm font-medium">{t("config.channelEditor.protocol")}</span>
-                    {LOCAL_ONLY ? (
-                        <div className="flex h-8 items-center text-sm text-stone-500">OpenAI 兼容（本地网关）</div>
-                    ) : (
-                        <Select className="w-full" value={draft.apiFormat} options={apiFormatOptions} onChange={changeApiFormat} />
-                    )}
+                    <Select className="w-full" value={draft.apiFormat} options={apiFormatOptions} onChange={changeApiFormat} />
                 </div>
                 <label className="block md:col-span-2">
                     <span className="mb-1 block text-sm font-medium">{t("config.channelEditor.baseUrl")}</span>
                     <Input value={draft.baseUrl} onChange={(event) => patch({ baseUrl: event.target.value })} placeholder="https://api.example.com" />
                 </label>
-                {!LOCAL_ONLY ? (
                     <label className="block md:col-span-2">
                         <span className="mb-1 block text-sm font-medium">API Key</span>
                         <Input.Password value={draft.apiKey} onChange={(event) => patch({ apiKey: event.target.value })} placeholder="sk-..." />
                     </label>
-                ) : null}
             </div>
 
             <div className="mt-6 mb-3 flex flex-wrap items-center justify-between gap-2">
                 <div>
                     <div className="text-sm font-semibold">{t("config.channelEditor.models")}</div>
                     <div className="mt-0.5 text-xs text-stone-500">
-                        {LOCAL_ONLY ? `已选 ${draft.models.length} 个；为每个模型指定生图/视频能力。` : t("config.channelEditor.modelDescription", { count: draft.models.length })}
+                        {t("config.channelEditor.modelDescription", { count: draft.models.length })}
                     </div>
                 </div>
                 <Button type="primary" icon={<ListPlus className="size-4" />} onClick={() => setSelectOpen(true)}>
@@ -118,11 +111,9 @@ export function ChannelEditorDrawer({ open, channel, onSave, onClose }: { open: 
                             </span>
                             <div className="flex shrink-0 items-center gap-2">
                                 <Segmented size="small" value={model.capability} options={capabilityOptions} onChange={(value) => setCapability(model.name, value as ModelCapability)} />
-                                {!LOCAL_ONLY ? (
                                     <Button size="small" type={model.script ? "primary" : "default"} ghost={Boolean(model.script)} onClick={() => setScriptTarget({ name: model.name, capability: model.capability, value: model.script || "" })}>
                                         {t(model.script ? "config.channelEditor.scriptReady" : "config.channelEditor.script")}
                                     </Button>
-                                ) : null}
                                 <Button size="small" danger type="text" icon={<Trash2 className="size-3.5" />} onClick={() => removeModel(model.name)} />
                             </div>
                         </div>

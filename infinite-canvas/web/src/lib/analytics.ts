@@ -5,7 +5,6 @@
 // Forks and self-hosted deployments therefore have no analytics by default; the official site provides its IDs through environment variables.
 
 import { ANALYTICS_BAIDU_ID, ANALYTICS_GA4_ID } from "@/constant/runtime-config";
-import { LOCAL_ONLY } from "@/constant/app-mode";
 
 type GtagFn = (...args: unknown[]) => void;
 
@@ -52,7 +51,6 @@ function initBaidu(id: string) {
 export function initAnalytics() {
     if (initialized || typeof window === "undefined") return;
     initialized = true;
-    if (LOCAL_ONLY) return;
 
     // Initialize providers independently so one failure does not affect the others or the application.
     if (ANALYTICS_GA4_ID) {

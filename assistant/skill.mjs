@@ -126,7 +126,7 @@ v0.22.9 已修复：高亮层不再改 padding/字重，textarea 与高亮层同
 
 ### 资源/工作流推送
 
-v0.22.8 已加 SSE /api/models/events、扫描完成广播、本地渠道同步。仍不出现时排查：旧页面、LOCAL_ONLY 以外的渠道、多网关/多 data 目录、visibility 文件不一致。不要先改扫描逻辑。
+v0.22.8 已加 SSE /api/models/events、扫描完成广播、本地渠道同步。仍不出现时排查：旧页面、渠道配置、多网关/多 data 目录、visibility 文件不一致。不要先改扫描逻辑。
 
 ## 官方仓库与更新
 

@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import { isLocalGatewayUrl, LOCAL_GATEWAY_BASE_URL, LOCAL_GATEWAY_ORIGIN, LOCAL_ONLY } from "@/constant/app-mode";
+import { isLocalGatewayUrl, LOCAL_GATEWAY_BASE_URL, LOCAL_GATEWAY_ORIGIN } from "@/constant/app-mode";
 import { markGatewayUp, noteGatewayError } from "@/services/api/gateway-status";
 import { encodeChannelModel, guessCapability, modelOptionsFromChannels, useConfigStore, type ModelCapability } from "@/stores/use-config-store";
 
@@ -14,7 +14,7 @@ function syncableCapability(name: string): ModelCapability | null {
 
 function localChannelOf() {
     const config = useConfigStore.getState().config;
-    return config.channels.find((item) => isLocalGatewayUrl(item.baseUrl)) || (LOCAL_ONLY ? config.channels[0] : null);
+    return config.channels.find((item) => isLocalGatewayUrl(item.baseUrl)) || null;
 }
 
 /** 本地模式下自动从网关同步模型；网关新增/删除工作流后无需手动刷新渠道。 */

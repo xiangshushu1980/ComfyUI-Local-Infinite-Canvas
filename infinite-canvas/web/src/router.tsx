@@ -1,7 +1,6 @@
 import { createBrowserRouter, Outlet } from "react-router-dom";
 
 import { AnalyticsTracker } from "@/components/layout/analytics-tracker";
-import { LOCAL_ONLY } from "@/constant/app-mode";
 import UserLayout from "@/layouts/user-layout";
 import AssetsPage from "@/pages/assets";
 import CanvasPage from "@/pages/canvas";
@@ -23,10 +22,10 @@ export const router = createBrowserRouter([
         ),
         children: [
             { path: "/", element: <HomePage /> },
-            { path: "/image", element: LOCAL_ONLY ? <NotFound /> : <ImagePage /> },
-            { path: "/video", element: LOCAL_ONLY ? <NotFound /> : <VideoPage /> },
+            { path: "/image", element: <ImagePage /> },
+            { path: "/video", element: <VideoPage /> },
             { path: "/assets", element: <AssetsPage /> },
-            { path: "/prompts", element: LOCAL_ONLY ? <NotFound /> : <PromptsPage /> },
+            { path: "/prompts", element: <PromptsPage /> },
             { path: "/canvas", element: <CanvasPage /> },
             { path: "/canvas/:id", element: <CanvasProjectPage /> },
             { path: "/config", element: <ConfigPage /> },

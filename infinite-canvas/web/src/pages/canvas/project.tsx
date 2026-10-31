@@ -103,7 +103,6 @@ import {
 } from "@/types/canvas";
 import type { ReferenceImage } from "@/types/image";
 import type { ReferenceAudio, ReferenceVideo } from "@/types/media";
-import { LOCAL_ONLY } from "@/constant/app-mode";
 
 // Register built-in nodes in the shared registry once when the module loads.
 registerBuiltinNodes();
@@ -615,7 +614,6 @@ function InfiniteCanvasPage() {
     }, [projectLoaded, searchParams, setSearchParams]);
 
     useEffect(() => {
-        if (LOCAL_ONLY) return;
         if (!projectLoaded || !["new", "recent", "choose"].includes(searchParams.get("mode") || "")) return;
         if (!searchParams.has("agentUrl") && !localAgentEnabled && !fragmentBootstrap) openAgentPanel();
     }, [fragmentBootstrap, localAgentEnabled, openAgentPanel, projectLoaded, searchParams]);

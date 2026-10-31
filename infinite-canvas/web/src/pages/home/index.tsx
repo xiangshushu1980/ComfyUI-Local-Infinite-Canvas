@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 import { fetchPrompts, type Prompt } from "@/services/api/prompts";
-import { LOCAL_ONLY } from "@/constant/app-mode";
 import { navigationTools } from "@/constant/navigation-tools";
 import i18n from "@/i18n";
 import { cn } from "@/lib/utils";
@@ -23,7 +22,6 @@ export default function IndexPage() {
     const [previewOpen, setPreviewOpen] = useState(false);
 
     useEffect(() => {
-        if (LOCAL_ONLY) return;
         void fetchPrompts({ pageSize: 12 })
             .then((data) => setPromptShowcase(data.items))
             .catch((error) => message.error(error instanceof Error ? error.message : i18n.t("home.promptError")));
@@ -57,7 +55,6 @@ export default function IndexPage() {
                     </div>
                 </div>
 
-                {!LOCAL_ONLY ? (
                 <section className="relative mx-auto mb-20 max-w-6xl border-t border-stone-200 pt-12 dark:border-stone-800">
                     <div className="mb-8 grid gap-4 md:grid-cols-[1fr_auto_1fr] md:items-start">
                         <div />
@@ -100,9 +97,7 @@ export default function IndexPage() {
                         ))}
                     </div>
                 </section>
-                ) : null}
             </section>
-            {!LOCAL_ONLY ? (
             <Image.PreviewGroup
                 preview={{
                     open: previewOpen,
@@ -117,7 +112,6 @@ export default function IndexPage() {
                     ))}
                 </div>
             </Image.PreviewGroup>
-            ) : null}
         </main>
     );
 }

@@ -9,7 +9,6 @@ import { canvasThemes } from "@/lib/canvas-theme";
 import { useCanvasSidePanelStore } from "@/stores/use-canvas-side-panel-store";
 import { useThemeStore } from "@/stores/use-theme-store";
 import { DOCS_URL } from "@/constant/env";
-import { LOCAL_ONLY } from "@/constant/app-mode";
 
 export function CanvasTopBar({
     title,
@@ -95,7 +94,7 @@ export function CanvasTopBar({
                         menu={{
                             items: [
                                 { key: "home", icon: <Home className="size-4" />, label: t("canvas.home"), onClick: onHome },
-                                ...(LOCAL_ONLY ? [] : [{ key: "docs", icon: <BookOpen className="size-4" />, label: t("canvas.docs"), onClick: () => window.open(DOCS_URL, "_blank", "noopener,noreferrer") }]),
+                                { key: "docs", icon: <BookOpen className="size-4" />, label: t("canvas.docs"), onClick: () => window.open(DOCS_URL, "_blank", "noopener,noreferrer") },
                                 { key: "projects", icon: <Images className="size-4" />, label: t("canvas.projects"), onClick: onProjects },
                                 { type: "divider" },
                                 { key: "new", icon: <Plus className="size-4" />, label: t("canvas.create"), onClick: onCreateProject },
@@ -139,7 +138,7 @@ export function CanvasTopBar({
                             </button>
                         )}
                     </div>
-                    {!LOCAL_ONLY ? <CompactAgentStatus status={compactAgentStatus} onClick={onToggleAgent} /> : null}
+                    <CompactAgentStatus status={compactAgentStatus} onClick={onToggleAgent} />
                 </div>
 
                 <div className="pointer-events-auto flex items-center gap-1.5">
@@ -154,9 +153,9 @@ export function CanvasTopBar({
                         <Compass className="size-3.5" />
                         <span className="hidden xl:inline">{t("onboarding.button")}</span>
                     </button>
-                    {LOCAL_ONLY ? <CanvasSystemStatus /> : null}
+                    <CanvasSystemStatus />
                     <UserStatusActions variant="canvas" onOpenShortcuts={() => setShortcutsOpen(true)} onOpenPlugins={onOpenPlugins} />
-                    {!LOCAL_ONLY ? (
+                    {(
                         <>
                             <span className="h-6 w-px" style={{ background: theme.toolbar.border }} />
                             <Button
@@ -169,7 +168,7 @@ export function CanvasTopBar({
                                 Agent
                             </Button>
                         </>
-                    ) : null}
+                    )}
                 </div>
             </div>
             <Modal title={t("canvas.shortcuts")} open={shortcutsOpen} onCancel={() => setShortcutsOpen(false)} footer={null} centered>

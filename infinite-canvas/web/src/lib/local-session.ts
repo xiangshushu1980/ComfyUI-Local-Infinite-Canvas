@@ -1,4 +1,4 @@
-import { LOCAL_GATEWAY_BASE_URL, LOCAL_ONLY } from "@/constant/app-mode";
+import { LOCAL_GATEWAY_BASE_URL } from "@/constant/app-mode";
 import { noteGatewayError } from "@/services/api/gateway-status";
 
 const HEARTBEAT_MS = 5000;
@@ -10,7 +10,7 @@ function sessionUrl(path: string) {
 
 // 本地模式：向网关注册画布会话，启动器据此在最后一个页面关闭后回收后台。
 export function startLocalSession() {
-    if (!LOCAL_ONLY || started || typeof window === "undefined") return;
+    if (started || typeof window === "undefined") return;
     started = true;
     const id = typeof crypto.randomUUID === "function" ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
     let timer: number | undefined;

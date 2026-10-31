@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 
-import { LOCAL_ONLY } from "@/constant/app-mode";
 import { refreshDueSources } from "@/services/api/prompts";
 import { usePromptSourceStore } from "@/stores/use-prompt-source-store";
 
@@ -13,7 +12,7 @@ export function usePromptSourceScheduler() {
     const intervalMinutes = usePromptSourceStore((state) => state.schedule.intervalMinutes);
 
     useEffect(() => {
-        if (LOCAL_ONLY || !intervalMinutes) return;
+        if (!intervalMinutes) return;
         let running = false;
         const tick = async () => {
             if (running) return;

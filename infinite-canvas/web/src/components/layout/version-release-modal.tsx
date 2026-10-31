@@ -5,7 +5,6 @@ import { App, Button, Modal, Progress, Tag, Timeline } from "antd";
 import type { TFunction } from "i18next";
 import { useTranslation } from "react-i18next";
 import { useVersionCheck } from "@/hooks/use-version-check";
-import { LOCAL_ONLY } from "@/constant/app-mode";
 import { APP_VERSION, GITHUB_REPO_URL } from "@/constant/env";
 import { formatBytes } from "@/lib/image-utils";
 
@@ -200,7 +199,6 @@ export function VersionReleaseModal({ className, style }: VersionReleaseModalPro
                     />
                 </div>
                 <div className="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-stone-200 pt-3 text-xs dark:border-stone-800">
-                    <span className="text-stone-400 dark:text-stone-500">{LOCAL_ONLY ? t("version.localMode") : null}</span>
                     <a className="inline-flex items-center gap-1.5 text-stone-500 transition hover:text-stone-950 dark:text-stone-400 dark:hover:text-white" href={GITHUB_REPO_URL} target="_blank" rel="noreferrer">
                         <GithubOutlined />
                         {t("version.repository")}

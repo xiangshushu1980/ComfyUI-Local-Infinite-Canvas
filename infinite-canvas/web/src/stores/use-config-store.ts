@@ -4,7 +4,7 @@ import { persist } from "zustand/middleware";
 import { nanoid } from "nanoid";
 
 import i18n from "@/i18n";
-import { isLocalGatewayUrl, LOCAL_GATEWAY_BASE_URL, LOCAL_GATEWAY_CHANNEL_ID, LOCAL_GATEWAY_MODELS, LOCAL_GATEWAY_MODEL_VALUES, LOCAL_ONLY } from "@/constant/app-mode";
+import { isLocalGatewayUrl, LOCAL_GATEWAY_BASE_URL, LOCAL_GATEWAY_CHANNEL_ID, LOCAL_GATEWAY_MODELS, LOCAL_GATEWAY_MODEL_VALUES } from "@/constant/app-mode";
 import { normalizeProgressRingSkin, type ProgressRingSkinId } from "@/lib/canvas/progress-ring-skins";
 
 export type ApiCallFormat = "openai" | "gemini";
@@ -183,22 +183,17 @@ const localDefaultChannel: ModelChannel = {
 const localImageModel = `${LOCAL_GATEWAY_CHANNEL_ID}::image-z-image-turbo`;
 const localVideoModel = `${LOCAL_GATEWAY_CHANNEL_ID}::video-h3-t2v`;
 
-export const defaultConfig: AiConfig = LOCAL_ONLY
-    ? {
-          ...cloudDefaultConfig,
-          baseUrl: LOCAL_GATEWAY_BASE_URL,
-          apiKey: "local",
-          channels: [localDefaultChannel],
-          model: localImageModel,
-          imageModel: localImageModel,
-          videoModel: localVideoModel,
-          videoMode: "text",
-          textModel: "",
-          audioModel: "",
-          models: LOCAL_GATEWAY_MODEL_VALUES,
-          proxyEnabled: false,
-      }
-    : cloudDefaultConfig;
+export const defaultConfig: AiConfig = {
+    ...cloudDefaultConfig,
+    baseUrl: LOCAL_GATEWAY_BASE_URL,
+    apiKey: "local",
+    channels: [localDefaultChannel, ...cloudDefaultConfig.channels],
+    model: localImageModel,
+    imageModel: localImageModel,
+    videoModel: localVideoModel,
+    videoMode: "text",
+    models: [...LOCAL_GATEWAY_MODEL_VALUES, ...cloudDefaultConfig.models],
+};
 
 export const defaultWebdavSyncConfig: WebdavSyncConfig = {
     url: "",
@@ -267,8 +262,6 @@ export function resolveModelForCapability(config: AiConfig, currentModel: string
     for (const model of [currentModel, defaultModel]) {
         if (!model) continue;
         const configuredCapability = modelCapabilityOf(config, model);
-        // 本地模式下，已从注册表移除的模型直接回落到当前能力的默认模型。
-        if (LOCAL_ONLY && !configuredCapability) continue;
         // Keep unavailable selections visible so the readiness check blocks the
         // request. Only a known capability switch may choose another model.
         if (!configuredCapability || configuredCapability === capability) return model;
@@ -501,58 +494,29 @@ export const useConfigStore = create<ConfigStore>()(
                 const persistedWebdav = (persistedState.webdav || {}) as Partial<WebdavSyncConfig>;
                 const config = { ...defaultConfig, ...persistedConfig };
                 if (!Array.isArray(persistedConfig.channels)) config.channels = [];
-                if (LOCAL_ONLY) {
-                    try {
-                        const backupKey = `${CONFIG_STORE_KEY}:pre-local-only-backup`;
-                        if (typeof window !== "undefined" && !window.localStorage.getItem(backupKey)) {
-                            window.localStorage.setItem(backupKey, JSON.stringify(persisted));
-                        }
-                    } catch {
-                        // localStorage 不可用时跳过备份，不影响配置加载。
-                    }
-                    const existingChannels = Array.isArray(config.channels) ? config.channels : [];
-                    const localChannels = existingChannels.filter((channel) => isLocalGatewayUrl(channel.baseUrl));
-                    const candidate = localChannels[0] || createModelChannel({ ...localDefaultChannel });
-                    const keptModels = normalizeChannelModels((candidate.models || []).filter((model) => !/mock/i.test(model.name)));
-                    const fallbackModels = normalizeChannelModels(LOCAL_GATEWAY_MODELS.map((model) => ({ name: model.name, capability: model.capability })));
-                    const keptNames = new Set(keptModels.map((model) => model.name));
-                    const mergedModels = [...keptModels, ...fallbackModels.filter((model) => !keptNames.has(model.name))];
-                    config.channels = [
-                        {
-                            ...candidate,
-                            name: candidate.name || "本地 ComfyUI",
-                            baseUrl: candidate.baseUrl || LOCAL_GATEWAY_BASE_URL,
-                            apiKey: candidate.apiKey || "local",
-                            apiFormat: "openai",
-                            models: mergedModels.length ? mergedModels : fallbackModels,
-                        },
-                    ];
-                    config.baseUrl = config.channels[0].baseUrl;
-                    config.apiKey = config.channels[0].apiKey;
-                    config.apiFormat = "openai";
+                if (config.channels.length && config.channels.every((channel) => isLocalGatewayUrl(channel.baseUrl))) {
+                    const remoteChannels = cloudDefaultConfig.channels.filter((channel) => !config.channels.some((existing) => existing.id === channel.id));
+                    config.channels = [...config.channels, ...remoteChannels];
                 }
                 const channels = normalizeChannels(config);
                 const models = modelOptionsFromChannels(channels);
-                const imageOptions = channels.flatMap((channel) => channel.models.filter((model) => model.capability === "image").map((model) => encodeChannelModel(channel.id, model.name)));
-                const videoOptions = channels.flatMap((channel) => channel.models.filter((model) => model.capability === "video").map((model) => encodeChannelModel(channel.id, model.name)));
-                const pickModel = (current: string, options: string[]) => (options.includes(current) ? current : options[0] || "");
-                const imageModel = LOCAL_ONLY ? pickModel(config.imageModel || config.model, imageOptions) : normalizeModelOptionValue(config.imageModel || config.model, channels);
-                const videoModel = LOCAL_ONLY ? pickModel(config.videoModel, videoOptions) : normalizeModelOptionValue(config.videoModel, channels);
+                const imageModel = normalizeModelOptionValue(config.imageModel || config.model, channels);
+                const videoModel = normalizeModelOptionValue(config.videoModel, channels);
                 const normalizedCloud = normalizePromptCloudConfig(config);
                 return {
                     ...current,
                     webdav: { ...defaultWebdavSyncConfig, ...persistedWebdav },
                     config: {
                         ...config,
-                        channelMode: "local",
-                        model: LOCAL_ONLY ? pickModel(config.model || config.imageModel, imageOptions) : config.model,
-                        apiFormat: LOCAL_ONLY ? "openai" : normalizeApiFormat(config.apiFormat),
+                        channelMode: config.channelMode === "remote" ? "remote" : "local",
+                        model: config.model,
+                        apiFormat: normalizeApiFormat(config.apiFormat),
                         channels,
                         models,
                         imageModel,
                         videoModel,
-                        textModel: LOCAL_ONLY ? "" : normalizeModelOptionValue(config.textModel || config.model, channels),
-                        audioModel: LOCAL_ONLY ? "" : normalizeModelOptionValue(config.audioModel || defaultConfig.audioModel, channels),
+                        textModel: normalizeModelOptionValue(config.textModel || config.model, channels),
+                        audioModel: normalizeModelOptionValue(config.audioModel || defaultConfig.audioModel, channels),
                         audioVoice: config.audioVoice || defaultConfig.audioVoice,
                         audioFormat: config.audioFormat || defaultConfig.audioFormat,
                         audioSpeed: config.audioSpeed || defaultConfig.audioSpeed,
@@ -572,7 +536,7 @@ export const useConfigStore = create<ConfigStore>()(
                         promptCloudApiKey: normalizedCloud.promptCloudApiKey,
                         promptCloudModel: normalizedCloud.promptCloudModel,
                         canvasImageCount: config.canvasImageCount || "3",
-                        proxyEnabled: LOCAL_ONLY ? false : Boolean(config.proxyEnabled),
+                        proxyEnabled: Boolean(config.proxyEnabled),
                         proxyUrl: config.proxyUrl || DEFAULT_LOCAL_PROXY_URL,
                         nodeRegenerateBehavior: config.nodeRegenerateBehavior === "overwrite" ? "overwrite" : "new-node",
                         autoFocusOnSelect: Boolean(config.autoFocusOnSelect),
@@ -586,7 +550,7 @@ export const useConfigStore = create<ConfigStore>()(
 
 export function useEffectiveConfig() {
     const config = useConfigStore((state) => state.config);
-    return useMemo(() => ({ ...config, channelMode: "local" as const }), [config]);
+    return useMemo(() => ({ ...config }), [config]);
 }
 
 /** Normalize a mixed list of raw model names or model objects into deduped ChannelModel entries. */
@@ -774,7 +738,6 @@ function normalizeChannels(config: AiConfig) {
 }
 
 export function defaultBaseUrlForApiFormat(apiFormat: ApiCallFormat) {
-    if (LOCAL_ONLY) return LOCAL_GATEWAY_BASE_URL;
     if (apiFormat === "gemini") return GEMINI_BASE_URL;
     return OPENAI_BASE_URL;
 }

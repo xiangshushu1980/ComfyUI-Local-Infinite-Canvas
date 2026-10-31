@@ -6,7 +6,6 @@ import { useTranslation } from "react-i18next";
 
 import { ModelPicker, WorkflowModelPicker } from "@/components/model-picker";
 import { imageAspectOptions } from "@/components/image-settings-panel";
-import { LOCAL_ONLY } from "@/constant/app-mode";
 import { videoResolutionOptions } from "@/components/video-settings-panel";
 import { ChannelEditorDrawer } from "@/components/layout/channel-editor-drawer";
 import { ConfigDirectories } from "@/components/layout/config-directories";
@@ -278,7 +277,6 @@ export function AppConfigPanel({ showDoneButton = false, initialTab = "channels"
 
     return (
         <>
-            {!LOCAL_ONLY ? (
                 <div className="flex flex-wrap items-center justify-between gap-3 border-b border-stone-200 pb-3 dark:border-stone-800">
                     <div className="text-xs text-stone-500">{t("config.fileSecurity")}</div>
                     <div className="flex gap-2">
@@ -291,9 +289,6 @@ export function AppConfigPanel({ showDoneButton = false, initialTab = "channels"
                         <input ref={configInputRef} type="file" accept="application/json,.json" className="hidden" onChange={(event) => event.target.files?.[0] && void loadConfigFile(event.target.files[0])} />
                     </div>
                 </div>
-            ) : (
-                <div className="border-b border-stone-200 pb-3 text-xs text-stone-500 dark:border-stone-800">配置只保存在本机浏览器。</div>
-            )}
             <Tabs
                 activeKey={activeTab}
                 onChange={(key) => setActiveTab(key as ConfigTabKey)}
@@ -304,12 +299,10 @@ export function AppConfigPanel({ showDoneButton = false, initialTab = "channels"
                         children: (
                             <div>
                                 <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-                                    <div className="text-xs text-stone-500">{LOCAL_ONLY ? "只使用本地 ComfyUI 网关。模型由网关工作流注册表提供。" : t("config.channels.description")}</div>
-                                    {!LOCAL_ONLY ? (
+                                    <div className="text-xs text-stone-500">{t("config.channels.description")}</div>
                                         <Button type="primary" icon={<Plus className="size-4" />} onClick={addChannel}>
                                             {t("config.channels.add")}
                                         </Button>
-                                    ) : null}
                                 </div>
                                 <div className="space-y-2">
                                     {config.channels.map((channel) => (
@@ -317,14 +310,14 @@ export function AppConfigPanel({ showDoneButton = false, initialTab = "channels"
                                             <div className="min-w-0">
                                                 <div className="truncate text-sm font-semibold">{channel.name || t("config.channels.unnamed")}</div>
                                                 <div className="mt-1 truncate text-xs text-stone-500">
-                                                    {LOCAL_ONLY ? "本地网关" : apiFormatLabel(channel.apiFormat)} · {t("config.channels.modelCount", { count: channel.models.length })} · {channel.baseUrl || t("config.channels.missingUrl")}
+                                                    {apiFormatLabel(channel.apiFormat)} · {t("config.channels.modelCount", { count: channel.models.length })} · {channel.baseUrl || t("config.channels.missingUrl")}
                                                 </div>
                                             </div>
                                             <div className="flex shrink-0 gap-2">
                                                 <Button size="small" icon={<Pencil className="size-3.5" />} onClick={() => setEditingChannelId(channel.id)}>
                                                     {t("common.edit")}
                                                 </Button>
-                                                {!LOCAL_ONLY ? <Button size="small" danger icon={<Trash2 className="size-3.5" />} onClick={() => deleteChannel(channel.id)} /> : null}
+                                                <Button size="small" danger icon={<Trash2 className="size-3.5" />} onClick={() => deleteChannel(channel.id)} />
                                             </div>
                                         </div>
                                     ))}
@@ -404,7 +397,6 @@ export function AppConfigPanel({ showDoneButton = false, initialTab = "channels"
                                 <div className="mb-2 text-sm font-semibold">{t("config.preferences.defaultModels")}</div>
                                 <div className="mb-4 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
                                     {modelGroups
-                                        .filter((group) => !LOCAL_ONLY || group.capability === "image" || group.capability === "video")
                                         .map((group) => (
                                             <Form.Item key={group.modelKey} label={t(group.labelKey)} className="mb-0">
                                                 {group.capability === "image" || group.capability === "video" ? (
@@ -436,8 +428,7 @@ export function AppConfigPanel({ showDoneButton = false, initialTab = "channels"
                                     <Form.Item label={t("config.preferences.videoResolution")} className="mb-4">
                                         <Select value={parseVideoResolution(config.vquality)} options={videoResolutionOptions} onChange={(value) => updateConfig("vquality", value)} />
                                     </Form.Item>
-                                    {!LOCAL_ONLY ? (
-                                        <>
+                                    <>
                                             <Form.Item label={t("config.preferences.audioVoice")} className="mb-4">
                                                 <Select value={config.audioVoice} options={audioVoiceOptions} onChange={(value) => updateConfig("audioVoice", value)} />
                                             </Form.Item>
@@ -455,8 +446,7 @@ export function AppConfigPanel({ showDoneButton = false, initialTab = "channels"
                                                     onBlur={(event) => updateConfig("audioSpeed", normalizeAudioSpeedValue(event.target.value))}
                                                 />
                                             </Form.Item>
-                                        </>
-                                    ) : null}
+                                    </>
                                 </div>
                                 <Form.Item label={t("config.preferences.cardSkin")} extra={t("config.preferences.cardSkinDescription")} className="mb-4">
                                     <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
@@ -577,11 +567,9 @@ export function AppConfigPanel({ showDoneButton = false, initialTab = "channels"
                                         <Switch checked={config.autoFocusOnSelect} onChange={(checked) => updateConfig("autoFocusOnSelect", checked)} />
                                     </div>
                                 </Form.Item>
-                                {!LOCAL_ONLY ? (
                                     <Form.Item label={t("config.preferences.audioInstructions")} className="mb-4">
                                         <Input.TextArea rows={2} value={config.audioInstructions} placeholder={t("config.preferences.audioInstructionsPlaceholder")} onChange={(event) => updateConfig("audioInstructions", event.target.value)} />
                                     </Form.Item>
-                                ) : null}
                                 <Form.Item label={t("config.preferences.systemPrompt")} className="mb-0">
                                     <Input.TextArea rows={4} value={config.systemPrompt} placeholder={t("config.preferences.systemPromptPlaceholder")} onChange={(event) => updateConfig("systemPrompt", event.target.value)} />
                                 </Form.Item>
@@ -652,7 +640,7 @@ export function AppConfigPanel({ showDoneButton = false, initialTab = "channels"
                         label: t("config.tabs.localStorage"),
                         children: <ConfigLocalStorage active={activeTab === "local-storage"} />,
                     },
-                ].filter((tab) => !LOCAL_ONLY || !["local-proxy", "prompt-sources", "webdav"].includes(tab.key))}
+                ]}
             />
             {showDoneButton ? (
                 <div className="mt-4 flex justify-end">

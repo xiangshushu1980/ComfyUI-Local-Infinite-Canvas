@@ -20,7 +20,6 @@ import {
     type ResourceStatus,
 } from "@/services/api/resources";
 import { isGatewayDown } from "@/services/api/gateway-status";
-import { LOCAL_ONLY } from "@/constant/app-mode";
 import { useAgentStore } from "@/stores/use-agent-store";
 import { useConfigStore } from "@/stores/use-config-store";
 
@@ -670,25 +669,6 @@ export function ResourceCenterPanel({ compact = false, footer }: { compact?: boo
 
     const handoffToAgent = async (detail = "") => {
         const prompt = agentPromptForResource(detail);
-        if (LOCAL_ONLY) {
-            try {
-                await navigator.clipboard.writeText(prompt);
-                message.success(copy.hintCopied);
-            } catch {
-                modal.info({
-                    title: copy.guideAgentCopy,
-                    width: 640,
-                    content: (
-                        <div className="space-y-2 text-sm">
-                            <div className="text-xs leading-5 text-stone-500 dark:text-stone-400">{copy.guideCopyFallback}</div>
-                            <pre className="max-h-80 overflow-auto whitespace-pre-wrap break-words rounded-md bg-stone-100 p-2 text-[11px] leading-4 text-stone-700 dark:bg-stone-900 dark:text-stone-200">{prompt}</pre>
-                        </div>
-                    ),
-                    okText: copy.runtimeManualClose,
-                });
-            }
-            return;
-        }
         setConfigDialogOpen(false);
         window.dispatchEvent(new Event("canvas-onboarding-close"));
         useAgentStore.getState().setAgentState({ prompt, activeTab: "chat" });
@@ -1009,7 +989,7 @@ export function ResourceCenterPanel({ compact = false, footer }: { compact?: boo
                                             <span className="truncate">{copy.compileFailed} · {item.label}</span>
                                         </span>
                                         <div className="flex shrink-0 gap-1">
-                                            <Button size="small" onClick={() => void handoffToAgent(item.hint || "")}>{LOCAL_ONLY ? copy.guideAgentCopy : copy.guideAgent}</Button>
+                                            <Button size="small" onClick={() => void handoffToAgent(item.hint || "")}>{copy.guideAgent}</Button>
                                             <Button size="small" onClick={() => void copyHintText(item.hint || "")}>{copy.copyHint}</Button>
                                         </div>
                                     </div>
@@ -1343,7 +1323,7 @@ export function ResourceCenterPanel({ compact = false, footer }: { compact?: boo
                         {copy.guideFailureTitle}
                     </div>
                     <Button size="small" data-onboarding="resource-agent-help" icon={<Bot className="size-3.5" />} onClick={() => void handoffToAgent()}>
-                        {LOCAL_ONLY ? copy.guideAgentCopy : copy.guideAgent}
+                        {copy.guideAgent}
                     </Button>
                 </div>
                 <div className="mt-1 text-xs leading-5 text-stone-600 dark:text-stone-300">{copy.guideFailureBody}</div>

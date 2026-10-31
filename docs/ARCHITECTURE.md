@@ -52,7 +52,7 @@ flowchart LR
    - **执行期模型匹配顺序（自选最高）**：用户显式「自选替换」→ 精确命中 → 自动同名 → 深目录唯一后缀 → 相似匹配。
    - **精确命中短路**：原文件已在 ComfyUI 列表里时直接返回，不再做相似替换，避免 4B/8B、turbo/raw 互相顶替。
    - **相似匹配**：格式相同、名称相似度 ≥50%、家族词加权；禁止跨规模、跨家族、turbo/raw 互顶；同族不同量化允许；候选分数接近时不猜。
-   - **模型列表推送（2026-10-30 修复）**：`GET /api/models/events` 通过 SSE 广播 `models` 事件；工作流启用/隐藏和 `setup.scan()` 完成后触发，前端订阅并重新拉 `/v1/models`。`useLocalGatewaySync` 不再依赖 `LOCAL_ONLY`，只要存在本地渠道就同步，窗口聚焦/可见时补拉，8 秒轮询兜底。
+   - **模型列表推送（2026-10-30 修复）**：`GET /api/models/events` 通过 SSE 广播 `models` 事件；工作流启用/隐藏和 `setup.scan()` 完成后触发，前端订阅并重新拉 `/v1/models`。`useLocalGatewaySync` 只要存在本地渠道就同步，窗口聚焦/可见时补拉，8 秒轮询兜底。
    - **激活规则**：`validateWorkflow` 逐 variant 校验，**任一 variant 可跑入口就可用**；精确、相似、自选都算齐全；`phase=degraded` 时不可用；磁盘有文件但 `/object_info` 未列出 → 标「待重启」而不是缺模型。
    - **不做周期性全量扫描**：2026-10-29 曾加过模型目录 mtime 轮询与 10 分钟兜底重扫，评估后撤掉；只保留 10s 连通性检查。扫描成本交给用户手动触发，避免周期性拖慢 ComfyUI。
    - **扫描维度**：节点类名 + 模型文件 + 运行期依赖（pip 运行库 / TRT 编译产物 / 自定义节点，由 `resources.runtimeProblemsFor()` 提供，带 30s 缓存）；ComfyUI `workflows/` 下 `*-draft*`、`*副本*`、`*test*` 等草稿不再导入 registry，已导入的旧草稿会在扫描时移除登记（不动文件）。

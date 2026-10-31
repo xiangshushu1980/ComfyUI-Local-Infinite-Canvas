@@ -9,7 +9,6 @@ import { getNodeSpec } from "@/constant/canvas";
 import { useThemeStore } from "@/stores/use-theme-store";
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
 import { useTranslation } from "react-i18next";
-import { LOCAL_ONLY } from "@/constant/app-mode";
 
 export function CanvasToolbar({
     selectedCount,
@@ -117,11 +116,11 @@ export function CanvasToolbar({
                 <ToolbarButton id="tool-video" label={t("canvas.toolbar.video")} hovered={hovered} hoverStyle={hoverStyle} wrapRef={wrapRef} onTipX={setTipX} onHover={setHovered} onClick={onAddVideo}>
                     <Video className="size-4.5" />
                 </ToolbarButton>
-                {!LOCAL_ONLY ? (
+                {(
                     <ToolbarButton id="tool-audio" label={t("canvas.toolbar.audio")} hovered={hovered} hoverStyle={hoverStyle} wrapRef={wrapRef} onTipX={setTipX} onHover={setHovered} onClick={onAddAudio}>
                         <Music2 className="size-4.5" />
                     </ToolbarButton>
-                ) : null}
+                )}
                 <ToolbarButton id="tool-free-card" label={t("canvas.toolbar.freeCard")} hovered={hovered} hoverStyle={hoverStyle} wrapRef={wrapRef} onTipX={setTipX} onHover={setHovered} onClick={onAddFreeCard}>
                     <Sparkles className="size-4.5" />
                 </ToolbarButton>
