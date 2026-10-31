@@ -16,7 +16,7 @@
 | V01 | Git 基线、脏树、CodeGraph | S / 已检查 | HEAD 与参考 commit、未提交改动明确；索引最新 | 2026-10-31 只读 git status/log、codegraph status |
 | V01a | WSL 部署边界 | D+S / 已记录、未运行 | Windows Launcher 不作为入口；核对 WSL 服务地址/权限 | 用户明确纯 WSL；见 `runtime-boundary.md` |
 | V01b | 核心链路文件定位 | S / 初步完成 | 可定位前端生成、Gateway 注册/执行、画布存储入口 | `source-path-audit.md`；无端到端证据 |
-| V02 | 前端 typecheck / build | U / 未执行 | 成功且无需改依赖；记录具体版本 | 待记录 |
+| V02 | 前端 typecheck / build | T / 合并后通过 | 成功且无需改依赖；记录具体版本与产物影响 | 2026-10-31 merge `ecd2cbf` 后 `npm run typecheck`、Vite 8.3.5 `npm run build` 均通过；重新生成 tracked dist。构建仍有 native config-loader 和大 chunk 提示 |
 | V03 | Gateway 单元测试 | U / 未执行 | npm test 通过；记录通过/失败数量 | 待记录 |
 | V04 | Canvas Agent 单元测试 | U / 未执行 | 测试通过；记录依赖及运行条件 | 待记录 |
 | V05 | 无 GPU Mock 协议链路 | U / 未执行 | 注册工作流、输入映射、任务状态和回传 | 待授权 |
@@ -30,6 +30,7 @@
 | V13 | 多工作流热更新/绑定变化 | U / 未执行 | 不依赖硬编码单工作流 UI | 待授权 |
 | V14 | Launcher/退出行为 | U / 未执行 | 不误启停既有 ComfyUI，不丢任务 | 待授权 |
 | V15 | 剥离后回归 | U / 未执行 | V02–V14 中相关项无退化 | 每次变更更新 |
+| V16 | 上游 v0.24.0 合并 | T / 合并及前端 build 通过，Gateway 运行未验证 | 新增 Krea2 四视图、Qwen 步数、批量图片卡、资源识别/修复、插帧取消/进度及云端兼容；检查回归与外部资源前置条件 | `ecd2cbf` merge 无冲突；前端 typecheck/build 通过；Gateway 测试未执行；四视图依赖模型、LoRA 与节点 |
 
 ## 每条实验必须记录
 日期与环境；commit / dirty 状态；前置模型与依赖；命令和参数；期望结果；实际结果；日志/截图/生成文件位置；是否改变运行环境；回滚办法。

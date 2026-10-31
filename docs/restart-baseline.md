@@ -18,9 +18,11 @@ The source branch was fetched from the configured fork remote immediately before
 
 ## Current checkout confirmation (2026-10-31)
 
-- Current HEAD: `dd07e559ac2dcf28cf4dc45a47e9191dc0d09eac` (`[项目] 更新基线至 fork 最新版本`), one local commit ahead of `origin/main`.
+- Merge commit: `ecd2cbf14ff47f702437553580a42cf8236808c8` (merged `origin/main` at `559e97ddf1e022041cc142ff70b2f753dc532490`, v0.24.0).
 - Actual branch reported by Git: `codex/canvas-lab-rebuild` (the earlier starting-point branch name above records initialization history).
-- Existing uncommitted modifications remain in `comfyui-gateway/prompts/image-prompt-enhance.json` and `comfyui-gateway/src/prompt-optimizer.js`; these must not be overwritten without review.
+- The v0.24.0 source changes merged cleanly from upstream commits `aaccfaf7` and `559e97d`; review summary is recorded in `feature-audit.md`.
+- Existing uncommitted modifications remain in `comfyui-gateway/prompts/image-prompt-enhance.json` and `comfyui-gateway/src/prompt-optimizer.js`; both were preserved outside the merge commit.
+- Upstream-generated `infinite-canvas/web/dist` artifacts were excluded from the merge; afterward the tracked dist was regenerated with local Vite 8 from the merged source.
 - `.codegraph/` is untracked; index reported up to date. Do not confuse the local index with application test evidence.
 - See `feature-audit.md`, `validation-matrix.md`, and `rebuild-plan.md` for this worktree's new review and verification records.
 

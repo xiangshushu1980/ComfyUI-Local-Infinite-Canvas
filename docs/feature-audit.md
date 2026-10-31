@@ -4,11 +4,18 @@
 > 判定术语：**保留候选**、**剥离候选**、**适配候选**、**待确认**均是审查决定，不代表已经实施。
 
 ## 基线与证据
-- 当前 HEAD：`dd07e55`；参考 fork 版本：`9e6d56b`（v0.23.1）；旧对照起点：`7d4f558`。
-- 当前分支：`codex/canvas-lab-rebuild`，基于 `origin/main` ahead 1。
+- 上游 merge commit：`ecd2cbf`；合并 `origin/main` `559e97d`（v0.24.0）；源基线为 `9e6d56b`（v0.23.1）；旧对照起点：`7d4f558`。
+- 当前分支：`codex/canvas-lab-rebuild`，包含本地适配与上游合并提交。
 - 修改中的文件：`comfyui-gateway/prompts/image-prompt-enhance.json`、`comfyui-gateway/src/prompt-optimizer.js`；未经评估不得覆盖。
 - `.codegraph/` 为本地未跟踪索引，当前 status 显示 up to date（853 files / 23,069 nodes / 62,664 edges）。
 - README 的运行成功声明属于参考项目报告；本工作树尚无本次实测证据。
+
+## 上游 v0.24.0 合并审查
+- 2026-10-31 fetch `origin/main` 后合并 `aaccfaf7`、`559e97d`；Git 自动合并成功，无代码冲突。
+- 纳入的主要能力/修复：Krea2 角色四视图及 Gateway 工作流、Qwen Image 2.1 可选步数、批量图片卡显示与操作、连接参考和新卡参数继承修复、模型目录/默认底模识别回退、离线扫描保留 stale 模型、第三方 loader 规格透传、资源临时文件名恢复、视频插帧进度/超时取消、云端 temperature 兼容重试。
+- 保留本地 Vite 8 和移除旧模式分支的源码修改；上游包声明仍为 Vite 7，未回退本地 Vite 8。
+- 未合并上游生成的 `infinite-canvas/web/dist`，而是在合并后用本地 Vite 8 重新构建，使产物对应当前源码。
+- 合并后前端 typecheck/build 已通过；未运行新增 Gateway 测试或 ComfyUI/GPU 工作流。新增四视图需要对应 Krea2 模型/LoRA 与节点，真机生成未验证。
 
 ## 初版模块台账
 
