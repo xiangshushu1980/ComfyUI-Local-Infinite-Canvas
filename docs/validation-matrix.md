@@ -20,17 +20,18 @@
 | V03 | Gateway 单元测试 | U / 未执行 | npm test 通过；记录通过/失败数量 | 待记录 |
 | V04 | Canvas Agent 单元测试 | U / 未执行 | 测试通过；记录依赖及运行条件 | 待记录 |
 | V05 | 无 GPU Mock 协议链路 | U / 未执行 | 注册工作流、输入映射、任务状态和回传 | 待授权 |
-| V06 | 本机 ComfyUI 健康连接 | U / 未执行 | 端口、认证/访问范围、模型与节点扫描 | 待授权 |
+| V06 | 本机 ComfyUI 健康连接 | R / 基础连接已确认 | Gateway health 显示 ComfyUI reachable；`/system_stats` HTTP 200；Gateway 扫描 14 个 workflow、2 个可用。未提交 GPU 生成 | 2026-10-31 服务检查；服务均绑定 `127.0.0.1` |
 | V07 | 图片生成与画布回写 | U / 未执行 | 输入、任务追踪、生成结果成为持久化画布素材 | 待授权 |
 | V08 | 图片编辑/蒙版/多输入 | U / 未执行 | 正确输入绑定、错误提示与输出回写 | 待授权 |
 | V09 | H3 视频与画布回写 | U / 未执行 | 异步进度、取消、播放与素材持久化 | 待授权 |
 | V10 | 任务取消/失败/重试 | U / 未执行 | 无孤儿任务、状态一致、可恢复 | 待授权 |
-| V11 | Agent 读取画布状态 | S / 接口存在，未联调 | 当前节点/选择集准确、权限明确 | canvas-agent README、CodeGraph CanvasSession |
-| V12 | Agent 修改画布 | S / 接口存在，未联调 | 操作确认、撤销/持久化、错误恢复 | canvas-agent README |
+| V11 | Agent 读取画布状态 | U / 用户确认 M1 基础能力已测试；未提供逐项证据 | 当前节点/选择集准确、权限明确 | 2026-10-31 用户确认画布与 Agent 均已连通并完成 M1；具体操作与结果未记录 |
+| V12 | Agent 修改画布 | U / 用户确认 M1 基础能力已测试；未提供逐项证据 | 操作确认、撤销/持久化、错误恢复 | 2026-10-31 用户确认画布与 Agent 均已连通并完成 M1；具体操作与结果未记录 |
 | V13 | 多工作流热更新/绑定变化 | U / 未执行 | 不依赖硬编码单工作流 UI | 待授权 |
 | V14 | Launcher/退出行为 | U / 未执行 | 不误启停既有 ComfyUI，不丢任务 | 待授权 |
 | V15 | 剥离后回归 | U / 未执行 | V02–V14 中相关项无退化 | 每次变更更新 |
-| V16 | 上游 v0.24.0 合并 | T / 合并及前端 build 通过，Gateway 运行未验证 | 新增 Krea2 四视图、Qwen 步数、批量图片卡、资源识别/修复、插帧取消/进度及云端兼容；检查回归与外部资源前置条件 | `ecd2cbf` merge 无冲突；前端 typecheck/build 通过；Gateway 测试未执行；四视图依赖模型、LoRA 与节点 |
+| V16 | 上游 v0.24.0 合并 | T+R / 合并、前端 build 与 Gateway 启动通过 | 新增 Krea2 四视图、Qwen 步数、批量图片卡、资源识别/修复、插帧取消/进度及云端兼容；检查回归与外部资源前置条件 | `ecd2cbf` merge 无冲突；前端 typecheck/build 通过；Gateway v0.24.0 health 正常；Gateway 测试未执行；四视图依赖模型、LoRA 与节点 |
+| V17 | XIA-26 / M1 用户验收与服务启动 | R+U / 服务健康已检查，用户确认 M1 完成 | Local Only 已完全移除；前端、Gateway、Canvas Agent 与 ComfyUI 连通；记录未覆盖的逐项证据 | `107504a` 移除门控并升级 Vite；`ecd2cbf` 合并 upstream v0.24.0；`96cde5e` 重建 dist。全仓源码及 dist 搜索 `LOCAL_ONLY|VITE_LOCAL_ONLY` 无命中。2026-10-31 前端、Gateway v0.24.0、Agent、ComfyUI 均有健康响应；Gateway tasks=0、ComfyUI queue 为空。用户确认已测试基础能力与 Agent 链接，并确认 M1 完成；未提供逐项日志/截图。未执行 GPU 生成或本次新增测试。 |
 
 ## 每条实验必须记录
 日期与环境；commit / dirty 状态；前置模型与依赖；命令和参数；期望结果；实际结果；日志/截图/生成文件位置；是否改变运行环境；回滚办法。
