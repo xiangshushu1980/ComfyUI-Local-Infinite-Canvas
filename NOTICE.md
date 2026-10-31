@@ -16,7 +16,7 @@
 
 `infinite-canvas/` 目录相对上游 v0.20.0 的主要修改：
 
-- 新增 `LOCAL_ONLY` 本地模式，隐藏云端渠道、Agent、WebDAV、提示词库等非本地入口。
+- 统一提供本地 ComfyUI 与云端 API 渠道，并在同一界面开放 Agent、WebDAV 与提示词库。
 - 接入本地 `comfyui-gateway` 渠道，增加本地模型同步、系统状态、清理显存/重启 ComfyUI。
 - 增加 LoRA 卡、ComfyUI 参数卡等本地插件（`web/public/plugins/`）。
 - 增加 MOSS 区域布局、Qwen 2.1 编辑/局部重绘/扩图、H3 三档视频、SeedVR2 视频超分等本地工作流入口。
