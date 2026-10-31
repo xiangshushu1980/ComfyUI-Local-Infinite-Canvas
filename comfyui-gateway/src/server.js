@@ -819,9 +819,10 @@ export async function createGatewayApp(overrides = {}) {
 
   app.get("/v1/models", async (_req, res) => {
     await registry.reloadIfChanged();
+    const degraded = setup.status?.().phase === "degraded";
     const data = registry
       .listModels((setup.loaderOptions?.() || {}))
-      .filter((model) => setup.isAvailable(model.baseId) && !model.entry.hidden && model.entry.category !== "upscale" && !workflowVisibility.isHidden(model.entry.id))
+      .filter((model) => (setup.isAvailable(model.baseId) || (degraded && setup.isKnownAvailable?.(model.baseId))) && !model.entry.hidden && model.entry.category !== "upscale" && !workflowVisibility.isHidden(model.entry.id))
       .map((model) => ({
         id: model.modelId,
         object: "model",
@@ -1534,7 +1535,8 @@ export async function createGatewayApp(overrides = {}) {
         sourceFps,
         requestId: req.id,
         signal,
-        timeoutMs: Number(config.videoTimeoutMs) > 0 ? config.videoTimeoutMs : 10 * 60 * 1000,
+        timeoutMs: config.interpolationTimeoutMs,
+        onProgress: progress,
       });
       return {
         buffer: interpolated.buffer,
@@ -1688,6 +1690,8 @@ export async function createGatewayApp(overrides = {}) {
           multiplier: interpolation === "3x" ? 3 : 2,
           requestId: req.id,
           signal,
+          timeoutMs: config.interpolationTimeoutMs,
+          onProgress: progress,
         });
         file = { ...file, buffer: interpolated.buffer, filename: interpolated.filename, mimeType: interpolated.mimeType };
       }
