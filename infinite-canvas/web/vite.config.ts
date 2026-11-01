@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 import react from "@vitejs/plugin-react";
 import { defineConfig, type Plugin } from "vite";
 
-import { parseChangelog } from "./src/lib/release";
+import { parseChangelog } from "./src/lib/release.ts";
 
 const webDir = dirname(fileURLToPath(import.meta.url));
 const appRoot = resolve(webDir, "../..");
