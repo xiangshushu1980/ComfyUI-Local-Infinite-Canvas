@@ -45,4 +45,4 @@ Initialized for this worktree on 2026-10-31. Check the current index with `codeg
 
 ## Documentation relationship
 
-The updated product and lineage documents remain in `/home/sean/projects/canvas-lab/docs`. They are context for deciding what to test and preserve; their upstream-derived phase status is not automatically the current state of this reference-based worktree. Keep test evidence and new decisions with this project when they become concrete. The current project root is `/home/sean/projects/canvas-lib`; references above to `/home/sean/projects/canvas-lab-rebuild` describe the earlier location.
+The updated product and lineage documents are archived under `/home/sean/projects/canvas-lab-backup/docs`. They are context for deciding what to test and preserve; their upstream-derived phase status is not automatically the current state of this reference-based worktree. Keep test evidence and new decisions with this project when they become concrete. The current project root is `/home/sean/projects/canvas-lib`; references above to `/home/sean/projects/canvas-lab-rebuild` describe the earlier location.

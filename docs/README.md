@@ -21,5 +21,5 @@
 
 ## 历史与证据
 - [ARCHITECTURE.md](ARCHITECTURE.md) 是参考 fork **v0.22.12 的历史说明**，不是当前实现权威。
-- 旧项目 `/home/sean/projects/canvas-lab/docs/` 是历史研究来源，不共享可编辑的当前基线。
+- 旧项目 `/home/sean/projects/canvas-lab-backup/docs/` 是历史研究来源，不共享可编辑的当前基线。
 - 代码及 Git 状态优先于 README 声明；当前机器实测须单独记录 commit、环境、命令和结果。
