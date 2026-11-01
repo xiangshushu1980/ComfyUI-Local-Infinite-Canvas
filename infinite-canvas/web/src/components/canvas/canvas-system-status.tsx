@@ -27,16 +27,9 @@ type SystemStats = {
     lastOOM: { at: string; message: string } | null;
 };
 
-type RestartStep = { name: string; durationMs?: number; url?: string; freedMb?: number; ok?: boolean };
 type RestartResult = {
     ok: boolean;
-    freedMb?: number;
-    durationMs?: number;
-    comfyUrl?: string;
-    steps?: RestartStep[];
-    before?: Pick<SystemStats, "gpu" | "ram">;
-    afterKill?: Pick<SystemStats, "gpu" | "ram">;
-    afterStart?: Pick<SystemStats, "gpu" | "ram">;
+    service?: { key?: string; state?: string };
     error?: string;
 };
 
@@ -71,6 +64,7 @@ export function CanvasSystemStatus() {
     const [restarting, setRestarting] = useState(false);
     const [restartResult, setRestartResult] = useState<RestartResult | null>(null);
     const [restartError, setRestartError] = useState("");
+    const [restartWasOnline, setRestartWasOnline] = useState(false);
     const [freeing, setFreeing] = useState(false);
     const [freeResult, setFreeResult] = useState<FreeResult | null>(null);
     const [freeError, setFreeError] = useState("");
@@ -134,6 +128,7 @@ export function CanvasSystemStatus() {
         setRestarting(true);
         setRestartError("");
         setRestartResult(null);
+        setRestartWasOnline(Boolean(stats?.comfy.reachable));
         try {
             const response = await fetch(`${gatewayRoot}/api/system/restart-comfy`, { method: "POST" });
             const data = (await response.json().catch(() => ({}))) as RestartResult;
@@ -264,12 +259,12 @@ export function CanvasSystemStatus() {
                         {restarting ? (
                             <div className="flex items-center gap-2 text-xs" style={{ color: theme.node.muted }}>
                                 <Spin size="small" />
-                                <span>正在强制停止 ComfyUI、检测显存并重新拉起，通常需要 20–90 秒…</span>
+                                <span>正在通过 Hive0 启动或重启 ComfyUI…</span>
                             </div>
                         ) : confirming ? (
                             <div className="space-y-2">
                                 <div className="text-xs" style={{ color: theme.node.muted }}>
-                                    会强制结束 ComfyUI 进程，确认显存释放后重新启动。当前任务会中断，是否继续？
+                                    ComfyUI 在线时只有在队列为空且没有 Gateway 任务时才会重启；离线时此操作会通过 Hive0 启动服务。
                                 </div>
                                 <div className="flex justify-end gap-2">
                                     <Button size="small" onClick={() => setConfirming(false)}>
@@ -284,7 +279,7 @@ export function CanvasSystemStatus() {
                             <div className="space-y-2">
                                 <div className="flex items-start justify-between gap-3">
                                     <span className="text-[11px]" style={{ color: theme.node.faint }}>
-                                        显存紧张时先清理模型缓存；清理不会停止 ComfyUI 进程。
+                                        Hive0 管理 ComfyUI 服务；队列非空或队列状态未知时会拒绝重启。
                                     </span>
                                     <div className="flex shrink-0 items-center gap-2">
                                         <Button
@@ -297,7 +292,7 @@ export function CanvasSystemStatus() {
                                             清理显存内存
                                         </Button>
                                         <Button size="small" danger disabled={freeing || !stats?.restartAvailable} onClick={() => setConfirming(true)}>
-                                            一键重启 ComfyUI
+                                            {stats?.comfy.reachable ? "重启 ComfyUI" : "启动 ComfyUI"}
                                         </Button>
                                     </div>
                                 </div>
@@ -319,28 +314,12 @@ export function CanvasSystemStatus() {
                                 ) : null}
                                 {stats && !stats.restartAvailable ? (
                                     <div className="text-[11px]" style={{ color: theme.node.faint }}>
-                                        启动器控制接口未连接；重启不可用，但仍可清理模型缓存。
+                                        Hive0 服务控制接口不可用。
                                     </div>
                                 ) : null}
                                 {restartResult?.ok ? (
                                     <div className="rounded-lg border px-3 py-2 text-[11px]" style={{ borderColor: theme.node.stroke, color: theme.node.muted }}>
-                                        已完成：释放显存 {restartResult.freedMb || 0} MB，用时 {Math.round((restartResult.durationMs || 0) / 1000)} 秒。
-                                        {restartResult.before && restartResult.afterKill ? (
-                                            <div className="mt-0.5">
-                                                显存 {vramGb(restartResult.before.gpu?.[0]?.memoryUsedMb || 0)} → {vramGb(restartResult.afterKill.gpu?.[0]?.memoryUsedMb || 0)} GB · 内存 {gb(restartResult.before.ram.usedBytes)} → {gb(restartResult.afterKill.ram.usedBytes)} GB
-                                            </div>
-                                        ) : null}
-                                        {restartResult.steps?.length ? (
-                                            <div className="mt-1 space-y-0.5">
-                                                {restartResult.steps.map((step) => (
-                                                    <div key={step.name}>
-                                                        {step.name}
-                                                        {typeof step.durationMs === "number" ? ` · ${Math.round(step.durationMs / 1000)}s` : ""}
-                                                        {step.url ? ` · ${step.url}` : ""}
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        ) : null}
+                                        {restartWasOnline ? "ComfyUI 已通过 Hive0 重启。" : "ComfyUI 已通过 Hive0 启动。"}
                                     </div>
                                 ) : null}
                                 {restartError ? (

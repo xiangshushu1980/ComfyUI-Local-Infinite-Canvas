@@ -937,7 +937,7 @@ export async function createGatewayApp(overrides = {}) {
       ...stats,
       comfy: { url: comfy.baseUrl(), reachable: setupStatus.comfyReachable },
       setup: { phase: setupStatus.phase, counts: setupStatus.counts, scannedAt: setupStatus.scannedAt },
-      restartAvailable: Boolean(config.launcherControlUrl),
+      restartAvailable: Boolean(config.hive0ServiceUrl),
       lastOOM: lastOOM || (taskOOM ? { at: taskOOM.completedAt, message: taskOOM.error } : null),
     });
   });
@@ -1002,23 +1002,27 @@ export async function createGatewayApp(overrides = {}) {
   });
 
   app.post("/api/system/restart-comfy", async (_req, res) => {
-    if (!config.launcherControlUrl) {
-      throw new HttpError("启动器未运行，无法自动重启 ComfyUI", { status: 503, code: "launcher_unavailable" });
+    if (!config.hive0ServiceUrl) {
+      throw new HttpError("Hive0 服务接口未配置，无法控制 ComfyUI", { status: 503, code: "hive0_unavailable" });
+    }
+    const active = tasks.list().filter((task) => ["queued", "running"].includes(task.status));
+    if (active.length) {
+      throw new HttpError(`Gateway 仍有 ${active.length} 个生成任务，未重启 ComfyUI`, { status: 409, code: "tasks_running" });
     }
     try {
-      const response = await fetch(`${config.launcherControlUrl}/restart-comfy`, {
+      const response = await fetch(`${config.hive0ServiceUrl}/__hive/services/comfy/restart`, {
         method: "POST",
-        signal: AbortSignal.timeout(360000),
+        signal: AbortSignal.timeout(180000),
       });
       const data = await response.json().catch(() => ({}));
       if (!response.ok || data.ok === false) {
-        throw new HttpError(data.error || "重启 ComfyUI 失败", { status: 502, code: "restart_failed", details: data });
+        throw new HttpError(data.error || "Hive0 重启 ComfyUI 失败", { status: response.status === 409 ? 409 : 502, code: "restart_failed", details: data });
       }
       lastOOM = null;
-      res.json(data);
+      res.json({ ok: true, ...data });
     } catch (error) {
       if (error instanceof HttpError) throw error;
-      throw new HttpError(`无法联系启动器：${error.message}`, { status: 503, code: "launcher_unreachable" });
+      throw new HttpError(`无法联系 Hive0 服务接口：${error.message}`, { status: 503, code: "hive0_unreachable" });
     }
   });
 

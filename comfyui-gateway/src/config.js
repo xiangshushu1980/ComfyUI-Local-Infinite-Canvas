@@ -62,6 +62,7 @@ export function loadConfig(overrides = {}) {
     outputDir: path.resolve(overrides.outputDir ?? process.env.OUTPUT_DIR ?? path.join(rootDir, "data", "outputs")),
     publicBaseUrl: String(overrides.publicBaseUrl ?? process.env.PUBLIC_BASE_URL ?? `http://${host}:${port}`).replace(/\/+$/, ""),
     launcherControlUrl: String(overrides.launcherControlUrl ?? process.env.LAUNCHER_CONTROL_URL ?? "").replace(/\/+$/, ""),
+    hive0ServiceUrl: String(overrides.hive0ServiceUrl ?? process.env.HIVE0_SERVICE_URL ?? "http://127.0.0.1:3198").replace(/\/+$/, ""),
     corsOrigins: overrides.corsOrigins ?? list(process.env.CORS_ORIGINS, "http://localhost:3000,http://127.0.0.1:3000,http://localhost:8188,http://127.0.0.1:8188"),
     requestTimeoutMs: num(overrides.requestTimeoutMs ?? process.env.REQUEST_TIMEOUT_MS, 10 * 60 * 1000),
     videoTimeoutMs: num(overrides.videoTimeoutMs ?? process.env.VIDEO_TIMEOUT_MS, 0),
