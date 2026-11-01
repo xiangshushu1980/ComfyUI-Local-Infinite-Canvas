@@ -32,10 +32,17 @@ The source branch was fetched from the configured fork remote immediately before
 - The old reference checkout and comparison checkout were removed after reviewing their unique local changes. The older Agent-panel commit is superseded by the current `main` UI; generated `dist` assets and CodeGraph indexes were not retained as source changes.
 - Ongoing changes to preserve on this fork are committed directly to `main` and pushed to `origin` after review.
 
+## Current checkout after directory move (2026-11-01)
+
+- Current project root: `/home/sean/projects/canvas-lib` (the directory named by the project-local instructions).
+- Current branch: `main`; HEAD `0d5fee308fbee420fb973910bde501f089398060` (`[审查] 归档资源与工作流审查结论`), matching `origin/main` at inspection time.
+- Tracked working tree: clean. `.codegraph/` is an untracked local index, not an application source change; `codegraph status` reports the index up to date (872 files, 23,491 nodes, 64,074 edges).
+- Older paths and branch names above are initialization/history records, not current checkout metadata. Runtime and audit results elsewhere in this directory remain dated evidence and were not rerun by this path/Git check.
+
 ## CodeGraph
 
 Initialized for this worktree on 2026-10-31. Check the current index with `codegraph status`; sync or rebuild it after relevant code changes.
 
 ## Documentation relationship
 
-The updated product and lineage documents remain in `/home/sean/projects/canvas-lab/docs`. They are context for deciding what to test and preserve; their upstream-derived phase status is not automatically the current state of this reference-based worktree. Keep test evidence and new decisions with this project when they become concrete.
+The updated product and lineage documents remain in `/home/sean/projects/canvas-lab/docs`. They are context for deciding what to test and preserve; their upstream-derived phase status is not automatically the current state of this reference-based worktree. Keep test evidence and new decisions with this project when they become concrete. The current project root is `/home/sean/projects/canvas-lib`; references above to `/home/sean/projects/canvas-lab-rebuild` describe the earlier location.

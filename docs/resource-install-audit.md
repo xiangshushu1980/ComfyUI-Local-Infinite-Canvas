@@ -1,6 +1,6 @@
 # XIA-27 — 内置工作流资源与安装路径审查
 
-> 审查日期：2026-11-01。对象为本工作树当前 checkout（HEAD `99cd2d3`，分支 `codex/canvas-lab-rebuild`），只读源码/JSON 审查。没有下载资源、安装依赖、运行安装入口、连接或重启 ComfyUI，也没有 GPU 操作。本报告是 S 级静态证据，不等于第三方来源实时可用、许可证法律意见、安装测试或 WSL 实测。
+> 审查日期：2026-11-01。对象为当时 checkout（HEAD `99cd2d3`，分支 `codex/canvas-lab-rebuild`），只读源码/JSON 审查。没有下载资源、安装依赖、运行安装入口、连接或重启 ComfyUI，也没有 GPU 操作。本报告是该审查快照的 S 级静态证据，不等于第三方来源实时可用、许可证法律意见、安装测试或 WSL 实测；当前 checkout 信息见 [`restart-baseline.md`](restart-baseline.md)。
 
 ## 范围与盘点口径
 

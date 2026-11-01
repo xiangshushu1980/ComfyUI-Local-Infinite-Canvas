@@ -2,6 +2,8 @@
 
 > 本目录记录新工作树的当前结论和验证证据；根目录 `README.md` 仍为 fork 参考项目说明，不代表本项目已完成验证。
 
+> 当前项目目录为 `/home/sean/projects/canvas-lib`。历史审查中的目录、分支、HEAD 和运行结果按其记录日期理解；当前 Git 快照见 [起点与 Git 基线](restart-baseline.md)，不能把历史验证视为当前 HEAD 的重新验证。
+
 ## 开始阅读
 - [起点与 Git 基线](restart-baseline.md)：当前代码来源、版本、未提交修改边界。
 - [功能审查](feature-audit.md)：保留、适配、剥离候选及依赖风险。

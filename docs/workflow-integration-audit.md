@@ -4,7 +4,7 @@
 
 ## 范围与前置约束
 
-- checkout：HEAD `99cd2d3`，分支 `codex/canvas-lab-rebuild`；CodeGraph status 为 up to date。
+- 审查时 checkout：HEAD `99cd2d3`，分支 `codex/canvas-lab-rebuild`；当时 CodeGraph status 为 up to date。该静态审查绑定当时快照，不代表当前 checkout；当前路径和 Git 状态见 [`restart-baseline.md`](restart-baseline.md)。
 - 复用 XIA-27 的安全结果，见 [`resource-install-audit.md`](resource-install-audit.md)：资源安装可能写共享 ComfyUI 模型/节点目录、Python 环境和 Gateway data，部分路径可请求重启或运行 GPU bake。因此本轮只研究文件式接入，不调用资源安装 API。
 - 选取已有自有样本 `minimax_h3_ref2va_img_vid_api.json`。只读检查，未复制或修改原文件。它是 24 节点的 ComfyUI API JSON，构成 H3 参考图/参考视频转带音频视频的工作流。
 

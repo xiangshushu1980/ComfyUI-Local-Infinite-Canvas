@@ -3,7 +3,7 @@
 > 用户于 2026-10-31 明确：**本项目为纯 WSL 部署**。本轮只读静态检查，尚未实际启动、连接或测试服务。
 
 ## 已确认
-- 项目路径 `/home/sean/projects/canvas-lab-rebuild/`；本地可运行 Node.js v24.18.0、npm v11.16.0。
+- 当前项目路径 `/home/sean/projects/canvas-lib/`。原始环境检查记录的是旧目录 `/home/sean/projects/canvas-lab-rebuild/`，且本次目录核对没有重查 Node.js/npm 版本或依赖状态。
 - 参考项目的 `start-local.bat`、`launcher/config.example.json` 和 Windows 自动启动/接管流程是上游发布机制，**不作为本项目启动入口**。
 - 参考 Launcher 配置包含 `closeCanvasStopsBackend: true`、`stopAdoptedComfyOnCanvasClose: true`；避免误触发关停共享 ComfyUI。
 - 本轮未发现项目本地 `launcher/config.json`、`comfyui-gateway/data/`、前端和 Gateway 的 `node_modules/`；不能据此推断其它 WSL 路径的 ComfyUI/依赖状态。

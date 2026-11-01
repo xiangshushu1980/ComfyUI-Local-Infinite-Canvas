@@ -34,6 +34,7 @@ infinite-canvas/plugins/canvas/*/dist/
 .DS_Store
 .idea/
 .vscode/
+.codegraph/
 
 # local test artifacts
 tmp-*

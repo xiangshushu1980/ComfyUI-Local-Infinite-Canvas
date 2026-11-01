@@ -3,9 +3,11 @@
 > 状态：初版；2026-10-31。依据当前目录、Git、核心文档和部分 CodeGraph 查询；不是运行验证结论。
 > 判定术语：**保留候选**、**剥离候选**、**适配候选**、**待确认**均是审查决定，不代表已经实施。
 
+> 本文基线为 2026-10-31 审查快照（当时分支 `codex/canvas-lab-rebuild`），不是当前 checkout 状态。当前 Git/路径快照见 [`restart-baseline.md`](restart-baseline.md)；本次目录核对未重跑本文的源码审查或运行验证。
+
 ## 基线与证据
 - 上游 merge commit：`ecd2cbf`；合并 `origin/main` `559e97d`（v0.24.0）；源基线为 `9e6d56b`（v0.23.1）；旧对照起点：`7d4f558`。
-- 当前分支：`codex/canvas-lab-rebuild`，包含本地适配与上游合并提交。
+- 审查时分支：`codex/canvas-lab-rebuild`，包含当时本地适配与上游合并提交；这不是当前分支。
 - 修改中的文件：`comfyui-gateway/prompts/image-prompt-enhance.json`、`comfyui-gateway/src/prompt-optimizer.js`；未经评估不得覆盖。
 - `.codegraph/` 为本地未跟踪索引，当前 status 显示 up to date（853 files / 23,069 nodes / 62,664 edges）。
 - README 的运行成功声明属于参考项目报告；本工作树尚无本次实测证据。
