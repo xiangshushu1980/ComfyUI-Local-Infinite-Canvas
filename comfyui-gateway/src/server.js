@@ -1026,6 +1026,26 @@ export async function createGatewayApp(overrides = {}) {
     }
   });
 
+  app.post("/api/system/restart-canvas-lab", async (_req, res) => {
+    if (!config.hive0ServiceUrl) {
+      throw new HttpError("Hive0 服务接口未配置，无法重启 Canvas Lab", { status: 503, code: "hive0_unavailable" });
+    }
+    try {
+      const response = await fetch(`${config.hive0ServiceUrl}/__hive/services/canvas-lab/restart`, {
+        method: "POST",
+        signal: AbortSignal.timeout(90000),
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok || data.ok === false) {
+        throw new HttpError(data.error || "Hive0 重启 Canvas Lab 失败", { status: response.status === 409 ? 409 : 502, code: "restart_failed", details: data });
+      }
+      res.json({ ok: true, ...data });
+    } catch (error) {
+      if (error instanceof HttpError) throw error;
+      throw new HttpError(`无法联系 Hive0 服务接口：${error.message}`, { status: 503, code: "hive0_unreachable" });
+    }
+  });
+
   app.post("/api/system/shutdown", (req, res) => {
     if (!isLoopbackPeer(req.socket.remoteAddress)) {
       throw new HttpError("仅允许本机发起关停请求", { status: 403, code: "shutdown_forbidden" });

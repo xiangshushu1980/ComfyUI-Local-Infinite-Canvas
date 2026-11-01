@@ -62,6 +62,7 @@ export function CanvasSystemStatus() {
     const [open, setOpen] = useState(false);
     const [confirming, setConfirming] = useState(false);
     const [restarting, setRestarting] = useState(false);
+    const [restartingCanvasLab, setRestartingCanvasLab] = useState(false);
     const [restartResult, setRestartResult] = useState<RestartResult | null>(null);
     const [restartError, setRestartError] = useState("");
     const [restartWasOnline, setRestartWasOnline] = useState(false);
@@ -140,6 +141,19 @@ export function CanvasSystemStatus() {
             setRestartError(error instanceof Error ? error.message : String(error));
         } finally {
             setRestarting(false);
+        }
+    };
+
+    const restartCanvasLab = async () => {
+        setRestartingCanvasLab(true);
+        try {
+            const response = await fetch(`${gatewayRoot}/api/system/restart-canvas-lab`, { method: "POST" });
+            const data = (await response.json().catch(() => ({}))) as RestartResult;
+            if (!response.ok || data.ok === false) throw new Error(data.error || "重启 Canvas Lab 失败");
+        } catch (error) {
+            setRestartError(error instanceof Error ? error.message : String(error));
+        } finally {
+            setRestartingCanvasLab(false);
         }
     };
 
@@ -277,11 +291,14 @@ export function CanvasSystemStatus() {
                             </div>
                         ) : (
                             <div className="space-y-2">
-                                <div className="flex items-start justify-between gap-3">
-                                    <span className="text-[11px]" style={{ color: theme.node.faint }}>
+                                <div className="space-y-2">
+                                    <span className="block text-[11px]" style={{ color: theme.node.faint }}>
                                         Hive0 管理 ComfyUI 服务；队列非空或队列状态未知时会拒绝重启。
                                     </span>
-                                    <div className="flex shrink-0 items-center gap-2">
+                                    <div className="flex justify-end gap-2">
+                                        <Button size="small" loading={restartingCanvasLab} disabled={freeing || restarting} onClick={() => void restartCanvasLab()}>
+                                            重启 Canvas Lab
+                                        </Button>
                                         <Button
                                             size="small"
                                             loading={freeing}
