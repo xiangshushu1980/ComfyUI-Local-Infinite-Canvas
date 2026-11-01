@@ -18,10 +18,15 @@ function readRam() {
   return { totalBytes, freeBytes, usedBytes: Math.max(0, totalBytes - freeBytes) };
 }
 
-function nvidiaSmiCandidates() {
+export function nvidiaSmiCandidates({ platform = process.platform, env = process.env } = {}) {
   const candidates = ["nvidia-smi"];
-  const systemRoot = process.env.SystemRoot || "C:\\Windows";
-  candidates.push(path.join(systemRoot, "System32", "nvidia-smi.exe"));
+  if (platform === "win32") {
+    const systemRoot = env.SystemRoot || "C:\\Windows";
+    candidates.push(path.win32.join(systemRoot, "System32", "nvidia-smi.exe"));
+  } else if (platform === "linux") {
+    // WSL exposes the host NVIDIA driver utility here, even when it is not on PATH.
+    candidates.push("/usr/lib/wsl/lib/nvidia-smi");
+  }
   return candidates;
 }
 
