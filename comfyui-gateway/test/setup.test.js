@@ -63,6 +63,64 @@ function createAliasManager(dataDir, unetFiles, workflow) {
   });
 }
 
+const QWEN21_VAE = "qwen_image_2.1_vae_bf16.safetensors";
+
+function createQwenVaeManager(dataDir, vaeFiles) {
+  const custom = {
+    id: "image-qwen21-vae-test",
+    name: "image-qwen21-vae-test",
+    type: "image",
+    workflow: { 1: { class_type: "VAELoader", inputs: { vae_name: QWEN21_VAE } } },
+  };
+  return createSetupManager({
+    config: { dataDir, comfyUrl: "http://127.0.0.1:1", comfyWorkflowsDir: "", maxWorkflowBytes: 1024 * 1024 },
+    registry: {
+      list: () => [{ id: custom.id }],
+      resolve: () => custom,
+      scan: async () => ({ imported: 0 }),
+      reloadIfChanged: () => {},
+    },
+    comfy: {
+      systemStats: async () => ({}),
+      objectInfo: async () => ({ VAELoader: { input: { required: { vae_name: [vaeFiles] } } } }),
+    },
+    logger: null,
+  });
+}
+
+test("missing Qwen Image 2.1 VAE is not auto-replaced or marked available", async () => {
+  const dataDir = await fsp.mkdtemp(path.join(os.tmpdir(), "setup-qwen21-vae-missing-"));
+  const legacy = "qwen_image_vae.safetensors";
+  try {
+    const manager = createQwenVaeManager(dataDir, [legacy, "wan_2.1_vae.safetensors", "wan2.1_vae.safetensors"]);
+    await manager.scan();
+    assert.equal(manager.modelAliasFor("VAELoader", "vae_name", QWEN21_VAE), "");
+    assert.equal(manager.isAvailable("image-qwen21-vae-test"), false);
+    assert.ok(manager.workflowStatus("image-qwen21-vae-test").problems.some((problem) => problem.type === "model"));
+
+    await manager.setModelAlias({ classType: "VAELoader", input: "vae_name", from: QWEN21_VAE, to: legacy });
+    assert.equal(manager.modelAliasFor("VAELoader", "vae_name", QWEN21_VAE), legacy);
+    assert.equal(manager.userModelAliasFor("VAELoader", "vae_name", QWEN21_VAE), legacy);
+    assert.equal(manager.isAvailable("image-qwen21-vae-test"), true);
+  } finally {
+    await fsp.rm(dataDir, { recursive: true, force: true });
+  }
+});
+
+test("exact and same-file subdir Qwen Image 2.1 VAEs stay available", async () => {
+  for (const [installed, expectedAlias] of [[QWEN21_VAE, ""], [`Qwen2.1\\${QWEN21_VAE}`, `Qwen2.1\\${QWEN21_VAE}`]]) {
+    const dataDir = await fsp.mkdtemp(path.join(os.tmpdir(), "setup-qwen21-vae-installed-"));
+    try {
+      const manager = createQwenVaeManager(dataDir, [installed, "qwen_image_vae.safetensors", "wan2.1_vae.safetensors"]);
+      await manager.scan();
+      assert.equal(manager.isAvailable("image-qwen21-vae-test"), true);
+      assert.equal(manager.modelAliasFor("VAELoader", "vae_name", QWEN21_VAE), expectedAlias);
+    } finally {
+      await fsp.rm(dataDir, { recursive: true, force: true });
+    }
+  }
+});
+
 test("auto-recognizes the same model file in a different subfolder", async () => {
   const dataDir = await fsp.mkdtemp(path.join(os.tmpdir(), "setup-alias-auto-"));
   try {
@@ -72,6 +130,36 @@ test("auto-recognizes the same model file in a different subfolder", async () =>
     await manager.scan();
     assert.equal(manager.isAvailable(entry.id), true);
     assert.equal(manager.modelAliasFor("UNETLoader", "unet_name", "z_image_turbo_bf16.safetensors"), "zimage/z_image_turbo_bf16.safetensors");
+  } finally {
+    await fsp.rm(dataDir, { recursive: true, force: true });
+  }
+});
+
+test("duplicate basenames in two model subdirectories are never guessed", async () => {
+  const dataDir = await fsp.mkdtemp(path.join(os.tmpdir(), "setup-duplicate-base-"));
+  try {
+    const manager = createAliasManager(dataDir, ["模型A/shared.safetensors", "模型B/shared.safetensors"], {
+      1: { class_type: "UNETLoader", inputs: { unet_name: "shared.safetensors" } },
+    });
+    await manager.scan();
+    assert.equal(manager.modelAliasFor("UNETLoader", "unet_name", "shared.safetensors"), "");
+    assert.equal(manager.isAvailable(entry.id), false);
+    assert.equal(manager.modelCandidates("UNETLoader", "shared.safetensors", "unet_name").length, 2);
+  } finally {
+    await fsp.rm(dataDir, { recursive: true, force: true });
+  }
+});
+
+test("Chinese model directories and filenames work with exact loader values", async () => {
+  const dataDir = await fsp.mkdtemp(path.join(os.tmpdir(), "setup-chinese-model-"));
+  const model = "人物模型/古风少女_v3.safetensors";
+  try {
+    const manager = createAliasManager(dataDir, [model], {
+      1: { class_type: "UNETLoader", inputs: { unet_name: "人物模型\\古风少女_v3.safetensors" } },
+    });
+    await manager.scan();
+    assert.equal(manager.isAvailable(entry.id), true);
+    assert.equal(manager.modelAliasFor("UNETLoader", "unet_name", "人物模型\\古风少女_v3.safetensors"), model);
   } finally {
     await fsp.rm(dataDir, { recursive: true, force: true });
   }
@@ -498,6 +586,89 @@ test("LLM mmproj replacement uses the mmproj option list, not the model list", a
     assert.equal(manager.userModelAliasFor("llama_cpp_model_loader", "mmproj", "mmproj-BF16.gguf"), "mmproj-27B.gguf");
     assert.equal(manager.modelAliasFor("llama_cpp_model_loader", "mmproj", "mmproj-BF16.gguf"), "mmproj-27B.gguf");
     assert.equal(manager.modelAliasFor("llama_cpp_model_loader", "model", "Qwen3.5-9B-Q4_K_M.gguf"), "");
+  } finally {
+    await fsp.rm(dataDir, { recursive: true, force: true });
+  }
+});
+
+function aliasObjectInfo() {
+  const modelOptions = ["Qwen3.5-9B-Q4_K_M.gguf", "Qwen3.5-9B-Q5_K.gguf", "Qwen3.5-9B-Q6_K.gguf"];
+  const mmprojOptions = ["无", "mmproj-BF16.gguf", "mmproj-Custom-BF16.gguf"];
+  return {
+    UNETLoader: { input: { required: { unet_name: [["z_image_turbo_bf16.safetensors", "Qwen3.5-9B-Q6_K.gguf"]] } } },
+    llama_cpp_model_loader: { input: { required: { model: [modelOptions], mmproj: [mmprojOptions] } } },
+    QwenTE_ModelLoader: { input: { required: { 主模型: [modelOptions], 视觉投影mmproj: [mmprojOptions] } } },
+    TE_Qwen_Image_2_1_Prompt_Enhancer: { input: { required: { 主模型: [modelOptions], mmproj: [mmprojOptions] } } },
+  };
+}
+
+function createAliasFileManager(dataDir, aliases) {
+  const aliasFile = path.join(dataDir, "model-aliases.json");
+  return fsp.writeFile(aliasFile, JSON.stringify({ version: 1, aliases })).then(() =>
+    createSetupManager({
+      config: { dataDir, comfyUrl: "http://127.0.0.1:1", comfyWorkflowsDir: "", maxWorkflowBytes: 1024 * 1024 },
+      registry: { list: () => [], resolve: () => null, scan: async () => ({ imported: 0 }), reloadIfChanged: () => {} },
+      comfy: { systemStats: async () => ({}), objectInfo: async () => aliasObjectInfo() },
+      logger: { info() {}, warn() {} },
+      mainModelFile: () => "",
+    }),
+  );
+}
+
+test("cross-class aliases apply only when a single installed target is unambiguous", async () => {
+  const dataDir = await fsp.mkdtemp(path.join(os.tmpdir(), "setup-alias-cross-"));
+  try {
+    const manager = await createAliasFileManager(dataDir, {
+      "llama_cpp_model_loader\u0000model\u0000Qwen3.5-9B-Q4_K_M.gguf": "Qwen3.5-9B-Q6_K.gguf",
+      "llama_cpp_model_loader\u0000mmproj\u0000mmproj-BF16.gguf": "mmproj-Custom-BF16.gguf",
+    });
+    await manager.scan();
+    assert.equal(manager.userModelAliasFor("QwenTE_ModelLoader", "主模型", "Qwen3.5-9B-Q4_K_M.gguf"), "Qwen3.5-9B-Q6_K.gguf");
+    assert.equal(manager.userModelAliasFor("TE_Qwen_Image_2_1_Prompt_Enhancer", "mmproj", "mmproj-BF16.gguf"), "mmproj-Custom-BF16.gguf");
+    assert.equal(manager.userModelAliasFor("UNETLoader", "unet_name", "Qwen3.5-9B-Q4_K_M.gguf"), "");
+  } finally {
+    await fsp.rm(dataDir, { recursive: true, force: true });
+  }
+});
+
+test("cross-class aliases never guess when two targets are installed", async () => {
+  const dataDir = await fsp.mkdtemp(path.join(os.tmpdir(), "setup-alias-ambiguous-"));
+  try {
+    const manager = await createAliasFileManager(dataDir, {
+      "llama_cpp_model_loader\u0000model\u0000Qwen3.5-9B-Q4_K_M.gguf": "Qwen3.5-9B-Q6_K.gguf",
+      "QwenTE_ModelLoader\u0000主模型\u0000Qwen3.5-9B-Q4_K_M.gguf": "Qwen3.5-9B-Q5_K.gguf",
+    });
+    await manager.scan();
+    assert.equal(manager.userModelAliasFor("TE_Qwen_Image_2_1_Prompt_Enhancer", "主模型", "Qwen3.5-9B-Q4_K_M.gguf"), "");
+  } finally {
+    await fsp.rm(dataDir, { recursive: true, force: true });
+  }
+});
+
+test("an exact class alias wins over an equivalent-class alias", async () => {
+  const dataDir = await fsp.mkdtemp(path.join(os.tmpdir(), "setup-alias-exact-"));
+  try {
+    const manager = await createAliasFileManager(dataDir, {
+      "llama_cpp_model_loader\u0000model\u0000Qwen3.5-9B-Q4_K_M.gguf": "Qwen3.5-9B-Q6_K.gguf",
+      "QwenTE_ModelLoader\u0000主模型\u0000Qwen3.5-9B-Q4_K_M.gguf": "Qwen3.5-9B-Q5_K.gguf",
+    });
+    await manager.scan();
+    assert.equal(manager.userModelAliasFor("QwenTE_ModelLoader", "主模型", "Qwen3.5-9B-Q4_K_M.gguf"), "Qwen3.5-9B-Q5_K.gguf");
+  } finally {
+    await fsp.rm(dataDir, { recursive: true, force: true });
+  }
+});
+
+test("workflowStatus marks the pre-scan state as checking and unavailable", async () => {
+  const dataDir = await fsp.mkdtemp(path.join(os.tmpdir(), "setup-checking-"));
+  try {
+    const manager = createManager(dataDir, ["z_image_turbo_bf16.safetensors"]);
+    assert.equal(manager.workflowStatus(entry.id).checking, true);
+    assert.equal(manager.workflowStatus(entry.id).available, false);
+    assert.equal(manager.isAvailable(entry.id), false);
+    await manager.scan();
+    assert.equal(manager.workflowStatus(entry.id).checking, undefined);
+    assert.equal(manager.workflowStatus(entry.id).available, true);
   } finally {
     await fsp.rm(dataDir, { recursive: true, force: true });
   }

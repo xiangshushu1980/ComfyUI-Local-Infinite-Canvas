@@ -39,6 +39,24 @@ function readJson(file) {
   }
 }
 
+async function writeUpdateMarkerAtomic(file, value) {
+  await fsp.mkdir(path.dirname(file), { recursive: true });
+  const temp = path.join(path.dirname(file), `.${path.basename(file)}.${process.pid}.${crypto.randomBytes(6).toString("hex")}.tmp`);
+  let handle;
+  try {
+    handle = await fsp.open(temp, "wx");
+    await handle.writeFile(JSON.stringify(value, null, 2), "utf8");
+    await handle.sync();
+    await handle.close();
+    handle = null;
+    // 同目录先写后改名可避免半截 JSON；已存在的 marker 不覆盖，尤其要保留 pending 现场。
+    await fsp.rename(temp, file);
+  } finally {
+    await handle?.close().catch(() => {});
+    await fsp.rm(temp, { force: true }).catch(() => {});
+  }
+}
+
 function cleanVersion(value) {
   return String(value || "").trim();
 }
@@ -437,6 +455,24 @@ async function applyArchivePatch(config, { patch, version, dryRun = false }) {
     if (!candidates.length && !deleteList.length) throw updateError("补丁内没有可更新的文件", "patch_empty");
     if (dryRun) return { files: candidates.map((file) => file.rel), deleted: deleteList };
 
+    const pendingFile = path.join(backupDir, ".pending.json");
+    const completeFile = path.join(backupDir, ".complete.json");
+    const candidateFiles = candidates.map((file) => file.rel);
+    const existing = [];
+    for (const relative of candidateFiles) {
+      const target = path.resolve(config.appRoot, relative);
+      if (!target.startsWith(`${path.resolve(config.appRoot)}${path.sep}`)) continue;
+      if (fs.existsSync(target)) existing.push(relative);
+    }
+    const launcherFiles = [...new Set([...candidateFiles, ...deleteList].filter((relative) => relative.startsWith("launcher/")))];
+    const launcherBefore = new Map();
+    for (const relative of launcherFiles) {
+      const target = path.resolve(config.appRoot, relative);
+      launcherBefore.set(relative, fs.existsSync(target) ? await sha256File(target) : null);
+    }
+    await fsp.mkdir(backupDir, { recursive: true });
+    await writeUpdateMarkerAtomic(pendingFile, { version, startedAt: new Date().toISOString(), files: candidateFiles, deleteList, existing });
+
     setUpdateProgress({ phase: "applying", percent: 95, speed: 0 });
 
     const written = [];
@@ -484,12 +520,24 @@ async function applyArchivePatch(config, { patch, version, dryRun = false }) {
         await fsp.mkdir(path.dirname(item.target), { recursive: true }).catch(() => {});
         await fsp.copyFile(item.backup, item.target).catch(() => {});
       }
+      await fsp.rm(pendingFile, { force: true }).catch(() => {});
       throw updateError(`补丁应用失败，已回滚：${error.message}`, "patch_apply_failed");
     }
+    let launcherChanged = false;
+    for (const relative of launcherFiles) {
+      const target = path.resolve(config.appRoot, relative);
+      const after = fs.existsSync(target) ? await sha256File(target) : null;
+      if (after !== launcherBefore.get(relative)) {
+        launcherChanged = true;
+        break;
+      }
+    }
     await syncLocalManifest(config);
+    await writeUpdateMarkerAtomic(completeFile, { version, finishedAt: new Date().toISOString(), files: candidateFiles, deleted: deleteList });
+    await fsp.rm(pendingFile, { force: true }).catch(() => {});
     await fsp.rm(staging, { recursive: true, force: true }).catch(() => {});
     setUpdateProgress({ phase: "done", percent: 100, speed: 0, message: "更新完成" });
-    return { files: candidates.map((file) => file.rel), deleted: deleteList, changedFiles: candidates.length, preserved };
+    return { files: candidates.map((file) => file.rel), deleted: deleteList, changedFiles: candidates.length, preserved, launcherChanged };
   } finally {
     await fsp.rm(payload, { recursive: true, force: true }).catch(() => {});
   }
@@ -499,6 +547,96 @@ async function applyArchivePatch(config, { patch, version, dryRun = false }) {
  * Compare the local manifest with the remote/tracking manifest.
  * A git install fetches only when fetchRemote is true; a plain archive install can use UPDATE_MANIFEST_URL.
  */
+// 更新进程在复制文件中途被杀时，.pending.json 会留下；启动/健康检查可据此提示。
+export async function detectInterruptedUpdate(config) {
+  const root = path.join(config.appRoot, ".update-backup");
+  let entries = [];
+  try {
+    entries = await fsp.readdir(root, { withFileTypes: true });
+  } catch {
+    return { pending: false };
+  }
+  for (const entry of entries) {
+    if (!entry.isDirectory()) continue;
+    const backupDir = path.join(root, entry.name);
+    const pendingFile = path.join(backupDir, ".pending.json");
+    const completeFile = path.join(backupDir, ".complete.json");
+    if (!fs.existsSync(pendingFile)) continue;
+    if (fs.existsSync(completeFile)) continue;
+    try {
+      const pending = JSON.parse(await fsp.readFile(pendingFile, "utf8"));
+      return {
+        pending: true,
+        version: String(pending.version || entry.name),
+        currentVersion: String(config.version || ""),
+        backupDir,
+        files: Array.isArray(pending.files) ? pending.files : [],
+        deleteList: Array.isArray(pending.deleteList) ? pending.deleteList : [],
+        existing: Array.isArray(pending.existing) ? pending.existing : [],
+        startedAt: pending.startedAt || "",
+      };
+    } catch {
+      return {
+        pending: true,
+        version: entry.name,
+        currentVersion: String(config.version || ""),
+        backupDir,
+        files: [],
+        deleteList: [],
+        existing: [],
+        startedAt: "",
+        unreadable: true,
+      };
+    }
+  }
+  return { pending: false };
+}
+
+// 手动恢复入口：只回滚 pending 记录的补丁文件，不碰 data/models/config。
+export async function restoreInterruptedUpdate(config) {
+  const info = await detectInterruptedUpdate(config);
+  if (!info.pending) return { restored: false, reason: "没有待恢复的更新" };
+  if (info.unreadable) {
+    return {
+      restored: false,
+      unreadable: true,
+      version: info.version,
+      reason: "待恢复记录损坏，已保留 .pending.json 和备份现场；请人工检查后再恢复",
+    };
+  }
+  const root = path.resolve(config.appRoot);
+  const backupRoot = path.resolve(info.backupDir);
+  let restored = 0;
+  let removed = 0;
+  const existing = new Set(info.existing);
+  for (const relative of info.files) {
+    const target = path.resolve(root, relative);
+    if (!target.startsWith(`${root}${path.sep}`)) continue;
+    const backup = path.resolve(backupRoot, relative);
+    if (!backup.startsWith(`${backupRoot}${path.sep}`)) continue;
+    if (fs.existsSync(backup)) {
+      await fsp.mkdir(path.dirname(target), { recursive: true });
+      await fsp.copyFile(backup, target);
+      restored += 1;
+    } else if (!existing.has(relative) && fs.existsSync(target)) {
+      await fsp.rm(target, { force: true });
+      removed += 1;
+    }
+  }
+  for (const relative of info.deleteList) {
+    const target = path.resolve(root, relative);
+    if (!target.startsWith(`${root}${path.sep}`)) continue;
+    const backup = path.resolve(backupRoot, relative);
+    if (!backup.startsWith(`${backupRoot}${path.sep}`) || !fs.existsSync(backup)) continue;
+    await fsp.mkdir(path.dirname(target), { recursive: true });
+    await fsp.copyFile(backup, target);
+    restored += 1;
+  }
+  await fsp.writeFile(path.join(info.backupDir, ".recovered.json"), JSON.stringify({ at: new Date().toISOString(), restored, removed }, null, 2), "utf8").catch(() => {});
+  await fsp.rm(path.join(info.backupDir, ".pending.json"), { force: true }).catch(() => {});
+  return { restored: true, version: info.version, files: restored, removed };
+}
+
 export async function checkForUpdate(config, { fetchRemote = false } = {}) {
   const currentVersion = readCurrentVersion(config);
   const installType = isGitRepo(config) ? "git" : "archive";
@@ -627,8 +765,8 @@ export async function applyUpdate(config, { dryRun = false, force = false } = {}
       if (dryRun) {
         return { ok: true, dryRun: true, currentVersion: check.currentVersion, latestVersion: check.latestVersion, files: result.files };
       }
-      const restarting = scheduleGatewayRestart(config);
-      const launcherChanged = result.files.some((file) => file.startsWith("launcher/"));
+      const launcherChanged = result.launcherChanged === true;
+      const restarting = launcherChanged ? false : scheduleGatewayRestart(config);
       const preserved = result.preserved || [];
       return {
         ok: true,
@@ -639,11 +777,14 @@ export async function applyUpdate(config, { dryRun = false, force = false } = {}
         preservedWorkflows: preserved,
         deletedFiles: result.deleted || [],
         launcherChanged,
+        fullRestartRequired: launcherChanged,
         restartRequired: true,
         restarting,
-        message: (restarting
-          ? "更新完成，网关正在重启，页面将自动刷新…"
-          : "更新完成，请关闭工作台窗口后重新双击 start-local.bat") +
+        message: (launcherChanged
+          ? "更新完成，启动器文件已实际变化，请完全退出工作台后重新双击 start-local.bat（仅刷新网关不足）"
+          : restarting
+            ? "更新完成，网关正在重启，页面将自动刷新…"
+            : "更新完成，请关闭工作台窗口后重新双击 start-local.bat") +
           (preserved.length ? `；保留 ${preserved.length} 个本地修改的工作流（已备份）` : ""),
       };
     }
@@ -654,8 +795,8 @@ export async function applyUpdate(config, { dryRun = false, force = false } = {}
       if (dryRun) {
         return { ok: true, dryRun: true, forced: true, currentVersion: check.currentVersion, latestVersion: check.latestVersion, files: result.files };
       }
-      const restarting = scheduleGatewayRestart(config);
-      const launcherChanged = result.files.some((file) => file.startsWith("launcher/"));
+      const launcherChanged = result.launcherChanged === true;
+      const restarting = launcherChanged ? false : scheduleGatewayRestart(config);
       const preserved = result.preserved || [];
       return {
         ok: true,
@@ -667,11 +808,14 @@ export async function applyUpdate(config, { dryRun = false, force = false } = {}
         preservedWorkflows: preserved,
         deletedFiles: result.deleted || [],
         launcherChanged,
+        fullRestartRequired: launcherChanged,
         restartRequired: true,
         restarting,
-        message: (restarting
-          ? "已强制更新，网关正在重启，页面将自动刷新…"
-          : "已强制更新，请关闭工作台窗口后重新双击 start-local.bat") +
+        message: (launcherChanged
+          ? "已强制更新，启动器文件已实际变化，请完全退出工作台后重新双击 start-local.bat（仅刷新网关不足）"
+          : restarting
+            ? "已强制更新，网关正在重启，页面将自动刷新…"
+            : "已强制更新，请关闭工作台窗口后重新双击 start-local.bat") +
           (preserved.length ? `；保留 ${preserved.length} 个本地修改的工作流（已备份）` : ""),
       };
     }

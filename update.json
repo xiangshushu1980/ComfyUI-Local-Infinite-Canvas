@@ -1,16 +1,16 @@
 {
-  "version": "v0.24.0",
-  "publishedAt": "2026-10-31",
-  "notes": "新增 Krea2 图片卡「四视图」及 Qwen 2.1 可选步数；视频卡只有播放按钮才播放；修复自动新卡把上一张结果当参考、扫描离线清空模型、safetensors_ 临时文件、视频 @ 已连接参考、Z-Image/Krea2 子目录底模、第三方 loader、校验详情、插帧超时取消、云端 temperature 重试和补丁漏打 comfyui-bridge。",
+  "version": "v0.24.3",
+  "publishedAt": "2026-11-01",
+  "notes": "四视图资源卡补齐 Krea2Edit 编辑节点（魔搭/国内加速，SHA256 固定）；资源索引更新到 2026.11.01-33，保留旧/新/缓存索引兼容与 VDN 下载门禁；其余行为与 v0.24.2 一致。",
   "repository": "https://modelscope.cn/datasets/shensanshu/ComfyUI-Local-Infinite-Canvas",
   "downloadUrl": "https://modelscope.cn/datasets/shensanshu/ComfyUI-Local-Infinite-Canvas/resolve/master/patches/update-bridge.zip",
   "mirrors": {
     "modelscope": "https://modelscope.cn/datasets/shensanshu/ComfyUI-Local-Infinite-Canvas"
   },
   "patch": {
-    "url": "https://modelscope.cn/datasets/shensanshu/ComfyUI-Local-Infinite-Canvas/resolve/master/patches/v0.24.0.zip",
-    "sha256": "2306f1084677bb6dbf16f6f8ab46a478349cfa7fd92a50b4e15e0f5babd8c68a",
-    "size": 29570790
+    "url": "https://modelscope.cn/datasets/shensanshu/ComfyUI-Local-Infinite-Canvas/resolve/master/patches/v0.24.3.zip",
+    "sha256": "e613dfac278484dd145ccac530ec5099e18ee7deaec970f4e2b5a799ade11913",
+    "size": 29603833
   },
   "bridge": {
     "url": "https://modelscope.cn/datasets/shensanshu/ComfyUI-Local-Infinite-Canvas/resolve/master/patches/update-bridge.zip",

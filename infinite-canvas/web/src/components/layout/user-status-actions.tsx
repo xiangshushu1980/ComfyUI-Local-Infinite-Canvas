@@ -4,7 +4,6 @@ import { BookOpen, Keyboard, Puzzle, Settings2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
-import { DonationPopover } from "@/components/layout/donation-popover";
 import { GitHubLink } from "@/components/layout/github-link";
 import { VersionReleaseModal } from "@/components/layout/version-release-modal";
 import { DOCS_URL } from "@/constant/env";
@@ -38,7 +37,6 @@ export function UserStatusActions({ showConfig = true, variant = "default", onOp
 
     return (
         <div className="inline-flex shrink-0 items-center gap-1">
-            <DonationPopover variant={variant} />
             {onOpenPlugins ? (
                 <button type="button" className={naturalIconClass} style={iconStyle} onClick={onOpenPlugins} aria-label={t("topNav.plugins")} title={t("topNav.plugins")}>
                     <Puzzle className="size-4" />

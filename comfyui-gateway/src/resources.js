@@ -15,6 +15,13 @@ import { collectModelRoots, clearExtraModelPathsCache } from "./model-paths.js";
 import { nowIso, truncate, writeJsonAtomic } from "./util.js";
 
 const MODEL_DIRS = new Set(["diffusion_models", "text_encoders", "vae", "vae_approx", "loras", "checkpoints", "upscale_models", "latent_upscale_models", "vdn", "clip_vision", "LLM", "SEEDVR2"]);
+const VDN_STAGE_RESOURCE_PREFIX = "h3_vdn_stage_";
+const RETIRED_RESOURCE_IDS = new Set(["h3_character_swap_lora", "h3_vdn_node"]);
+const H3_PACK_ID = "h3";
+const H3_PUBLIC_WORKFLOW_IDS = ["video-h3-ref2va-novdn", "video-h3-t2v-novdn", "video-h3-frames-novdn"];
+const FOUR_VIEW_PACK_ID = "krea2-four-view";
+const FOUR_VIEW_WORKFLOW_ID = "image-krea2-four-view";
+const FOUR_VIEW_RESOURCE_IDS = ["krea2_turbo_fp8_scaled", "qwen3vl_4b_fp8_scaled", "qwen_image_vae", "krea2_four_view_lora"];
 const WEIGHT_FILE_EXTENSIONS = /\.(safetensors|sft|ckpt|pt|pth|bin|gguf|onnx|data|engine)$/i;
 const LOADER_BY_DIR = {
     diffusion_models: { classType: "UNETLoader", input: "unet_name" },
@@ -314,6 +321,74 @@ function validateIndex(index) {
                 if (!ids.has(id)) throw new Error(`工作流 ${workflowId} 引用了不存在的资源 ${id}`);
             }
         }
+    }
+    return index;
+}
+
+export function isRetiredResourceId(id) {
+    const value = String(id || "");
+    return value.startsWith(VDN_STAGE_RESOURCE_PREFIX) || RETIRED_RESOURCE_IDS.has(value);
+}
+
+function mergeFourViewIds(value) {
+    const merged = [...FOUR_VIEW_RESOURCE_IDS];
+    for (const id of Array.isArray(value) ? value : []) {
+        if (!merged.includes(id)) merged.push(id);
+    }
+    return merged;
+}
+
+// 旧远端/旧缓存索引没有独立四视图包和 downloadable 标记；本地、远端、缓存三条
+// 加载路径都先过这里，保证索引来源不再改变资源入口和 VDN 下载禁令。
+export function normalizeResourceIndex(index) {
+    if (!index || typeof index !== "object" || !Array.isArray(index.packs) || !Array.isArray(index.resources)) return index;
+    for (const resource of index.resources) {
+        if (!resource || !isRetiredResourceId(resource.id)) continue;
+        resource.downloadable = false;
+        if (resource.id === "h3_vdn_node") resource.autoInstall = false;
+    }
+    const availableIds = new Set(index.resources.map((resource) => resource?.id));
+    const packs = index.packs;
+    let fourView = packs.find((pack) => pack && pack.id === FOUR_VIEW_PACK_ID);
+    const krea2Pack = packs.find((pack) => pack && pack.id === "krea2");
+    if (!fourView && krea2Pack && FOUR_VIEW_RESOURCE_IDS.every((id) => availableIds.has(id))) {
+        fourView = {
+            id: FOUR_VIEW_PACK_ID,
+            label: "Krea2 角色四视图",
+            description: "在 Krea2 底模上生成角色四视图设定图",
+            family: krea2Pack.family || "krea2",
+            tier: krea2Pack.tier || "standard",
+            optional: true,
+            standalone: true,
+            autoRecommend: false,
+            workflows: [FOUR_VIEW_WORKFLOW_ID],
+            resources: [...FOUR_VIEW_RESOURCE_IDS],
+            optionalResources: [...FOUR_VIEW_RESOURCE_IDS],
+            workflowDependencies: { [FOUR_VIEW_WORKFLOW_ID]: [...FOUR_VIEW_RESOURCE_IDS] },
+        };
+        packs.push(fourView);
+    }
+    if (fourView) {
+        fourView.standalone = true;
+        if (fourView.optional === undefined) fourView.optional = true;
+        fourView.resources = mergeFourViewIds(fourView.resources);
+        fourView.optionalResources = mergeFourViewIds(fourView.optionalResources);
+        fourView.workflowDependencies = fourView.workflowDependencies && typeof fourView.workflowDependencies === "object" ? fourView.workflowDependencies : {};
+        fourView.workflowDependencies[FOUR_VIEW_WORKFLOW_ID] = mergeFourViewIds(fourView.workflowDependencies[FOUR_VIEW_WORKFLOW_ID]);
+        const workflows = Array.isArray(fourView.workflows) ? fourView.workflows : [];
+        if (!workflows.includes(FOUR_VIEW_WORKFLOW_ID)) fourView.workflows = [FOUR_VIEW_WORKFLOW_ID, ...workflows];
+    }
+    for (const pack of packs) {
+        if (!pack || typeof pack !== "object") continue;
+        if (pack.id === "krea2") {
+            if (Array.isArray(pack.resources)) pack.resources = pack.resources.filter((id) => id !== "krea2_four_view_lora");
+            if (Array.isArray(pack.optionalResources)) pack.optionalResources = pack.optionalResources.filter((id) => id !== "krea2_four_view_lora");
+        }
+        if (pack.id !== H3_PACK_ID) continue;
+        if (Array.isArray(pack.resources)) pack.resources = pack.resources.filter((id) => !isRetiredResourceId(id));
+        if (Array.isArray(pack.optionalResources)) pack.optionalResources = pack.optionalResources.filter((id) => !isRetiredResourceId(id));
+        if (Array.isArray(pack.workflows)) pack.workflows = H3_PUBLIC_WORKFLOW_IDS.filter((id) => pack.workflows.includes(id));
+        // workflowDependencies 保留 VDN 原样：setup/runtimeProblemsFor 靠它判断已安装用户是否完整。
     }
     return index;
 }
@@ -639,14 +714,14 @@ export function createResourceManager({ config, setup, registry, logger, workflo
         let localError = "";
         const localExists = fs.existsSync(indexPath);
         try {
-            local = validateIndex(readJson(indexPath));
+            local = normalizeResourceIndex(validateIndex(readJson(indexPath)));
         } catch (error) {
             localError = localExists ? error.message : "文件不存在";
         }
         let cached = null;
         if (!local) {
             try {
-                cached = validateIndex(readJson(indexCachePath));
+                cached = normalizeResourceIndex(validateIndex(readJson(indexCachePath)));
             } catch {
                 cached = null;
             }
@@ -663,7 +738,7 @@ export function createResourceManager({ config, setup, registry, logger, workflo
                         headers: { Accept: "application/json" },
                     });
                     if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                    const remote = validateIndex(await response.json());
+                    const remote = normalizeResourceIndex(validateIndex(await response.json()));
                     index = remote;
                     indexSource = urlIndex === 0 && config.resourcesIndexUrl ? "remote" : "remote-backup";
                     indexWarning = localError ? `本地索引不可用（${localError}），已从镜像加载` : "";
@@ -848,14 +923,16 @@ export function createResourceManager({ config, setup, registry, logger, workflo
         return version;
     }
 
-    function pipImportStatus(python, module, { fresh = false, distribution = "" } = {}) {
+    function pipImportStatus(python, module, { fresh = false, distribution = "", deep = false } = {}) {
         if (!python || !module) return { present: false, version: "", reason: "未找到 ComfyUI 的 Python" };
         const key = `${python}|${module}`.toLowerCase();
         const cached = pipCheckCache.get(key);
-        if (!fresh && cached && Date.now() - cached.at < (cached.present ? 600000 : 60000)) return cached;
-        try {
-            const distributionName = String(distribution || module).trim() || module;
-            const code = [
+        if (!fresh && cached && Date.now() - cached.at < (cached.present ? 600000 : cached.unknown ? 15000 : 60000)) return cached;
+        const distributionName = String(distribution || module).trim() || module;
+        // 资源状态只需快速确认“装没装”：find_spec 不 import torch，冷启动时不会因为
+        // 和 ComfyUI 抢磁盘/CPU 而误报缺失。真实 import 只在安装后验证时做。
+        const code = deep
+            ? [
                 `import ${module} as _m`,
                 "import importlib.metadata as _md",
                 "try:",
@@ -863,19 +940,46 @@ export function createResourceManager({ config, setup, registry, logger, workflo
                 "except Exception:",
                 '    _v = ""',
                 'print(getattr(_m, "__version__", "") or _v)',
+            ].join("\n")
+            : [
+                "import importlib.util",
+                "import importlib.metadata as _md",
+                `_spec = importlib.util.find_spec(${JSON.stringify(module)})`,
+                "if _spec is None:",
+                "    raise SystemExit(3)",
+                "try:",
+                `    print(_md.version(${JSON.stringify(distributionName)}))`,
+                "except Exception:",
+                '    print("")',
             ].join("\n");
+        try {
             const stdout = execFileSync(python, ["-c", code], {
-                timeout: 15000,
+                timeout: deep ? 60000 : 8000,
                 windowsHide: true,
                 encoding: "utf8",
             });
-            // import 时第三方库可能往 stdout 打日志，版本号取最后一行。
+            // 第三方库可能在 stdout 打日志，版本号取最后一行。
             const lines = String(stdout || "").trim().split(/\r?\n/).filter(Boolean);
-            const result = { present: true, version: lines.pop() || "", reason: "", at: Date.now() };
+            const result = { present: true, version: lines.pop() || "", reason: "", method: deep ? "import" : "spec", at: Date.now() };
             pipCheckCache.set(key, result);
             return result;
-        } catch {
-            const result = { present: false, version: "", reason: `Python 环境缺少 ${module}`, at: Date.now() };
+        } catch (error) {
+            const timedOut = error?.code === "ETIMEDOUT" || error?.killed === true || error?.signal === "SIGTERM";
+            const missing = !deep && Number(error?.status) === 3;
+            const reason = timedOut
+                ? "运行库检测超时（Python 环境繁忙或 ComfyUI 正在启动）"
+                : missing
+                  ? `Python 环境缺少 ${module}`
+                  : `无法确认 ${module} 状态：${truncate(String(error?.stderr || error?.message || error), 200)}`;
+            const result = {
+                present: false,
+                version: "",
+                reason,
+                method: deep ? "import" : "spec",
+                unknown: !missing,
+                timedOut,
+                at: Date.now(),
+            };
             pipCheckCache.set(key, result);
             return result;
         }
@@ -886,7 +990,7 @@ export function createResourceManager({ config, setup, registry, logger, workflo
         const module = String(resource.module || resource.importName || "").trim();
         const distribution = String(resource.pipName || module).trim();
         const imported = pipImportStatus(python, module, { distribution });
-        const distributionVersion = imported.present ? "" : pipDistributionVersion(python, distribution);
+        const distributionVersion = imported.present || imported.unknown ? "" : pipDistributionVersion(python, distribution);
         return { python, ...imported, distributionVersion };
     }
 
@@ -1034,6 +1138,7 @@ export function createResourceManager({ config, setup, registry, logger, workflo
             })(),
             requires: resource.requires || [],
             builder: resource.builder || null,
+            downloadable: resource.downloadable !== false && !isRetiredResourceId(resource.id),
             status,
             present: status === "present",
             registered,
@@ -1051,7 +1156,9 @@ export function createResourceManager({ config, setup, registry, logger, workflo
                       pythonRuntime: pip.python || "",
                       pythonVersion,
                       pipVersion: pip.present ? pip.version || "" : pip.distributionVersion || "",
-                      pipBroken: Boolean(!pip.present && pip.distributionVersion),
+                      pipBroken: Boolean(!pip.present && pip.distributionVersion && !pip.unknown),
+                      pipChecking: Boolean(pip.unknown),
+                      pipTimedOut: Boolean(pip.timedOut),
                       pipReason: pip.reason || "",
                       pipName: String(resource.pipName || resource.module || ""),
                       wheelVersions,
@@ -1252,13 +1359,18 @@ export function createResourceManager({ config, setup, registry, logger, workflo
         const byId = new Map(resources.map((resource) => [resource.id, resource]));
         const rawPackById = new Map((index?.packs || []).map((item) => [item.id, item]));
         const packs = (index?.packs || []).map((pack) => {
-            const items = (pack.resources || []).map((id) => byId.get(id)).filter(Boolean);
-            const optionalIds = new Set(pack.optionalResources || []);
+            const resourceIds = (pack.resources || []).filter((id) => !isRetiredResourceId(id));
+            const optionalResourceIds = (pack.optionalResources || []).filter((id) => !isRetiredResourceId(id));
+            const items = resourceIds.map((id) => byId.get(id)).filter(Boolean);
+            const optionalIds = new Set(optionalResourceIds);
             const requiredItems = items.filter((item) => !optionalIds.has(item.id));
             const optionalItems = items.filter((item) => optionalIds.has(item.id));
             const requiredMissing = requiredItems.filter((item) => item.status !== "present");
             const optionalMissing = optionalItems.filter((item) => item.status !== "present");
-            const workflowDependencies = Object.entries(pack.workflowDependencies || {}).map(([workflowId, dependencyIds]) => {
+            const workflowDependencies = Object.entries(pack.workflowDependencies || {})
+                // 退休资源按实际依赖识别：VDN Stage 和角色替换 LoRA 都不再作为安装入口。
+                .filter(([, dependencyIds]) => !(dependencyIds || []).some(isRetiredResourceId))
+                .map(([workflowId, dependencyIds]) => {
                 const dependencyItems = dependencyIds.map((id) => byId.get(id)).filter(Boolean);
                 const missingItems = dependencyItems.filter((item) => item.status !== "present");
                 const installIds = new Set();
@@ -1298,9 +1410,8 @@ export function createResourceManager({ config, setup, registry, logger, workflo
             const workflowMissing = workflowMissingMap;
             const workflowMissingSize = [...workflowMissingMap.values()].reduce((sum, item) => sum + (item.size || 0), 0);
             const variants = (rawPackById.get(pack.id)?.variants || []).map((variant) => {
-                const optionalIds = new Set(pack.optionalResources || []);
                 const derived = [...new Set((variant.workflows || []).flatMap((workflowId) => (pack.workflowDependencies || {})[workflowId] || []))]
-                    .filter((id) => !optionalIds.has(id));
+                    .filter((id) => !optionalIds.has(id) && !isRetiredResourceId(id));
                 return {
                     id: variant.id,
                     label: variant.label || variant.id,
@@ -1322,6 +1433,7 @@ export function createResourceManager({ config, setup, registry, logger, workflo
                 family: pack.family || pack.id,
                 tier: pack.tier || "standard",
                 optional: Boolean(pack.optional),
+                standalone: Boolean(pack.standalone),
                 optionalLabel: pack.optionalLabel || "",
                 autoRecommend: pack.autoRecommend !== false,
                 planned: Boolean(pack.planned),
@@ -1333,7 +1445,7 @@ export function createResourceManager({ config, setup, registry, logger, workflo
                 offload: false,
                 resident: false,
                 workflows: pack.workflows || [],
-                resourceIds: pack.resources || [],
+                resourceIds,
                 requiredIds: requiredItems.map((item) => item.id),
                 optionalIds: optionalItems.map((item) => item.id),
                 resources: items,
@@ -1516,7 +1628,7 @@ export function createResourceManager({ config, setup, registry, logger, workflo
         await mainModels.set(pack.id, { file: value, workflows: info.workflowIds });
         try {
             runtimeStatusCache.clear();
-            await setup?.scan?.();
+            await setup?.scan?.("main-model");
         } catch (error) {
             logger?.warn?.(`切换主模型后扫描失败：${error.message}`);
         }
@@ -1607,13 +1719,26 @@ export function createResourceManager({ config, setup, registry, logger, workflo
             const type = String(resource.type || "model");
             if (!["pip", "bake", "node"].includes(type)) continue;
             const state = cachedResourceStatus(resource, comfyRoot());
-            if (state.present) continue;
+            // 快速探测超时/无法确认时不把工作流判死；用户仍可重扫或直接运行。
+            if (state.present || state.pipChecking) continue;
             const blocked = state.missingRequires?.length ? `（先安装 ${state.missingRequires.join("、")}）` : "";
             problems.push({
                 type: "runtime",
                 message: `缺少运行期依赖：${state.label}${blocked}`,
                 resourceId: id,
             });
+        }
+        if (String(workflowId).startsWith("video-h3-")) {
+            const python = comfyPythonForBake(comfyRoot());
+            const tensorrt = python ? pipImportStatus(python, "tensorrt", { distribution: "tensorrt" }) : null;
+            // 快速探测超时/无法确认时不误杀；只有明确未安装才给出可执行提示。
+            if (tensorrt && !tensorrt.present && !tensorrt.unknown) {
+                problems.push({
+                    type: "runtime",
+                    resourceId: "h3_trt_vae_decoder_engine",
+                    message: "缺少 TensorRT Python 运行库（H3 TRT VAE 必需）。请在 ComfyUI 使用同一个 Python 环境安装与本机 CUDA/驱动匹配的 tensorrt，然后重启 ComfyUI；画布不会自动替换 torch/CUDA。",
+                });
+            }
         }
         if (missingVdn.length) {
             const stageB = missingVdn.find((resource) => resource.id === "h3_vdn_stage_default_adapter");
@@ -1640,7 +1765,11 @@ export function createResourceManager({ config, setup, registry, logger, workflo
         for (const packId of packs) {
             const pack = index?.packs?.find((item) => item.id === packId);
             if (!pack) throw new Error(`功能包不存在：${packId}`);
-            for (const id of pack.resources || []) add(id);
+            // 旧索引的 H3 pack 仍列着退休资源；整包安装跳过它们，而不是整单失败。
+            for (const id of pack.resources || []) {
+                if (isRetiredResourceId(id)) continue;
+                add(id);
+            }
         }
         // Dependencies first so bake jobs can run after their inputs.
         const ordered = [];
@@ -1654,6 +1783,14 @@ export function createResourceManager({ config, setup, registry, logger, workflo
         };
         for (const id of selected) visit(id);
         return ordered;
+    }
+
+    function throwIfCanceled(signal) {
+        if (signal?.aborted) throw new Error("已取消");
+    }
+
+    function newInstallRoot(root, resourceId) {
+        return path.join(root, ".canvas-install", `${resourceId}-${process.pid}-${crypto.randomBytes(6).toString("hex")}`);
     }
 
     async function downloadSource(url, partPath, jobItem, signal, onBytes) {
@@ -1736,10 +1873,11 @@ export function createResourceManager({ config, setup, registry, logger, workflo
             const actualSize = fs.statSync(candidate).size;
             if (resource.size && actualSize !== Number(resource.size)) continue;
             if (resource.sha256) {
-                if (signal?.aborted) throw new Error("已取消");
+                throwIfCanceled(signal);
                 const digest = await sha256File(candidate, signal);
                 if (digest.toLowerCase() !== String(resource.sha256).toLowerCase()) continue;
             }
+            throwIfCanceled(signal);
             await fsp.rename(candidate, target);
             jobItem.status = "done";
             jobItem.bytes = actualSize;
@@ -1814,6 +1952,7 @@ export function createResourceManager({ config, setup, registry, logger, workflo
                         throw new Error("SHA256 校验失败");
                     }
                 }
+                throwIfCanceled(signal);
                 await fsp.rename(part, target);
                 lock.installed = lock.installed || {};
                 lock.installed[resource.id] = { version: index?.version || "", target: resource.target, sha256: resource.sha256 || "", size: resource.size || actualSize, installedAt: nowIso() };
@@ -1875,6 +2014,25 @@ export function createResourceManager({ config, setup, registry, logger, workflo
         return "";
     }
 
+    async function verifyNodeArchive(archive, resource, source, signal) {
+        const bundled = source.kind === "bundled" || Boolean(source.path);
+        const expectedSize = Number(source.size ?? resource.size) || 0;
+        const expectedSha = String(source.sha256 ?? resource.sha256 ?? "");
+        // 节点包含可执行 Python；可变分支 ZIP 没有可信摘要时绝不能直接安装。
+        if (!bundled && (source.verify === false || !/^[0-9a-f]{64}$/i.test(expectedSha))) {
+            throw new Error("节点包缺少可信 SHA256，已拒绝安装可执行代码；请使用随包内置目录，或由维护者固定版本并填写 sha256 后重试");
+        }
+        if (expectedSize) {
+            const size = (await fsp.stat(archive)).size;
+            if (size !== expectedSize) throw new Error(`节点包大小不一致（${size}/${expectedSize}）`);
+        }
+        if (expectedSha) {
+            if (!/^[0-9a-f]{64}$/i.test(expectedSha)) throw new Error("节点包 SHA256 配置格式无效，请由维护者修正资源索引");
+            const digest = await sha256File(archive, signal);
+            if (digest.toLowerCase() !== expectedSha.toLowerCase()) throw new Error("节点包 SHA256 校验失败");
+        }
+    }
+
     async function installNode(resource, jobItem, signal) {
         const root = comfyRoot();
         if (!root) throw new Error("未找到 ComfyUI 安装目录");
@@ -1890,102 +2048,94 @@ export function createResourceManager({ config, setup, registry, logger, workflo
             throw new Error(`节点内置目录越界：${resource.bundleDir}`);
         }
         if (!sources.length && !(bundleDir && isDir(bundleDir))) throw new Error("没有配置节点下载源");
-        if (bundleDir && isDir(bundleDir)) {
-            const installRoot = path.join(root, ".canvas-install", `${resource.id}-${Date.now()}`);
-            const temp = path.join(installRoot, "payload");
-            try {
-                jobItem.status = "copying";
-                jobItem.source = "内置目录";
-                jobItem.bytes = 0;
-                updateJob(jobItem.job);
-                await fsp.cp(bundleDir, temp, { recursive: true });
-                const sourceDir = await findNodeRoot(temp);
-                if (!sourceDir) throw new Error("内置目录里没有找到 __init__.py");
-                await fsp.mkdir(path.dirname(target), { recursive: true });
-                if (!isDir(target)) await fsp.rename(sourceDir, target);
-                lock.installed = lock.installed || {};
-                lock.installed[resource.id] = { version: index?.version || "", target: resource.target, size: resource.size || 0, installedAt: nowIso() };
-                lock.updatedAt = nowIso();
-                await saveLock();
-                jobItem.status = "done";
-                jobItem.bytes = resource.size || 0;
-                await fsp.rm(installRoot, { recursive: true, force: true }).catch(() => {});
-                return;
-            } catch (error) {
-                logger?.warn?.(`内置节点复制失败 ${resource.id}: ${error.message}，尝试下载源`);
-                await fsp.rm(installRoot, { recursive: true, force: true }).catch(() => {});
-            }
-        }
-        const tmpRoot = path.join(config.dataDir, "resource-downloads");
-        await fsp.mkdir(tmpRoot, { recursive: true });
-        const archive = path.join(tmpRoot, `${resource.id}.zip`);
-        // 解压目录必须和 custom_nodes 同盘，rename 才是原子操作；跨盘 rename 在 Windows 会直接失败。
-        const installRoot = path.join(root, ".canvas-install", `${resource.id}-${Date.now()}`);
+        // 每次任务独占 archive/extract，取消后的旧任务不会与新任务共享临时文件。
+        const installRoot = newInstallRoot(root, resource.id);
+        const temp = path.join(installRoot, "payload");
+        const archive = path.join(installRoot, "payload.zip");
         const extract = path.join(installRoot, "extract");
         await fsp.mkdir(installRoot, { recursive: true });
         let lastError = null;
-        for (const source of sources) {
-            try {
-                if (source.kind === "bundled-dir") continue;
-                await fsp.rm(archive, { force: true });
-                jobItem.status = "downloading";
-                jobItem.source = source.label || (source.url ? new URL(source.url).hostname : "内置");
-                jobItem.bytes = 0;
-                if (source.kind === "bundled" || source.path) {
-                    await copyBundledSource(source, archive, jobItem, signal);
-                } else {
-                    await downloadSource(source.url, archive, jobItem, signal, (bytes) => {
-                        jobItem.bytes = bytes;
-                        updateJob(jobItem.job);
-                    });
-                }
-                jobItem.status = "verifying";
-                if (source.verify !== false) {
-                    const expectedSize = Number(source.size ?? resource.size) || 0;
-                    const expectedSha = String(source.sha256 ?? resource.sha256 ?? "");
-                    if (expectedSize) {
-                        const size = (await fsp.stat(archive)).size;
-                        if (size !== expectedSize) throw new Error(`节点包大小不一致（${size}/${expectedSize}）`);
-                    }
-                    if (expectedSha) {
-                        const digest = await sha256File(archive, signal);
-                        if (digest.toLowerCase() !== expectedSha.toLowerCase()) throw new Error("节点包 SHA256 校验失败");
-                    }
-                }
-                jobItem.status = "extracting";
-                updateJob(jobItem.job);
-                await extractArchive(archive, extract);
-                const sourceDir = await findNodeRoot(extract);
-                if (!sourceDir) throw new Error("节点包里没有找到 __init__.py");
-                await fsp.mkdir(path.dirname(target), { recursive: true });
-                const backup = path.join(installRoot, "backup");
-                let movedBackup = false;
-                if (isDir(target)) {
-                    await fsp.rename(target, backup);
-                    movedBackup = true;
-                }
+        try {
+            if (bundleDir && isDir(bundleDir)) {
                 try {
-                    await fsp.rename(sourceDir, target);
+                    jobItem.status = "copying";
+                    jobItem.source = "内置目录";
+                    jobItem.bytes = 0;
+                    updateJob(jobItem.job);
+                    await fsp.cp(bundleDir, temp, { recursive: true });
+                    throwIfCanceled(signal);
+                    const sourceDir = await findNodeRoot(temp);
+                    if (!sourceDir) throw new Error("内置目录里没有找到 __init__.py");
+                    await fsp.mkdir(path.dirname(target), { recursive: true });
+                    throwIfCanceled(signal);
+                    if (!isDir(target)) await fsp.rename(sourceDir, target);
+                    lock.installed = lock.installed || {};
+                    lock.installed[resource.id] = { version: index?.version || "", target: resource.target, size: resource.size || 0, installedAt: nowIso() };
+                    lock.updatedAt = nowIso();
+                    await saveLock();
+                    jobItem.status = "done";
+                    jobItem.bytes = resource.size || 0;
+                    return;
                 } catch (error) {
-                    if (movedBackup) await fsp.rename(backup, target).catch(() => {});
-                    throw error;
+                    lastError = error;
+                    throwIfCanceled(signal);
+                    logger?.warn?.(`内置节点复制失败 ${resource.id}: ${error.message}，尝试下载源`);
                 }
-                lock.installed = lock.installed || {};
-                lock.installed[resource.id] = { version: index?.version || "", target: resource.target, size: resource.size || 0, installedAt: nowIso() };
-                lock.updatedAt = nowIso();
-                await saveLock();
-                jobItem.status = "done";
-                jobItem.bytes = resource.size || jobItem.bytes;
-                await fsp.rm(installRoot, { recursive: true, force: true }).catch(() => {});
-                return;
-            } catch (error) {
-                lastError = error;
-                if (signal?.aborted) throw new Error("已取消");
-                logger?.warn?.(`节点安装失败 ${resource.id} ← ${jobItem.source}: ${error.message}`);
             }
+            for (const source of sources) {
+                try {
+                    if (source.kind === "bundled-dir") continue;
+                    await fsp.rm(archive, { force: true });
+                    jobItem.status = "downloading";
+                    jobItem.source = source.label || (source.url ? new URL(source.url).hostname : "内置");
+                    jobItem.bytes = 0;
+                    if (source.kind === "bundled" || source.path) {
+                        await copyBundledSource(source, archive, jobItem, signal);
+                    } else {
+                        await downloadSource(source.url, archive, jobItem, signal, (bytes) => {
+                            jobItem.bytes = bytes;
+                            updateJob(jobItem.job);
+                        });
+                    }
+                    jobItem.status = "verifying";
+                    await verifyNodeArchive(archive, resource, source, signal);
+                    jobItem.status = "extracting";
+                    updateJob(jobItem.job);
+                    await extractArchive(archive, extract);
+                    throwIfCanceled(signal);
+                    const sourceDir = await findNodeRoot(extract);
+                    if (!sourceDir) throw new Error("节点包里没有找到 __init__.py");
+                    await fsp.mkdir(path.dirname(target), { recursive: true });
+                    const backup = path.join(installRoot, "backup");
+                    let movedBackup = false;
+                    throwIfCanceled(signal);
+                    if (isDir(target)) {
+                        await fsp.rename(target, backup);
+                        movedBackup = true;
+                    }
+                    try {
+                        await fsp.rename(sourceDir, target);
+                    } catch (error) {
+                        if (movedBackup) await fsp.rename(backup, target).catch(() => {});
+                        throw error;
+                    }
+                    lock.installed = lock.installed || {};
+                    lock.installed[resource.id] = { version: index?.version || "", target: resource.target, size: resource.size || 0, installedAt: nowIso() };
+                    lock.updatedAt = nowIso();
+                    await saveLock();
+                    jobItem.status = "done";
+                    jobItem.bytes = resource.size || jobItem.bytes;
+                    return;
+                } catch (error) {
+                    lastError = error;
+                    throwIfCanceled(signal);
+                    logger?.warn?.(`节点安装失败 ${resource.id} ← ${jobItem.source}: ${error.message}`);
+                }
+            }
+            throw lastError || new Error("所有节点下载源均失败");
+        } finally {
+            await fsp.rm(installRoot, { recursive: true, force: true }).catch(() => {});
         }
-        await fsp.rm(installRoot, { recursive: true, force: true }).catch(() => {});
-        throw lastError || new Error("所有节点下载源均失败");
     }
 
     async function findConfigDir(directory, depth = 0) {
@@ -2011,7 +2161,7 @@ export function createResourceManager({ config, setup, registry, logger, workflo
             return;
         }
         const target = targetPath(resource, root);
-        const installRoot = path.join(root, ".canvas-install", `${resource.id}-${Date.now()}`);
+        const installRoot = newInstallRoot(root, resource.id);
         const archive = path.join(installRoot, "payload.zip");
         const extract = path.join(installRoot, "extract");
         await fsp.mkdir(installRoot, { recursive: true });
@@ -2048,11 +2198,13 @@ export function createResourceManager({ config, setup, registry, logger, workflo
                 jobItem.status = "extracting";
                 updateJob(jobItem.job);
                 await extractArchive(archive, extract);
+                throwIfCanceled(signal);
                 const sourceDir = await findConfigDir(extract);
                 if (!sourceDir) throw new Error("模型包里没有找到 config.json");
                 await fsp.mkdir(path.dirname(target), { recursive: true });
                 const backup = path.join(installRoot, "backup");
                 let movedBackup = false;
+                throwIfCanceled(signal);
                 if (isDir(target)) {
                     await fsp.rename(target, backup);
                     movedBackup = true;
@@ -2173,7 +2325,7 @@ export function createResourceManager({ config, setup, registry, logger, workflo
         const module = String(resource.module || resource.importName || "").trim();
         if (!module) throw new Error("运行库资源缺少 module 字段");
         const distribution = String(resource.pipName || module).trim();
-        const imported = pipImportStatus(python, module, { fresh: true, distribution });
+        const imported = pipImportStatus(python, module, { fresh: true, distribution, deep: true });
         if (imported.present) {
             jobItem.status = "skipped";
             jobItem.skipped = true;
@@ -2269,7 +2421,7 @@ export function createResourceManager({ config, setup, registry, logger, workflo
             throw error;
         }
         pipCheckCache.delete(`${python}|${module}`.toLowerCase());
-        const recheck = pipImportStatus(python, module, { fresh: true, distribution });
+        const recheck = pipImportStatus(python, module, { fresh: true, distribution, deep: true });
         if (!recheck.present) {
             const error = new Error(`运行库安装后仍无法导入 ${module}：${recheck.reason || "未知原因"}`);
             await revertPipInstall(python, module, distribution, backupDir);
@@ -2366,6 +2518,7 @@ export function createResourceManager({ config, setup, registry, logger, workflo
                     resolve();
                 });
             });
+            throwIfCanceled(signal);
             await fsp.rename(bakeOutput, target);
         } catch (error) {
             await fsp.rm(bakeOutput, { force: true }).catch(() => {});
@@ -2505,7 +2658,7 @@ export function createResourceManager({ config, setup, registry, logger, workflo
         updateJob(job);
         try {
             runtimeStatusCache.clear();
-            await setup?.scan?.();
+            await setup?.scan?.("resources-install");
         } catch (error) {
             logger?.warn?.(`资源安装后重新扫描失败：${error.message}`);
         }
@@ -2515,9 +2668,10 @@ export function createResourceManager({ config, setup, registry, logger, workflo
 
     function install({ ids = [], packs = [] } = {}) {
         if (!index) throw new Error("资源索引尚未加载");
-        // 双标签/双击同时安装会互相覆盖 .part 和锁文件，这里只允许一个安装任务。
-        if (activeJob && activeJob.status === "running") {
-            throw new Error(`已有安装任务在进行中（${activeJob.items.filter((item) => item.status !== "done").length} 项未完成），请等待完成或先终止`);
+        // 取消仅表示不再开始新项；activeJob 必须保留到异步下载/解压/清理收尾完成。
+        if (activeJob) {
+            const finishing = activeJob.status === "canceled" ? "，上一任务正在取消并清理临时文件" : "";
+            throw new Error(`已有安装任务在进行中（${activeJob.items.filter((item) => item.status !== "done").length} 项未完成）${finishing}，请稍候`);
         }
         const selected = selectResources({ ids, packs });
         const root = comfyRoot();
@@ -2525,6 +2679,10 @@ export function createResourceManager({ config, setup, registry, logger, workflo
         for (const resource of selected) {
             const statusItem = resourceStatus(resource, root);
             if (statusItem.status === "present") continue;
+            // 索引可能来自旧远端或旧缓存：下载禁令按资源 ID 判定，不能依赖 downloadable 字段。
+            if (isRetiredResourceId(resource.id) || resource.downloadable === false) {
+                throw new Error(`${resource.label || resource.id} 已停止提供新下载；已有文件可继续使用。`);
+            }
             if (resource.type === "bake" && statusItem.status === "blocked") {
                 // Dependencies are added by selectResources; keep the bake queued.
             }
@@ -2597,7 +2755,7 @@ export function createResourceManager({ config, setup, registry, logger, workflo
         await loadIndex({ forceRemote: true });
         try {
             runtimeStatusCache.clear();
-            await setup?.scan?.();
+            await setup?.scan?.("resources-refresh");
         } catch (error) {
             logger?.warn?.(`资源刷新扫描失败：${error.message}`);
         }

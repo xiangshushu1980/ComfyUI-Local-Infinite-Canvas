@@ -92,6 +92,24 @@ export type AiConfig = {
     params?: Record<string, unknown>;
 };
 
+export type LocalGatewaySyncPhase = "idle" | "syncing" | "ready" | "scanning" | "degraded" | "offline";
+
+/** 本地网关同步状态：只在内存里供界面读取，不写进持久化 config / secrets。 */
+export type LocalGatewaySyncStatus = {
+    phase: LocalGatewaySyncPhase;
+    scanning: boolean;
+    stale: boolean;
+    revision?: number;
+    instanceId?: string;
+    scanId?: string;
+    updatedAt?: string;
+    reason?: string;
+    comfyReachable?: boolean;
+    count?: number;
+    error?: string;
+    legacy?: boolean;
+};
+
 export type WebdavSyncConfig = {
     url: string;
     username: string;
@@ -203,13 +221,17 @@ export const defaultWebdavSyncConfig: WebdavSyncConfig = {
     lastSyncedAt: "",
 };
 
+export const defaultLocalGatewaySyncStatus: LocalGatewaySyncStatus = { phase: "idle", scanning: false, stale: false };
+
 type ConfigStore = {
     config: AiConfig;
     webdav: WebdavSyncConfig;
+    localGatewaySync: LocalGatewaySyncStatus;
     isConfigOpen: boolean;
     configTab: ConfigTabKey;
     shouldPromptContinue: boolean;
     updateConfig: <K extends keyof AiConfig>(key: K, value: AiConfig[K]) => void;
+    setLocalGatewaySync: (patch: Partial<LocalGatewaySyncStatus>) => void;
     addPromptCloudApi: (input: Omit<PromptCloudApi, "id">) => string;
     updatePromptCloudApi: (id: string, patch: Partial<Omit<PromptCloudApi, "id">>) => void;
     removePromptCloudApi: (id: string) => void;
@@ -413,6 +435,7 @@ export const useConfigStore = create<ConfigStore>()(
         (set, get) => ({
             config: defaultConfig,
             webdav: defaultWebdavSyncConfig,
+            localGatewaySync: defaultLocalGatewaySyncStatus,
             isConfigOpen: false,
             configTab: "channels",
             shouldPromptContinue: false,
@@ -422,6 +445,10 @@ export const useConfigStore = create<ConfigStore>()(
                         ...state.config,
                         [key]: value,
                     },
+                })),
+            setLocalGatewaySync: (patch) =>
+                set((state) => ({
+                    localGatewaySync: { ...state.localGatewaySync, ...patch },
                 })),
             addPromptCloudApi: (input) => {
                 const api: PromptCloudApi = {
@@ -680,6 +707,61 @@ export function modelOptionLabel(config: AiConfig, value: string) {
 
 export function modelOptionsFromChannels(channels: ModelChannel[]) {
     return uniqueModelOptions(channels.flatMap((channel) => channel.models.map((model) => encodeChannelModel(channel.id, model.name))));
+}
+
+function channelModelSignature(models: ChannelModel[]) {
+    return JSON.stringify(
+        models.map((model) => [model.name, model.capability, model.label || "", model.workflowId || "", model.baseModel || "", model.baseModelLabel || "", model.imageInputs ?? -1, model.variantModes || [], model.variantLabels || {}]),
+    );
+}
+
+/**
+ * 把网关同步结果合并进本地渠道。只有 clear=true 时才清空模型和默认选择；
+ * 扫描中/降级/未知状态下的空结果由调用方决定保留，不会走到这里。
+ * 保留渠道已有的 apiKey（为空时补 local）并跟到运行时 baseUrl。
+ */
+export function applyLocalGatewayModels(
+    config: AiConfig,
+    input: { channelId: string; baseUrl?: string; models?: ChannelModel[]; clear?: boolean },
+): { config: AiConfig; changed: boolean } {
+    const channel = config.channels.find((item) => item.id === input.channelId);
+    if (!channel) return { config, changed: false };
+    const baseUrl = input.baseUrl || LOCAL_GATEWAY_BASE_URL;
+    const incoming = input.clear ? [] : normalizeChannelModels(input.models);
+    // 用户手动改过的能力类型优先，避免同步把视频模型标成图片模型。
+    const nextModels = incoming.map((model) => {
+        const previous = channel.models.find((item) => item.name === model.name);
+        return previous ? { ...model, capability: previous.capability } : model;
+    });
+    const nextApiKey = channel.apiKey || "local";
+    const unchanged = channel.baseUrl === baseUrl && channel.apiKey === nextApiKey && channelModelSignature(channel.models) === channelModelSignature(nextModels);
+    if (unchanged) return { config, changed: false };
+
+    const channels = config.channels.map((item) => (item.id === channel.id ? { ...item, apiKey: nextApiKey, baseUrl, models: nextModels } : item));
+    const imageOptions = channels.flatMap((item) => item.models.filter((model) => model.capability === "image").map((model) => encodeChannelModel(item.id, model.name)));
+    const videoOptions = channels.flatMap((item) => item.models.filter((model) => model.capability === "video").map((model) => encodeChannelModel(item.id, model.name)));
+    const pick = (current: string, options: string[]) => (options.includes(current) ? current : options[0] || "");
+    const pickImage = (current: string) => {
+        if (imageOptions.includes(current)) return current;
+        if (String(current).endsWith("::image-krea2-aesthetics")) {
+            const turbo = imageOptions.find((option) => option.endsWith("::image-krea2-turbo"));
+            if (turbo) return turbo;
+        }
+        return pick(current, imageOptions);
+    };
+    return {
+        changed: true,
+        config: {
+            ...config,
+            channels,
+            models: modelOptionsFromChannels(channels),
+            imageModel: input.clear ? "" : pickImage(config.imageModel),
+            videoModel: input.clear ? "" : pick(config.videoModel, videoOptions),
+            model: input.clear ? "" : pickImage(config.model),
+            baseUrl,
+            apiKey: nextApiKey,
+        },
+    };
 }
 
 export function normalizeModelOptionValue(value: string | undefined, channels: ModelChannel[]) {

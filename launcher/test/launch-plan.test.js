@@ -7,7 +7,7 @@ import os from "node:os";
 import path from "node:path";
 import test from "node:test";
 
-import { browseHostFor, comfyInstallInfo, comfyPortCandidates, ensureAssistantRuntime, isLoopbackHost, listenCanvasServer, normalizeHost, probeAnyComfy, requestGatewayShutdown, resolveLaunchPlan } from "../start.mjs";
+import { browseHostFor, comfyInstallInfo, comfyPortCandidates, createCanvasServer, ensureAssistantRuntime, isLoopbackHost, listenCanvasServer, normalizeHost, probeAnyComfy, requestGatewayShutdown, resolveLaunchPlan, runtimeGatewayForRequest } from "../start.mjs";
 
 async function fake(files) {
   const root = await fsp.mkdtemp(path.join(os.tmpdir(), "launch-plan-"));
@@ -78,7 +78,7 @@ test("dynamic probing finds ComfyUI on a non-standard port", async () => {
   const http = await import("node:http");
   const server = http.createServer((req, res) => {
     res.setHeader("content-type", "application/json");
-    res.end(JSON.stringify({ system: { os: "nt" }, devices: [] }));
+    res.end(JSON.stringify({ system: { os: "nt", ram_total: 2048, ram_free: 1024 }, devices: [{ name: "Stub GPU", type: "cuda", vram_total: 1024, vram_free: 512 }] }));
   });
   await new Promise((resolve) => server.listen(18123, "127.0.0.1", resolve));
   try {
@@ -174,6 +174,7 @@ test("assistant runtime zip extracts once and is skipped when ready", async () =
   }
   const assistantDir = path.join(root, "assistant");
   await fsp.mkdir(assistantDir, { recursive: true });
+  await fsp.writeFile(path.join(assistantDir, "server.mjs"), "newer-source", "utf8");
   const archive = path.join(assistantDir, "runtime.zip");
   const tar = process.env.SystemRoot ? path.join(process.env.SystemRoot, "System32", "tar.exe") : "tar";
   execFileSync(tar, ["-a", "-c", "-f", archive, "-C", payload, "."], { timeout: 120000, windowsHide: true });
@@ -182,12 +183,90 @@ test("assistant runtime zip extracts once and is skipped when ready", async () =
     assert.equal(first.ok, true);
     assert.equal(first.extracted, true);
     assert.ok(fs.existsSync(path.join(assistantDir, "server.mjs")));
+    assert.equal(fs.readFileSync(path.join(assistantDir, "server.mjs"), "utf8"), "newer-source");
     assert.ok(fs.existsSync(path.join(assistantDir, "workspace", "infinite-canvas", "web", "node_modules")));
     const second = ensureAssistantRuntime(root, { logger: () => {} });
     assert.equal(second.ok, true);
     assert.equal(second.extracted, false);
     assert.equal(second.reason, "already-ready");
+    await fsp.rm(path.join(assistantDir, "runtime.json"), { force: true });
+    const markerMissing = ensureAssistantRuntime(root, { logger: () => {} });
+    assert.equal(markerMissing.ok, true);
+    assert.equal(markerMissing.extracted, false);
+    assert.equal(markerMissing.reason, "already-ready");
+    assert.equal(fs.readFileSync(path.join(assistantDir, "server.mjs"), "utf8"), "newer-source");
   } finally {
     await fsp.rm(root, { recursive: true, force: true });
+  }
+});
+
+test("runtime gateway config keeps loopback for local pages", () => {
+  const cfg = {
+    gatewayUrl: "http://127.0.0.1:8190",
+    gatewayPublicUrl: "http://192.168.1.50:8190",
+    gatewayHost: "0.0.0.0",
+    gatewayPort: 8190,
+    allowLan: true,
+  };
+  assert.deepEqual(runtimeGatewayForRequest(cfg, "127.0.0.1:3000"), { host: "127.0.0.1", url: "http://127.0.0.1:8190/v1" });
+  assert.deepEqual(runtimeGatewayForRequest(cfg, "localhost:3000"), { host: "127.0.0.1", url: "http://127.0.0.1:8190/v1" });
+});
+
+test("runtime gateway config uses the request host for LAN pages", () => {
+  const cfg = {
+    gatewayUrl: "http://127.0.0.1:8190",
+    gatewayPublicUrl: "http://127.0.0.1:8190",
+    gatewayHost: "0.0.0.0",
+    gatewayPort: 8190,
+    allowLan: true,
+  };
+  assert.deepEqual(runtimeGatewayForRequest(cfg, "192.168.1.20:3000"), { host: "192.168.1.20", url: "http://192.168.1.20:8190/v1" });
+  assert.deepEqual(runtimeGatewayForRequest(cfg, "[fd00::20]:3000"), { host: "[fd00::20]", url: "http://[fd00::20]:8190/v1" });
+});
+
+test("runtime gateway config prefers an explicit public URL and ignores LAN when disabled", () => {
+  const publicCfg = {
+    gatewayUrl: "http://127.0.0.1:8190",
+    gatewayPublicUrl: "http://gateway.example.test:8190",
+    gatewayHost: "0.0.0.0",
+    gatewayPort: 8190,
+    allowLan: true,
+  };
+  assert.deepEqual(runtimeGatewayForRequest(publicCfg, "192.168.1.20:3000"), { host: "gateway.example.test", url: "http://gateway.example.test:8190/v1" });
+  const localOnly = { ...publicCfg, allowLan: false, gatewayHost: "127.0.0.1", gatewayPublicUrl: "http://127.0.0.1:8190" };
+  assert.deepEqual(runtimeGatewayForRequest(localOnly, "192.168.1.20:3000"), { host: "127.0.0.1", url: "http://127.0.0.1:8190/v1" });
+});
+
+test("canvas server serves per-request config.js without caching", async () => {
+  const dist = await fsp.mkdtemp(path.join(os.tmpdir(), "canvas-config-"));
+  await fsp.writeFile(path.join(dist, "index.html"), "ok");
+  const cfg = {
+    canvasDist: dist,
+    gatewayUrl: "http://127.0.0.1:8190",
+    gatewayPublicUrl: "http://127.0.0.1:8190",
+    gatewayHost: "0.0.0.0",
+    gatewayPort: 8190,
+    allowLan: true,
+  };
+  const server = createCanvasServer(cfg);
+  await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
+  const port = server.address().port;
+  const fetchConfig = (host) =>
+    new Promise((resolve, reject) => {
+      http.get({ host: "127.0.0.1", port, path: "/config.js", headers: { host } }, (res) => {
+        let body = "";
+        res.on("data", (chunk) => { body += chunk; });
+        res.on("end", () => resolve({ res, body }));
+      }).on("error", reject);
+    });
+  try {
+    const local = await fetchConfig("127.0.0.1:3000");
+    assert.match(local.body, /http:\/\/127\.0\.0\.1:8190\/v1/);
+    assert.equal(local.res.headers["cache-control"], "no-store");
+    const remote = await fetchConfig("192.168.1.20:3000");
+    assert.match(remote.body, /http:\/\/192\.168\.1\.20:8190\/v1/);
+  } finally {
+    await new Promise((resolve) => server.close(resolve));
+    await fsp.rm(dist, { recursive: true, force: true });
   }
 });

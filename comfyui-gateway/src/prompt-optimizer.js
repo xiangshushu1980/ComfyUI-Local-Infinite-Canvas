@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { applyModelAliases } from "./runner.js";
 import { ensureSpeakerTags } from "./speaker-tags.js";
 import { deepClone, sleep, truncate } from "./util.js";
 
@@ -356,7 +357,15 @@ async function cloudOptimizeImage({ prompt, mode, language, imageCount = 0, clou
   return { prompt: result, mode, provider: "cloud", model, elapsedMs };
 }
 
-export function createPromptOptimizer({ config, comfy, logger }) {
+export function createPromptOptimizer({ config, comfy, logger, modelAliasFor = null, loaderSpecs = undefined }) {
+  // 反推/优化提交的是打包模板，模型名写死在模板里；必须和出图路径一样套别名。
+  // loaderSpecs 允许传 getter：网关启动扫描可能还没完成，不能拿旧快照。
+  function withAliases(workflow) {
+    const specs = typeof loaderSpecs === "function" ? loaderSpecs() : loaderSpecs;
+    const aliased = applyModelAliases(workflow, modelAliasFor, specs);
+    if (aliased !== workflow) logger?.info?.("提示词优化/反推模板已应用模型别名");
+    return aliased;
+  }
   const workflowPath = path.join(config.rootDir, "prompts", "h3-prompt-enhance.json");
   const imageWorkflowPath = path.join(config.rootDir, "prompts", "image-prompt-enhance.json");
   const captionWorkflowPath = path.join(config.rootDir, "prompts", "image-caption.json");
@@ -424,7 +433,7 @@ export function createPromptOptimizer({ config, comfy, logger }) {
     workflow["3"].inputs["系统提示词"] = `${baseSystemPrompt}${baseSystemPrompt ? "\n" : ""}${h3LanguageDirective(outputLanguage)}\n只输出最终提示词正文；禁止输出思考过程、分析、推理、解释、Markdown 代码块、前后缀或自我说明。`;
 
     const started = Date.now();
-    const submitted = await comfy.submit(workflow, { signal });
+    const submitted = await comfy.submit(withAliases(workflow), { signal });
     const promptId = submitted.promptId;
     let running = true;
     let cancelPromise = null;
@@ -507,11 +516,13 @@ export function createPromptOptimizer({ config, comfy, logger }) {
     }
 
     const workflow = imageWorkflowTemplate();
-    workflow["1"].inputs["输入提示词"] = text;
-    workflow["1"].inputs["任务模式"] = taskMode;
-    workflow["1"].inputs["输出语言"] = language === "en" ? "英文" : "中文";
-    workflow["1"].inputs["增强方式"] = "本地官方PE";
-    workflow["1"].inputs["生成后自动卸载模型"] = true;
+    const isEdit = taskMode === "图生图";
+    workflow["1"].inputs.clip_name = isEdit
+      ? "qwen3.5_9b_qwen_image_2.1_pe_i2i.int8_convrot.safetensors"
+      : "qwen3.5_9b_qwen_image_2.1_pe_t2i.int8_convrot.safetensors";
+    workflow["2"].inputs.prompt = text;
+    workflow["3"].inputs.prompt = text;
+    workflow["4"].inputs.source = [isEdit ? "3" : "2", 0];
     images.forEach((uploaded, index) => {
       const nodeId = String(9101 + index);
       workflow[nodeId] = {
@@ -519,11 +530,11 @@ export function createPromptOptimizer({ config, comfy, logger }) {
         inputs: { image: imageValue(uploaded) },
         _meta: { title: `Image Ref ${index + 1}` },
       };
-      workflow["1"].inputs[index === 0 ? "图片" : `图片${index + 1}`] = [nodeId, 0];
+      workflow["3"].inputs[`image_${index + 1}`] = [nodeId, 0];
     });
 
     const started = Date.now();
-    const submitted = await comfy.submit(workflow, { signal });
+    const submitted = await comfy.submit(withAliases(workflow), { signal });
     const promptId = submitted.promptId;
     let running = true;
     let cancelPromise = null;
@@ -604,7 +615,7 @@ export function createPromptOptimizer({ config, comfy, logger }) {
     }
 
     const started = Date.now();
-    const submitted = await comfy.submit(workflow, { signal });
+    const submitted = await comfy.submit(withAliases(workflow), { signal });
     const promptId = submitted.promptId;
     let running = true;
     let cancelPromise = null;

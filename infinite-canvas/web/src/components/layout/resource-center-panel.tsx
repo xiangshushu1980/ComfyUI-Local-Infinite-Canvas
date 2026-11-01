@@ -37,6 +37,7 @@ const copyByLocale = {
         runtimeNoMatchTitle: "没有匹配的预编译运行库",
         runtimeNoMatchBody: "当前 ComfyUI 环境不在预编译包覆盖范围内，画布不会自动安装，也不会猜版本。请按下面命令手动安装；其他资源继续下载。",
         runtimeBroken: "检测到已安装但无法导入；画布不会自动覆盖，请手动修复或交给 AI Agent。",
+        runtimeChecking: "运行库状态检测中或检测超时；可稍后点“重新扫描”，暂时不会因此判定工作流不可用。",
         runtimeRestartWarning: "自动安装完成后会重启 ComfyUI；正在运行的任务会中断，网关自己的下载不受影响。",
         runtimeAutoInstall: "画布自动安装",
         runtimeManualInstall: "自己手动安装",
@@ -52,6 +53,7 @@ const copyByLocale = {
         comfyRoot: "ComfyUI",
         indexVersion: "资源索引",
         present: "已具备",
+        checking: "检测中",
         missing: "缺少",
         recommended: "推荐",
         optional: "可选",
@@ -168,6 +170,7 @@ const copyByLocale = {
         runtimeNoMatchTitle: "No matching prebuilt runtime",
         runtimeNoMatchBody: "This ComfyUI environment is outside the prebuilt wheel matrix. The app will not install automatically or guess a version. Install manually with the command below; other downloads continue.",
         runtimeBroken: "Installed but not importable. The app will not overwrite it automatically. Repair it manually or hand it to your AI agent.",
+        runtimeChecking: "Runtime check is in progress or timed out. Rescan later; workflows are not marked unavailable because of this.",
         runtimeRestartWarning: "Automatic installation restarts ComfyUI afterwards; running tasks are interrupted. Gateway downloads are not affected.",
         runtimeAutoInstall: "Install automatically",
         runtimeManualInstall: "I'll install manually",
@@ -183,6 +186,7 @@ const copyByLocale = {
         comfyRoot: "ComfyUI",
         indexVersion: "Index",
         present: "Ready",
+        checking: "Checking",
         missing: "Missing",
         recommended: "Recommended",
         optional: "Optional",
@@ -319,6 +323,7 @@ function PipMissingHint({ item, copy }: { item: ResourceItem; copy: Copy }) {
 
 function statusTag(item: ResourceItem, copy: Copy) {
     if (item.overridden) return <Tag color="blue">{copy.mainModelSelected}</Tag>;
+    if (item.type === "pip" && item.pipChecking) return <Tag color="default">{copy.checking}</Tag>;
     if (item.status === "present") return <Tag color="green">{copy.present}</Tag>;
     if (item.status === "blocked") return <Tag color="gold">{copy.blocked}</Tag>;
     return <Tag color="orange">{copy.missing}</Tag>;
@@ -326,8 +331,9 @@ function statusTag(item: ResourceItem, copy: Copy) {
 
 function packState(pack: ResourcePack, copy: Copy) {
     if (pack.planned) return <Tag>{copy.planned}</Tag>;
-    if (!pack.missing) return <Tag color="green">{copy.ready}</Tag>;
-    return <Tag color="orange">{copy.missing} {pack.missing}</Tag>;
+    const missing = pack.standalone ? pack.optionalMissing : pack.missing;
+    if (!missing) return <Tag color="green">{copy.ready}</Tag>;
+    return <Tag color="orange">{copy.missing} {missing}</Tag>;
 }
 
 function formatSpeed(bytesPerSecond: number) {
@@ -408,6 +414,7 @@ function ResourceCard({
                     {item.type === "pip" && item.restartAfterInstall && item.status === "present" ? <div className="mt-0.5 text-[10px] leading-4 text-stone-500 dark:text-stone-400">{copy.pipRestart}</div> : null}
                     {item.type === "pip" && item.pipOutdated && item.status === "present" ? <div className="mt-0.5 text-[10px] leading-4 text-amber-600 dark:text-amber-400">{copy.pipOutdated.replace("{version}", item.pipVersion || "?")}</div> : null}
                     {item.type === "pip" && item.pipBroken ? <div className="mt-0.5 text-[10px] leading-4 text-amber-600 dark:text-amber-400">{copy.runtimeBroken}</div> : null}
+                    {item.type === "pip" && item.pipChecking ? <div className="mt-0.5 text-[10px] leading-4 text-stone-500 dark:text-stone-400">{copy.runtimeChecking}</div> : null}
                     {!compact && item.note ? <div className="mt-0.5 text-[10px] leading-4 text-stone-400 dark:text-stone-500">{copy.note}: {item.note}</div> : null}
                     {canReplace ? (
                         <div className="mt-1 flex flex-wrap items-center justify-end gap-1">
@@ -466,6 +473,7 @@ function WorkflowResourceRow({
                 {item.type === "pip" && item.restartAfterInstall && item.status === "present" ? <div className="mt-0.5 text-[10px] leading-4 text-stone-500 dark:text-stone-400">{copy.pipRestart}</div> : null}
                 {item.type === "pip" && item.pipOutdated && item.status === "present" ? <div className="mt-0.5 text-[10px] leading-4 text-amber-600 dark:text-amber-400">{copy.pipOutdated.replace("{version}", item.pipVersion || "?")}</div> : null}
                 {item.type === "pip" && item.pipBroken ? <div className="mt-0.5 text-[10px] leading-4 text-amber-600 dark:text-amber-400">{copy.runtimeBroken}</div> : null}
+                {item.type === "pip" && item.pipChecking ? <div className="mt-0.5 text-[10px] leading-4 text-stone-500 dark:text-stone-400">{copy.runtimeChecking}</div> : null}
                 {item.type === "bake" && requires.length ? (
                     <div className="mt-0.5 text-[10px] text-amber-600 dark:text-amber-400">{copy.bakeRequires}: {requires.map((entry) => entry.label).join(" + ")}</div>
                 ) : null}
@@ -1020,6 +1028,9 @@ export function ResourceCenterPanel({ compact = false, footer }: { compact?: boo
                         ...pack.requiredItems.filter((item) => item.status !== "present").map((item) => item.id),
                         ...selectedOptionalInPack.map((item) => item.id),
                     ];
+                    const standaloneInstallIds = pack.standalone
+                        ? [...new Set(workflowDependencies.flatMap((workflow) => workflow.installIds))]
+                        : [];
                     const expandable = pack.total > 0 || pack.optionalTotal > 0 || workflowDependencies.length > 0;
                     const optionalLabel = pack.optionalLabel?.trim() || copy.optionalSection;
                     const mainModel = pack.mainModel;
@@ -1075,7 +1086,11 @@ export function ResourceCenterPanel({ compact = false, footer }: { compact?: boo
                                 {packState(pack, copy)}
                                 {workflowDependencies.length ? <Tag>{copy.workflowSection} {workflowDependencies.length}</Tag> : null}
                                 {extraOptionalItems.length ? <Tag>{optionalLabel} {extraOptionalItems.length}</Tag> : null}
-                                {pack.missingSize ? <span className="text-[11px] text-stone-500 dark:text-stone-400">{copy.size} {formatBytes(pack.missingSize)}</span> : null}
+                                {pack.standalone ? (
+                                    pack.optionalSize ? <span className="text-[11px] text-stone-500 dark:text-stone-400">{copy.size} {formatBytes(pack.optionalSize)}</span> : null
+                                ) : pack.missingSize ? (
+                                    <span className="text-[11px] text-stone-500 dark:text-stone-400">{copy.size} {formatBytes(pack.missingSize)}</span>
+                                ) : null}
                             </div>
                         </>
                     );
@@ -1100,6 +1115,11 @@ export function ResourceCenterPanel({ compact = false, footer }: { compact?: boo
                                 ) : (
                                     <div className="min-w-0 flex-1">{headerBody}</div>
                                 )}
+                                {standaloneInstallIds.length ? (
+                                    <Button size="small" type="primary" icon={<Download className="size-3.5" />} onClick={() => void startInstall({ ids: standaloneInstallIds })} disabled={Boolean(job && job.status === "running")}>
+                                        {copy.installPack}
+                                    </Button>
+                                ) : null}
                                 {expandable ? (
                                     <button type="button" className="mt-0.5 rounded-md p-1 text-stone-400 transition-colors hover:bg-stone-100 hover:text-stone-600 dark:text-stone-500 dark:hover:bg-white/5 dark:hover:text-stone-300" onClick={() => toggleExpanded(pack.id)} aria-label={expanded ? copy.collapse : copy.expand}>
                                         <ChevronDown className={`size-4 transition-transform ${expanded ? "rotate-180" : ""}`} />

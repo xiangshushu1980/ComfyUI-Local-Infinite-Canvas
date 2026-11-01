@@ -68,6 +68,34 @@ function isLoopbackHost(host) {
   return value === "localhost" || value === "::1" || value === "0:0:0:0:0:0:0:1" || /^127\./.test(value);
 }
 
+function isLoopbackPeer(address) {
+  return isLoopbackHost(String(address || "").replace(/^::ffff:/i, ""));
+}
+
+// 控制口只允许本机进程或明确的回环网页来源；无 Origin 的旧式本机内部调用保持兼容。
+export function isTrustedControlRequest(req) {
+  if (!isLoopbackPeer(req?.socket?.remoteAddress)) return false;
+  const headers = req?.headers || {};
+  const site = String(headers["sec-fetch-site"] || "").trim().toLowerCase();
+  if (site && !["same-origin", "same-site", "none"].includes(site)) return false;
+  const host = String(headers.host || "").trim();
+  if (host) {
+    try {
+      if (!isLoopbackHost(new URL(`http://${host}`).hostname)) return false;
+    } catch {
+      return false;
+    }
+  }
+  const origin = String(headers.origin || "").trim();
+  if (!origin) return true;
+  try {
+    const parsed = new URL(origin);
+    return ["http:", "https:"].includes(parsed.protocol) && isLoopbackHost(parsed.hostname);
+  } catch {
+    return false;
+  }
+}
+
 function browseHostFor(bindHost) {
   const host = normalizeHost(bindHost);
   return host === "0.0.0.0" || host === "::" || isLoopbackHost(host) ? "127.0.0.1" : host;
@@ -252,9 +280,26 @@ function comfyPortCandidates(cfg) {
   return ports;
 }
 
-async function probeComfy(url, timeoutMs = 900) {
+export function isComfySystemStats(value) {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return false;
+  const system = value.system;
+  if (!system || typeof system !== "object" || Array.isArray(system)) return false;
+  const ramTotal = Number(system.ram_total);
+  const ramFree = Number(system.ram_free);
+  if (!Number.isFinite(ramTotal) || ramTotal <= 0 || !Number.isFinite(ramFree) || ramFree < 0) return false;
+  if (!Array.isArray(value.devices) || !value.devices.length) return false;
+  return value.devices.every((device) => {
+    if (!device || typeof device !== "object" || Array.isArray(device)) return false;
+    return typeof device.name === "string" && device.name.trim() &&
+      typeof device.type === "string" && device.type.trim() &&
+      Number.isFinite(Number(device.vram_total)) && Number(device.vram_total) >= 0 &&
+      Number.isFinite(Number(device.vram_free)) && Number(device.vram_free) >= 0;
+  });
+}
+
+export async function probeComfy(url, timeoutMs = 900) {
   const res = await httpGet(`${url.replace(/\/+$/, "")}/system_stats`, timeoutMs);
-  return res.ok;
+  return res.ok && isComfySystemStats(res.json);
 }
 
 // 并行探测一组端口，避免逐个 2s 超时把启动拖成十几秒。
@@ -614,8 +659,27 @@ export function ensureAssistantRuntime(root = ROOT, { logger = log } = {}) {
   if (assistantRuntimeReady(assistantDir) && marker && marker.size === stat.size && marker.mtimeMs === stat.mtimeMs) {
     return { ok: true, extracted: false, reason: "already-ready" };
   }
+  if (assistantRuntimeReady(assistantDir)) {
+    // 运行时已经完整；仅缺标记时不能重新解压，否则旧 runtime.zip 会覆盖较新的源码。
+    try {
+      fs.writeFileSync(markerFile, `${JSON.stringify({ size: stat.size, mtimeMs: stat.mtimeMs, extractedAt: new Date().toISOString() }, null, 2)}\n`, "utf8");
+    } catch {
+      // 标记失败时下次仍走就绪检查，不影响本次使用。
+    }
+    return { ok: true, extracted: false, reason: "already-ready" };
+  }
   const sizeMb = Math.round(stat.size / 1024 / 1024);
   logger(`正在解压画布修复助手运行时（${sizeMb} MB，仅首次或整包更新后执行）…`);
+  const preservedSources = new Map();
+  for (const name of ["server.mjs", "repair-tools.mjs", "diagnostics.mjs", "skill.mjs", "package.json"]) {
+    const file = path.join(assistantDir, name);
+    if (!isFile(file)) continue;
+    try {
+      preservedSources.set(name, fs.readFileSync(file));
+    } catch {
+      // 读不到就交给解压结果，后续就绪检查会处理。
+    }
+  }
   const tar = process.env.SystemRoot ? path.join(process.env.SystemRoot, "System32", "tar.exe") : "tar";
   let result = spawnSync(tar, ["-xf", archive, "-C", assistantDir], { timeout: 600000, windowsHide: true });
   if (result.status !== 0) {
@@ -630,6 +694,13 @@ export function ensureAssistantRuntime(root = ROOT, { logger = log } = {}) {
     const error = "解压 Agent 运行时失败；画布其他功能不受影响，助手卡会提示需要完整包。";
     logger(error, "WARN");
     return { ok: false, extracted: false, error };
+  }
+  for (const [name, content] of preservedSources) {
+    try {
+      fs.writeFileSync(path.join(assistantDir, name), content);
+    } catch {
+      // 保留源码失败属于严重异常，交由下方就绪检查和运维日志暴露。
+    }
   }
   if (!assistantRuntimeReady(assistantDir)) {
     const error = "Agent 运行时包解压后仍缺少文件；助手卡会提示需要完整包。";
@@ -910,6 +981,39 @@ async function startLegacyGatewayProxy(cfg, gatewayUrl) {
   return server;
 }
 
+function hostForUrl(hostname) {
+  const host = String(hostname || "").trim();
+  if (!host) return "";
+  return host.includes(":") && !host.startsWith("[") ? `[${host}]` : host;
+}
+
+// 同一份 config.js 会发给本机和远程浏览器：本机继续走回环，远程按请求 Host
+// 推导可达网关，避免把 127.0.0.1 发给另一台设备。
+export function runtimeGatewayForRequest(cfg, hostHeader = "") {
+  let pageHost = "";
+  try {
+    pageHost = new URL(`http://${hostHeader || "127.0.0.1"}`).hostname || "";
+  } catch {
+    pageHost = "";
+  }
+  if (!pageHost || isLoopbackHost(pageHost)) {
+    return { host: "127.0.0.1", url: `${new URL(cfg.gatewayUrl).origin}/v1` };
+  }
+  if (cfg.gatewayPublicUrl && cfg.gatewayPublicUrl !== cfg.gatewayUrl) {
+    try {
+      const publicUrl = new URL(cfg.gatewayPublicUrl);
+      return { host: publicUrl.hostname, url: `${publicUrl.origin}/v1` };
+    } catch {
+      /* 配置不合法时回退到请求 Host */
+    }
+  }
+  if (cfg.allowLan && !isLoopbackHost(cfg.gatewayHost || "127.0.0.1")) {
+    const host = pageHost;
+    return { host, url: `http://${hostForUrl(host)}:${cfg.gatewayPort}/v1` };
+  }
+  return { host: "127.0.0.1", url: `${new URL(cfg.gatewayUrl).origin}/v1` };
+}
+
 function createCanvasServer(cfg) {
   const distDir = path.resolve(cfg.canvasDist);
   const indexPath = path.join(distDir, "index.html");
@@ -932,17 +1036,13 @@ function createCanvasServer(cfg) {
       }
 
       // 运行时配置由服务端直接生成：npm run build 清空 dist 后也不会丢网关地址。
+      // 回环请求始终返回回环地址；远程请求才使用 public 地址，避免本机访问被公网域名拖死。
       if (pathname === "/config.js") {
-        let origin = cfg.gatewayUrl;
-        try {
-          origin = new URL(cfg.gatewayUrl).origin;
-        } catch {
-          /* 保持原样 */
-        }
+        const gateway = runtimeGatewayForRequest(cfg, req.headers.host);
         const runtime = {
-          LOCAL_GATEWAY_HOST: "127.0.0.1",
+          LOCAL_GATEWAY_HOST: gateway.host,
           LOCAL_GATEWAY_PORT: String(cfg.gatewayPort),
-          LOCAL_GATEWAY_URL: `${origin}/v1`,
+          LOCAL_GATEWAY_URL: gateway.url,
         };
         res.writeHead(200, { "content-type": "text/javascript; charset=utf-8", "cache-control": "no-store" });
         res.end(`window.__RUNTIME_CONFIG__ = ${JSON.stringify(runtime)};\n`);
@@ -1060,6 +1160,26 @@ function listenerPids(port) {
   return [...pids];
 }
 
+export async function comfyListenerPidsForKill(targetUrl, { probe = probeComfy, listeners = listenerPids } = {}) {
+  const port = portFromUrl(targetUrl);
+  const before = listeners(port);
+  if (!before.length) return [];
+  // 端口探测成功后立即复核，并确认监听 PID 未变化，避免误杀复用端口的其他服务。
+  if (!(await probe(targetUrl))) {
+    const error = new Error(`端口 ${port} 未通过 ComfyUI 身份复核，拒绝结束其监听进程`);
+    error.status = 409;
+    throw error;
+  }
+  const after = listeners(port);
+  const stable = before.length === after.length && [...before].sort().every((pid, index) => pid === [...after].sort()[index]);
+  if (!stable) {
+    const error = new Error(`端口 ${port} 的监听进程在复核期间发生变化，已取消进程清理`);
+    error.status = 409;
+    throw error;
+  }
+  return after;
+}
+
 function readSystemStats() {
   let gpu = [];
   let gpuError = null;
@@ -1101,14 +1221,20 @@ function readSystemStats() {
 }
 
 // 关闭画布时按用户要求停止“接管”的 ComfyUI；只在画布关闭路径调用，Ctrl+C 不会触发。
-function stopAdoptedComfyProcess(label) {
+async function stopAdoptedComfyProcess(label) {
   const port = portFromUrl(state.adoptedComfyUrl);
   if (!port) return false;
   if (process.platform !== "win32") {
     log(`接管的 ${label}（端口 ${port}）未自动停止，请手动处理`, "WARN");
     return false;
   }
-  const pids = listenerPids(port);
+  let pids;
+  try {
+    pids = await comfyListenerPidsForKill(state.adoptedComfyUrl);
+  } catch (error) {
+    log(`停止接管的 ${label} 已取消：${error.message}`, "WARN");
+    return false;
+  }
   let stopped = false;
   for (const pid of pids) {
     const result = spawnSync("taskkill", ["/PID", pid, "/T", "/F"], { stdio: "ignore", windowsHide: true });
@@ -1246,7 +1372,7 @@ async function shutdown(exitCode = 0, reason = "", { stopAdoptedComfy = false } 
     else killOurChild(gatewayChild, "网关");
   }
   killOurChild(state.comfyChild, "ComfyUI");
-  const adoptedComfyStopped = !state.comfyChild && stopAdoptedComfy && state.adoptedComfyUrl ? stopAdoptedComfyProcess("ComfyUI") : false;
+  const adoptedComfyStopped = !state.comfyChild && stopAdoptedComfy && state.adoptedComfyUrl ? await stopAdoptedComfyProcess("ComfyUI") : false;
   if (adoptedComfyStopped) log("已退出。接管的网关未被触碰；接管的 ComfyUI 已按要求停止。");
   else log("已退出。接管（非本启动器启动）的服务未被触碰。");
   process.exit(exitCode);
@@ -1340,7 +1466,7 @@ async function restartComfy(cfg) {
     report.before = readSystemStats();
     const targetUrl = state.comfyUrl || cfg.comfyUrl;
     const port = portFromUrl(targetUrl);
-    const pids = listenerPids(port);
+    const pids = await comfyListenerPidsForKill(targetUrl);
     const killStarted = Date.now();
     for (const pid of pids) {
       const result = spawnSync("taskkill", ["/PID", pid, "/T", "/F"], { stdio: "ignore", windowsHide: true });
@@ -1423,6 +1549,11 @@ async function startControlServer(cfg) {
       const pathname = new URL(req.url, "http://127.0.0.1").pathname;
       if (req.method === "GET" && pathname === "/health") {
         res.end(JSON.stringify({ ok: true, restarting: state.restarting }));
+        return;
+      }
+      if (req.method === "POST" && !isTrustedControlRequest(req)) {
+        res.statusCode = 403;
+        res.end(JSON.stringify({ ok: false, error: "仅允许本机回环来源调用控制接口" }));
         return;
       }
       if (req.method === "POST" && pathname === "/restart-gateway") {
@@ -1520,6 +1651,9 @@ async function main() {
     `参数：comfyUrl=${cfg.comfyUrl} gatewayPort=${cfg.gatewayPort} controlPort=${cfg.controlPort} canvasPort=${cfg.canvasPort} ` +
       `gatewayDir=${cfg.gatewayDir} canvasDist=${cfg.canvasDist}`
   );
+  if (cfg.allowLan && !isLoopbackHost(cfg.gatewayHost || "127.0.0.1") && !cfg.corsOrigins) {
+    log("已放开局域网监听但未配置 corsOrigins：远程浏览器可能被网关 CORS 拒绝。请在 launcher/config.json 填写画布来源，或仅在本机使用。", "WARN");
+  }
   if (DRY_RUN) log("dry-run：只做检测与打印，不启动任何进程，不监听端口");
   cfg.launcherControlUrl = "";
   if (!DRY_RUN) {
@@ -1772,4 +1906,4 @@ if (invokedDirectly) {
   });
 }
 
-export { comfyInstallInfo, resolveLaunchPlan, comfyPortCandidates, detectComfy, probeAnyComfy, listenCanvasServer, isLoopbackHost, normalizeHost, browseHostFor, requestGatewayShutdown };
+export { comfyInstallInfo, resolveLaunchPlan, comfyPortCandidates, detectComfy, probeAnyComfy, listenCanvasServer, isLoopbackHost, normalizeHost, browseHostFor, requestGatewayShutdown, createCanvasServer };

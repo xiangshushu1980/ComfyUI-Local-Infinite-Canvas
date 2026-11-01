@@ -7,7 +7,7 @@ import path from "node:path";
 import { execFileSync } from "node:child_process";
 import { test } from "node:test";
 
-import { applyUpdate, checkForUpdate, compareVersions, getUpdateProgress, recoverWorkflowBackups } from "../src/update.js";
+import { applyUpdate, checkForUpdate, compareVersions, detectInterruptedUpdate, getUpdateProgress, recoverWorkflowBackups, restoreInterruptedUpdate } from "../src/update.js";
 
 function git(cwd, ...args) {
   return execFileSync("git", args, { cwd, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }).trim();
@@ -127,11 +127,61 @@ test("archive install applies a verified code patch and preserves local data", a
     assert.equal(fs.existsSync(path.join(root, "comfyui-gateway", "src", "old.js")), false);
     assert.equal(fs.existsSync(path.join(root, "PATCH-DELETE.txt")), false);
     assert.equal(fs.existsSync(path.join(root, ".update-backup", "v0.20.1", "comfyui-gateway", "src", "old.js")), true);
+    assert.equal(fs.existsSync(path.join(root, ".update-backup", "v0.20.1", ".pending.json")), false);
+    assert.equal(fs.existsSync(path.join(root, ".update-backup", "v0.20.1", ".complete.json")), true);
     assert.equal(JSON.parse(fs.readFileSync(path.join(root, "update.json"), "utf8")).version, "v0.20.1");
     assert.equal(result.launcherChanged, false);
     const progress = getUpdateProgress();
     assert.equal(progress.phase, "done");
     assert.equal(progress.percent, 100);
+  } finally {
+    await new Promise((resolve) => server.close(resolve));
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("launcher restart guidance uses actual before/after hashes in a full patch", async () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), "gateway-update-launcher-hash-"));
+  const makePatch = (name, version, launcherContent) => {
+    const payload = path.join(root, name);
+    fs.mkdirSync(path.join(payload, "launcher"), { recursive: true });
+    fs.writeFileSync(path.join(payload, "VERSION"), `${version}\n`);
+    fs.writeFileSync(path.join(payload, "launcher", "start.mjs"), launcherContent);
+    execFileSync("tar", ["-a", "-c", "-f", `${name}.zip`, "-C", name, "."], { cwd: root, stdio: "ignore" });
+    const bytes = fs.readFileSync(path.join(root, `${name}.zip`));
+    return { bytes, sha: crypto.createHash("sha256").update(bytes).digest("hex") };
+  };
+  const first = makePatch("patch-one", "v0.20.1", "same-launcher\n");
+  const second = makePatch("patch-two", "v0.20.2", "changed-launcher\n");
+  fs.mkdirSync(path.join(root, "launcher"), { recursive: true });
+  fs.writeFileSync(path.join(root, "launcher", "start.mjs"), "same-launcher\n");
+  writeVersion(root, "v0.20.0");
+  let current = { version: "v0.20.1", ...first };
+  const server = http.createServer((req, res) => {
+    if (req.url === "/update.json") {
+      res.setHeader("content-type", "application/json");
+      res.end(JSON.stringify({ version: current.version, patch: { url: `http://127.0.0.1:${server.address().port}/patch.zip`, sha256: current.sha, size: current.bytes.length } }));
+      return;
+    }
+    if (req.url === "/patch.zip") {
+      res.end(current.bytes);
+      return;
+    }
+    res.statusCode = 404;
+    res.end("not found");
+  });
+  await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
+  const config = { ...configFor(root), updateManifestUrl: `http://127.0.0.1:${server.address().port}/update.json` };
+  try {
+    const unchanged = await applyUpdate(config);
+    assert.equal(unchanged.launcherChanged, false, "an unchanged launcher in a full patch must not force a full restart");
+    assert.equal(unchanged.fullRestartRequired, false);
+    current = { version: "v0.20.2", ...second };
+    const changed = await applyUpdate(config);
+    assert.equal(changed.launcherChanged, true);
+    assert.equal(changed.fullRestartRequired, true);
+    assert.equal(changed.restarting, false);
+    assert.match(changed.message, /完全退出.*仅刷新网关不足/);
   } finally {
     await new Promise((resolve) => server.close(resolve));
     fs.rmSync(root, { recursive: true, force: true });
@@ -379,6 +429,67 @@ test("startup recovery restores user-modified workflows from .update-backup", as
     assert.equal(fs.readFileSync(official, "utf8"), newOfficial);
     const again = await recoverWorkflowBackups(config);
     assert.deepEqual(again.restored, []);
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("interrupted update can be detected and restored without touching data", async () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), "gateway-update-recovery-"));
+  try {
+    writeVersion(root, "v0.20.0");
+    const backup = path.join(root, ".update-backup", "v0.20.1");
+    fs.mkdirSync(path.join(root, "comfyui-gateway", "src"), { recursive: true });
+    fs.mkdirSync(path.join(root, "data"), { recursive: true });
+    fs.writeFileSync(path.join(root, "comfyui-gateway", "src", "app.js"), "new");
+    fs.writeFileSync(path.join(root, "comfyui-gateway", "src", "added.js"), "partial");
+    fs.writeFileSync(path.join(root, "data", "keep.txt"), "keep");
+    fs.mkdirSync(path.join(backup, "comfyui-gateway", "src"), { recursive: true });
+    fs.writeFileSync(path.join(backup, "comfyui-gateway", "src", "app.js"), "old");
+    fs.writeFileSync(path.join(backup, "comfyui-gateway", "src", "deleted.js"), "restore-me");
+    fs.writeFileSync(path.join(backup, ".pending.json"), JSON.stringify({
+      version: "v0.20.1",
+      files: ["comfyui-gateway/src/app.js", "comfyui-gateway/src/added.js"],
+      existing: ["comfyui-gateway/src/app.js"],
+      deleteList: ["comfyui-gateway/src/deleted.js"],
+    }));
+
+    const detected = await detectInterruptedUpdate(configFor(root));
+    assert.equal(detected.pending, true);
+    assert.equal(detected.version, "v0.20.1");
+    assert.equal(detected.files.length, 2);
+
+    const restored = await restoreInterruptedUpdate(configFor(root));
+    assert.equal(restored.restored, true);
+    assert.equal(fs.readFileSync(path.join(root, "comfyui-gateway", "src", "app.js"), "utf8"), "old");
+    assert.equal(fs.existsSync(path.join(root, "comfyui-gateway", "src", "added.js")), false);
+    assert.equal(fs.readFileSync(path.join(root, "comfyui-gateway", "src", "deleted.js"), "utf8"), "restore-me");
+    assert.equal(fs.readFileSync(path.join(root, "data", "keep.txt"), "utf8"), "keep");
+    assert.equal(fs.existsSync(path.join(backup, ".pending.json")), false);
+    assert.equal(fs.existsSync(path.join(backup, ".recovered.json")), true);
+    assert.equal((await detectInterruptedUpdate(configFor(root))).pending, false);
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("corrupt pending metadata fails closed and preserves the recovery scene", async () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), "gateway-update-corrupt-pending-"));
+  try {
+    const backup = path.join(root, ".update-backup", "v0.20.1");
+    fs.mkdirSync(backup, { recursive: true });
+    fs.writeFileSync(path.join(backup, ".pending.json"), "{not-json");
+    fs.writeFileSync(path.join(backup, "keep.txt"), "original-backup");
+    const detected = await detectInterruptedUpdate(configFor(root));
+    assert.equal(detected.pending, true);
+    assert.equal(detected.unreadable, true);
+    const restored = await restoreInterruptedUpdate(configFor(root));
+    assert.equal(restored.restored, false);
+    assert.equal(restored.unreadable, true);
+    assert.equal(fs.readFileSync(path.join(backup, ".pending.json"), "utf8"), "{not-json");
+    assert.equal(fs.readFileSync(path.join(backup, "keep.txt"), "utf8"), "original-backup");
+    assert.equal(fs.existsSync(path.join(backup, ".recovered.json")), false);
+    assert.equal((await detectInterruptedUpdate(configFor(root))).pending, true);
   } finally {
     fs.rmSync(root, { recursive: true, force: true });
   }
