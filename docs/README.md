@@ -14,6 +14,8 @@
 - [分阶段计划](rebuild-plan.md)：阶段、完成条件与回滚要求。
 - [知识归属](knowledge-governance.md)：仅记录本项目特定的文档/历史来源约定；常规管理由用户级 `project-memory` Skill 执行。
 - [旧项目来源索引](legacy-source-index.md)：按保留、摘录、拒绝继承的方式归类历史研究。
+- [内置资源安装安全审查](resource-install-audit.md)：资源来源固定、校验、安装副作用与 WSL 兼容性的静态审查（XIA-27）。
+- [自有工作流接入审查](workflow-integration-audit.md)：Registry 与自由工作流路径，以及 H3 样本适配边界（XIA-28）。
 
 ## 历史与证据
 - [ARCHITECTURE.md](ARCHITECTURE.md) 是参考 fork **v0.22.12 的历史说明**，不是当前实现权威。

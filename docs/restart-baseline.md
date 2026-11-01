@@ -9,12 +9,12 @@ This worktree is the separate reference-based route for testing and selectively 
 - Source repository: `1314521gjy/ComfyUI-Local-Infinite-Canvas`
 - Starting commit: `9e6d56bc904851b218230aedd763ac32671727ad` (`release: v0.23.1 add on-demand canvas repair agent`)
 - Source branch: `origin/main`
-- Project branch: `codex/canvas-lab-rebuild-latest`
+- Project branch at initialization: `codex/canvas-lab-rebuild-latest`
 - Initial directory: `/home/sean/projects/canvas-lab-rebuild`
 - Two pre-existing uncommitted Gateway source changes from the previous local reference worktree are carried over: `comfyui-gateway/prompts/image-prompt-enhance.json` and `comfyui-gateway/src/prompt-optimizer.js`.
 - Rebuilt `infinite-canvas/web/dist` assets were not copied; they are generated output, not the source baseline.
 
-The source branch was fetched from the configured fork remote immediately before initialization. The older local-only commit `7d4f558` is retained in a separate worktree for rollback/comparison and is not part of this latest-fork base.
+The source branch was fetched from the configured fork remote immediately before initialization. The older local-only commit `7d4f558` was retained in a separate worktree for rollback/comparison at that time; it was later reviewed and its UI functionality was already present in the current main baseline.
 
 ## Current checkout confirmation (2026-10-31)
 
@@ -25,6 +25,12 @@ The source branch was fetched from the configured fork remote immediately before
 - Upstream-generated `infinite-canvas/web/dist` artifacts were excluded from the merge; afterward the tracked dist was regenerated with local Vite 8 from the merged source.
 - `.codegraph/` is untracked; index reported up to date. Do not confuse the local index with application test evidence.
 - See `feature-audit.md`, `validation-matrix.md`, and `rebuild-plan.md` for this worktree's new review and verification records.
+
+## Fork main baseline (2026-11-01)
+
+- The retained working checkout is the fork's `main` branch at `2585d89b005b4694921937db108efeb68e10c341`, tracking `origin/main` on `xiangshushu1980/ComfyUI-Local-Infinite-Canvas`.
+- The old reference checkout and comparison checkout were removed after reviewing their unique local changes. The older Agent-panel commit is superseded by the current `main` UI; generated `dist` assets and CodeGraph indexes were not retained as source changes.
+- Ongoing changes to preserve on this fork are committed directly to `main` and pushed to `origin` after review.
 
 ## CodeGraph
 
