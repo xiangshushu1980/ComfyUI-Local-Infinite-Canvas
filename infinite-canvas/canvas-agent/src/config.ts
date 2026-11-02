@@ -10,7 +10,7 @@ export const VERSION = readPackageVersion();
 export const AGENT_PROMPT = fs.readFileSync(new URL("../agent-instructions.md", import.meta.url), "utf8");
 const initializedWorkspaces = new Set<string>();
 
-export type SiteWorkspaceConfig = { workspacePath: string; activeThreadId?: string; pinnedThreadIds?: string[] };
+export type SiteWorkspaceConfig = { workspacePath: string; activeThreadId?: string; pinnedThreadIds?: string[]; legacyThreads?: Array<{ workspacePath: string; threadIds: string[] }> };
 export type CanvasAgentConfig = { url: string; token: string; origins?: string[]; workspace?: SiteWorkspaceConfig; mcpOverrides?: Record<string, boolean>; skillOverrides?: Record<string, boolean> };
 
 /** 读取本地 Canvas Agent 配置，不存在时生成默认配置。 */
@@ -57,7 +57,7 @@ export function updateSiteWorkspace(config: CanvasAgentConfig, patch: Partial<Si
     const current = ensureSiteWorkspace(config);
     const workspacePath = patch.workspacePath ? resolveWorkspacePath(patch.workspacePath) : current.workspacePath;
     const next = { ...current, ...patch, workspacePath };
-    config.workspace = { workspacePath: next.workspacePath, activeThreadId: next.activeThreadId, pinnedThreadIds: next.pinnedThreadIds };
+    config.workspace = { workspacePath: next.workspacePath, activeThreadId: next.activeThreadId, pinnedThreadIds: next.pinnedThreadIds, legacyThreads: next.legacyThreads };
     initializeWorkspace(workspacePath);
     saveConfig(config);
     return config.workspace;

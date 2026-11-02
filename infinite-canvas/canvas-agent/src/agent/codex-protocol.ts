@@ -85,7 +85,7 @@ type CodexRequestSpec = {
             sortKey: "updated_at";
             sortDirection: "desc";
             sourceKinds: Array<"cli" | "vscode" | "appServer" | "exec">;
-            cwd: string;
+            cwd: string | string[];
             searchTerm?: string;
         };
         result: { data: CodexThread[]; nextCursor: string | null; backwardsCursor: string | null };

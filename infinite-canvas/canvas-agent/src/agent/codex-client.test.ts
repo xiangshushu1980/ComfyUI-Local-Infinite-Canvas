@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import { CodexAppClient, canvasMcpOverrides, mergeSkillConfig } from "./codex-client.js";
-import { assertDraftHasNoSensitiveValues, canvasSkillSource } from "./codex.js";
+import { assertDraftHasNoSensitiveValues, canvasSkillSource, isThreadInWorkspace } from "./codex.js";
 
 type TestClient = {
     currentThreadId: string;
@@ -39,6 +39,15 @@ test("MCP 覆盖只包含启用标志且不能禁用画布", () => {
 
 test("Skill 线程覆盖保留其他共享配置并替换同一路径", () => {
     assert.deepEqual(mergeSkillConfig([{ path: "/skills/a/SKILL.md", enabled: false }, { path: "/skills/b/SKILL.md", enabled: false }], { "/skills/a/SKILL.md": true, "/skills/c/SKILL.md": false, "relative": true }), { config: [{ path: "/skills/a/SKILL.md", enabled: true }, { path: "/skills/b/SKILL.md", enabled: false }, { path: "/skills/c/SKILL.md", enabled: false }] });
+});
+
+test("迁移线程只接受原目录中明确记录的会话", () => {
+    const workspace = { workspacePath: "/new", legacyThreads: [{ workspacePath: "/old", threadIds: ["saved"] }] };
+    assert.equal(isThreadInWorkspace({ id: "saved", cwd: "/old" }, "/new", workspace), true);
+    assert.equal(isThreadInWorkspace({ id: "other", cwd: "/old" }, "/new", workspace), false);
+    assert.equal(isThreadInWorkspace({ id: "saved", cwd: "/elsewhere" }, "/new", workspace), false);
+    assert.equal(isThreadInWorkspace({ id: "saved", cwd: "/old" }, "/other", workspace), false);
+    assert.equal(isThreadInWorkspace({ id: "new", cwd: "/new" }, "/new", workspace), true);
 });
 
 test("审批只在 app-server 确认 resolved 后清除", () => {

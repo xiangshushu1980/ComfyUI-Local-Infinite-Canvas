@@ -106,12 +106,15 @@ export async function resumeCodexThread(emit: AgentEmit, threadId: string, cwd?:
 /** 查询当前工作空间中的 Codex 线程。 */
 export async function listCodexThreads(emit: AgentEmit, options: { cwd: string; searchTerm?: string; limit?: number }) {
     const app = await getCodexApp(emit);
+    const workspace = loadConfig().workspace;
+    const legacy = workspace && samePath(workspace.workspacePath, options.cwd) ? (workspace.legacyThreads || []) : [];
+    const cwds = [options.cwd, ...legacy.filter((item) => item.threadIds.length && path.isAbsolute(item.workspacePath)).map((item) => item.workspacePath)];
     const result = await app.listThreads({
         limit: options.limit || 40,
         sortKey: "updated_at",
         sortDirection: "desc",
         sourceKinds: ["cli", "vscode", "appServer", "exec"],
-        cwd: options.cwd,
+        cwd: cwds.length > 1 ? cwds : options.cwd,
         ...(options.searchTerm ? { searchTerm: options.searchTerm } : {}),
     });
     const data = Array.isArray(field(result, "data")) ? (field(result, "data") as unknown[]).map(summarizeCodexThread).filter((thread) => threadInWorkspace(thread, options.cwd)) : [];
@@ -490,8 +493,17 @@ function assertThreadWorkspace(thread: unknown, cwd?: string) {
 
 /** 判断线程工作目录是否与当前工作空间一致。 */
 function threadInWorkspace(thread: unknown, cwd: string) {
+    const workspace = loadConfig().workspace;
+    return isThreadInWorkspace(thread, cwd, workspace);
+}
+
+/** Allow only explicitly migrated thread IDs from the previous workspace. */
+export function isThreadInWorkspace(thread: unknown, cwd: string, workspace?: { workspacePath: string; legacyThreads?: Array<{ workspacePath: string; threadIds: string[] }> }) {
     const threadCwd = String(field(thread, "cwd") || "");
-    return Boolean(threadCwd && samePath(threadCwd, cwd));
+    if (!threadCwd) return false;
+    if (samePath(threadCwd, cwd)) return true;
+    const threadId = String(field(thread, "id") || "");
+    return Boolean(threadId && workspace && samePath(workspace.workspacePath, cwd) && workspace.legacyThreads?.some((legacy) => samePath(legacy.workspacePath, threadCwd) && legacy.threadIds.includes(threadId)));
 }
 
 /** 比较跨平台绝对路径；Windows 路径不区分大小写。 */

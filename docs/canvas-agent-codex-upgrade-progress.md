@@ -47,3 +47,10 @@
 - 当前 `canvas-agent.json` 中工作空间为 `/home/sean/projects/canvas-lab-rebuild`，该目录存在且当前仅有 `AGENTS.md`，无 `.codegraph/`；Canvas Agent 的 `mcpOverrides.codegraph=false`。当前健康响应的线程状态为 ready，MCP 列表中没有 CodeGraph。配置关闭和当前状态不证明其他线程已重载。
 - 用户级 wrapper `/home/sean/.pi/agent/bin/codex-codegraph-mcp` 默认按 `CODEGRAPH_CWD` 或进程工作目录查找 `.codegraph/`；在上述目录且不设置 `CODEGRAPH_CWD` 的直接运行返回退出码 1，提示“无 .codegraph/ 索引”。因此用户的推测与直接复现的启动条件一致；由于没有采集当初失败 MCP 子进程的 cwd/环境和 stderr，不能将它断言为那一次握手关闭的唯一已证实原因。
 - 不改变工作空间、不初始化索引、不重新启用 CodeGraph。实际项目源码和索引在 `/home/sean/projects/canvas-lab`；如未来需要 Canvas Agent 使用 CodeGraph，应先明确工作空间及权限，再单独验证启动与工具调用。
+
+## Canvas Agent 工作目录迁移（2026-11-02）
+
+- 用户确认新建名称清晰的 Agent 对话工作目录、删除旧目录，并选择保留迁移历史。现行目录为 `/home/sean/.infinite-canvas/codex-workspaces/canvas-agent`；项目源码仍在 `/home/sean/projects/canvas-lab`。此前 `/home/sean/projects/canvas-lab-rebuild` 的路径是历史记录，已移除，不是当前工作树。
+- 旧目录只含 `AGENTS.md`，复制到新目录并核对一致后删除。Canvas Agent 配置迁移前已备份到用户私有 `.infinite-canvas/backups/`，备份可能含 token，不提交。保留一个从原工作目录发现的线程；旧线程的原始文件未改写。新配置登记原目录与允许的历史线程 ID；列表查询可同时检索新旧 cwd，旧 cwd 只接受明确登记的线程，避免误纳入其他对话。`updateSiteWorkspace` 保留该迁移映射。
+- 服务空闲时短暂停止并启动 Canvas Agent；未重启 Codex Web。删除旧目录后真实接口复测：历史列表包含该线程；恢复返回 HTTP 200、historyReady=true、2 条历史消息，线程和工作空间报告新 cwd。服务健康报告 1 个网页客户端、画布已连接、Agent 空闲；未进行画布写入或 UI 视觉验收。
+- Agent build 通过，自动测试 131/131；增加旧路径白名单隔离测试。CodeGraph 在 Canvas Agent 的用户覆盖仍为禁用；新 Agent 目录不包含源码索引。
