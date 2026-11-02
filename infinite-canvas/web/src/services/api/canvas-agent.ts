@@ -24,6 +24,8 @@ export type AgentSkillSummary = {
     scope: AgentSkillScope;
     enabled: boolean;
     managed: boolean;
+    inheritedEnabled?: boolean;
+    overridden?: boolean;
 };
 export type AgentSkillDetail = {
     name: string;
@@ -111,7 +113,7 @@ export function deleteCodexSkill(endpoint: string, token: string, name: string, 
     return fetchAgentJson<{ ok?: boolean }>(endpoint, token, `/agent/codex/skills/${encodeURIComponent(name)}/delete`, jsonPost({ expectedRevision }));
 }
 
-export function setCodexSkillEnabled(endpoint: string, token: string, skill: Pick<AgentSkillSummary, "name" | "path">, enabled: boolean) {
+export function setCodexSkillEnabled(endpoint: string, token: string, skill: Pick<AgentSkillSummary, "name" | "path">, enabled: boolean | null) {
     return fetchAgentJson<{ ok?: boolean }>(endpoint, token, `/agent/codex/skills/${encodeURIComponent(skill.name)}/enabled`, jsonPost({ ...skill, enabled }));
 }
 

@@ -9,6 +9,7 @@
 - [功能审查](feature-audit.md)：保留、适配、剥离候选及依赖风险。
 - [核心链路静态定位](source-path-audit.md)：画布、Gateway、ComfyUI 与回写的文件级调用链。
 - [Agent 职责审查](agent-boundary-audit.md)：Canvas Agent 与源码修复助手的边界。
+- [Canvas Agent 升级与配置记录](canvas-agent-codex-upgrade-progress.md)：Codex 版本、MCP/Skill 配置及分层验证。
 - [WSL 验证协议](wsl-validation-protocol.md)：测试命令、副作用、分层验收。
 - [Project Memory 接入核查](project-memory-audit.md)：用户级技能、Hindsight 服务健康和未完成的 bank 归属。
 - [验证矩阵](validation-matrix.md)：哪些仅存在于源码，哪些实际测试通过。

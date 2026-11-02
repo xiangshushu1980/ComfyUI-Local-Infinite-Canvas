@@ -4,7 +4,7 @@ import path from "node:path";
 import express, { type NextFunction, type Request, type Response } from "express";
 
 import { runClaudeTurn } from "../agent/claude.js";
-import { archiveCodexThread, CodexSkillLookupError, configureCodexSkill, generateCodexSkillDraft, interruptCodexTurn, isRecoverableThreadError, listCodexModels, listCodexSkills, listCodexThreads, readCodexThread, resolveCodexApproval, resolveCodexSkill, resumeCodexThread, runCodexTurn, startCodexThread, summarizeCodexThread } from "../agent/codex.js";
+import { archiveCodexThread, CodexSkillLookupError, configureCodexSkill, generateCodexSkillDraft, interruptCodexTurn, isRecoverableThreadError, listCodexModels, listCodexMcpConfig, listCodexSkills, listCodexThreads, readCodexThread, resolveCodexApproval, resolveCodexSkill, resumeCodexThread, runCodexTurn, startCodexThread, summarizeCodexThread } from "../agent/codex.js";
 import type { CodexReasoningEffort, CodexSkillSelector } from "../agent/codex-protocol.js";
 import { messageMetadataStore } from "../agent/message-metadata.js";
 import type { AgentAttachment, AgentPermissionMode } from "../agent/types.js";
@@ -175,6 +175,27 @@ export function startHttpServer() {
         res.json({ ok: true, workspace, conversation: session.conversationStateSnapshot });
     });
     app.get("/agent/codex/models", route(async (_req, res) => res.json({ ok: true, ...(await listCodexModels(emit)) })));
+    app.get("/agent/codex/mcp", route(async (_req, res) => {
+        const workspace = ensureSiteWorkspace(config);
+        const servers = await listCodexMcpConfig(emit, workspace.workspacePath);
+        const overrides = config.mcpOverrides || {};
+        const data = servers.map(({ name, enabled }) => ({ name, inheritedEnabled: enabled, enabled: name === "infinite-canvas" ? true : (overrides[name] ?? enabled), overridden: Object.hasOwn(overrides, name), required: name === "infinite-canvas" }));
+        if (!data.some(({ name }) => name === "infinite-canvas")) data.push({ name: "infinite-canvas", inheritedEnabled: true, enabled: true, overridden: false, required: true });
+        res.json({ ok: true, data });
+    }));
+    app.post("/agent/codex/mcp/:name", codexMutation(async (req, res) => {
+        const name = routeParam(req.params.name);
+        const enabled = req.body?.enabled;
+        if (!/^[A-Za-z0-9_-]+$/.test(name) || name === "infinite-canvas" || (enabled !== null && typeof enabled !== "boolean")) return res.status(400).json({ ok: false, error: "Invalid MCP configuration" });
+        const servers = await listCodexMcpConfig(emit, ensureSiteWorkspace(config).workspacePath);
+        if (!servers.some((server) => server.name === name)) return res.status(404).json({ ok: false, error: "MCP server not found" });
+        const overrides = { ...config.mcpOverrides };
+        if (enabled === null) delete overrides[name]; else overrides[name] = enabled;
+        config.mcpOverrides = overrides;
+        saveConfig(config);
+        session.emitAll("mcp_config_changed", {});
+        res.json({ ok: true });
+    }));
     app.get("/agent/codex/skills", route(async (req, res) => {
         const workspace = ensureSiteWorkspace(config);
         const result = await listCodexSkills(emit, workspace.workspacePath, String(req.query.forceReload || "") === "1");
@@ -222,11 +243,11 @@ export function startHttpServer() {
         res.status(201).json({ ok: true, data });
     }));
     app.post("/agent/codex/skills/:name/enabled", codexMutation(async (req, res) => {
-        if (typeof req.body?.enabled !== "boolean") return res.status(400).json({ ok: false, error: "Skill 启用状态无效" });
+        if (req.body?.enabled !== null && typeof req.body?.enabled !== "boolean") return res.status(400).json({ ok: false, error: "Skill 启用状态无效" });
         const workspace = ensureSiteWorkspace(config);
         const selector = skillSelector(req.body);
         if (selector.name !== routeParam(req.params.name)) return res.status(400).json({ ok: false, error: "Skill 选择无效" });
-        const data = await configureCodexSkill(emit, workspace.workspacePath, selector, req.body.enabled);
+        const data = await configureCodexSkill(emit, workspace.workspacePath, selector, req.body.enabled, config);
         session.emitAll("skills_changed", { forceReload: true });
         res.json({ ok: true, data });
     }));
@@ -481,7 +502,7 @@ function mcpInventory(value: unknown) {
         if (!item || typeof item !== "object" || Array.isArray(item)) return [];
         const server = item as Record<string, unknown>;
         const name = String(server.name || "");
-        return name ? [{ name, authStatus: String(server.authStatus || "") || undefined }] : [];
+        return name ? [{ name, authStatus: String(server.authStatus || "") || undefined, toolCount: Number(server.toolCount) || 0 }] : [];
     });
 }
 

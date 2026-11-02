@@ -22,7 +22,7 @@ export type ConversationState = {
     sourceClientId?: string;
     error?: string;
 };
-type McpInventoryItem = { name: string; authStatus?: string };
+type McpInventoryItem = { name: string; authStatus?: string; toolCount?: number };
 export const AGENT_PROTOCOL_VERSION = 6;
 
 const SITE_TOOLS = new Set<ToolName>([
@@ -133,6 +133,7 @@ export class CanvasSession {
         services.filter((item) => item.name).forEach((item) => {
             const current = mcpStatuses[item.name];
             if (current?.status === "failed" || current?.status === "cancelled") return;
+            if (current?.status !== "ready" && !item.toolCount && item.authStatus !== "notLoggedIn") return;
             mcpStatuses[item.name] = item.authStatus === "notLoggedIn"
                 ? { status: "failed", error: "MCP 服务未登录", failureReason: "reauthenticationRequired" }
                 : { status: "ready" };

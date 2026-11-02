@@ -243,7 +243,7 @@ test("对话 revision 单调递增且 MCP 全部进入终态前保持 preparing"
 
     revisions.push(session.beginConversation({ sourceClientId: "first" }).revision);
     revisions.push(session.updateConversationMcp("late-service", "starting").revision);
-    revisions.push(session.completeConversationMcpInventory([{ name: "infinite-canvas", authStatus: "unsupported" }]).revision);
+    revisions.push(session.completeConversationMcpInventory([{ name: "infinite-canvas", authStatus: "unsupported", toolCount: 3 }]).revision);
     const pending = session.completeConversationPreparation("thread-1");
     revisions.push(pending.revision);
     assert.equal(pending.status, "preparing");
@@ -259,7 +259,7 @@ test("可选 MCP 失败进入 warning，画布 MCP 失败进入 failed", () => {
     const optionalFailure = new CanvasSession();
     optionalFailure.beginConversation();
     optionalFailure.completeConversationMcpInventory([
-        { name: "infinite-canvas", authStatus: "unsupported" },
+        { name: "infinite-canvas", authStatus: "unsupported", toolCount: 3 },
         { name: "notion", authStatus: "notLoggedIn" },
     ]);
     const warning = optionalFailure.completeConversationPreparation("thread-1");
@@ -279,6 +279,15 @@ test("可选 MCP 失败进入 warning，画布 MCP 失败进入 failed", () => {
     const missing = requiredMissing.completeConversationPreparation("thread-3");
     assert.equal(missing.status, "failed");
     assert.match(missing.error || "", /Infinite Canvas MCP/);
+});
+
+test("无启动通知和工具的清单项不视为已连接", () => {
+    const session = new CanvasSession();
+    session.beginConversation();
+    session.completeConversationMcpInventory([{ name: "infinite-canvas", toolCount: 3 }, { name: "disabled", toolCount: 0 }]);
+    const state = session.completeConversationPreparation("thread");
+    assert.equal(state.status, "ready");
+    assert.equal(state.mcpStatuses.disabled, undefined);
 });
 
 test("Codex 写操作在多窗口之间互斥且不能与运行 turn 并发", () => {

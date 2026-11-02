@@ -48,3 +48,7 @@
 - 分别重启客户端、代理及共享服务时的运行任务、待审批请求、MCP 和恢复行为；明确安全边界、资源/性能、回退方案及上游升级成本。
 
 本轮未更改应用代码、依赖、服务或 MCP 配置，未重启服务；共享 app-server 和统一管理均未实测。
+
+## 2026-11-02 后续实现与证据
+
+本文关于 Codex `0.146.0` 等内容是审查时快照；Canvas Agent 已升级到 `0.166.0`，并实现画布 MCP 显式注入、Canvas Agent 独立 MCP/Skill 启用覆盖。两个 app-server 仍独立；详细实现、验证边界、CodeGraph 工作空间复核和未完成的 UI 验收见 [Canvas Agent 升级与配置记录](canvas-agent-codex-upgrade-progress.md)。

@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { CodexAppClient } from "./codex-client.js";
+import { CodexAppClient, canvasMcpOverrides, mergeSkillConfig } from "./codex-client.js";
 import { assertDraftHasNoSensitiveValues, canvasSkillSource } from "./codex.js";
 
 type TestClient = {
@@ -18,6 +18,28 @@ type TestClient = {
 };
 
 const emptyEventHistory = { record: () => Promise.resolve(), recordTurn: () => Promise.resolve() };
+
+test("分页线程按顺序读取所有历史回合", async () => {
+    const client = Reflect.construct(CodexAppClient, [{}, () => undefined, emptyEventHistory]) as CodexAppClient;
+    const calls: Array<{ method: string; params: Record<string, unknown> }> = [];
+    (client as unknown as { request: (method: string, params: Record<string, unknown>) => Promise<unknown> }).request = async (method, params) => {
+        calls.push({ method, params });
+        if (method === "thread/read" && params.includeTurns) throw new Error("paginated threads do not support thread/read(includeTurns=true)");
+        if (method === "thread/read") return { thread: { id: "t", cwd: "/site" } };
+        return params.cursor ? { data: [{ id: "2" }], nextCursor: null } : { data: [{ id: "1" }], nextCursor: "next" };
+    };
+    const result = await client.readThread("t");
+    assert.deepEqual(result.thread.turns?.map((turn) => turn.id), ["1", "2"]);
+    assert.equal(calls[3].params.cursor, "next");
+});
+
+test("MCP 覆盖只包含启用标志且不能禁用画布", () => {
+    assert.deepEqual(canvasMcpOverrides({ codegraph: false, hindsight: true, "infinite-canvas": false, "bad.name": true }), { codegraph: { enabled: false }, hindsight: { enabled: true } });
+});
+
+test("Skill 线程覆盖保留其他共享配置并替换同一路径", () => {
+    assert.deepEqual(mergeSkillConfig([{ path: "/skills/a/SKILL.md", enabled: false }, { path: "/skills/b/SKILL.md", enabled: false }], { "/skills/a/SKILL.md": true, "/skills/c/SKILL.md": false, "relative": true }), { config: [{ path: "/skills/a/SKILL.md", enabled: true }, { path: "/skills/b/SKILL.md", enabled: false }, { path: "/skills/c/SKILL.md", enabled: false }] });
+});
 
 test("审批只在 app-server 确认 resolved 后清除", () => {
     const writes: Array<Record<string, unknown>> = [];
@@ -157,9 +179,13 @@ test("MCP 启动状态区分空对话预热与正常 turn 运行", async () => {
     const client = Reflect.construct(CodexAppClient, [child, (type: string, payload: unknown) => events.push({ type, payload }), emptyEventHistory]) as CodexAppClient;
     const testClient = client as unknown as TestClient;
 
+    client.readConfig = async () => ({ config: { skills: { config: [] } }, origins: {} });
     const starting = client.startThread("D:\\site", "request", true);
+    await new Promise((resolve) => setImmediate(resolve));
     const request = writes.find((item) => item.method === "thread/start");
     assert.ok(request);
+    const params = request.params as { config: { mcp_servers: Record<string, { enabled?: boolean }> } };
+    assert.equal(params.config.mcp_servers["infinite-canvas"].enabled, true);
     testClient.handleNotification("mcpServer/startupStatus/updated", { threadId: "thread-1", name: "notion", status: "starting" });
     testClient.handle({ id: request.id, result: { thread: { id: "thread-1" } } });
     await new Promise((resolve) => setImmediate(resolve));
@@ -180,7 +206,7 @@ test("MCP 启动状态区分空对话预热与正常 turn 运行", async () => {
     assert.deepEqual(events.filter((event) => event.type === "agent_bootstrap"), [
         { type: "agent_bootstrap", payload: { type: "mcp.startup", phase: "preheat", threadId: "thread-1", name: "notion", status: "starting", error: undefined, failureReason: undefined } },
         { type: "agent_bootstrap", payload: { type: "mcp.startup", phase: "preheat", threadId: "thread-1", name: "notion", status: "failed", error: undefined, failureReason: undefined } },
-        { type: "agent_bootstrap", payload: { type: "mcp.complete", phase: "preheat", threadId: "thread-1", services: [{ name: "notion", authStatus: "notLoggedIn" }] } },
+        { type: "agent_bootstrap", payload: { type: "mcp.complete", phase: "preheat", threadId: "thread-1", services: [{ name: "notion", authStatus: "notLoggedIn", toolCount: 0 }] } },
         { type: "agent_bootstrap", payload: { type: "mcp.startup", phase: "runtime", threadId: "thread-1", name: "notion", status: "ready", error: undefined, failureReason: undefined } },
     ]);
 });

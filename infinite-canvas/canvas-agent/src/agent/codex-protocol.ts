@@ -38,6 +38,8 @@ export type CodexSkillMetadata = JsonRecord & {
     path: string;
     scope: CodexSkillScope;
     enabled: boolean;
+    inheritedEnabled?: boolean;
+    overridden?: boolean;
 };
 export type CodexSkillError = { path: string; message: string };
 export type CodexSkillsListEntry = { cwd: string; skills: CodexSkillMetadata[]; errors: CodexSkillError[] };
@@ -92,6 +94,10 @@ type CodexRequestSpec = {
         params: { threadId: string; includeTurns: boolean };
         result: { thread: CodexThread };
     };
+    "thread/turns/list": {
+        params: { threadId: string; cursor?: string | null; limit: number; sortDirection: "asc"; itemsView: "full" };
+        result: { data: CodexTurn[]; nextCursor: string | null };
+    };
     "thread/archive": {
         params: { threadId: string };
         result: Record<string, never>;
@@ -99,6 +105,10 @@ type CodexRequestSpec = {
     "thread/unsubscribe": {
         params: { threadId: string };
         result: { status: "notLoaded" | "notSubscribed" | "unsubscribed" };
+    };
+    "config/read": {
+        params: { cwd: string; includeLayers: boolean };
+        result: { config: JsonRecord; origins: JsonRecord };
     };
     "model/list": {
         params: { limit: number; includeHidden: boolean };

@@ -207,14 +207,14 @@ export function AgentSkillsView({ clientId }: { clientId: string }) {
             },
         });
     };
-    const toggleEnabled = async (skill: AgentSkillSummary, enabled: boolean) => {
+    const toggleEnabled = async (skill: AgentSkillSummary, enabled: boolean | null) => {
         const connectionRevision = useAgentSkillStore.getState().connectionRevision;
         if (!connectionIsCurrent(connectionRevision)) return;
         setBusySkill(skill.path);
         try {
             await setCodexSkillEnabled(endpoint, token, skill, enabled);
             if (!connectionIsCurrent(connectionRevision)) return;
-            if (!enabled && selectedSkill?.name === skill.name && selectedSkill.path === skill.path) clearSelection();
+            if (enabled === false && selectedSkill?.name === skill.name && selectedSkill.path === skill.path) clearSelection();
             await refresh();
         } catch (error) {
             if (connectionIsCurrent(connectionRevision)) message.error(error instanceof Error ? error.message : t("agent.skillManager.statusFailed"));
@@ -275,6 +275,7 @@ export function AgentSkillsView({ clientId }: { clientId: string }) {
                     <div>
                         <div className="text-sm font-semibold">{t("agent.skillManager.localSkills")}</div>
                         <div className="mt-0.5 text-xs" style={{ color: theme.node.muted }}>{t("agent.skillManager.localDescription")}</div>
+                        <div className="mt-0.5 text-xs" style={{ color: theme.node.muted }}>{t("agent.skillManager.canvasOverrideDescription")}</div>
                     </div>
                     <div className="flex items-center gap-1">
                         <Tooltip title={t("agent.skillManager.reload")}>
@@ -329,10 +330,11 @@ export function AgentSkillsView({ clientId }: { clientId: string }) {
                                     </div>
                                     <div className="mt-2 flex items-center justify-between gap-2 pl-7">
                                         <label className="inline-flex items-center gap-2 text-xs" style={{ color: theme.node.muted }}>
-                                            <Switch size="small" checked={skill.enabled} loading={busy} disabled={!connected || Boolean(busySkill) || Boolean(generatingSource)} onChange={(enabled) => void toggleEnabled(skill, enabled)} />
-                                            {t(skill.enabled ? "agent.skillManager.enabled" : "agent.skillManager.disabled")}
+                                            <Switch size="small" checked={skill.enabled} loading={busy} disabled={!connected || codexBusy || Boolean(busySkill) || Boolean(generatingSource)} onChange={(enabled) => void toggleEnabled(skill, enabled)} />
+                                            {t(skill.enabled ? "agent.skillManager.enabled" : "agent.skillManager.disabled")} · {t(skill.overridden ? "agent.skillManager.canvasOverride" : "agent.skillManager.inherited")}
                                         </label>
                                         <div className="flex items-center gap-0.5">
+                                            {skill.overridden && <Button type="text" size="small" disabled={!connected || Boolean(busySkill) || codexBusy} onClick={() => void toggleEnabled(skill, null)}>{t("agent.skillManager.restoreInherited")}</Button>}
                                             <Button type="text" size="small" disabled={!connected || !skill.enabled || Boolean(busySkill)} icon={selected ? <Check className="size-3.5" /> : <Sparkles className="size-3.5" />} onClick={() => useSkill(skill)}>{t(selected ? "agent.skillManager.selected" : "agent.skillManager.use")}</Button>
                                             {skill.managed ? (
                                                 <>

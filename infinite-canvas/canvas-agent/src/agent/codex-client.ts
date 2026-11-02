@@ -4,7 +4,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { createAgentLogWriter } from "../utils/agent-runtime.js";
-import { VERSION } from "../config.js";
+import { VERSION, loadConfig } from "../config.js";
 import { logger } from "../utils/logger.js";
 import { field, type JsonRecord } from "../utils/value.js";
 import { codexEventHistory, type CodexEventHistory } from "./codex-event-history.js";
@@ -109,7 +109,9 @@ export class CodexAppClient {
         if (preheat) this.pendingPreheatThreadStarts += 1;
         let threadId = "";
         try {
-            const { thread } = await this.request("thread/start", { ...threadSettings(permissionMode), ...(cwd ? { cwd } : {}), threadSource: "user" });
+            const settings = threadSettings(permissionMode);
+            if (cwd && Object.keys(loadConfig().skillOverrides || {}).length) settings.config.skills = await this.threadSkillConfig(cwd);
+            const { thread } = await this.request("thread/start", { ...settings, ...(cwd ? { cwd } : {}), threadSource: "user" });
             if (!thread.id) throw new Error("Codex app-server 没有返回 thread id");
             threadId = thread.id;
             if (preheat) {
@@ -138,7 +140,9 @@ export class CodexAppClient {
         if (preheat) this.pendingPreheatThreadStarts += 1;
         try {
             if (preheat) this.preheatingThreadIds.add(threadId);
-            const { thread } = await this.request("thread/resume", { threadId, ...threadSettings(permissionMode), ...(cwd ? { cwd } : {}) });
+            const settings = threadSettings(permissionMode);
+            if (cwd && Object.keys(loadConfig().skillOverrides || {}).length) settings.config.skills = await this.threadSkillConfig(cwd);
+            const { thread } = await this.request("thread/resume", { threadId, ...settings, ...(cwd ? { cwd } : {}) });
             if (!thread.id) throw new Error("Codex app-server 没有返回 thread id");
             if (preheat) await this.completeMcpPreheat(thread.id);
             return thread;
@@ -151,7 +155,7 @@ export class CodexAppClient {
     /** 以 app-server 的权威 MCP 清单响应作为预热完成边界。 */
     private async completeMcpPreheat(threadId: string) {
         const result = await this.request("mcpServerStatus/list", { threadId, limit: 100, detail: "toolsAndAuthOnly" });
-        this.emit("agent_bootstrap", { type: "mcp.complete", phase: "preheat", threadId, services: result.data.map(({ name, authStatus }) => ({ name, authStatus })) });
+        this.emit("agent_bootstrap", { type: "mcp.complete", phase: "preheat", threadId, services: result.data.map(({ name, authStatus, tools }) => ({ name, authStatus, toolCount: tools && typeof tools === "object" ? Object.keys(tools).length : 0 })) });
     }
 
     /** 查询 Codex 线程列表。 */
@@ -160,8 +164,24 @@ export class CodexAppClient {
     }
 
     /** 读取指定 Codex 线程。 */
-    readThread(threadId: string, includeTurns = true) {
-        return this.request("thread/read", { threadId, includeTurns });
+    async readThread(threadId: string, includeTurns = true) {
+        try {
+            return await this.request("thread/read", { threadId, includeTurns });
+        } catch (error) {
+            if (!includeTurns || !/paginated threads do not support thread\/read/i.test(String(error))) throw error;
+            const { thread } = await this.request("thread/read", { threadId, includeTurns: false });
+            const turns: NonNullable<typeof thread.turns> = [];
+            let cursor: string | null = null;
+            const seen = new Set<string>();
+            do {
+                const page: CodexRequestResult<"thread/turns/list"> = await this.request("thread/turns/list", { threadId, cursor, limit: 100, sortDirection: "asc", itemsView: "full" });
+                turns.push(...page.data);
+                cursor = page.nextCursor || null;
+                if (cursor && seen.has(cursor)) throw new Error("Codex thread turns pagination repeated a cursor");
+                if (cursor) seen.add(cursor);
+            } while (cursor);
+            return { thread: { ...thread, turns } };
+        }
     }
 
     /** 归档指定 Codex 线程。 */
@@ -178,6 +198,19 @@ export class CodexAppClient {
             const prefix = `${threadId}\0`;
             [...this.structuredOutputByTurn.keys()].filter((key) => key.startsWith(prefix)).forEach((key) => this.structuredOutputByTurn.delete(key));
         }
+    }
+
+    /** Read effective settings without exposing server commands or secrets to the browser. */
+    readConfig(cwd: string) {
+        return this.request("config/read", { cwd, includeLayers: false });
+    }
+
+    /** Merge thread overrides with the current effective Codex skill configuration. */
+    private async threadSkillConfig(cwd: string) {
+        const result = await this.readConfig(cwd);
+        const skillConfig = field(result.config, "skills");
+        const entries = field(skillConfig, "config");
+        return mergeSkillConfig(Array.isArray(entries) ? entries : [], loadConfig().skillOverrides || {});
     }
 
     /** 查询当前账号可用的 Codex 模型。 */
@@ -783,8 +816,25 @@ function canvasAgentMcpCommand() {
 }
 
 /** 生成 Codex app-server 使用的 MCP 配置。 */
-function codexConfig(permissionMode: AgentPermissionMode) {
-    return { model_reasoning_summary: "auto", ...(permissionMode === "automatic" ? { approvals_reviewer: "auto_review" } : {}), mcp_servers: { "infinite-canvas": { command: canvasAgentMcp.command, args: canvasAgentMcp.args, default_tools_approval_mode: "approve", startup_timeout_sec: 20, tool_timeout_sec: 90 } } };
+function codexConfig(permissionMode: AgentPermissionMode): JsonRecord {
+    const mcpOverrides = canvasMcpOverrides(loadConfig().mcpOverrides || {});
+    return { model_reasoning_summary: "auto", ...(permissionMode === "automatic" ? { approvals_reviewer: "auto_review" } : {}), mcp_servers: { ...mcpOverrides, "infinite-canvas": { enabled: true, command: canvasAgentMcp.command, args: canvasAgentMcp.args, default_tools_approval_mode: "approve", startup_timeout_sec: 20, tool_timeout_sec: 90 } } };
+}
+
+export function mergeSkillConfig(entries: unknown[], overrides: Record<string, boolean>) {
+    const config = entries.filter((entry): entry is JsonRecord => Boolean(entry && typeof entry === "object" && !Array.isArray(entry))).map((entry) => ({ ...entry }));
+    for (const [skillPath, enabled] of Object.entries(overrides)) {
+        if (!path.isAbsolute(skillPath) || typeof enabled !== "boolean") continue;
+        const index = config.findIndex((entry) => entry.path === skillPath);
+        if (index >= 0) config[index] = { ...config[index], enabled };
+        else config.push({ path: skillPath, enabled });
+    }
+    return { config };
+}
+
+/** Constrain local overrides to enabled flags on ordinary configured server names. */
+export function canvasMcpOverrides(overrides: Record<string, boolean>) {
+    return Object.fromEntries(Object.entries(overrides).filter(([name, enabled]) => name !== "infinite-canvas" && /^[A-Za-z0-9_-]+$/.test(name) && typeof enabled === "boolean").map(([name, enabled]) => [name, { enabled }]));
 }
 
 function threadSettings(permissionMode: AgentPermissionMode) {

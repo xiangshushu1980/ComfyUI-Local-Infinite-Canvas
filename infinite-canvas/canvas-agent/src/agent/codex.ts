@@ -6,6 +6,7 @@ import { z } from "zod";
 import type { CanvasSnapshot } from "../canvas/types.js";
 import { logger } from "../utils/logger.js";
 import { errorMessage, field, type JsonRecord } from "../utils/value.js";
+import { loadConfig, saveConfig, type CanvasAgentConfig } from "../config.js";
 import { CodexAppClient, CodexReportedError } from "./codex-client.js";
 import { codexEventHistory } from "./codex-event-history.js";
 import { settledTurnIds, summarizeCodexThread, threadMessages } from "./codex-history.js";
@@ -122,10 +123,20 @@ export async function listCodexModels(emit: AgentEmit) {
     return await (await getCodexApp(emit)).listModels();
 }
 
+/** Return only MCP names and enabled state; never send commands, environment or credentials to the UI. */
+export async function listCodexMcpConfig(emit: AgentEmit, cwd: string) {
+    const result = await (await getCodexApp(emit)).readConfig(cwd);
+    const servers = field(result.config, "mcp_servers");
+    if (!servers || typeof servers !== "object" || Array.isArray(servers)) return [];
+    return Object.entries(servers).map(([name, value]) => ({ name, enabled: field(value, "enabled") !== false }));
+}
+
 /** 查询当前工作空间的原生 Skill 列表。 */
 export async function listCodexSkills(emit: AgentEmit, cwd: string, forceReload = false): Promise<CodexSkillsListEntry> {
     const result = await (await getCodexApp(emit)).listSkills(cwd, forceReload);
-    return result.data.find((entry) => samePath(entry.cwd, cwd)) || { cwd, skills: [], errors: [] };
+    const entry = result.data.find((item) => samePath(item.cwd, cwd)) || { cwd, skills: [], errors: [] };
+    const overrides = loadConfig().skillOverrides || {};
+    return { ...entry, skills: entry.skills.map((skill) => ({ ...skill, inheritedEnabled: skill.enabled, overridden: Object.hasOwn(overrides, skill.path), enabled: overrides[skill.path] ?? skill.enabled })) };
 }
 
 /** 从原生 Skill 列表中解析并校验浏览器提交的选择器。 */
@@ -141,10 +152,13 @@ export async function resolveCodexSkill(emit: AgentEmit, cwd: string, selector: 
 }
 
 /** 修改经过原生列表校验的 Skill 启用状态。 */
-export async function configureCodexSkill(emit: AgentEmit, cwd: string, selector: CodexSkillSelector, enabled: boolean) {
+export async function configureCodexSkill(emit: AgentEmit, cwd: string, selector: CodexSkillSelector, enabled: boolean | null, config: CanvasAgentConfig) {
     const skill = await resolveCodexSkill(emit, cwd, selector);
-    const result = await (await getCodexApp(emit)).setSkillEnabled(skill.path, enabled);
-    return { ...result, skill: { ...skill, enabled: result.effectiveEnabled } };
+    const overrides = { ...config.skillOverrides };
+    if (enabled === null) delete overrides[skill.path]; else overrides[skill.path] = enabled;
+    config.skillOverrides = overrides;
+    saveConfig(config);
+    return { effectiveEnabled: enabled ?? Boolean(skill.inheritedEnabled), skill: { ...skill, enabled: enabled ?? Boolean(skill.inheritedEnabled) } };
 }
 
 /** 读取指定 Codex 线程及其聊天历史。 */
