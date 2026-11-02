@@ -18,3 +18,33 @@
 1. 保留 canvas-agent、前端 Agent Bridge、MCP 画布操作和权限机制。
 2. 将源码修复助手和 Windows 发布启动器标记为待剥离；先完成调用方与用户价值判断。
 3. 任何删除须检查 CodeGraph callers/impact、资源引用、前端路由、测试与打包回归。
+
+## Codex Web 与 Canvas Agent 会话整合讨论（2026-11-02）
+
+状态：**架构讨论与 Agent 建议，尚未由用户采纳，也没有实施或联调验收。** 本次检查 Canvas Lab HEAD `826867e`、Codex Web HEAD `c9bf4f0`；两边工作树均有未提交改动，代码证据以当时磁盘内容为准。运行状态及版本均为当时快照，复用前须重新检查。
+
+### 现有边界与证据
+
+- 进程检查显示 Codex Web 服务启动了 Codex `0.166.0` app-server；Canvas Agent 另行启动项目依赖中的 `0.146.0` app-server，方式为 `app-server --stdio`。同一用户环境及可访问对话数据不表示共享运行进程、活动 turn、MCP 子进程或内存状态。源码见 `infinite-canvas/canvas-agent/src/agent/codex-client.ts` 的 `CodexAppClient.start`。
+- Canvas Agent 在 `thread/start` 和 `thread/resume` 的设置中注入 `infinite-canvas` MCP、审批和超时设置，并以线程级 `mcpServerStatus/list` 查询预热结果。MCP stdio 服务通过带 token 的本地 HTTP 请求将工具调用转发至 Canvas Agent；`canvas/session.ts` 管理画布客户端、活动/绑定目标及操作分派。Agent 自身还维护串行 turn 队列。参考 `src/agent/codex-client.ts`、`src/agent/codex.ts`、`src/server/mcp.ts`、`src/canvas/session.ts`（均位于 `infinite-canvas/canvas-agent/`）。
+- 当时 Agent 健康响应报告一个已连接画布、空闲，当前对话的 `infinite-canvas` ready，`codegraph` 初始化握手失败。这是该时刻该对话的状态，健康响应不证明工具实际调用成功，也不代表其他线程状态。
+- Codex Web 的 `src/server/main.ts` 暴露的是供桌面 renderer 使用的 `/__backend/ipc` WebSocket 桥，每个连接创建应用视图；本次未发现提供给 Canvas Agent 的稳定通用会话 API。未完整审计上游桌面 MCP 设置界面，不能据此断言其没有 MCP 开关或状态展示。
+- Codex Web 根 `README.md` 和 `scripts/codex_remote_proxy` 描述由独立 Unix socket app-server 服务供 Web 连接的方式；其 `docs/development.md` 记录本机尚未验证切换。这不是当前 Web 子进程已向 Canvas Agent 暴露复用接口的证据，也未证明多客户端共享语义。
+
+### 备选与暂定建议
+
+1. **保持两个 app-server**：隔离较好，可先统一配置入口和状态展示；仍应按实例、线程展示实际 MCP 生效和错误，而非假设状态一致。
+2. **两个客户端连接共享 app-server**：可探索独立于 Codex Web 生命周期的服务，但需新增或适配 Canvas Agent 连接，验证版本、并发、线程订阅、审批和断线语义；共享服务成为共同故障点。直接依赖当前 Web 子进程仍会受到 Web 重启影响。
+3. **将 Canvas 能力并入 Codex Web 后端/会话层**：可形成单一产品控制面，但需要迁移画布连接、路由、事件、审批等职责，并增加桌面上游补丁及升级成本，故不建议在缺少明确收益与验证前实施。
+
+建议先明确 MCP 配置权威来源、开关的作用域及生效时点，区分配置启用、进程启动、线程握手和工具调用；保留 Canvas Agent 的画布连接和路由。随后在隔离环境验证外置共享 app-server，再依据实测决定是否迁移。减少进程数量本身不是充分理由。
+
+### 迁移前必须验证
+
+- 两客户端的版本与协议兼容、同时初始化、断线重连及大消息；记录精确配置与启动参数。
+- 用户级配置和 Canvas 线程注入的合并规则；开关对新建、恢复及运行中线程的作用；分别核验启动通知、线程 MCP 清单和真实工具调用。
+- 同一线程在两客户端读取、恢复、订阅、执行、中断和审批的归属与冲突处理；持久化对话可见不等于活动会话共享。
+- 至少两个画布客户端切换、断线和重连时，turn 与画布身份绑定、读写目标及错误处理；用可清理的操作验证不发生跨画布误写。
+- 分别重启客户端、代理及共享服务时的运行任务、待审批请求、MCP 和恢复行为；明确安全边界、资源/性能、回退方案及上游升级成本。
+
+本轮未更改应用代码、依赖、服务或 MCP 配置，未重启服务；共享 app-server 和统一管理均未实测。
