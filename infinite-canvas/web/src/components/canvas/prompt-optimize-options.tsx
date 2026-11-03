@@ -13,6 +13,7 @@ type PromptOptimizeOptionsProps = {
     cloudReady: boolean;
     cloudModel?: string;
     localReady?: boolean;
+    hideEngine?: boolean;
     title?: string;
     disabled?: boolean;
     className?: string;
@@ -30,6 +31,7 @@ export function PromptOptimizeOptions({
     cloudReady,
     cloudModel,
     localReady = true,
+    hideEngine = false,
     title,
     disabled = false,
     className = "",
@@ -59,7 +61,7 @@ export function PromptOptimizeOptions({
                     aria-label={t("canvas.promptPanel.optimizeClose")}
                 />
             </div>
-            <div>
+            {!hideEngine ? <div>
                 <div className="mb-1 text-[11px] opacity-70">{t("canvas.promptPanel.optimizeEngine")}</div>
                 <div className="grid grid-cols-2 gap-2">
                     <Button size="small" type={engine === "local" ? "primary" : "default"} onClick={() => onEngineChange("local")}>
@@ -91,7 +93,7 @@ export function PromptOptimizeOptions({
                         </Button>
                     </div>
                 ) : null}
-            </div>
+            </div> : null}
             <div>
                 <div className="mb-1 text-[11px] opacity-70">{t("canvas.promptPanel.optimizeLanguage")}</div>
                 <div className="grid grid-cols-2 gap-2">

@@ -99,7 +99,7 @@ export function CanvasNodePromptPanel({ node, nodes, isRunning, onPromptChange, 
             : t(`canvas.promptPanel.${mode === "image" && hasImageContent ? "editImage" : mode === "text" && hasTextContent ? "editText" : mode}`);
     const canOptimize = isH3 && Boolean(draft.trim()) && !isRunning && !optimizeRunning;
     const canOptimizeImage = isImage && Boolean(draft.trim()) && !isRunning && !optimizeRunning;
-    const optimizeEngine = config.promptApiEngine === "cloud" ? "cloud" : "local";
+    const optimizeEngine = !isH3 && config.promptApiEngine === "cloud" ? "cloud" : "local";
     const optimizeLanguage = config.promptOptimizeLanguage === "en" ? "en" : "zh";
     const optimizeCloudReady = Boolean((config.promptCloudBaseUrl || "").trim() && (config.promptCloudApiKey || "").trim() && (config.promptCloudModel || "").trim());
     const captionReady = mode === "text" && Boolean(captionEngine);
@@ -600,7 +600,8 @@ export function CanvasNodePromptPanel({ node, nodes, isRunning, onPromptChange, 
                     language={optimizeLanguage}
                     cloudReady={optimizeCloudReady}
                     cloudModel={config.promptCloudModel}
-                    localReady={isImage ? engineAvailable("imagePe") : engineAvailable("teMan")}
+                    hideEngine={isH3}
+                    localReady={isImage ? engineAvailable("imagePe") : true}
                     onEngineChange={(engine) => updateConfig("promptApiEngine", engine)}
                     onLanguageChange={(language) => updateConfig("promptOptimizeLanguage", language)}
                     onOpenSettings={() => openConfigDialog(true, "cloud-api")}
