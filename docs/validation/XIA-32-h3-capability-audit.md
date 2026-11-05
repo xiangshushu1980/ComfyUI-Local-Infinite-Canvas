@@ -25,3 +25,15 @@
 4. **服务运行状态未证实**：没有监听端口，不进行写入性探针、不启动服务或触发 GPU。后续集成先确认配置及健康，再做小样本任务，并记录输出、耗时、显存、取消/失败行为。
 5. **工作树污染风险**：已有大量用户改动，不直接切换分支、不重置、不批量格式化。若后续改代码，先读取目标 diff，列出影响文件、测试和按文件回滚方案，再实施。
 6. **验收边界**：当前为静态能力审计与局部失败证据；Canvas Agent 端到端、H3 GPU 实测、VDN 与无 VDN 实际可用性、真实视频合成仍属待验证。
+
+## 2026-11-05 提交后复查
+- 用户授权整理提交后，`canvas-lab` 新增本地提交 `856bf27`（86 files）；未 push，原有源码改动已 checkpoint。未跟踪的 `resources/nodes/unpacked/ComfyUI-Qwen-Image-2.1-Prompt-Enhancer/` 属第三方插件目录，保留不纳入提交；其他仓库运行数据未处理。
+- 确认当前 WSL user units：`canvas-lab.target`、`canvas-lab-gateway.service`、`canvas-lab-agent.service`、`canvas-lab-web.service` 均 `inactive (dead)`。实际配置为 Gateway `127.0.0.1:8190`、Agent `127.0.0.1:17373`、Web `127.0.0.1:3000`；首次探测端口不是这些配置端口，不能从首次 curl 推断 ComfyUI 自身状态。
+- `node --test test/h3-lora-workflow.test.js test/prompt-optimizer.test.js`：**18 tests / 17 pass / 1 fail**。失败为 `prompt-optimizer.test.js:450` 的旧字段假设：测试期待 `TE_Qwen_Image_2_1_Prompt_Enhancer` 的 GGUF `主模型`/`mmproj`，当前 `prompts/image-prompt-enhance.json` 则使用 `CLIPLoader` 的 `clip_name` + `QwenImage21_T2IPromptRewrite`/`QwenImage21_EditPromptRewrite`。应更新测试契约并确认实际模型别名链，而非据此认定 H3 LoRA 失败。
+- `node --test test/h3-lora-workflow.test.js test/runner-vdn.test.js test/h3-refresh-models.test.js`：**6 tests / 5 pass / 1 fail**。失败位于 `h3-refresh-models.test.js:179` 创建模拟 Gateway 时，由 `config.js:43` 回环绑定保护拒绝非本机地址（需要检查测试配置），不是证明 VDN 本体失败。
+- 以上均为无需启动实际服务/耗用 GPU 的局部测试。服务端到端、H3 模型部署、GPU 视频输出及剪辑拼接依旧待验证。
+
+## 推荐后续动作及测试/回滚边界
+- XIA-32 已完成只读静态审计与局部测试证据，可将上述两个**测试与当前契约不一致**的失败单独开修复任务，避免在审计任务中修改现有行为。
+- 如果修改测试：仅限定在相应 `test/*.test.js`，先明确当前实现与预期契约，重跑相关测试及 Gateway 全套 Node 测试；回滚为 `git restore --source=<修改前提交> -- <测试文件>`（只针对新变动，保留用户既有修改）。
+- 真实 H3 执行前先确认运行服务、GPU/显存和必要依赖，并获得明确执行授权；避免启动可能占用大显存的模型。
