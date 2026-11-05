@@ -3557,7 +3557,7 @@ function InfiniteCanvasPage() {
 
     const insertPoseAtlasReference = useCallback(
         async (selection: PoseAtlasSelection, replace: boolean) => {
-            const poseAtlas = { index: selection.index, id: selection.id, collection: selection.collection, label: selection.label };
+            const poseAtlas = { index: selection.index, id: selection.id, collection: selection.collection, label: selection.label, render: selection.render };
             if (replace && poseAtlasReplaceNode) {
                 const stored = await uploadImage(selection.dataUrl);
                 await ensureImagePreview(stored.storageKey);

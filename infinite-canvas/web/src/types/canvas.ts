@@ -148,7 +148,7 @@ export type CanvasNodeMetadata = {
     aspectRatio?: string;
     freeCard?: CanvasFreeCardInfo;
     freeCardTextValues?: Record<string, string>;
-    poseAtlas?: { index: number; id: string; collection: "pose" | "costume" | "portrait"; label: string };
+    poseAtlas?: { index: number; id: string; collection: "pose" | "costume" | "portrait"; label: string; render?: "line" | "depth" };
     freeWorkflowId?: string;
     groupId?: string;
     interactive?: boolean; // Plugin node interaction/move state; see CanvasNodeDefinition.interactionToggle.

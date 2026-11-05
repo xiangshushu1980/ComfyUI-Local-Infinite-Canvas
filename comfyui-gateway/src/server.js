@@ -734,6 +734,39 @@ export async function createGatewayApp(overrides = {}) {
 
   // Local PoseAtlas catalog: metadata + images from the user's own ComfyUI install.
   const poseAtlas = createPoseAtlasCatalog(() => resources.comfyRoot?.() || config.comfyDir);
+  app.get("/api/poseatlas/facets", (req, res) => {
+    try {
+      const result = poseAtlas.facets(req.query);
+      if (!result) return res.status(404).json({ ok: false, error: "PoseAtlas not installed" });
+      return res.json({ ok: true, ...result });
+    } catch (error) {
+      return res.status(500).json({ ok: false, error: error.message });
+    }
+  });
+  // Explicit user click only: proxy the upstream per-image depth download endpoint.
+  // The client supplies an index ordinal, never a filename or remote URL.
+  app.post("/api/poseatlas/depth/:index", async (req, res) => {
+    const stem = poseAtlas.depthStem(req.params.index);
+    if (!stem) return res.status(404).json({ ok: false, error: "Unknown pose" });
+    try {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 100000);
+      try {
+        const response = await fetch(`${comfy.baseUrl()}/poseatlas/depth`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id: stem }),
+          signal: controller.signal,
+        });
+        const result = await response.json();
+        return res.status(response.status).json(result);
+      } finally {
+        clearTimeout(timer);
+      }
+    } catch (error) {
+      return res.status(502).json({ ok: false, error: error.message });
+    }
+  });
   app.get("/api/poseatlas/search", (req, res) => {
     try {
       const result = poseAtlas.search(req.query);
