@@ -1,0 +1,37 @@
+{
+  "case_id": "XIA34-A-v1",
+  "route": "segmented",
+  "workflow": "video-h3-t2v-novdn",
+  "seconds": 4,
+  "size": "1024x576",
+  "seed": 34001,
+  "steps": 8,
+  "cfg": 1,
+  "shots": [
+    {
+      "id": "S1_approach",
+      "task_id": "task_c4d9c24a-70bf-454a-93bb-4151c12865f9",
+      "prompt_sha256": "c8dd100d15ad42bcf68b8ca41c1e354608f999728eb7ec955fa6ad1fe875a4d1",
+      "status": "queued"
+    },
+    {
+      "id": "S2_prepare",
+      "task_id": "task_c50e5cf3-43c3-4d88-9b6c-707dc0de852b",
+      "prompt_sha256": "9c0417b0edf17fe67c2825028a397d94765ca8c7f3f078aaa3f49f5b4e05e504",
+      "status": "queued"
+    },
+    {
+      "id": "S3_jump",
+      "task_id": "task_075c1cac-25ff-41fb-bf40-bbe0d715465f",
+      "prompt_sha256": "b318e3adbe9b405a496e2f0066a6e53d9a52a8b06d20767fe4d6fb3894ba620d",
+      "status": "queued"
+    },
+    {
+      "id": "S4_land",
+      "task_id": "task_2979a171-98b6-459e-9aff-348f08844813",
+      "prompt_sha256": "7e245b18d04719a89008b3e49abd0a12d18f95ee2fe67d64c6950423d391b425",
+      "status": "queued"
+    }
+  ],
+  "created_at": "2026-11-05T15:59:31.728658+00:00"
+}

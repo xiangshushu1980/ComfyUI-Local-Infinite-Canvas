@@ -1,0 +1,19 @@
+{
+  "task": {
+    "id": "task_a85eec7e-e2d1-4d06-86d7-b8a364f6a3cb",
+    "object": "video",
+    "status": "queued",
+    "progress": 0,
+    "created_at": 1793894087
+  },
+  "prompt_file": "XIA-39-prompt-v2.txt",
+  "prompt_sha256": "db97a76bf73c7162382df09bc22c4190c9e0af6b9692c17e54a9d3598373ce0b",
+  "params": {
+    "model": "video-h3-t2v-novdn",
+    "seconds": "8",
+    "size": "1024x576",
+    "ratio": "16:9",
+    "params": "{\"seed\": 34001, \"steps\": 8, \"cfg\": 1, \"interpolation\": \"off\"}"
+  },
+  "submitted_at_utc": "2026-11-05T15:54:47.899289+00:00"
+}
