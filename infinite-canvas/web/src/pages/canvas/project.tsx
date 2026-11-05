@@ -2943,13 +2943,13 @@ function InfiniteCanvasPage() {
                     const inheritedReferences = isImageNode && sourceNode?.metadata?.references?.length
                         ? (await resolveMetadataReferences(sourceNode.metadata)) || []
                         : [];
-                    const referenceImages = [...new Map([...inheritedReferences, ...generationContext.referenceImages].map((image) => [image.id, image])).values()];
+                    const referenceImages = generationContext.referenceImages.length ? generationContext.referenceImages : inheritedReferences;
                     const generationType = referenceImages.length ? ("edit" as const) : ("generation" as const);
                     if ((generationConfig.imageMode || "").trim() && !referenceImages.length) {
                         // 没有参考却沿用 edit/inpaint/outpaint 会让请求直接缺图；空参考时回到文生图。
                         generationConfig.imageMode = "t2i";
                     }
-                    const generationMetadata = buildImageGenerationMetadata(generationType, generationConfig, count, referenceImages);
+                    const generationMetadata = { ...buildImageGenerationMetadata(generationType, generationConfig, count, referenceImages), params: generationConfig.params };
                     const parentConfig = NODE_DEFAULT_SIZE[isConfigNode ? CanvasNodeType.Config : isImageNode ? CanvasNodeType.Image : CanvasNodeType.Text];
                     const imageConfig = NODE_DEFAULT_SIZE[CanvasNodeType.Image];
                     const parentPosition = sourceNode?.position || { x: 0, y: 0 };
@@ -3009,7 +3009,14 @@ function InfiniteCanvasPage() {
                         ),
                         ...(reuseImageNode ? [] : [rootNode]),
                     ]);
-                    if (!reuseImageNode && !isImageNode) setConnections((prev) => [...prev, { id: nanoid(), fromNodeId: nodeId, toNodeId: rootId }]);
+                    if (!reuseImageNode) {
+                        setConnections((prev) => [
+                            ...prev,
+                            ...(isImageNode
+                                ? prev.filter((connection) => connection.toNodeId === nodeId).map((connection) => ({ ...connection, id: nanoid(), toNodeId: rootId }))
+                                : [{ id: nanoid(), fromNodeId: nodeId, toNodeId: rootId }]),
+                        ]);
+                    }
                     setSelectedNodeIds(new Set([nodeId]));
                     setSelectedConnectionId(null);
                     setDialogNodeId(nodeId);
