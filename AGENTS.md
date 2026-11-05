@@ -10,7 +10,7 @@
 
 ## Development agent workflow
 
-- **Project Memory**：使用用户级 `project-memory` 统一管理项目文档、Git 知识记录、Hindsight 经验积累与上下文恢复，按需加载其参考资料，不重复建立文档或记忆管理机制。
+- **项目文档**：按需使用用户级 `project-docs` 维护项目文档和证据；Hindsight 插件按当前环境说明运行，不重复建立记忆操作流程。
 - **Linear**: Use the available user-level Linear integration for this Rebuild project's tasks, progress and acceptance; the `linear-local-agent-pilot` skill is for bounded local-agent pilots, not general project management. Do not reuse the old Infinite Canvas project's completion status.
 
 ## Task-based documentation routing
