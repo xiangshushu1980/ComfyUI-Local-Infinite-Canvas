@@ -19,7 +19,7 @@ export function createPoseAtlasCatalog(getComfyRoot) {
     }
     return cache;
   }
-  function search({ collection = "pose", q = "", page = 1, limit = 30 } = {}) {
+  function search({ collection = "pose", q = "", page = 1, limit = 30, grouped = false } = {}) {
     const data = catalog();
     if (!data) return null;
     const selected = ["pose", "costume", "portrait"].includes(collection) ? collection : "pose";
@@ -35,6 +35,27 @@ export function createPoseAtlasCatalog(getComfyRoot) {
       results.push({ index, id: entry.id, label: entry.label, collection: selected,
         thumbAvailable: existsAsset(data.dir, entry.thumb), fullAvailable: existsAsset(data.dir, entry.file) });
     });
+    if (selected === "pose" && (grouped === "1" || grouped === "true")) {
+      // Group all angles of a matched pose, even when the search matched just one view.
+      const matchedIds = new Set(results.map(entry => entry.id));
+      const groups = new Map();
+      data.entries.forEach((entry, index) => {
+        if (entry.collection !== "pose" || !matchedIds.has(entry.id)) return;
+        if (!groups.has(entry.id)) groups.set(entry.id, {
+          id: entry.id, label: `${entry.no || entry.id} ${entry.zh || entry.id}`,
+          category: entry.category || "", variants: [],
+        });
+        groups.get(entry.id).variants.push({
+          index, id: entry.id, label: entry.label, angle: entry.angle,
+          angleName: entry.angle_name || entry.angle || "",
+          collection: "pose", thumbAvailable: existsAsset(data.dir, entry.thumb),
+          fullAvailable: existsAsset(data.dir, entry.file),
+        });
+      });
+      const items = Array.from(groups.values());
+      return { total: items.length, page: safePage, limit: safeLimit,
+        items: items.slice((safePage - 1) * safeLimit, safePage * safeLimit) };
+    }
     return { total: results.length, page: safePage, limit: safeLimit,
       items: results.slice((safePage - 1) * safeLimit, safePage * safeLimit) };
   }
