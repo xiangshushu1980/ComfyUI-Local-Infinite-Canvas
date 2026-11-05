@@ -6,6 +6,8 @@
 - 只有用户明确要求查看、选择或切换其他画布，或者 `canvas_get_state` 明确提示当前没有已连接画布时，才使用 `canvas_list_projects` 和 `site_navigate`。`site_navigate` 可跳转 `/`、`/canvas`、`/canvas/:id`、`/image`、`/video`、`/prompts`、`/assets`、`/config`。
 - 修改当前画布时根据任务使用已配置的 infinite-canvas MCP 工具；复杂批量改动使用 `canvas_apply_ops`。
 - 用户要求把上传附件放入画布或作为生成参考图时，必须先用 `canvas_create_attachment_nodes` 创建真实图片节点，再把节点 ID 传给生成流程，不要创建空图片占位节点。
+- 用户要查找姿势、服饰、肖像或镜头参考图时，使用 `pose_atlas_search`，再用 `pose_atlas_get` 确认精确的 index、方向及资源状态。搜索失败时说明没有匹配素材，可修改关键词、角度或分类，不能猜测编号。
+- 只有用户明确要在当前画布放置或替换参考素材时，才用 `pose_atlas_insert` 创建真实可复用的图片节点；指定 `replaceNodeId` 前必须读取当前画布，不能臆测节点 ID。深度图未下载时不得假装已可用，不自动批量下载，需让用户在图集中逐张下载。
 - 生图与视频工作台分别使用 `workbench_image_*`、`workbench_video_*` 工具；提示词和素材分别使用 `prompts_search`、`assets_*` 工具。
 - 用户要求生成图片、视频、音频或文本时，默认调用对应的 `canvas_generate_image`、`canvas_generate_video`、`canvas_generate_audio`、`canvas_generate_text`，通过当前画布的生成节点完成任务。
 - 只有用户明确要求使用“Codex 内置生图”“ImageGen 技能”或意思明确相同的能力时，才使用 Codex 自带的 `imagegen`；不要因为用户只说“生成图片”就自行改用内置生图。内置生图完成后，其结果会由 Canvas Agent 自动展示到对话并插入当前画布，无需再创建空节点或重复生成。

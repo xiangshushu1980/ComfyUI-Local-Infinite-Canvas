@@ -42,6 +42,9 @@ export const toolNames = [
     "prompts_search",
     "assets_list",
     "assets_add",
+    "pose_atlas_search",
+    "pose_atlas_get",
+    "pose_atlas_insert",
 ] as const;
 export type ToolName = (typeof toolNames)[number];
 
@@ -124,6 +127,12 @@ export const toolInputSchemas = {
     prompts_search: z.object({ keyword: z.string().optional(), category: z.string().optional(), tags: z.array(z.string()).optional(), page: z.number().optional(), pageSize: z.number().optional() }),
     assets_list: z.object({ kind: z.enum(["all", "text", "image", "video"]).optional(), keyword: z.string().optional(), page: z.number().optional(), pageSize: z.number().optional() }),
     assets_add: z.object({ kind: z.enum(["text", "image"]), title: z.string(), content: z.string().optional(), imageUrl: z.string().optional(), tags: z.array(z.string()).optional(), source: z.string().optional(), note: z.string().optional() }),
+    pose_atlas_search: z.object({ query: z.string().optional(), collection: z.enum(["pose", "costume", "portrait"]).optional(),
+        angle: z.enum(["front", "diagonal", "side", "high", "low"]).optional(),
+        first: z.string().optional(), second: z.string().optional(), limit: z.number().int().min(1).max(30).optional() }),
+    pose_atlas_get: z.object({ index: z.number().int().min(0) }),
+    pose_atlas_insert: z.object({ index: z.number().int().min(0), render: z.enum(["line", "depth"]).optional(),
+        x: z.number().optional(), y: z.number().optional(), replaceNodeId: z.string().optional() }),
 } satisfies Record<ToolName, z.AnyZodObject>;
 
 export const toolDescriptions: Record<ToolName, string> = {
@@ -161,4 +170,7 @@ export const toolDescriptions: Record<ToolName, string> = {
     prompts_search: "搜索提示词库（第三方提示词合集），支持 keyword、category、tags 过滤和 page/pageSize 分页，返回标题、提示词、分类、标签、封面等。",
     assets_list: "列出用户「我的素材」，支持 kind（text/image/video）过滤、keyword 搜索和 page/pageSize 分页。为控制体积不返回图片/视频原始 data，仅返回封面与元信息。",
     assets_add: "向「我的素材」新增素材。kind=text 时用 content 传文本内容；kind=image 时用 imageUrl 传图片地址或 dataURL。可附带 title、tags、source、note。",
+    pose_atlas_search: "从本机 PoseAtlas 图库搜索镜头参考素材。query 支持中英日名称/关键词；collection=pose/costume/portrait；angle 按标准方向过滤；first/second 使用分类 key（pose:系列/类别，costume:季节场景/服装类型，portrait:分区/发型）。返回索引 index、角度、可用性、得分。无匹配时明确说明并建议缩短关键词或更换类别，不凭空编造候选。",
+    pose_atlas_get: "按 pose_atlas_search 返回的 index 读取 PoseAtlas 条目详情、中英日名称、系列类别、角度、同姿势不同视角的 index，以及线稿/深度是否已经下载。插入前先核对候选。",
+    pose_atlas_insert: "将指定 PoseAtlas 条目插入当前无限画布的真实图片节点，并记录来源信息，可供后续生图/视频镜头引用。index 必须来自搜索或详情。render=line 默认线稿、depth 深度（必须已按需下载），replaceNodeId 可指定替换现有单图节点。只有用户明确要求插入/替换时才调用，不会擅自下载深度图库。",
 };

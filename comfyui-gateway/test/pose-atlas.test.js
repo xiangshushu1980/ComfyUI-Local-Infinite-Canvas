@@ -78,3 +78,24 @@ test("depth is explicit and only allowed for pose entries", () => {
   assert.equal(catalog.asset(1, "depth-full"), null);
   assert.equal(catalog.depthStem(99999), null);
 });
+
+test("agent semantic search ranks multilingual names and filters angle", () => {
+  const match = catalog.semanticSearch({ collection: "pose", query: "敬礼", angle: "side" });
+  assert.equal(match.total, 1);
+  assert.equal(match.items[0].index, 3);
+  assert.equal(match.items[0].angle, "side");
+  assert.equal(match.items[0].available.line, true);
+  assert.equal(match.items[0].available.depth, false);
+  assert.equal(catalog.semanticSearch({ collection: "pose", query: "imaginary-gesture" }).total, 0);
+  assert.equal(catalog.semanticSearch({ collection: "costume", query: "summer" }).total, 1);
+  assert.equal(catalog.semanticSearch({ collection: "portrait", query: "portrait" }).total, 1);
+});
+test("agent detail resolves grouped views and does not expose filesystem paths", () => {
+  const item = catalog.get(0);
+  assert.equal(item.id, "P001");
+  assert.equal(item.variants.length, 2);
+  assert.deepEqual(item.variants.map(v => v.index), [0, 3]);
+  assert.equal(item.available.depth, false);
+  assert.equal(catalog.get(99999), null);
+  assert.equal("file" in item, false);
+});

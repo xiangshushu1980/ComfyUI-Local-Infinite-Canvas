@@ -105,6 +105,56 @@ export function createPoseAtlasCatalog(getComfyRoot) {
     return { total: results.length, page: safePage, limit: safeLimit,
       items: results.slice((safePage - 1) * safeLimit, safePage * safeLimit) };
   }
+  function get(index) {
+    const data = catalog();
+    const entry = entryAt(index);
+    if (!data || !entry) return null;
+    const coll = entry.collection;
+    const group = coll === "pose" ? data.entries.flatMap((candidate, position) => candidate.collection === "pose" && candidate.id === entry.id
+      ? [{ index: position, angle: candidate.angle, angleName: candidate.angle_name, label: candidate.label }] : []) : [];
+    return { index: Number(index), id: entry.id, collection: coll, label: entry.label,
+      names: { zh: entry.zh || "", en: entry.en || "", ja: entry.ja || "" },
+      series: entry.series || "", category: entry.category || "",
+      group: entry.group || "", section: entry.section || "", hair: entry.hair || "",
+      angle: entry.angle || "", angleName: entry.angle_name || "",
+      available: { line: existsAsset(data.dir, entry.file), depth: coll === "pose" && existsAsset(data.dir, entry.depth_file) },
+      variants: group };
+  }
+  function semanticSearch({ collection = "pose", query = "", angle = "", first = "", second = "", limit = 10 } = {}) {
+    const data = catalog();
+    if (!data) return null;
+    const coll = collections.includes(collection) ? collection : "pose";
+    const text = String(query || "").trim().toLocaleLowerCase();
+    const expanded = text.replace(/正面|正视|front/gi, " front ").replace(/斜侧|三分之二|diagonal/gi, " diagonal ")
+      .replace(/侧面|侧视|side/gi, " side ").replace(/俯视|高角度|high angle/gi, " high ")
+      .replace(/仰视|低角度|low angle/gi, " low ").trim();
+    const tokens = expanded.split(/[\s,，、;；/]+/).filter(Boolean);
+    const angleNames = { 正面: "front", 斜侧: "diagonal", 侧面: "side", 俯视: "high", 仰视: "low" };
+    const desiredAngle = angleNames[angle] || angle;
+    const matched = scoped(data, coll, "", first, second);
+    const candidateScores = matched.flatMap(entry => {
+      if (desiredAngle && entry.angle !== desiredAngle) return [];
+      const labels = [entry.label, entry.zh, entry.en, entry.ja, entry.id, entry.no,
+        entry.category, entry.group, entry.series_name, entry.section, entry.hair,
+        entry.angle, entry.angle_name, ...(Object.values(entry.labels || {}))].map(value => String(value || "").toLocaleLowerCase());
+      let score = 0;
+      for (const token of tokens) {
+        if (labels.some(label => label.includes(token))) score += 5;
+      }
+      if (text && labels.some(label => label.includes(text))) score += 12;
+      if (tokens.length && score === 0) return [];
+      if (desiredAngle) score += 3;
+      return [{ entry, score, index: data.entries.indexOf(entry) }];
+    });
+    candidateScores.sort((a, b) => b.score - a.score || a.index - b.index);
+    const count = Math.max(1, Math.min(30, Number(limit) || 10));
+    return { total: candidateScores.length, items: candidateScores.slice(0, count).map(({ entry, index, score }) => ({
+      index, id: entry.id, collection: coll, label: entry.label, score,
+      angle: entry.angle || "", angleName: entry.angle_name || "",
+      names: { zh: entry.zh || "", en: entry.en || "", ja: entry.ja || "" },
+      available: { line: existsAsset(data.dir, entry.file), depth: coll === "pose" && existsAsset(data.dir, entry.depth_file) },
+    })) };
+  }
   function entryAt(index) {
     const data = catalog();
     const n = Number(index);
@@ -129,7 +179,7 @@ export function createPoseAtlasCatalog(getComfyRoot) {
     const file = assetPath(data.dir, rel);
     return file && fs.existsSync(file) && fs.statSync(file).isFile() ? file : null;
   }
-  return { search, facets, asset, depthStem };
+  return { search, facets, asset, depthStem, get, semanticSearch };
 }
 function assetPath(dir, rel) {
   if (typeof rel !== "string" || !rel || path.isAbsolute(rel)) return null;

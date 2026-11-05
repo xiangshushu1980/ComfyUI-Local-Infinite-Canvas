@@ -3,6 +3,7 @@ import type { NavigateFunction } from "react-router-dom";
 import i18n from "@/i18n";
 import { fetchPrompts } from "@/services/api/prompts";
 import { uploadImage } from "@/services/image-storage";
+import { localGatewayRoot } from "@/services/api/image";
 import { imageAspectOptions, imageQualityOptions, imageScaleOptions } from "@/components/image-settings-panel";
 import { videoResolutionOptions, videoSecondsRange, videoSizeOptions } from "@/components/video-settings-panel";
 import type { CanvasAgentSnapshot } from "@/lib/canvas/canvas-agent-ops";
@@ -25,6 +26,8 @@ export const SITE_TOOL_NAMES = [
     "prompts_search",
     "assets_list",
     "assets_add",
+    "pose_atlas_search",
+    "pose_atlas_get",
 ] as const;
 
 export type SiteToolName = (typeof SITE_TOOL_NAMES)[number];
@@ -47,6 +50,8 @@ export const SITE_TOOL_LABELS: Record<SiteToolName, string> = {
     get prompts_search() { return siteText("promptSearch"); },
     get assets_list() { return siteText("assetList"); },
     get assets_add() { return siteText("assetAdd"); },
+    pose_atlas_search: "PoseAtlas 搜索",
+    pose_atlas_get: "PoseAtlas 详情",
 };
 
 type SiteToolInput = Record<string, unknown>;
@@ -74,9 +79,24 @@ export async function runSiteTool(name: SiteToolName, input: SiteToolInput, navi
             return listAssets(input);
         case "assets_add":
             return addAsset(input);
+        case "pose_atlas_search":
+            return poseAtlasSiteQuery("semantic-search", input);
+        case "pose_atlas_get":
+            return poseAtlasSiteQuery(`item/${Number(input.index)}`, {});
         default:
             throw new Error(siteText("unknownTool", { name }));
     }
+}
+
+async function poseAtlasSiteQuery(path: string, input: SiteToolInput) {
+    const config = useConfigStore.getState();
+    const base = localGatewayRoot(config.config.baseUrl);
+    if (!base) throw new Error("当前配置不是本地 ComfyUI Gateway");
+    const params = new URLSearchParams();
+    for (const [key, value] of Object.entries(input)) if (value !== undefined && value !== null) params.set(key, String(value));
+    const response = await fetch(`${base}/api/poseatlas/${path}${params.size ? `?${params}` : ""}`);
+    if (!response.ok) throw new Error(response.status === 404 ? "PoseAtlas 未安装或条目不存在" : `PoseAtlas 请求失败 HTTP ${response.status}`);
+    return response.json();
 }
 
 function getGenerationStatus(input: SiteToolInput, canvasSnapshot?: CanvasAgentSnapshot | null) {

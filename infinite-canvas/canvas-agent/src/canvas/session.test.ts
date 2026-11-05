@@ -62,6 +62,29 @@ test("画布写操作只发送给当前激活网页", async (t) => {
     assert.deepEqual(await result, { ok: true });
 });
 
+test("PoseAtlas 查询是只读站点工具，插图只路由到当前目标画布", async (t) => {
+    const session = new CanvasSession();
+    const first = connect(session, "first");
+    const second = connect(session, "second");
+    t.after(() => { first.close(); second.close(); });
+    session.updateState(snapshot("canvas-first"), "first");
+    session.updateState(snapshot("canvas-second"), "second");
+    session.activateClient("second");
+    const search = session.callTool("pose_atlas_search", { query: "salute", angle: "side", collection: "pose" });
+    const sCall = second.event("tool_call");
+    assert.equal(first.event("tool_call"), undefined);
+    assert.equal(field(sCall, "name"), "pose_atlas_search");
+    session.resolveResult("second", { requestId: String(field(sCall, "requestId")), result: { total: 1, items: [{ index: 22 }] } });
+    assert.equal(field(await search, "total"), 1);
+    const insert = session.callTool("pose_atlas_insert", { index: 22, render: "line" });
+    const iCall = second.events("tool_call")[1];
+    assert.equal(field(iCall, "name"), "pose_atlas_insert");
+    assert.equal(field(field(iCall, "input"), "index"), 22);
+    assert.equal(first.event("tool_call"), undefined);
+    session.resolveResult("second", { requestId: String(field(iCall, "requestId")), result: { ok: true, nodeId: "image-22" } });
+    assert.equal(field(await insert, "nodeId"), "image-22");
+});
+
 test("当前 turn 的图片附件可在发起标签页画布创建图片节点", async (t) => {
     const session = new CanvasSession();
     const first = connect(session, "first");

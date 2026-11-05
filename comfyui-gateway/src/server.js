@@ -734,6 +734,16 @@ export async function createGatewayApp(overrides = {}) {
 
   // Local PoseAtlas catalog: metadata + images from the user's own ComfyUI install.
   const poseAtlas = createPoseAtlasCatalog(() => resources.comfyRoot?.() || config.comfyDir);
+  app.get("/api/poseatlas/semantic-search", (req, res) => {
+    const result = poseAtlas.semanticSearch(req.query);
+    if (!result) return res.status(404).json({ ok: false, error: "PoseAtlas not installed" });
+    return res.json({ ok: true, ...result });
+  });
+  app.get("/api/poseatlas/item/:index", (req, res) => {
+    const result = poseAtlas.get(req.params.index);
+    if (!result) return res.status(404).json({ ok: false, error: "Unknown PoseAtlas item" });
+    return res.json({ ok: true, ...result });
+  });
   app.get("/api/poseatlas/facets", (req, res) => {
     try {
       const result = poseAtlas.facets(req.query);

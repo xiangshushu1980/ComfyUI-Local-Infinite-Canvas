@@ -36,6 +36,8 @@ const SITE_TOOLS = new Set<ToolName>([
     "assets_list",
     "assets_add",
     "generation_get_status",
+    "pose_atlas_search",
+    "pose_atlas_get",
 ]);
 
 /** 管理网页画布连接、状态、附件和工具请求。 */
@@ -452,6 +454,10 @@ export class CanvasSession {
         if (name === "canvas_get_selection") {
             const ids = new Set(this.canvasState?.selectedNodeIds || []);
             return { nodes: (this.canvasState?.nodes || []).filter((node) => ids.has(node.id)).map(compactNode) };
+        }
+        if (name === "pose_atlas_insert") {
+            if (!this.clients.size || !this.canvasState) throw new Error("请先打开并连接目标画布");
+            return await this.requestCanvasTool(name, input);
         }
         if (name === "canvas_create_attachment_nodes") return await this.createAttachmentNodes(input as { attachmentIds: string[]; x?: number; y?: number; gap?: number; direction?: "row" | "column" });
         if (!this.clients.size) throw new Error("当前没有已连接画布");

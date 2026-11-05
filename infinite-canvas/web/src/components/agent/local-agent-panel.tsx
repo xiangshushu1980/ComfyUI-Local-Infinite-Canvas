@@ -15,6 +15,8 @@ import { resolveCanvasReferenceImages } from "@/lib/canvas/canvas-resource-refer
 import { readImageMeta } from "@/lib/image-utils";
 import { randomId } from "@/lib/utils";
 import { uploadImage } from "@/services/image-storage";
+import { localGatewayRoot } from "@/services/api/image";
+import { useConfigStore } from "@/stores/use-config-store";
 import { useThemeStore } from "@/stores/use-theme-store";
 import { useAgentSkillStore } from "@/stores/use-agent-skill-store";
 import { useShallow } from "zustand/react/shallow";
@@ -832,6 +834,58 @@ export function LocalAgentPanel({ embedded, headless, autoConnect }: { embedded?
                 if (!context) throw new Error(rt("openCanvasFirst"));
                 result = context.applyOps(appliedOps);
                 void postState(endpoint, token, clientIdRef.current, result as CanvasAgentSnapshot);
+            } else if (payload.name === "pose_atlas_insert") {
+                const context = canvasContextRef.current;
+                if (!context) throw new Error(rt("openCanvasFirst"));
+                const index = Number(payload.input?.index);
+                if (!Number.isSafeInteger(index) || index < 0) throw new Error("PoseAtlas 索引无效");
+                const render: "depth" | "line" = payload.input?.render === "depth" ? "depth" : "line";
+                const gateway = localGatewayRoot(useConfigStore.getState().config.baseUrl);
+                if (!gateway) throw new Error("请先配置本地 ComfyUI Gateway");
+                const itemResponse = await fetch(`${gateway}/api/poseatlas/item/${index}`);
+                if (!itemResponse.ok) throw new Error("PoseAtlas 条目不存在");
+                const item = await itemResponse.json() as {
+                    id: string; label: string; collection: "pose" | "costume" | "portrait";
+                    available: { line: boolean; depth: boolean };
+                };
+                if (render === "depth" && item.collection !== "pose") throw new Error("仅姿势图集支持深度图");
+                if (!item.available[render]) throw new Error(render === "depth" ? "深度图未下载，请先在图库中按需下载此方向" : "原图未下载");
+                const variant = render === "depth" ? "depth-full" : "full";
+                const imageResponse = await fetch(`${gateway}/api/poseatlas/asset/${index}/${variant}`);
+                if (!imageResponse.ok) throw new Error("PoseAtlas 图片获取失败");
+                const blob = await imageResponse.blob();
+                const imageUrl = await new Promise<string>((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = () => resolve(String(reader.result));
+                    reader.onerror = () => reject(reader.error || new Error("图片读取失败"));
+                    reader.readAsDataURL(blob);
+                });
+                const uploaded = await uploadImage(imageUrl);
+                const metadata = {
+                    ...imageMetadata(uploaded), prompt: item.label,
+                    poseAtlas: { index, id: item.id, collection: item.collection, label: item.label, render },
+                };
+                const replaceNodeId = typeof payload.input?.replaceNodeId === "string" ? payload.input.replaceNodeId : "";
+                if (replaceNodeId) {
+                    const target = context.snapshot.nodes.find(node => node.id === replaceNodeId);
+                    if (!target || target.type !== "image" || (target.metadata?.images?.length || 0) > 0) {
+                        throw new Error("只能替换画布中存在的普通单图图片节点；批量图片节点请先拆分");
+                    }
+                    appliedOps = [{ type: "update_node", id: replaceNodeId,
+                        patch: { title: item.label, metadata }, metadata }];
+                } else {
+                    const size = fitNodeSize(uploaded.width, uploaded.height);
+                    const x = typeof payload.input?.x === "number" ? payload.input.x
+                        : Math.max(0, ...context.snapshot.nodes.map(node => node.position.x + node.width)) + 80;
+                    const y = typeof payload.input?.y === "number" ? payload.input.y : 0;
+                    appliedOps = [{ type: "add_node", id: `image-${createId()}`, nodeType: "image",
+                        title: item.label, x, y, ...size, metadata }];
+                }
+                result = context.applyOps(appliedOps);
+                await postState(endpoint, token, clientIdRef.current, result as CanvasAgentSnapshot);
+                result = { ok: true, index, id: item.id, label: item.label, render,
+                    nodeId: replaceNodeId || (appliedOps[0] as { id?: string }).id,
+                    projectId: context.snapshot.projectId };
             } else if (payload.name === "canvas_create_attachment_nodes") {
                 const context = canvasContextRef.current;
                 if (!context) throw new Error(rt("openCanvasFirst"));
