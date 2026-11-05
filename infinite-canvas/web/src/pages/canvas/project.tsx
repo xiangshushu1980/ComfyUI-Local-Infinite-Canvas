@@ -46,6 +46,7 @@ import { CanvasNodePromptPanel, type CanvasNodeGenerationMode } from "@/componen
 import { CanvasOnboarding } from "@/components/onboarding/canvas-onboarding";
 import { CanvasFreeCardPanel, freeCardInfoFromSummary } from "@/components/canvas/canvas-free-card-panel";
 import { CanvasToolbar } from "@/components/canvas/canvas-toolbar";
+import { PoseAtlasPickerModal, type PoseAtlasSelection } from "@/components/canvas/pose-atlas-picker-modal";
 import type { InsertAssetPayload } from "@/components/canvas/asset-picker-modal";
 import { CanvasSidePanel } from "@/components/canvas/canvas-side-panel";
 import { CanvasZoomControls } from "@/components/canvas/canvas-zoom-controls";
@@ -294,6 +295,7 @@ function InfiniteCanvasPage() {
     const [onboardingOpen, setOnboardingOpen] = useState(false);
     const [infoNodeId, setInfoNodeId] = useState<string | null>(null);
     const [pluginManagerOpen, setPluginManagerOpen] = useState(false);
+    const [poseAtlasOpen, setPoseAtlasOpen] = useState(false);
     const [cropNodeId, setCropNodeId] = useState<string | null>(null);
     const [maskEditNodeId, setMaskEditNodeId] = useState<string | null>(null);
     const [outpaintNodeId, setOutpaintNodeId] = useState<string | null>(null);
@@ -3538,7 +3540,7 @@ function InfiniteCanvasPage() {
                 position: { x: center.x - config.width / 2, y: center.y - config.height / 2 },
                 width: config.width,
                 height: config.height,
-                metadata: { ...imageMetadata({ ...storedImage, width: meta.width, height: meta.height }), prompt: image.prompt },
+                metadata: { ...imageMetadata({ ...storedImage, width: meta.width, height: meta.height }), prompt: image.prompt, ...(image.poseAtlas ? { poseAtlas: image.poseAtlas } : {}) },
             };
 
             setNodes((prev) => [...prev, node]);
@@ -3547,6 +3549,33 @@ function InfiniteCanvasPage() {
             setDialogNodeId(id);
         },
         [message, screenToCanvas, size.height, size.width, t],
+    );
+
+    const poseAtlasReplaceNode = selectedNodeIds.size === 1
+        ? nodes.find(node => selectedNodeIds.has(node.id) && node.type === CanvasNodeType.Image && (node.metadata?.images?.length || 0) <= 1)
+        : undefined;
+
+    const insertPoseAtlasReference = useCallback(
+        async (selection: PoseAtlasSelection, replace: boolean) => {
+            const poseAtlas = { index: selection.index, id: selection.id, collection: selection.collection, label: selection.label };
+            if (replace && poseAtlasReplaceNode) {
+                const stored = await uploadImage(selection.dataUrl);
+                await ensureImagePreview(stored.storageKey);
+                setNodes(prev => prev.map(node => node.id === poseAtlasReplaceNode.id
+                    ? { ...node, title: selection.label, metadata: {
+                        ...imageMetadata(stored), prompt: selection.label, poseAtlas,
+                    } }
+                    : node));
+                return;
+            }
+            await insertAssistantImage({
+                id: `poseatlas-${selection.index}`,
+                prompt: selection.label,
+                dataUrl: selection.dataUrl,
+                poseAtlas,
+            });
+        },
+        [insertAssistantImage, poseAtlasReplaceNode],
     );
 
     const insertAssistantText = useCallback(
@@ -4192,6 +4221,7 @@ function InfiniteCanvasPage() {
                     backgroundMode={backgroundMode}
                     showImageInfo={showImageInfo}
                     onAddImage={() => createNode(CanvasNodeType.Image)}
+                    onAddPoseAtlas={() => setPoseAtlasOpen(true)}
                     onAddVideo={() => createNode(CanvasNodeType.Video)}
                     onAddAudio={() => createNode(CanvasNodeType.Audio)}
                     onAddText={() => createNode(CanvasNodeType.Text)}
@@ -4253,6 +4283,7 @@ function InfiniteCanvasPage() {
                 <input ref={imageInputRef} type="file" multiple accept="image/*,video/*,audio/mpeg,audio/wav,audio/x-wav,.mp3,.wav" className="hidden" onChange={handleImageInputChange} />
 
                 <CanvasNodeInfoModal node={infoNode} open={Boolean(infoNode)} onClose={() => setInfoNodeId(null)} />
+                <PoseAtlasPickerModal open={poseAtlasOpen} config={effectiveConfig} onClose={() => setPoseAtlasOpen(false)} onInsert={insertPoseAtlasReference} canReplace={Boolean(poseAtlasReplaceNode)} />
                 <CanvasPluginManagerModal open={pluginManagerOpen} onClose={() => setPluginManagerOpen(false)} />
 
                 {cropNode?.metadata?.content ? <CanvasNodeCropDialog dataUrl={cropNode.metadata.content} open={Boolean(cropNode)} onClose={() => setCropNodeId(null)} onConfirm={(crop) => void cropImageNode(cropNode!, crop)} /> : null}

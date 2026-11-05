@@ -25,6 +25,7 @@ import { createPromptOptimizer } from "./prompt-optimizer.js";
 import { reorderQwenEditFiles, reorderQwenEditPrompt, stripImageLabelPreamble } from "./qwen-edit.js";
 import { createVideoInterpolator } from "./video-interpolation.js";
 import { createPreviewHub } from "./preview-hub.js";
+import { createPoseAtlasCatalog } from "./pose-atlas.js";
 import { createFreeWorkflowStore, applyFreeInputs } from "./free-workflows.js";
 import { applyMossLayoutPrompt } from "./layout-prompt.js";
 import { runImage, runVideo, runWorkflow } from "./runner.js";
@@ -729,6 +730,24 @@ export async function createGatewayApp(overrides = {}) {
       tasks: { count: tasks.list().length, retentionDays: config.taskRetentionDays, maxStoredTasks: config.maxStoredTasks },
       uptimeSeconds: Math.round(process.uptime()),
     });
+  });
+
+  // Local PoseAtlas catalog: metadata + images from the user's own ComfyUI install.
+  const poseAtlas = createPoseAtlasCatalog(() => resources.comfyRoot?.() || config.comfyDir);
+  app.get("/api/poseatlas/search", (req, res) => {
+    try {
+      const result = poseAtlas.search(req.query);
+      if (!result) return res.status(404).json({ ok: false, error: "PoseAtlas not installed" });
+      return res.json({ ok: true, ...result });
+    } catch (error) {
+      return res.status(500).json({ ok: false, error: error.message });
+    }
+  });
+  app.get("/api/poseatlas/asset/:index/:variant", (req, res) => {
+    const file = poseAtlas.asset(req.params.index, req.params.variant);
+    if (!file) return res.status(404).json({ ok: false, error: "PoseAtlas image not available" });
+    res.setHeader("Cache-Control", "private, max-age=3600");
+    return res.sendFile(file);
   });
 
   app.get("/api/setup/status", (_req, res) => {
