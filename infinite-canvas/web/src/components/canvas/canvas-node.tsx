@@ -40,6 +40,7 @@ type CanvasNodeProps = {
     isGroupDropTarget?: boolean;
     batchExpanded?: boolean;
     onMouseDown: (event: React.MouseEvent, nodeId: string) => void;
+    onOpenDetails?: (nodeId: string) => void;
     onSelectCapture?: (event: React.MouseEvent, nodeId: string) => void;
     onHoverStart: (nodeId: string) => void;
     onHoverEnd: (nodeId: string) => void;
@@ -57,7 +58,6 @@ type CanvasNodeProps = {
     onRetryBatchImage?: (node: CanvasNodeData, imageId: string) => void;
     onDeleteBatchImage?: (nodeId: string, imageId: string) => void;
     onRetry?: (node: CanvasNodeData) => void;
-    onViewImage?: (node: CanvasNodeData, imageId?: string) => void;
     onSelectReference?: (nodeId: string) => void;
     onContextMenu: (event: React.MouseEvent, nodeId: string) => void;
 };
@@ -84,7 +84,7 @@ type NodeContentRendererProps = {
     onDownloadBatchImage?: (imageId: string) => void;
     onRetryBatchImage?: (imageId: string) => void;
     onDeleteBatchImage?: (imageId: string) => void;
-    onViewBatchImage?: (imageId: string) => void;
+    onOpenDetails?: () => void;
     groupChildCount: number;
 };
 
@@ -107,6 +107,7 @@ export const CanvasNode = React.memo(function CanvasNode({
     isGroupDropTarget = false,
     batchExpanded = false,
     onMouseDown,
+    onOpenDetails,
     onSelectCapture,
     onHoverStart,
     onHoverEnd,
@@ -398,18 +399,12 @@ export const CanvasNode = React.memo(function CanvasNode({
                         event.stopPropagation();
                         return;
                     }
-                    if (definition?.onDoubleClick && pluginContext) {
-                        if (definition.onDoubleClick(pluginContext)) event.stopPropagation();
-                        return;
-                    }
-                    if (data.type === CanvasNodeType.Image && hasImageContent) {
+                    if (definition?.onDoubleClick && pluginContext && definition.onDoubleClick(pluginContext)) {
                         event.stopPropagation();
-                        onViewImage?.(data);
                         return;
                     }
-                    if (data.type !== CanvasNodeType.Text) return;
                     event.stopPropagation();
-                    setIsEditingContent(true);
+                    onOpenDetails?.(data.id);
                 }}
             >
                 {artSkin && !isGroup && !hasImageContent && !hasVideoContent && !transparentBg ? (
@@ -544,7 +539,7 @@ export const CanvasNode = React.memo(function CanvasNode({
                         onDownloadBatchImage={(imageId) => onDownloadBatchImage?.(data, imageId)}
                         onRetryBatchImage={(imageId) => onRetryBatchImage?.(data, imageId)}
                         onDeleteBatchImage={(imageId) => onDeleteBatchImage?.(data.id, imageId)}
-                        onViewBatchImage={(imageId) => onViewImage?.(data, imageId)}
+                        onOpenDetails={() => onOpenDetails?.(data.id)}
                         groupChildCount={groupChildCount}
                     />
                 </div>
@@ -913,7 +908,7 @@ function ImageNodeContent(props: NodeContentRendererProps) {
             onDownloadBatchImage={props.onDownloadBatchImage}
             onRetryBatchImage={props.onRetryBatchImage}
             onDeleteBatchImage={props.onDeleteBatchImage}
-            onViewBatchImage={props.onViewBatchImage}
+            onOpenDetails={props.onOpenDetails}
         />
     );
 }
@@ -1062,7 +1057,7 @@ function ImageContent({
     onDownloadBatchImage,
     onRetryBatchImage,
     onDeleteBatchImage,
-    onViewBatchImage,
+    onOpenDetails,
 }: {
     node: CanvasNodeData;
     batchExpanded: boolean;
@@ -1073,7 +1068,7 @@ function ImageContent({
     onDownloadBatchImage?: (imageId: string) => void;
     onRetryBatchImage?: (imageId: string) => void;
     onDeleteBatchImage?: (imageId: string) => void;
-    onViewBatchImage?: (imageId: string) => void;
+    onOpenDetails?: () => void;
 }) {
     const theme = useCanvasTheme();
     const { t } = useTranslation();
@@ -1102,7 +1097,7 @@ function ImageContent({
             {batchExpanded
                 ? images
                       .filter((image) => image.id !== primaryImageId)
-                      .map((image, index) => <ExpandedImageCard key={image.id} node={node} image={image} index={index} scale={scale} onView={() => onViewBatchImage?.(image.id)} onSetPrimary={() => onSetBatchPrimary?.(image.id)} onDuplicate={() => onDuplicateBatchImage?.(image.id)} onDownload={() => onDownloadBatchImage?.(image.id)} onRetry={() => onRetryBatchImage?.(image.id)} onDelete={() => onDeleteBatchImage?.(image.id)} />)
+                      .map((image, index) => <ExpandedImageCard key={image.id} node={node} image={image} index={index} scale={scale} onOpenDetails={() => onOpenDetails?.()} onSetPrimary={() => onSetBatchPrimary?.(image.id)} onDuplicate={() => onDuplicateBatchImage?.(image.id)} onDownload={() => onDownloadBatchImage?.(image.id)} onRetry={() => onRetryBatchImage?.(image.id)} onDelete={() => onDeleteBatchImage?.(image.id)} />)
                 : null}
             <div className="h-full w-full overflow-hidden rounded-3xl">
                 {primaryContent ? (
@@ -1145,7 +1140,7 @@ function ImageContent({
     );
 }
 
-function ExpandedImageCard({ node, image, index, scale, onView, onSetPrimary, onDuplicate, onDownload, onRetry, onDelete }: { node: CanvasNodeData; image: CanvasNodeImage; index: number; scale: number; onView: () => void; onSetPrimary: () => void; onDuplicate: () => void; onDownload: () => void; onRetry: () => void; onDelete: () => void }) {
+function ExpandedImageCard({ node, image, index, scale, onOpenDetails, onSetPrimary, onDuplicate, onDownload, onRetry, onDelete }: { node: CanvasNodeData; image: CanvasNodeImage; index: number; scale: number; onOpenDetails: () => void; onSetPrimary: () => void; onDuplicate: () => void; onDownload: () => void; onRetry: () => void; onDelete: () => void }) {
     const theme = useCanvasTheme();
     const { t } = useTranslation();
     useSyncExternalStore(subscribeImagePreviews, getImagePreviewRevision);
@@ -1192,7 +1187,7 @@ function ExpandedImageCard({ node, image, index, scale, onView, onSetPrimary, on
             onDoubleClick={(event) => {
                 if (!image.content || (event.target instanceof Element && event.target.closest("button"))) return;
                 event.stopPropagation();
-                onView();
+                onOpenDetails();
             }}
         >
             {image.content ? <img src={source} alt={node.title} draggable={false} className="pointer-events-none h-full w-full select-none object-contain" /> : <ImageSlotStatus image={image} />}

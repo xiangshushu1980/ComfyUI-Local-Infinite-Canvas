@@ -10,6 +10,7 @@ import { fetchSetupDiagnostics, modelPickerEmptyActions, pickerOpenPlan, request
 import {
     baseModelOptions,
     channelModelOf,
+    hasLocalGatewayChannel,
     modelOptionLabel,
     modelOptionName,
     selectableModelsByCapability,
@@ -41,14 +42,14 @@ export function ModelPicker({ config, value, onChange, capability, className, fu
     const [open, setOpen] = useState(false);
     const localGatewaySync = useConfigStore((state) => state.localGatewaySync);
     const options = useMemo(
-        () => Array.from(new Set([...(config.channelMode === "local" && !capability ? [value] : []), ...selectableModelsByCapability(config, capability), ...extraOptions.map((option) => option.value)].filter((model): model is string => Boolean(model)))),
+        () => Array.from(new Set([...(hasLocalGatewayChannel(config) && !capability ? [value] : []), ...selectableModelsByCapability(config, capability), ...extraOptions.map((option) => option.value)].filter((model): model is string => Boolean(model)))),
         [capability, config, extraOptions, value],
     );
     const current = value || "";
     const pickerPlaceholder = placeholder || t("settingsPanels.model.select");
     const optionLabel = (model: string) => extraOptions.find((option) => option.value === model)?.label || modelOptionLabel(config, model);
     const currentExtra = extraOptions.find((option) => option.value === current);
-    const hasLocalConfigAction = config.channelMode === "local";
+    const hasLocalConfigAction = hasLocalGatewayChannel(config);
     const emptyKind = resolveModelPickerEmptyKind({ optionCount: options.length, local: hasLocalConfigAction, status: localGatewaySync });
     const diagnosticWorkflowId = useMemo(() => channelModelOf(config, current)?.model.workflowId, [config, current]);
 
@@ -342,6 +343,7 @@ export function WorkflowModelPicker({ config, value, onChange, capability, class
     const diagnosticWorkflowId = useMemo(() => channelModelOf(config, value)?.model.workflowId, [config, value]);
     return (
         <LevelSelect
+            config={config}
             value={selected}
             options={options}
             onChange={onChange}
@@ -370,10 +372,11 @@ export function BaseModelPicker({ config, value, onChange, className, fullWidth 
         [config, value, t],
     );
     if (options.length < 2) return null;
-    return <LevelSelect value={value} options={options} onChange={onChange} className={className} fullWidth={fullWidth} placeholder={placeholder || t("settingsPanels.model.select")} icon="base" width="w-64" />;
+    return <LevelSelect config={config} value={value} options={options} onChange={onChange} className={className} fullWidth={fullWidth} placeholder={placeholder || t("settingsPanels.model.select")} icon="base" width="w-64" />;
 }
 
 function LevelSelect({
+    config,
     value,
     options,
     onChange,
@@ -386,6 +389,7 @@ function LevelSelect({
     capability,
     diagnosticWorkflowId,
 }: {
+    config: AiConfig;
     value: string;
     options: LevelOption[];
     onChange: (model: string) => void;
@@ -401,10 +405,9 @@ function LevelSelect({
     const pickerId = useId();
     const [open, setOpen] = useState(false);
     const localGatewaySync = useConfigStore((state) => state.localGatewaySync);
-    const channelMode = useConfigStore((state) => state.config.channelMode);
     const current = options.find((option) => option.value === value);
     const label = current?.label || placeholder;
-    const local = channelMode === "local";
+    const local = hasLocalGatewayChannel(config);
     const emptyKind = resolveModelPickerEmptyKind({ optionCount: options.length, local, status: localGatewaySync });
 
     useEffect(() => {

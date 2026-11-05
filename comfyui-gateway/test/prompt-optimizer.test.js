@@ -288,7 +288,7 @@ test("local H3 passes the English language directive to the workflow", async () 
                 submitted = workflow;
                 return { promptId: "test-prompt" };
             },
-            history: async () => ({ status: { completed: true }, outputs: { "4": { text: [REF_OUTPUT] } } }),
+            history: async () => ({ status: { completed: true }, outputs: { "4": { text: ["integrated_multimodal_description: [Shot 1] A person looks at camera.\noverall_soundscape: wind.\nnon_diegetic_music: none."] } } }),
         },
         logger: null,
     });
@@ -300,8 +300,10 @@ test("local H3 passes the English language directive to the workflow", async () 
         engine: "local",
     });
     assert.ok(submitted, "workflow was not submitted");
-    assert.match(submitted["3"].inputs["系统提示词"], /Write every field body in English/);
-    assert.match(submitted["3"].inputs["系统提示词"], /Chinese dialogue stays Chinese/);
+    assert.equal(submitted["1"].class_type, "CLIPLoader");
+    assert.equal(submitted["3"].inputs.use_default_template, false);
+    assert.match(submitted["3"].inputs.prompt, /Write all descriptive sections in English/);
+    assert.match(submitted["3"].inputs.prompt, /Preserve all user-provided dialogue/);
 });
 
 

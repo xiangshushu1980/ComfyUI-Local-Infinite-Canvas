@@ -111,6 +111,26 @@
 - 未实测 21 个工作流所需自定义节点、模型、显存条件和结果质量；资源索引只提供静态映射。
 - 本地 ComfyUI 地址、实际使用的模型根、Python 环境、额外路径和服务控制接口均未探测。
 
+## 当前 checkout 增量盘点（2026-11-01）
+
+> 本节是对上述 `99cd2d3` 快照的只读增量核对，不代表已对新增资源完成同等级的来源、许可证、下载与安装路径审查。当前项目目录已迁移，当前分支为 `main`；详见 [`restart-baseline.md`](restart-baseline.md)。
+
+- 当前 checkout：`/home/sean/projects/canvas-lab`，HEAD `eee8dac`（`[文档] 更新旧项目资料路径`），分支 `main`；tracked tree clean。工作树此前保留的两个 prompt 修改不在此 checkout 当前状态中；`.codegraph/` 为本地索引。
+- 只读解析当前 `registry.json` 与 `resources/index.json`：21 个注册工作流条目、18 个唯一引用文件、9 个资源包、73 项资源（45 model、18 node、7 pip、2 bake、1 dir）；33 项有顶层 SHA256，40 项无顶层 SHA256。旧快照的 21/19、8/72、32/40 计数不代表当前索引。
+- 相比旧快照新增 `krea2-four-view` 资源包及 `krea2_edit_node` 节点资源；该节点在当前索引有资源级 SHA256。此项只确认索引存在和字段计数，未核远端 revision、归档内容、许可证原文或安装代码行为。
+- CodeGraph 对 `resources/index.json` 无唯一索引项，不能用该索引读取 JSON；对 `resources.js`/`setup.js` 的符号查询返回安装/路径代码及调用信息。没有编辑这些应用文件，也没有执行安装入口、测试、网络请求、ComfyUI 操作或 GPU 工作流。
+- 当前建议：旧快照可用于历史审查；如要满足“当前 checkout 全部资源逐项审查”的验收口径，需将新增资源纳入逐项来源/许可/安全复核。外部来源和 WSL 实际安装兼容仍未验证。
+
+## 节点下载与导入路径（2026-11-01，只读源码审查）
+
+- 资源中心对 `type: node` 的资源调用 `installNode`，目标固定为 `<ComfyUI>/custom_nodes/<目录>`；任务开始时若目标目录已存在就标记 skipped，不升级或覆盖现有节点。否则先创建 `<ComfyUI>/.canvas-install/<资源ID-进程号-随机值>/` 临时目录。
+- 安装器优先检查 `bundleDir`，其相对路径以 Gateway `config.rootDir`（`comfyui-gateway`）解析；若目录存在，递归复制到临时区，寻找含 `__init__.py` 的节点根并 rename 到目标。该直拷贝分支没有对目录内容/文件数/哈希做清单校验。失败会回退 `sources`。
+- 当前 checkout 的 18 个 node 资源都声明 `bundleDir`，但所声明目录在本 checkout 均不存在。因此本 checkout 静态上会进入 source 路径；这只代表仓库文件状态，不证明发布包或其他安装包中也缺失。索引中只有 `tespeed_moss`、`qwen_angle_prompt` 使用内置 ZIP/目录 source，且相应 `resources/nodes/...` 路径在此 checkout 也不存在；`krea2_edit_node` 有 SHA256 的多个 HTTP source。其余 node 当前索引均无可用 source，安装器会报告没有配置下载源或因缺少可信 SHA 而拒绝安装。
+- HTTP source 使用 Node `fetch`、跟随 redirect、写临时 archive，失败时可尝试同一资源的下一 source。对非 bundled node ZIP，`verifyNodeArchive` 强制要求 64 位十六进制 SHA256，并拒绝 `verify:false`；可选 size 也会核对。随后以 `tar -xf <basename> -C <dest>` 解压；仅当 tar 失败才调用 Windows PowerShell `Expand-Archive`。所以解压主路径是跨平台命令，但回退明确依赖 Windows PowerShell；WSL/Linux 没有该回退。
+- 解压完成后递归寻找 `__init__.py`，将原目标目录先 rename 到临时 backup，再将新节点目录 rename 到 `custom_nodes`；替换失败时尝试恢复 backup。任务结束删除本次 `.canvas-install` 临时根。安装器没有在应用层先枚举并验证 ZIP 成员的路径穿越、symlink/hardlink、膨胀配额或内容清单；归档有 SHA 只验证字节与索引期望一致，不代表上游可信或成员安全。
+- pip 资源由独立阶段 `installPipResource` 处理，而非节点 ZIP 解压的一部分；节点索引项本身没有统一的 requirements 安装/节点代码执行阶段。选择 pip 资源会写入推断/配置的 ComfyUI Python 环境，可能安装或替换包。`pythonFromRunningComfy` 明确仅在 `process.platform === "win32"` 下通过 PowerShell 查 ComfyUI 进程；非 Windows 返回空值，因此 WSL 必须依赖显式 Python 配置或 Linux 路径发现逻辑。源码未证明当前 WSL Python 选择正确。
+- WSL/Windows 差别：目标路径、Node 文件操作与 `tar` 主解压路径没有 Windows 必需调用；Windows 专属参与点是 tar 失败后的 `Expand-Archive` 兜底，以及运行中 ComfyUI Python 的 PowerShell 进程探测。资源源自身还可能是浮动 URL、无 SHA 或 Windows wheel，须按资源逐项判断；本节没有运行安装、pip、测试或 WSL 归档验证。
+
 ## 复核命令（只读）
 
 ```bash

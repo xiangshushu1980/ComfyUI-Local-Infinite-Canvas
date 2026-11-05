@@ -1,6 +1,6 @@
-import { Copy, Download, PencilLine, Search, Trash2, Upload } from "lucide-react";
+import { Copy, Download, Filter, PencilLine, Search, Trash2, Upload } from "lucide-react";
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
-import { App, Button, Card, Drawer, Empty, Form, Image, Input, Modal, Pagination, Select, Space, Tag, Typography } from "antd";
+import { App, Button, Card, Checkbox, Drawer, Empty, Form, Image, Input, Modal, Pagination, Select, Space, Tag, Typography } from "antd";
 import { saveAs } from "file-saver";
 import { useTranslation } from "react-i18next";
 
@@ -9,8 +9,9 @@ import { formatBytes, readFileAsDataUrl } from "@/lib/image-utils";
 import { getMediaBlob } from "@/services/file-storage";
 import { getImageBlob, getImagePreviewRevision, subscribeImagePreviews, uploadImage } from "@/services/image-storage";
 import { cn } from "@/lib/utils";
-import { assetCoverUrl, useAssetStore, type Asset, type AssetKind, type ImageAsset } from "@/stores/use-asset-store";
+import { assetCoverUrl, useAssetStore, type Asset, type AssetFlag, type AssetKind, type ImageAsset } from "@/stores/use-asset-store";
 import { exportAssets, readAssetPackage } from "./asset-transfer";
+import { AssetFlagBadges, AssetFlagPicker, FlagFilterPanel, FlagManager, QuickFlagFilters, matchesFlagFilter, type FlagFilter } from "@/components/assets/asset-flags";
 
 type AssetFormValues = {
     kind: AssetKind;
@@ -35,11 +36,17 @@ export default function AssetsPage() {
     const imageInputRef = useRef<HTMLInputElement>(null);
     const assetInputRef = useRef<HTMLInputElement>(null);
     const assets = useAssetStore((state) => state.assets);
+    const flags = useAssetStore((state) => state.flags);
     const addAsset = useAssetStore((state) => state.addAsset);
+    const addFlag = useAssetStore((state) => state.addFlag);
     const updateAsset = useAssetStore((state) => state.updateAsset);
     const removeAsset = useAssetStore((state) => state.removeAsset);
     const [keyword, setKeyword] = useState("");
     const [kindFilter, setKindFilter] = useState<AssetKind | "all">("all");
+    const [flagFilter, setFlagFilter] = useState<FlagFilter>([]);
+    const [flagFilterOpen, setFlagFilterOpen] = useState(false);
+    const [flagManagerOpen, setFlagManagerOpen] = useState(false);
+    const [selectedAssetIds, setSelectedAssetIds] = useState<string[]>([]);
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
     const [editingAsset, setEditingAsset] = useState<Asset | null>(null);
@@ -58,10 +65,11 @@ export default function AssetsPage() {
         const query = keyword.trim().toLowerCase();
         return validAssets.filter((asset) => {
             if (kindFilter !== "all" && asset.kind !== kindFilter) return false;
+            if (!matchesFlagFilter(asset, flagFilter)) return false;
             if (!query) return true;
             return assetSearchText(asset).includes(query);
         });
-    }, [validAssets, keyword, kindFilter]);
+    }, [validAssets, keyword, kindFilter, flagFilter]);
 
     const visibleAssets = useMemo(() => {
         const start = (page - 1) * pageSize;
@@ -99,10 +107,14 @@ export default function AssetsPage() {
 
     const saveAsset = async () => {
         const values = await form.validateFields();
+        const normalizedTags = (values.tags || []).map((name) => {
+            const existing = flags.find((flag) => flag.name.toLocaleLowerCase() === name.trim().toLocaleLowerCase());
+            return existing?.name || addFlag(name, "#0ea5e9") || name.trim();
+        }).filter(Boolean);
         const base = {
             title: values.title.trim(),
             coverUrl: values.coverUrl?.trim() || (values.kind === "image" && imageDraft ? imageDraft.dataUrl : ""),
-            tags: values.tags || [],
+            tags: normalizedTags,
             source: values.source?.trim(),
             note: values.note?.trim(),
             metadata: editingAsset?.metadata || { source: "manual" },
@@ -164,21 +176,34 @@ export default function AssetsPage() {
             message.warning(t("assets.noneToExport"));
             return;
         }
-        await exportAssets(validAssets, t("assets.packageName"));
+        await exportAssets(validAssets, t("assets.packageName"), flags);
     };
 
     const importAssetZip = async (file?: File) => {
         if (!file) return;
         try {
-            const importedAssets = await readAssetPackage(file);
-            importedAssets.forEach((asset) => {
+            const imported = await readAssetPackage(file);
+            const flagNames = new Map<string, string>();
+            imported.flags.forEach((flag) => {
+                const existing = flags.find((item) => item.name.toLocaleLowerCase() === flag.name.toLocaleLowerCase());
+                const name = existing?.name || addFlag(flag.name, flag.color);
+                if (name) flagNames.set(flag.name.toLocaleLowerCase(), name);
+            });
+            imported.assets.forEach((asset) => {
                 const payload = { ...asset } as Record<string, unknown>;
+                const legacyNames = ((asset as Asset & { flags?: string[] }).flags || []).map((id) => imported.flags.find((flag) => (flag as AssetFlag & { id?: string }).id === id)?.name).filter((name): name is string => Boolean(name));
+                payload.tags = [...new Set([...(asset.tags || []), ...legacyNames])].map((name) => {
+                    const canonical = flagNames.get(name.toLocaleLowerCase());
+                    if (canonical) return canonical;
+                    return addFlag(name, "#0ea5e9") || name;
+                });
+                delete payload.flags;
                 delete payload.id;
                 delete payload.createdAt;
                 delete payload.updatedAt;
                 addAsset(payload as Parameters<typeof addAsset>[0]);
             });
-            message.success(t("assets.imported", { count: importedAssets.length }));
+            message.success(t("assets.imported", { count: imported.assets.length }));
         } catch {
             message.error(t("assets.importFailed"));
         } finally {
@@ -263,15 +288,34 @@ export default function AssetsPage() {
                                 >
                                     {t("assets.add")}
                                 </button>
+                                <button type="button" className="cursor-pointer text-sm font-medium text-stone-700 underline-offset-4 hover:underline focus-visible:outline-none focus-visible:underline dark:text-stone-300" onClick={() => setFlagManagerOpen(true)}>
+                                    {typeof navigator !== "undefined" && navigator.language.toLowerCase().startsWith("zh") ? "管理 Flag" : "Manage flags"}
+                                </button>
                             </div>
                         </div>
+                        <div className="flex flex-wrap items-center gap-3">
+                            <Button size="small" icon={<Filter className="size-3.5" />} onClick={() => setFlagFilterOpen((value) => !value)}>
+                                {typeof navigator !== "undefined" && navigator.language.toLowerCase().startsWith("zh") ? "Flag 筛选" : "Filter flags"}
+                                {flagFilter.some((group) => group.ids.length) ? ` · ${flagFilter.reduce((count, group) => count + group.ids.length, 0)}` : ""}
+                            </Button>
+                            {selectedAssetIds.length ? <>
+                                <span className="text-xs text-stone-500">{typeof navigator !== "undefined" && navigator.language.toLowerCase().startsWith("zh") ? `已选 ${selectedAssetIds.length} 个资产` : `${selectedAssetIds.length} selected`}</span>
+                                <AssetFlagPicker assetIds={selectedAssetIds} />
+                                <Button size="small" type="link" onClick={() => setSelectedAssetIds([])}>{typeof navigator !== "undefined" && navigator.language.toLowerCase().startsWith("zh") ? "取消选择" : "Clear selection"}</Button>
+                            </> : null}
+                        </div>
+                        <QuickFlagFilters value={flagFilter} onChange={(filter) => { setPage(1); setFlagFilter(filter); }} />
+                        {flagFilterOpen ? <FlagFilterPanel value={flagFilter} onChange={(filter) => { setPage(1); setFlagFilter(filter); }} /> : null}
                     </div>
                 </div>
 
                 <div className="mx-auto flex max-w-7xl flex-col gap-5">
                     <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                         {visibleAssets.map((asset) => (
-                            <AssetCard key={asset.id} asset={asset} onOpen={() => setPreviewAsset(asset)} onEdit={() => openEdit(asset)} onCopy={copyAssetText} onDownload={downloadImage} onDelete={() => setDeletingAsset(asset)} />
+                            <div key={asset.id} className="relative">
+                                <Checkbox checked={selectedAssetIds.includes(asset.id)} onChange={(event) => setSelectedAssetIds((ids) => event.target.checked ? [...new Set([...ids, asset.id])] : ids.filter((id) => id !== asset.id))} className="absolute left-3 top-3 z-10 rounded bg-white/90 p-1 shadow dark:bg-black/70" aria-label={typeof navigator !== "undefined" && navigator.language.toLowerCase().startsWith("zh") ? `选择 ${asset.title}` : `Select ${asset.title}`} />
+                                <AssetCard asset={asset} onOpen={() => setPreviewAsset(asset)} onEdit={() => openEdit(asset)} onCopy={copyAssetText} onDownload={downloadImage} onDelete={() => setDeletingAsset(asset)} />
+                            </div>
                         ))}
                     </div>
 
@@ -400,6 +444,7 @@ export default function AssetsPage() {
             </Modal>
 
             <AssetDrawer asset={previewAsset} onClose={() => setPreviewAsset(null)} onCopy={copyAssetText} onDownload={downloadImage} />
+            <FlagManager open={flagManagerOpen} onClose={() => setFlagManagerOpen(false)} />
 
             <input ref={assetInputRef} type="file" accept="application/zip,.zip" className="hidden" onChange={(event) => void importAssetZip(event.target.files?.[0])} />
 
@@ -444,16 +489,11 @@ function AssetCard({ asset, onOpen, onEdit, onCopy, onDownload, onDelete }: { as
                     <Typography.Paragraph type="secondary" ellipsis={{ rows: 3 }} className="!mb-0 !mt-2 !text-xs !leading-5">
                         {summary}
                     </Typography.Paragraph>
-                    <div className="mt-3 flex flex-wrap gap-1.5">
-                        {(asset.tags || []).slice(0, 3).map((tag) => (
-                            <Tag key={tag} className="m-0 text-[11px]">
-                                {tag}
-                            </Tag>
-                        ))}
-                        {!asset.tags?.length ? <Tag className="m-0 text-[11px]">{t("assets.noTags")}</Tag> : null}
-                    </div>
                 </div>
             </button>
+            <div className="flex items-center justify-between gap-2 px-4 pb-2">
+                <AssetFlagBadges asset={asset} />
+            </div>
             <div className="flex items-center gap-2 px-4 pb-4">
                 <Button size="small" onClick={onOpen}>
                     {t("common.view")}
@@ -500,10 +540,10 @@ function AssetDrawer({ asset, onClose, onCopy, onDownload }: { asset: Asset | nu
                         </Typography.Title>
                         <Space size={[4, 4]} wrap>
                             <Tag>{t(`assets.kinds.${asset.kind}`)}</Tag>
-                            {(asset.tags || []).map((tag) => (
-                                <Tag key={tag}>{tag}</Tag>
-                            ))}
                         </Space>
+                        <div className="mt-2 flex items-center justify-between gap-2">
+                            <AssetFlagBadges asset={asset} />
+                        </div>
                     </div>
                     <div className="rounded-lg border border-stone-200 p-4 dark:border-stone-800">
                         <Typography.Text type="secondary" className="block text-xs">

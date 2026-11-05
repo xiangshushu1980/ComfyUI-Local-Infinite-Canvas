@@ -104,7 +104,6 @@ export function loadConfig(overrides = {}) {
     resourceConcurrency: num(overrides.resourceConcurrency ?? process.env.RESOURCE_CONCURRENCY, 2),
     allowRemote,
     gatewayToken,
-    assistantIdleMs: num(overrides.assistantIdleMs ?? process.env.ASSISTANT_IDLE_MS, 180 * 1000),
     version: readVersion(appRoot),
   };
   if (config.corsOrigins.includes("*") && !allowRemote) {

@@ -515,6 +515,7 @@ export function ResourceCenterPanel({ compact = false, footer }: { compact?: boo
     const [replacementSaving, setReplacementSaving] = useState("");
     const pollRef = useRef<number | null>(null);
     const selectedInitialized = useRef(false);
+    const expandedInitialized = useRef(false);
     const speedSamples = useRef<Map<string, { bytes: number; time: number; speed: number }>>(new Map());
     const jobPanelRef = useRef<HTMLDivElement | null>(null);
 
@@ -537,6 +538,10 @@ export function ResourceCenterPanel({ compact = false, footer }: { compact?: boo
             const initial = next.packs.filter((pack) => pack.recommended && pack.missing > 0).map((pack) => pack.id);
             setSelectedPacks(new Set(initial));
             selectedInitialized.current = true;
+        }
+        if (!expandedInitialized.current) {
+            setExpandedPacks(new Set(next.packs.filter((pack) => (pack.workflowDependencies || []).length > 0).map((pack) => pack.id)));
+            expandedInitialized.current = true;
         }
     }, []);
 

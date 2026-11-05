@@ -1,0 +1,7 @@
+[Unit]
+Description=Wireless Canvas Lab (Web, Gateway, and Canvas Agent)
+Wants=canvas-lab-web.service canvas-lab-gateway.service canvas-lab-agent.service
+After=network.target
+
+[Install]
+WantedBy=default.target

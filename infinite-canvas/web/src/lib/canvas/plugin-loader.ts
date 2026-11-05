@@ -5,6 +5,7 @@ import type { CanvasPlugin } from "@/types/canvas-plugin";
 import i18n from "@/i18n";
 
 const cleanups = new Map<string, () => void>();
+const RETIRED_PLUGIN_IDS = new Set(["canvas-assistant"]);
 
 // A remote plugin may export CanvasPlugin directly or a factory that receives runtime and returns CanvasPlugin.
 // The factory uses runtime.React so the bundle does not need its own React copy.
@@ -96,6 +97,9 @@ export async function ensurePluginsLoaded() {
     if (loaded) return;
     loaded = true;
     await usePluginStore.persist.rehydrate();
+    for (const plugin of usePluginStore.getState().plugins) {
+        if (RETIRED_PLUGIN_IDS.has(plugin.id)) uninstallPlugin(plugin.id);
+    }
     await loadLocalPlugins(); // Discover disabled local plugins first, then activate all enabled records.
     const records = usePluginStore.getState().plugins.filter((record) => record.enabled);
     await Promise.all(

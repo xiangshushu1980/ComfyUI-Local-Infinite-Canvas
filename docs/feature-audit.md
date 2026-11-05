@@ -31,16 +31,21 @@
 | 资源安装和模型管理 | `src/resources.js`、`src/setup.js`、`resources/` | 适配候选 | 目录与文档 | 自动安装/写 ComfyUI 环境有副作用；先只读研究，不操作 |
 | Windows 启动器 | `launcher/`、`start-local.bat` | 剥离/隔离候选 | 源码、文档及用户确定纯 WSL | Windows 启停和自动接管不作为部署入口；审查与 Gateway 等模块的耦合后才允许剥离 |
 | 原生 Canvas Agent / MCP | `infinite-canvas/canvas-agent/` | 优先保留研究 | README、CodeGraph 对 `CanvasSession` 和画布操作路径的定位 | 进一步核对操作集合、授权、前端接入与状态同步；尚未联调 |
-| 源码修复助手 | `assistant/` | 待确认；剥离候选 | README 与目录 | 作用在源码、构建与部署，并非创作画布 Agent；检查前端卡片、启动器与网关调用后再定 |
+| 源码修复助手 | `assistant/`、`infinite-canvas/web/public/plugins/canvas-assistant.js` | **源码与打包入口已剥离；完整生产构建/回归待验证** | 用户 2026-11-03 决定并完成静态清理 | 不是保留的 Canvas Agent；清理了前端插件及旧缓存记录、Gateway 服务管理、启动器运行时解包与补丁包引用；dist 中对应插件文件已移除，完整 dist 未重建 |
 | 原生 Canvas Proxy | `infinite-canvas/canvas-proxy/` | 待确认 | README 与目录 | 本地 ComfyUI 请求是否需要该转发层；需审查实际调用方 |
 | 自更新与发布工具 | `src/update.js`、`tools/`、`update.json` | 剥离/隔离候选 | 目录与文档 | 和启动、版本提示、保护数据路径耦合；不能直接删除 |
 | 皮肤、商业业务与提示词功能 | `skin-unlocks.js`、`prompt-optimizer.js` 等 | 待确认 | 文件存在 | 查找使用者、相关 UI 和测试；保留两个既有未提交修改 |
 
 ## 2026-11-01 专项补证
 - XIA-22：Gateway 已定位到 `server.js` → Registry/Bindings → Runner → ComfyUI 的静态执行链；见 `source-path-audit.md`。图片/视频真实回写仍待运行验证。
-- XIA-23：原生 Canvas Agent 保留；根目录 `assistant/` 属源码修复用途，暂不删除。见 `agent-boundary-audit.md`。
+- XIA-23（2026-11-01 审查）：原生 Canvas Agent 保留；当时根目录 `assistant/` 暂不删除。用户于 2026-11-03 决定将源码修复助手从当前版本剥离，见下方范围决定与 `agent-boundary-audit.md`。
 - XIA-24：纯 WSL 安全验证协议已成文；见 `wsl-validation-protocol.md`。
 - XIA-25：Hindsight 服务健康返回 200，但本项目 bank/工具访问未证实；见 `project-memory-audit.md`。
+
+## 2026-11-03 产品范围决定
+- 用户决定从当前版本完全排除根目录 `assistant/` 源码修复助手，后续使用自己的 Agent 修复本项目。
+- 保留 Infinite Canvas 原有前端与 Canvas Agent；保留参考项目加入、用于接入 ComfyUI 工作流的 Gateway。
+- 2026-11-03 已移除源码目录、Canvas 修复卡插件、Gateway 管理器/API、启动器运行时解包、运行时构建脚本及补丁包包含项；更新器继续保护旧版 `assistant/workspace` 和 `assistant/data`。dist 中对应插件清单/文件已移除，但完整 dist 未重建；未运行回归测试。
 
 ## 删除前必过检查
 1. 用 CodeGraph `callers`/`impact` 检查入口与下游依赖，再用源码确认。

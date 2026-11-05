@@ -1285,9 +1285,9 @@ export function createResourceManager({ config, setup, registry, logger, workflo
         },
         {
             id: "imagePe",
-            label: "本地生图提示词优化",
-            resourceIds: ["prompt_te_man", "qwen3.5_9b_int8_convrot"],
-            nodeClasses: ["TE_Qwen_Image_2_1_Prompt_Enhancer"],
+            label: "Qwen Image 2.1 PE（本地）",
+            resourceIds: ["image_pe_node", "image_pe_t2i", "image_pe_i2i"],
+            nodeClasses: ["CLIPLoader", "PreviewAny", "QwenImage21_T2IPromptRewrite", "QwenImage21_EditPromptRewrite"],
         },
     ];
 
@@ -1368,18 +1368,18 @@ export function createResourceManager({ config, setup, registry, logger, workflo
             const requiredMissing = requiredItems.filter((item) => item.status !== "present");
             const optionalMissing = optionalItems.filter((item) => item.status !== "present");
             const workflowDependencies = Object.entries(pack.workflowDependencies || {})
-                // 退休资源按实际依赖识别：VDN Stage 和角色替换 LoRA 都不再作为安装入口。
-                .filter(([, dependencyIds]) => !(dependencyIds || []).some(isRetiredResourceId))
+                // 退休资源不再作为安装入口，但不能因此隐藏整个工作流；仍需展示其真实缺失依赖。
                 .map(([workflowId, dependencyIds]) => {
                 const dependencyItems = dependencyIds.map((id) => byId.get(id)).filter(Boolean);
                 const missingItems = dependencyItems.filter((item) => item.status !== "present");
                 const installIds = new Set();
                 for (const item of missingItems) {
+                    if (isRetiredResourceId(item.id)) continue;
                     installIds.add(item.id);
                     if (item.type === "bake") {
                         for (const requiredId of item.requires || []) {
                             const required = byId.get(requiredId);
-                            if (required && required.status !== "present") installIds.add(requiredId);
+                            if (required && required.status !== "present" && !isRetiredResourceId(requiredId)) installIds.add(requiredId);
                         }
                     }
                 }
@@ -1428,8 +1428,10 @@ export function createResourceManager({ config, setup, registry, logger, workflo
             });
             return {
                 id: pack.id,
-                label: pack.label || pack.id,
-                description: pack.description || "",
+                label: pack.id === "h3" ? "H3 视频生成工作流" : pack.label || pack.id,
+                description: pack.id === "h3"
+                    ? "包含 H3 无 VDN 可用工作流，以及保留用于诊断的 VDN/角色替换工作流。节点与 TRT ONNX 随包，权重按工作流下载；VDN 与角色替换资源已停止向新用户提供。"
+                    : pack.description || "",
                 family: pack.family || pack.id,
                 tier: pack.tier || "standard",
                 optional: Boolean(pack.optional),
@@ -1985,16 +1987,9 @@ export function createResourceManager({ config, setup, registry, logger, workflo
             child.on("error", reject);
             child.on("exit", (code) => (code === 0 ? resolve() : reject(new Error(stderr || `解压失败（exit ${code}）`))));
         });
-        try {
-            // archive 用 basename + cwd，避免 Git 的 GNU tar 把 C: 当远程主机；-C 用绝对路径，支持跨盘。
-            await run("tar", ["-xf", path.basename(archive), "-C", destination.replace(/\\/g, "/")], { cwd: path.dirname(archive) });
-        } catch (error) {
-            const powershell = process.env.SystemRoot ? path.join(process.env.SystemRoot, "System32", "WindowsPowerShell", "v1.0", "powershell.exe") : "powershell.exe";
-            const quoted = (value) => `'${String(value).replace(/'/g, "''")}'`;
-            await run(powershell, ["-NoProfile", "-Command", `Expand-Archive -LiteralPath ${quoted(archive)} -DestinationPath ${quoted(destination)} -Force`]).catch(() => {
-                throw new Error(`无法解压节点包：${error.message}`);
-            });
-        }
+        // WSL 部署统一使用 tar；失败时保留原始错误，不调用 Windows PowerShell 回退。
+        // archive 用 basename + cwd，避免 tar 把 Windows 盘符当远程主机；-C 用绝对路径。
+        await run("tar", ["-xf", path.basename(archive), "-C", destination.replace(/\\/g, "/")], { cwd: path.dirname(archive) });
     }
 
     async function findNodeRoot(directory, depth = 0) {

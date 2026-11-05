@@ -1225,7 +1225,7 @@ export function LocalAgentPanel({ embedded, headless, autoConnect }: { embedded?
             appendActivityDelta(event);
             return;
         }
-        if (event.type === "plan.updated" && event.turn_id) {
+        if (event.type === "plan.updated" && (event.turn_id || event.turnId)) {
             const plan = formatAgentPlan(event);
             if (plan) upsertActivityMessage(scopeEventChatItem(event, { ...plan, id: "synthetic:plan" }, "synthetic:plan"));
             return;
@@ -1442,7 +1442,7 @@ export function LocalAgentPanel({ embedded, headless, autoConnect }: { embedded?
                         left={
                             attachments.length ? (
                                 <span className="hidden text-[11px] @min-[660px]:inline" style={{ color: theme.node.muted }}>
-                                    {formatBytes(attachmentPayloadBytes(attachments))} / 30MB
+                                    附件 {formatBytes(attachmentPayloadBytes(attachments))} / 30MB
                                 </span>
                             ) : null
                         }

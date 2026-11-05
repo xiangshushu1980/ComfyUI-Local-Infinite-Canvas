@@ -1,6 +1,6 @@
 # Canvas Lab rebuild worktree
 
-- This project starts from the `ComfyUI-Local-Infinite-Canvas` reference repository, not from the upstream-derived `/home/sean/projects/canvas-lab` implementation.
+- This project starts from the `ComfyUI-Local-Infinite-Canvas` reference repository, not from the upstream-derived `/home/sean/projects/canvas-lab-backup` implementation.
 - The current goal is to test the reference project and selectively strip/adapt it. Keep conclusions tied to the checkout and commit being examined.
 - Use the local CodeGraph index (`.codegraph/`) before searching or reading code when it covers the question. Refresh it after source changes when needed.
 - Read `docs/restart-baseline.md` for the starting commit, carried-over changes, and the relationship to the updated Canvas Lab documents.
@@ -12,3 +12,10 @@
 
 - **Project Memory**：使用用户级 `project-memory` 统一管理项目文档、Git 知识记录、Hindsight 经验积累与上下文恢复，按需加载其参考资料，不重复建立文档或记忆管理机制。
 - **Linear**: Use the available user-level Linear integration for this Rebuild project's tasks, progress and acceptance; the `linear-local-agent-pilot` skill is for bounded local-agent pilots, not general project management. Do not reuse the old Infinite Canvas project's completion status.
+
+## Task-based documentation routing
+
+- Documentation entry: `docs/README.md`; select one task-specific category rather than loading all documents.
+- Canvas/Agent: `docs/agent/README.md`; workflows/H3: `docs/architecture/README.md` and the Gateway prompt skill; tests/WSL: `docs/validation/README.md`; design choices: `docs/planning/README.md`; archived context: `docs/history/README.md`.
+- Documents with dated HEAD or test evidence are snapshots. Verify current `git status`, source and runtime before claiming implementation or completion.
+- Preserve root-level `docs/*.md` references while there are uncommitted changes and historical links; the category folders are lightweight navigation, not duplicated sources of truth.

@@ -1,13 +1,11 @@
 import assert from "node:assert/strict";
-import { execFileSync } from "node:child_process";
-import fs from "node:fs";
 import fsp from "node:fs/promises";
 import http from "node:http";
 import os from "node:os";
 import path from "node:path";
 import test from "node:test";
 
-import { browseHostFor, comfyInstallInfo, comfyPortCandidates, createCanvasServer, ensureAssistantRuntime, isLoopbackHost, listenCanvasServer, normalizeHost, probeAnyComfy, requestGatewayShutdown, resolveLaunchPlan, runtimeGatewayForRequest } from "../start.mjs";
+import { browseHostFor, comfyInstallInfo, comfyPortCandidates, createCanvasServer, isLoopbackHost, listenCanvasServer, normalizeHost, probeAnyComfy, requestGatewayShutdown, resolveLaunchPlan, runtimeGatewayForRequest } from "../start.mjs";
 
 async function fake(files) {
   const root = await fsp.mkdtemp(path.join(os.tmpdir(), "launch-plan-"));
@@ -154,49 +152,6 @@ test("gateway shutdown request posts to the local stop endpoint with the token",
     assert.equal(captured.body, "{}");
   } finally {
     await new Promise((resolve) => server.close(resolve));
-  }
-});
-
-test("assistant runtime zip extracts once and is skipped when ready", async () => {
-  const root = await fsp.mkdtemp(path.join(os.tmpdir(), "assistant-runtime-"));
-  const payload = path.join(root, "payload");
-  const files = [
-    "server.mjs",
-    "node_modules/@mariozechner/pi-agent-core/package.json",
-    "node_modules/@mariozechner/pi-ai/package.json",
-    "workspace/infinite-canvas/web/package.json",
-    "workspace/infinite-canvas/web/node_modules/.keep",
-  ];
-  for (const rel of files) {
-    const full = path.join(payload, rel);
-    await fsp.mkdir(path.dirname(full), { recursive: true });
-    await fsp.writeFile(full, "{}", "utf8");
-  }
-  const assistantDir = path.join(root, "assistant");
-  await fsp.mkdir(assistantDir, { recursive: true });
-  await fsp.writeFile(path.join(assistantDir, "server.mjs"), "newer-source", "utf8");
-  const archive = path.join(assistantDir, "runtime.zip");
-  const tar = process.env.SystemRoot ? path.join(process.env.SystemRoot, "System32", "tar.exe") : "tar";
-  execFileSync(tar, ["-a", "-c", "-f", archive, "-C", payload, "."], { timeout: 120000, windowsHide: true });
-  try {
-    const first = ensureAssistantRuntime(root, { logger: () => {} });
-    assert.equal(first.ok, true);
-    assert.equal(first.extracted, true);
-    assert.ok(fs.existsSync(path.join(assistantDir, "server.mjs")));
-    assert.equal(fs.readFileSync(path.join(assistantDir, "server.mjs"), "utf8"), "newer-source");
-    assert.ok(fs.existsSync(path.join(assistantDir, "workspace", "infinite-canvas", "web", "node_modules")));
-    const second = ensureAssistantRuntime(root, { logger: () => {} });
-    assert.equal(second.ok, true);
-    assert.equal(second.extracted, false);
-    assert.equal(second.reason, "already-ready");
-    await fsp.rm(path.join(assistantDir, "runtime.json"), { force: true });
-    const markerMissing = ensureAssistantRuntime(root, { logger: () => {} });
-    assert.equal(markerMissing.ok, true);
-    assert.equal(markerMissing.extracted, false);
-    assert.equal(markerMissing.reason, "already-ready");
-    assert.equal(fs.readFileSync(path.join(assistantDir, "server.mjs"), "utf8"), "newer-source");
-  } finally {
-    await fsp.rm(root, { recursive: true, force: true });
   }
 });
 

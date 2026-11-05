@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import { isLocalGatewayUrl, LOCAL_GATEWAY_BASE_URL, LOCAL_GATEWAY_ORIGIN } from "@/constant/app-mode";
+import { isLocalGatewayUrl, LOCAL_GATEWAY_BASE_URL, LOCAL_GATEWAY_CHANNEL_ID, LOCAL_GATEWAY_ORIGIN } from "@/constant/app-mode";
 import { createGatewayModelSync, type GatewaySyncTrigger } from "@/lib/local-gateway-sync";
 import { markGatewayUp, noteGatewayError } from "@/services/api/gateway-status";
 import { applyLocalGatewayModels, useConfigStore } from "@/stores/use-config-store";
@@ -10,10 +10,10 @@ const REQUEST_TIMEOUT_MS = 4000;
 
 function localChannelOf() {
     const config = useConfigStore.getState().config;
-    return config.channels.find((item) => isLocalGatewayUrl(item.baseUrl)) || null;
+    return config.channels.find((item) => item.id === LOCAL_GATEWAY_CHANNEL_ID) || config.channels.find((item) => isLocalGatewayUrl(item.baseUrl)) || null;
 }
 
-/** 本地模式下自动从网关同步模型；SSE、聚焦、可见性、轮询和自定义事件共用同一个同步入口。 */
+/** 自动从 ComfyUI 网关同步模型；SSE、聚焦、可见性、轮询和自定义事件共用同一个同步入口。 */
 export function useLocalGatewaySync() {
     useEffect(() => {
         const modelsUrl = `${LOCAL_GATEWAY_BASE_URL.replace(/\/+$/, "")}/models`;

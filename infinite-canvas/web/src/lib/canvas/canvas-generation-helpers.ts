@@ -3,6 +3,7 @@ import i18n from "@/i18n";
 import { ensureImagePreview, resolveImageUrl, uploadImage } from "@/services/image-storage";
 import { resolveMediaUrl } from "@/services/file-storage";
 import { imageMetadata, referenceUrl } from "@/lib/canvas/canvas-node-factory";
+import { videoModelModePatch } from "@/lib/canvas/video-model-mode";
 import type { NodeGenerationInput } from "@/components/canvas/canvas-node-generation";
 import type { CanvasNodeGenerationMode } from "@/components/canvas/canvas-node-prompt-panel";
 import type { CanvasImageAngleParams } from "@/components/canvas/canvas-node-angle-dialog";
@@ -106,13 +107,15 @@ export function buildGenerationConfig(config: AiConfig, node: CanvasNodeData | u
     const params = { ...(node?.metadata?.params || config.params || {}) };
     const seedFixed = (node?.metadata?.seedFixed ?? config.seedFixed ?? "") === "true";
     const seed = String(node?.metadata?.seed ?? config.seed ?? "").trim();
+    const model = resolveModelForCapability(config, node?.metadata?.model, mode);
+    const inferredVideoMode = mode === "video" && model ? videoModelModePatch(config, model).videoMode : undefined;
     if (seedFixed && seed) params.seed = seed;
     else delete params.seed;
     return {
         ...config,
         seed,
         seedFixed: seedFixed ? "true" : "false",
-        model: resolveModelForCapability(config, node?.metadata?.model, mode),
+        model,
         reasoningEffort: node?.metadata?.reasoningEffort || config.reasoningEffort || defaultConfig.reasoningEffort,
         quality: node?.metadata?.quality || config.quality || defaultConfig.quality,
         size: node?.metadata?.size || config.size || defaultConfig.size,
@@ -121,7 +124,7 @@ export function buildGenerationConfig(config: AiConfig, node: CanvasNodeData | u
         vquality: node?.metadata?.vquality || config.vquality || defaultConfig.vquality,
         videoGenerateAudio: node?.metadata?.generateAudio || config.videoGenerateAudio || defaultConfig.videoGenerateAudio,
         videoWatermark: node?.metadata?.watermark || config.videoWatermark || defaultConfig.videoWatermark,
-        videoMode: node?.metadata?.videoMode || config.videoMode || defaultConfig.videoMode,
+        videoMode: inferredVideoMode || node?.metadata?.videoMode || config.videoMode || defaultConfig.videoMode,
         videoInterpolation: node?.metadata?.videoInterpolation || config.videoInterpolation || defaultConfig.videoInterpolation,
         videoSelfLiftMode: node?.metadata?.videoSelfLiftMode || config.videoSelfLiftMode || defaultConfig.videoSelfLiftMode,
         frameMode: node?.metadata?.frameMode || config.frameMode,

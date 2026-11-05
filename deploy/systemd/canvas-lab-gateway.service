@@ -1,0 +1,16 @@
+[Unit]
+Description=Wireless Canvas Lab Gateway
+PartOf=canvas-lab.target
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/sean/projects/canvas-lab/comfyui-gateway
+Environment=HOST=127.0.0.1
+Environment=PORT=8190
+Environment=PATH=/home/sean/.local/share/fnm/node-versions/v24.18.0/installation/bin:/home/sean/.local/bin:/usr/local/bin:/usr/bin:/bin
+ExecStart=/home/sean/.local/share/fnm/node-versions/v24.18.0/installation/bin/node --watch /home/sean/projects/canvas-lab/comfyui-gateway/src/server.js
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=30
+

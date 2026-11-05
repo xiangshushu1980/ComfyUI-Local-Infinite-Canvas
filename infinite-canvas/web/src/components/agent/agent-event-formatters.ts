@@ -138,7 +138,9 @@ export function formatAgentPlan(event: AgentEventPayload): Omit<AgentChatItem, "
 function planTasks(value: unknown) {
     return (Array.isArray(value) ? value : []).flatMap((item) => {
         const step = stringText(objectField(item, "step")).trim();
-        return step ? [{ step, status: stringText(objectField(item, "status")) || "pending" }] : [];
+        const rawStatus = stringText(objectField(item, "status")).trim().toLowerCase();
+        const status = ["complete", "done", "success", "succeeded"].includes(rawStatus) ? "completed" : rawStatus || "pending";
+        return step ? [{ step, status }] : [];
     });
 }
 

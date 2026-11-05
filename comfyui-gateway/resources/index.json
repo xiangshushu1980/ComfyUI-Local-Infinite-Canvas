@@ -273,8 +273,8 @@
     },
     {
       "id": "h3",
-      "label": "H3 视频生成（无 VDN）",
-      "description": "H3 视频生成无 VDN 三档：文生、首尾帧和参考素材。节点与 TRT ONNX 随包，权重按工作流下载；共享 TRT VAE engine 首次安装时按本机编译。VDN 与角色替换资源已停止向新用户提供。",
+      "label": "H3 视频生成工作流",
+      "description": "包含 H3 无 VDN 可用工作流，以及保留用于诊断的 VDN/角色替换工作流。节点与 TRT ONNX 随包，权重按工作流下载；共享 TRT VAE engine 首次安装时按本机编译。VDN 与角色替换资源已停止向新用户提供。",
       "planned": false,
       "resources": [
         "h3_unet_singularity_ref2va_v13_int8",
@@ -452,21 +452,27 @@
     {
       "id": "prompt-local",
       "label": "本地反推 / 本地提示词",
-      "description": "本地图片反推（Qwen3.5-9B / Florence-2）和本地提示词优化；不安装也能继续用云端反推。",
+      "description": "本地图片反推（Qwen3.5-9B / Florence-2）与 Qwen Image 2.1 PE-T2I/I2I 提示词优化；云端仅保留给可选图片反推。",
       "optional": true,
       "autoRecommend": false,
       "resources": [
         "prompt_llama_python",
         "prompt_qwen_gguf",
         "prompt_qwen_mmproj",
-        "prompt_florence_model"
+        "prompt_florence_model",
+        "image_pe_node",
+        "image_pe_t2i",
+        "image_pe_i2i"
       ],
       "workflows": [],
       "optionalResources": [
         "prompt_llama_python",
         "prompt_qwen_gguf",
         "prompt_qwen_mmproj",
-        "prompt_florence_model"
+        "prompt_florence_model",
+        "image_pe_node",
+        "image_pe_t2i",
+        "image_pe_i2i"
       ],
       "optionalLabel": "本地反推 / 本地提示词",
       "workflowDependencies": {},
@@ -1343,6 +1349,22 @@
       "sources": []
     },
     {
+      "id": "image_pe_node",
+      "type": "node",
+      "label": "Qwen Image 2.1 PE 本地改写节点",
+      "target": "custom_nodes/ComfyUI-Qwen-Image-2.1-Prompt-Enhancer",
+      "autoInstall": true,
+      "bundleDir": "resources/nodes/unpacked/ComfyUI-Qwen-Image-2.1-Prompt-Enhancer",
+      "size": 48439,
+      "license": "MIT",
+      "note": "本地 PE-T2I/I2I 改写节点；使用 ComfyUI CLIPLoader 加载本地权重，不调用在线服务。",
+      "provides": [
+        "QwenImage21_T2IPromptRewrite",
+        "QwenImage21_EditPromptRewrite"
+      ],
+      "sources": []
+    },
+    {
       "id": "prompt_llama_python",
       "type": "pip",
       "label": "llama-cpp-python 运行库",
@@ -1400,6 +1422,34 @@
       "note": "下载约 2.8GB，解压后约 3.1GB；比 Qwen 快、显存占用低。",
       "sources": [
         "https://modelscope.cn/datasets/shensanshu/ComfyUI-Local-Infinite-Canvas-Models/resolve/master/models/Florence-2-large-PromptGen-v2.0.zip"
+      ]
+    },
+    {
+      "id": "image_pe_t2i",
+      "type": "model",
+      "label": "Qwen Image 2.1 PE-T2I（本地提示词优化）",
+      "target": "text_encoders/qwen3.5_9b_qwen_image_2.1_pe_t2i.int8_convrot.safetensors",
+      "size": 9471072252,
+      "sha256": "9182abae56fe05459840a86d22abd21f972061c92fce032630af680c8c5178d3",
+      "license": "Qwen / Comfy-Org",
+      "note": "纯本地文生图提示词改写；约 9.47 GB。",
+      "sources": [
+        "https://huggingface.co/Comfy-Org/Qwen-Image-2.1/resolve/main/text_encoders/qwen3.5_9b_qwen_image_2.1_pe_t2i.int8_convrot.safetensors",
+        "https://hf-mirror.com/Comfy-Org/Qwen-Image-2.1/resolve/main/text_encoders/qwen3.5_9b_qwen_image_2.1_pe_t2i.int8_convrot.safetensors"
+      ]
+    },
+    {
+      "id": "image_pe_i2i",
+      "type": "model",
+      "label": "Qwen Image 2.1 PE-I2I（本地编辑提示词优化）",
+      "target": "text_encoders/qwen3.5_9b_qwen_image_2.1_pe_i2i.int8_convrot.safetensors",
+      "size": 9471072252,
+      "sha256": "32707d01b427e488af252b95c551989aad59f9fec611a694f5db6bde7f0f1f6c",
+      "license": "Qwen / Comfy-Org",
+      "note": "纯本地参考图编辑提示词改写；约 9.47 GB。",
+      "sources": [
+        "https://huggingface.co/Comfy-Org/Qwen-Image-2.1/resolve/main/text_encoders/qwen3.5_9b_qwen_image_2.1_pe_i2i.int8_convrot.safetensors",
+        "https://hf-mirror.com/Comfy-Org/Qwen-Image-2.1/resolve/main/text_encoders/qwen3.5_9b_qwen_image_2.1_pe_i2i.int8_convrot.safetensors"
       ]
     },
     {

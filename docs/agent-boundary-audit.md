@@ -8,15 +8,15 @@
 - 证据：`session.test.ts` 覆盖当前画布切换、工具调用、连接丢失等单元场景；并不能替代当前机器联调。
 - 原生 Agent 承担创作画布控制、用户交互和本地 MCP 桥接；**优先保留并复用**。
 
-## 根目录 assistant/（暂不删除）
+## 根目录 assistant/（2026-11-01 审查记录；2026-11-03 已从当前版本剥离）
 - `assistant/server.mjs`、`repair-tools.mjs`、`diagnostics.mjs`、`skill.mjs` 是面向程序源码检查、修复、部署的独立辅助系统，并非上面的画布创作 Agent。
 - Gateway `comfyui-gateway/src/assistant.js` 对 `assistant/server.mjs`、workspace、Pi agent 依赖等进行运行时检查与管理。
 - `launcher/start.mjs` 的 assistantRuntimeReady / archive 解包逻辑与该运行时耦合，属于上游发布包的能力。
-- 本项目纯 WSL 部署，Windows Launcher 不作为入口；**源码修复助手是剥离或停用候选，但需要先核对前端功能入口、Gateway 路由和用户是否仍需自动修复能力。** 禁止仅根据用途差异直接删除整个目录。
+- 上述说明是 2026-11-01 的源码审查快照；后续影响检查与用户范围决定已更新于本文末尾。当前不得再按“待确认”解释。
 
 ## 变更前的保留/剥离建议
 1. 保留 canvas-agent、前端 Agent Bridge、MCP 画布操作和权限机制。
-2. 将源码修复助手和 Windows 发布启动器标记为待剥离；先完成调用方与用户价值判断。
+2. 2026-11-01 时将源码修复助手和 Windows 发布启动器列为待审候选；源码修复助手的后续处理见本文末尾。
 3. 任何删除须检查 CodeGraph callers/impact、资源引用、前端路由、测试与打包回归。
 
 ## Codex Web 与 Canvas Agent 会话整合讨论（2026-11-02）
@@ -52,3 +52,10 @@
 ## 2026-11-02 后续实现与证据
 
 本文关于 Codex `0.146.0` 等内容是审查时快照；Canvas Agent 已升级到 `0.166.0`，并实现画布 MCP 显式注入、Canvas Agent 独立 MCP/Skill 启用覆盖。两个 app-server 仍独立；详细实现、验证边界、CodeGraph 工作空间复核和未完成的 UI 验收见 [Canvas Agent 升级与配置记录](canvas-agent-codex-upgrade-progress.md)。
+
+## 2026-11-03 当前产品范围决定
+
+- 用户决定将根目录源码修复助手（`assistant/`）从当前版本完全剥离，并使用自己的 Agent 修复项目。
+- 保留 `infinite-canvas/canvas-agent/` 原生 Canvas Agent。不要把两个 Agent 的职责、代码目录或剥离结论混为一谈。
+- 该决定 supersedes 上文“暂不删除 / 待用户价值判断”的旧结论。2026-11-03 已清理源码目录、前端插件、Gateway 管理/API、启动器运行时解包、打包脚本及补丁包包含项；更新器仍保护旧版 workspace/data 用户文件。dist 中修复插件清单/文件已移除，但完整 dist 和回归尚未验证。
+- 当前项目 Agent 所需的代码地图见 [`current-code-map.md`](current-code-map.md)。

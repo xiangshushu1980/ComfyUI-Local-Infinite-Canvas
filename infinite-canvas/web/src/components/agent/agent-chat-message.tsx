@@ -557,7 +557,9 @@ function planDetail(value: unknown): PlanDetail | null {
     const tasks = Array.isArray(objectField(value, "tasks"))
         ? (objectField(value, "tasks") as unknown[]).flatMap((item) => {
               const step = String(objectField(item, "step") || "").trim();
-              return step ? [{ step, status: String(objectField(item, "status") || "pending") }] : [];
+              const rawStatus = String(objectField(item, "status") || "pending").trim().toLowerCase();
+              const status = ["complete", "done", "success", "succeeded"].includes(rawStatus) ? "completed" : rawStatus || "pending";
+              return step ? [{ step, status }] : [];
           })
         : [];
     if (!tasks.length) return null;

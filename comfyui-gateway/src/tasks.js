@@ -1,8 +1,13 @@
 import fs from "node:fs";
 import fsp from "node:fs/promises";
+import os from "node:os";
 import path from "node:path";
+import { execFile } from "node:child_process";
+import { promisify } from "node:util";
 
 import { nowIso, randomId, safeFileName, writeJsonAtomic } from "./util.js";
+
+const execFileAsync = promisify(execFile);
 
 function publicTask(task) {
   if (!task) return null;
@@ -216,7 +221,7 @@ export function createTaskStore({ dataDir, publicBaseUrl, logger, retentionDays 
         task.url = saved.url;
         task.file = saved.file;
         task.mimeType = result.mimeType || "video/mp4";
-        task.bytes = result.buffer?.length || 0;
+        task.bytes = saved.bytes;
         task.completedAt = nowIso();
       }
     } catch (error) {
@@ -239,8 +244,28 @@ export function createTaskStore({ dataDir, publicBaseUrl, logger, retentionDays 
   async function saveOutput(id, buffer, ext = "mp4") {
     const filename = `${id}.${safeFileName(ext).replace(/^\./, "") || "bin"}`;
     const target = path.join(outputDir, filename);
-    await fsp.writeFile(target, buffer);
-    return { file: target, url: `${publicBaseUrl}/files/${encodeURIComponent(filename)}`, bytes: buffer.length };
+    const output = ext.toLowerCase() === "mp4" ? await browserCompatibleVideo(buffer, id) : buffer;
+    await fsp.writeFile(target, output);
+    return { file: target, url: `${publicBaseUrl}/files/${encodeURIComponent(filename)}`, bytes: output.length };
+  }
+
+  async function browserCompatibleVideo(buffer, id) {
+    const input = path.join(os.tmpdir(), `canvas-video-${id}-input.mp4`);
+    const output = path.join(os.tmpdir(), `canvas-video-${id}-browser.mp4`);
+    try {
+      await fsp.writeFile(input, buffer);
+      const { stdout } = await execFileAsync(process.env.FFPROBE_BIN || "ffprobe", ["-v", "error", "-select_streams", "v:0", "-show_entries", "stream=codec_name,pix_fmt", "-of", "json", input], { timeout: 30000 });
+      const stream = JSON.parse(stdout).streams?.[0] || {};
+      if (stream.codec_name !== "hevc" && stream.codec_name !== "h265" && stream.pix_fmt !== "yuv420p10le") return buffer;
+      await execFileAsync(process.env.FFMPEG_BIN || "ffmpeg", ["-hide_banner", "-loglevel", "error", "-y", "-i", input, "-map", "0:v:0", "-map", "0:a?", "-c:v", "libx264", "-pix_fmt", "yuv420p", "-profile:v", "high", "-level", "4.1", "-c:a", "aac", "-movflags", "+faststart", output], { timeout: 10 * 60 * 1000 });
+      const converted = await fsp.readFile(output);
+      return converted.length ? converted : buffer;
+    } catch (error) {
+      logger?.warn?.(`视频浏览器兼容转码跳过：${error?.message || error}`);
+      return buffer;
+    } finally {
+      await Promise.all([fsp.unlink(input).catch(() => undefined), fsp.unlink(output).catch(() => undefined)]);
+    }
   }
 
   async function cancel(id, comfy) {

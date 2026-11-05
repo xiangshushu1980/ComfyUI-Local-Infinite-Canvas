@@ -33,6 +33,7 @@ type CanvasNodePromptPanelProps = {
     onGenerate: (nodeId: string, mode: CanvasNodeGenerationMode, prompt: string) => void;
     onStop: (nodeId: string) => void;
     mentionReferences?: CanvasResourceReference[];
+    hasMediaInputs?: boolean;
     nodes: CanvasNodeData[];
     connectedNodes?: CanvasNodeData[];
     onDisconnectReference?: (fromNodeId: string, toNodeId: string) => void;
@@ -44,7 +45,7 @@ type CanvasNodePromptPanelProps = {
     modeOverride?: CanvasNodeGenerationMode; // Plugin nodes set their generation type through useBuiltinPanel.mode.
 };
 
-export function CanvasNodePromptPanel({ node, nodes, isRunning, onPromptChange, onConfigChange, onGenerate, onStop, mentionReferences = [], connectedNodes = [], onDisconnectReference, onStartReferenceSelection, onImageSettingsOpenChange, onOpenMaskEditor, onOpenOutpaintEditor, onOpenMossLayoutEditor, modeOverride }: CanvasNodePromptPanelProps) {
+export function CanvasNodePromptPanel({ node, nodes, isRunning, onPromptChange, onConfigChange, onGenerate, onStop, mentionReferences = [], hasMediaInputs = false, connectedNodes = [], onDisconnectReference, onStartReferenceSelection, onImageSettingsOpenChange, onOpenMaskEditor, onOpenOutpaintEditor, onOpenMossLayoutEditor, modeOverride }: CanvasNodePromptPanelProps) {
     const { t } = useTranslation();
     const globalConfig = useEffectiveConfig();
     const openConfigDialog = useConfigStore((state) => state.openConfigDialog);
@@ -93,11 +94,12 @@ export function CanvasNodePromptPanel({ node, nodes, isRunning, onPromptChange, 
     const optimizeResult = node.metadata?.promptOptimizePrompt || "";
     const optimizeError = node.metadata?.promptOptimizeError || "";
     const originalPrompt = node.metadata?.promptOptimizeSource?.trim() || "";
+    const imageOptimizePrompt = node.metadata?.promptOptimizeSource ?? draft;
     const promptPlaceholder =
         workflowId === "video-h3-character-swap"
             ? t("canvas.promptPanel.characterSwapHint")
             : t(`canvas.promptPanel.${mode === "image" && hasImageContent ? "editImage" : mode === "text" && hasTextContent ? "editText" : mode}`);
-    const canOptimize = isH3 && Boolean(draft.trim()) && !isRunning && !optimizeRunning;
+    const canOpenH3Optimize = isH3 && !isRunning && !optimizeRunning;
     const canOptimizeImage = isImage && Boolean(draft.trim()) && !isRunning && !optimizeRunning;
     const optimizeEngine = !isH3 && config.promptApiEngine === "cloud" ? "cloud" : "local";
     const optimizeLanguage = config.promptOptimizeLanguage === "en" ? "en" : "zh";
@@ -113,8 +115,7 @@ export function CanvasNodePromptPanel({ node, nodes, isRunning, onPromptChange, 
     const captionLocalCapability = captionEngine === "qwen35" ? capabilities?.engines.qwen : captionEngine === "florence" ? capabilities?.engines.florence : null;
     const captionLocalReady = captionEngine === "cloud" ? true : captionEngine === "qwen35" ? captionQwenReady : captionEngine === "florence" ? captionFlorenceReady : true;
     const canCaption = mode === "text" && Boolean(captionEngine) && captionLocalReady && (captionEngine !== "cloud" || optimizeCloudReady) && imageReferences.length > 0 && !isRunning && !captionRunning;
-    const hasMediaReferences = mentionReferences.some((reference) => reference.kind !== "text");
-    const textVideoHasReferences = isH3T2V && hasMediaReferences;
+    const textVideoHasMediaInputs = isH3T2V && hasMediaInputs;
     const refsWarningDismissed = Boolean(node.metadata?.refsWarningDismissed);
     const sourceVideoTooLong = Boolean(sourceVideoNode?.metadata?.durationMs && sourceVideoNode.metadata.durationMs > 15000);
     const frameMode: "first" | "last" | "both" =
@@ -203,13 +204,13 @@ export function CanvasNodePromptPanel({ node, nodes, isRunning, onPromptChange, 
     }, [mode, referencePrompt]);
 
     useEffect(() => {
-        if (!textVideoHasReferences && node.metadata?.refsWarningDismissed) onConfigChange(node.id, { refsWarningDismissed: undefined });
-    }, [node.id, node.metadata?.refsWarningDismissed, onConfigChange, textVideoHasReferences]);
+        if (!textVideoHasMediaInputs && node.metadata?.refsWarningDismissed) onConfigChange(node.id, { refsWarningDismissed: undefined });
+    }, [node.id, node.metadata?.refsWarningDismissed, onConfigChange, textVideoHasMediaInputs]);
 
     const submit = () => {
         const text = draft.trim();
         if (!text || isRunning) return;
-        if (textVideoHasReferences) {
+        if (textVideoHasMediaInputs) {
             message.warning(t("canvas.promptPanel.videoTextRefsWarning"));
             return;
         }
@@ -265,6 +266,7 @@ export function CanvasNodePromptPanel({ node, nodes, isRunning, onPromptChange, 
     };
 
     const openOptimizeOptions = () => {
+        if (isImage && node.metadata?.promptOptimizeSource === undefined && draft.trim()) onConfigChange(node.id, { promptOptimizeSource: draft });
         setOptimizeOptionsOpen(true);
     };
 
@@ -308,35 +310,23 @@ export function CanvasNodePromptPanel({ node, nodes, isRunning, onPromptChange, 
     };
 
     const optimizeImagePrompt = async () => {
-        const text = draft.trim();
+        const text = imageOptimizePrompt.trim();
         if (!text || optimizeRunning) return;
-        commitPrompt(draft);
-        setOptimizeOptionsOpen(false);
         const selectedRefs = usesImageReferences ? imageReferences.slice(0, Math.max(1, imageInputLimit ?? 8)) : [];
-        const useCloud = optimizeEngine === "cloud";
         const controller = new AbortController();
         registerPromptOptimizeJob(node.id, controller);
-        onConfigChange(node.id, { promptOptimizeStatus: "running", promptOptimizeKind: "image", promptOptimizeSource: originalPrompt || text, promptOptimizePrompt: undefined, promptOptimizeError: undefined });
+            onConfigChange(node.id, { promptOptimizeStatus: "running", promptOptimizeKind: "image", promptOptimizeSource: text, promptOptimizePrompt: undefined, promptOptimizeError: undefined });
         try {
-            const images = !useCloud && selectedRefs.length ? await resolveCanvasReferenceImages(selectedRefs, nodes) : [];
+            const images = selectedRefs.length ? await resolveCanvasReferenceImages(selectedRefs, nodes) : [];
             const result = await requestImagePromptOptimize(config, {
                 prompt: text,
                 mode: selectedRefs.length ? "image" : "text",
-                language: optimizeLanguage,
                 images,
                 imageCount: selectedRefs.length,
-                engine: optimizeEngine,
-                cloud: useCloud
-                    ? {
-                          baseUrl: (config.promptCloudBaseUrl || "").trim(),
-                          apiKey: (config.promptCloudApiKey || "").trim(),
-                          model: (config.promptCloudModel || "").trim(),
-                      }
-                    : undefined,
             }, { signal: controller.signal });
             // 生图优化没有“追加”语义：直接回填到输入框，原手打提示词继续保留。
             applyPromptResult(result.prompt);
-            onConfigChange(node.id, { promptOptimizeStatus: undefined, promptOptimizeKind: undefined, promptOptimizePrompt: undefined, promptOptimizeError: undefined, promptOptimizeSource: originalPrompt || text });
+            onConfigChange(node.id, { promptOptimizeStatus: undefined, promptOptimizeKind: undefined, promptOptimizePrompt: undefined, promptOptimizeError: undefined, promptOptimizeSource: text });
         } catch (error) {
             if (controller.signal.aborted) clearOptimizePreview();
             else onConfigChange(node.id, { promptOptimizeStatus: "error", promptOptimizeError: error instanceof Error ? error.message : t("canvas.promptPanel.optimizeFailed") });
@@ -416,7 +406,7 @@ export function CanvasNodePromptPanel({ node, nodes, isRunning, onPromptChange, 
             onWheel={(event) => event.stopPropagation()}
         >
             <CanvasNodeReferenceBar nodeId={node.id} nodes={nodes} connectedNodes={connectedNodes} onDisconnect={onDisconnectReference} onStartSelection={onStartReferenceSelection} addDisabled={isH3T2V} addDisabledHint={t("canvas.promptPanel.videoTextAddDisabled")} />
-            {textVideoHasReferences && !refsWarningDismissed ? (
+            {textVideoHasMediaInputs && !refsWarningDismissed ? (
                 <div className="mb-2 flex items-start gap-2 rounded-lg bg-amber-500/10 px-2 py-1 text-xs leading-4 text-amber-700 dark:text-amber-300">
                     <span className="min-w-0 flex-1">{t("canvas.promptPanel.videoTextRefsWarning")}</span>
                     <button type="button" className="shrink-0 opacity-70 hover:opacity-100" aria-label={t("canvas.promptPanel.dismissHint")} onClick={() => onConfigChange(node.id, { refsWarningDismissed: true })}>
@@ -424,13 +414,15 @@ export function CanvasNodePromptPanel({ node, nodes, isRunning, onPromptChange, 
                     </button>
                 </div>
             ) : null}
-            {sourceVideoTooLong && !textVideoHasReferences ? <div className="mb-2 text-xs leading-4 text-amber-600 dark:text-amber-400">{t("canvas.promptPanel.sourceVideoLimit")}</div> : null}
+            {sourceVideoTooLong && !textVideoHasMediaInputs ? <div className="mb-2 text-xs leading-4 text-amber-600 dark:text-amber-400">{t("canvas.promptPanel.sourceVideoLimit")}</div> : null}
             <CanvasResourceMentionTextarea
                 ref={textareaRef}
                 value={draft}
                 data-onboarding="prompt-input"
                 references={mentionReferences}
-                onChange={setDraft}
+                onChange={(value) => {
+                    setDraft(value);
+                }}
                 onBlur={() => commitPrompt()}
                 onSubmit={submit}
                 onKeyDown={(event) => event.stopPropagation()}
@@ -439,6 +431,7 @@ export function CanvasNodePromptPanel({ node, nodes, isRunning, onPromptChange, 
                 style={{ background: "transparent", color: theme.node.text }}
                 placeholder={promptPlaceholder}
             />
+            {isImage && originalPrompt ? <div className="mt-1 text-[11px] leading-4 opacity-60">{t("canvas.promptPanel.optimizeImageContinueHint")}</div> : null}
 
             <div className="mt-2 flex min-w-0 items-center justify-between gap-2">
                 <div className="flex min-w-0 flex-1 items-center gap-2 overflow-hidden">
@@ -447,12 +440,12 @@ export function CanvasNodePromptPanel({ node, nodes, isRunning, onPromptChange, 
                     </Tooltip>
                     {isH3 ? (
                         <Tooltip title={t("canvas.promptPanel.optimizeHint")}>
-                            <Button
+            <Button
                                 type="text"
                                 className="!h-8 shrink-0 !rounded-full !px-2 text-xs"
                                 style={{ color: theme.node.text }}
                                 icon={optimizeRunning ? <LoaderCircle className="size-3.5 animate-spin" /> : <Sparkles className="size-3.5" />}
-                                disabled={!canOptimize}
+                                disabled={!canOpenH3Optimize}
                                 onClick={() => (optimizeOptionsOpen ? setOptimizeOptionsOpen(false) : openOptimizeOptions())}
                                 aria-label={t("canvas.promptPanel.optimize")}
                             >
@@ -467,7 +460,7 @@ export function CanvasNodePromptPanel({ node, nodes, isRunning, onPromptChange, 
                                 className="!h-8 shrink-0 !rounded-full !px-2 text-xs"
                                 style={{ color: theme.node.text }}
                                 icon={optimizeRunning ? <LoaderCircle className="size-3.5 animate-spin" /> : <Sparkles className="size-3.5" />}
-                                disabled={!canOptimizeImage}
+                                disabled={!optimizeOptionsOpen && !canOptimizeImage}
                                 onClick={() => (optimizeOptionsOpen ? setOptimizeOptionsOpen(false) : openOptimizeOptions())}
                                 aria-label={t("canvas.promptPanel.optimizeImage")}
                             >
@@ -596,12 +589,17 @@ export function CanvasNodePromptPanel({ node, nodes, isRunning, onPromptChange, 
                 <PromptOptimizeOptions
                     className="mt-2"
                     title={isImage ? t("canvas.promptPanel.optimizeImageTitle") : undefined}
-                    engine={optimizeEngine}
-                    language={optimizeLanguage}
+                    engine={isImage ? "local" : optimizeEngine}
+                    language={isImage ? "zh" : optimizeLanguage}
                     cloudReady={optimizeCloudReady}
                     cloudModel={config.promptCloudModel}
-                    hideEngine={isH3}
                     localReady={isImage ? engineAvailable("imagePe") : true}
+                    disabled={!draft.trim() || isRunning || optimizeRunning}
+                    hideEngine={isH3}
+                    hideEngineAndLanguage={isImage}
+                    imagePrompt={isImage ? imageOptimizePrompt : undefined}
+                    references={isImage ? mentionReferences : undefined}
+                    onImagePromptChange={isImage ? (value) => onConfigChange(node.id, { promptOptimizeSource: value }) : undefined}
                     onEngineChange={(engine) => updateConfig("promptApiEngine", engine)}
                     onLanguageChange={(language) => updateConfig("promptOptimizeLanguage", language)}
                     onOpenSettings={() => openConfigDialog(true, "cloud-api")}
@@ -686,13 +684,18 @@ export function CanvasNodePromptPanel({ node, nodes, isRunning, onPromptChange, 
                 </div>
                 );
             })()}
-            {mode !== "text" && originalPrompt ? (
-                <OriginalPromptDisclosure key={`${node.id}:${originalPrompt}`} text={originalPrompt} label={t("canvas.promptPanel.originalPrompt")} hint={t("canvas.promptPanel.originalPromptHint")} theme={theme} />
+            {mode !== "text" && !isImage && originalPrompt ? (
+                <OriginalPromptDisclosure
+                    text={originalPrompt}
+                    label={isImage ? t("canvas.promptPanel.imageOptimizeSource") : t("canvas.promptPanel.originalPrompt")}
+                    hint={isImage ? t("canvas.promptPanel.imageOptimizeSourceHint") : t("canvas.promptPanel.originalPromptHint")}
+                    theme={theme}
+                />
             ) : null}
             <Modal title={t("canvas.promptPanel.editorTitle")} open={expanded} centered width={760} footer={null} onCancel={() => { commitPrompt(); setExpanded(false); }} destroyOnHidden>
                 <div data-canvas-no-zoom className="pt-2" onWheelCapture={(event) => event.stopPropagation()}>
                     <CanvasNodeReferenceBar nodeId={node.id} nodes={nodes} connectedNodes={connectedNodes} onDisconnect={onDisconnectReference} onStartSelection={(nodeId) => { setExpanded(false); onStartReferenceSelection?.(nodeId); }} addDisabled={isH3T2V} addDisabledHint={t("canvas.promptPanel.videoTextAddDisabled")} />
-                    {textVideoHasReferences && !refsWarningDismissed ? (
+                    {textVideoHasMediaInputs && !refsWarningDismissed ? (
                         <div className="mb-2 flex items-start gap-2 rounded-lg bg-amber-500/10 px-2 py-1 text-xs leading-4 text-amber-700 dark:text-amber-300">
                             <span className="min-w-0 flex-1">{t("canvas.promptPanel.videoTextRefsWarning")}</span>
                             <button type="button" className="shrink-0 opacity-70 hover:opacity-100" aria-label={t("canvas.promptPanel.dismissHint")} onClick={() => onConfigChange(node.id, { refsWarningDismissed: true })}>
@@ -700,7 +703,7 @@ export function CanvasNodePromptPanel({ node, nodes, isRunning, onPromptChange, 
                             </button>
                         </div>
                     ) : null}
-                    {sourceVideoTooLong && !textVideoHasReferences ? <div className="mb-2 text-xs leading-4 text-amber-600 dark:text-amber-400">{t("canvas.promptPanel.sourceVideoLimit")}</div> : null}
+                    {sourceVideoTooLong && !textVideoHasMediaInputs ? <div className="mb-2 text-xs leading-4 text-amber-600 dark:text-amber-400">{t("canvas.promptPanel.sourceVideoLimit")}</div> : null}
                     <CanvasResourceMentionTextarea
                         value={draft}
                         references={mentionReferences}

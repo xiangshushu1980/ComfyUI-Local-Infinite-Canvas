@@ -36,7 +36,6 @@ const flush = () => new Promise((resolve) => setTimeout(resolve, 0));
 
 const localConfig = (): AiConfig => ({
     ...defaultConfig,
-    channelMode: "local",
     baseUrl: BASE_URL,
     apiKey: "keep-me",
     channels: [

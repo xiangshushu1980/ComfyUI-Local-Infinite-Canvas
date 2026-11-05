@@ -10,6 +10,8 @@ import { useConfigStore, useEffectiveConfig } from "@/stores/use-config-store";
 
 import { useCanvasTheme } from "@/lib/canvas/use-canvas-theme";
 import { getGroupResourceNodes } from "@/lib/canvas/canvas-resource-references";
+import type { CanvasResourceReference } from "@/lib/canvas/canvas-resource-references";
+import { imageReferenceLabel } from "@/lib/image-reference-prompt";
 import { normalizePixelSize } from "@/lib/media-size";
 import { requestImagePromptOptimize } from "@/services/api/image";
 import { usePromptCapabilities } from "@/hooks/use-prompt-capabilities";
@@ -92,6 +94,7 @@ export function CanvasFreeCardPanel({ node, nodes, connectedNodes, isRunning, on
     const [sourcesError, setSourcesError] = useState("");
     const [summary, setSummary] = useState<FreeWorkflowSummary | null>(null);
     const [prompt, setPrompt] = useState(node.metadata?.prompt || "");
+    const promptTextareaRef = useRef<HTMLTextAreaElement>(null);
     const [textValues, setTextValues] = useState<Record<string, string>>(node.metadata?.freeCardTextValues || {});
     const promptInitRef = useRef("");
     const [importing, setImporting] = useState(false);
@@ -211,6 +214,15 @@ export function CanvasFreeCardPanel({ node, nodes, connectedNodes, isRunning, on
                 storageKey: item.metadata?.storageKey,
             }));
     }, [connectedNodes, nodes]);
+    const optimizeMentionReferences = useMemo((): CanvasResourceReference[] => imageReferences.map((image, index) => ({
+        id: image.id,
+        nodeId: image.id,
+        kind: "image",
+        label: imageReferenceLabel(index),
+        title: image.name,
+        previewUrl: image.url || image.dataUrl,
+        active: true,
+    })), [imageReferences]);
 
     const sizeText = node.metadata?.size || (info?.size ? `${info.size.width}x${info.size.height}` : "");
     const countValue = node.metadata?.count ?? info?.count ?? 1;
@@ -336,33 +348,22 @@ export function CanvasFreeCardPanel({ node, nodes, connectedNodes, isRunning, on
     };
 
     const optimizePrompt = async () => {
-        const text = prompt.trim();
+        const text = (node.metadata?.promptOptimizeSource ?? prompt).trim();
         if (!text) {
             message.warning(t("canvas.freeCard.needPrompt"));
             return;
         }
-        setOptimizeOptionsOpen(false);
-        const useCloud = optimizeEngine === "cloud";
         const references = info && info.imageInputs > 0 ? imageReferences.slice(0, info.imageInputs) : [];
         setOptimizing(true);
         try {
             const result = await requestImagePromptOptimize(config, {
                 prompt: text,
                 mode: references.length ? "image" : "text",
-                language: optimizeLanguage,
-                images: useCloud ? [] : references,
+                images: references,
                 imageCount: references.length,
-                engine: optimizeEngine,
-                cloud: useCloud
-                    ? {
-                          baseUrl: (config.promptCloudBaseUrl || "").trim(),
-                          apiKey: (config.promptCloudApiKey || "").trim(),
-                          model: (config.promptCloudModel || "").trim(),
-                      }
-                    : undefined,
             });
             setPrompt(result.prompt);
-            onChange({ prompt: result.prompt, composerContent: result.prompt });
+            onChange({ prompt: result.prompt, composerContent: result.prompt, promptOptimizeSource: text });
         } catch (error) {
             message.error(error instanceof Error ? error.message : t("canvas.freeCard.saveFailed"));
         } finally {
@@ -511,11 +512,15 @@ export function CanvasFreeCardPanel({ node, nodes, connectedNodes, isRunning, on
                                         {primaryText?.label || t("canvas.freeCard.prompt")}
                                         {primaryText ? <span className="ml-1 text-[10px] opacity-50">#{primaryText.node}</span> : null}
                                     </span>
-                                    <Button size="small" type="text" icon={<Sparkles className="size-3.5" />} loading={optimizing} onClick={() => setOptimizeOptionsOpen((open) => !open)}>
-                                        {optimizing ? t("canvas.freeCard.optimizing") : t("canvas.freeCard.optimize")}
+                                    <Button size="small" type="text" icon={<Sparkles className="size-3.5" />} onClick={() => {
+                                        if (!optimizeOptionsOpen && node.metadata?.promptOptimizeSource === undefined && prompt.trim()) onChange({ promptOptimizeSource: prompt });
+                                        setOptimizeOptionsOpen((open) => !open);
+                                    }}>
+                                        {t("canvas.freeCard.optimize")}
                                     </Button>
                                 </div>
                                 <textarea
+                                    ref={promptTextareaRef}
                                     className="min-h-20 w-full resize-y rounded-xl border bg-transparent px-3 py-2 text-sm outline-none"
                                     style={{ borderColor: theme.node.stroke, color: theme.node.text }}
                                     value={prompt}
@@ -523,6 +528,7 @@ export function CanvasFreeCardPanel({ node, nodes, connectedNodes, isRunning, on
                                     onChange={(event) => setPrompt(event.target.value)}
                                     onBlur={commitPrompt}
                                 />
+                                {node.metadata?.promptOptimizeSource !== undefined ? <div className="text-[11px] leading-4 opacity-60">{t("canvas.promptPanel.optimizeImageContinueHint")}</div> : null}
                                 {extraTexts.map((item) => {
                                     const key = textKey(item);
                                     const value = textValues[key] ?? item.default;
@@ -548,11 +554,15 @@ export function CanvasFreeCardPanel({ node, nodes, connectedNodes, isRunning, on
                                     <PromptOptimizeOptions
                                         className="mt-2"
                                         title={t("canvas.promptPanel.optimizeImageTitle")}
-                                        engine={optimizeEngine}
-                                        language={optimizeLanguage}
+                                        engine="local"
+                                        language="zh"
                                         cloudReady={optimizeCloudReady}
                                         cloudModel={config.promptCloudModel}
                                         localReady={engineAvailable("imagePe")}
+                                        hideEngineAndLanguage
+                                        imagePrompt={node.metadata?.promptOptimizeSource ?? prompt}
+                                        references={optimizeMentionReferences}
+                                        onImagePromptChange={(value) => onChange({ promptOptimizeSource: value })}
                                         disabled={optimizing}
                                         onEngineChange={(engine) => updateConfig("promptApiEngine", engine)}
                                         onLanguageChange={(language) => updateConfig("promptOptimizeLanguage", language)}

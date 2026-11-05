@@ -82,16 +82,6 @@ start-local.bat
 
 启动器会检测 `8188` 和常见 ComfyUI 目录；找到后接管或拉起 ComfyUI，启动网关，并在 `http://127.0.0.1:3000` 托管画布。首次发现 ComfyUI 后会把路径写入 `launcher/config.json`。
 
-### 画布修复助手（Agent）
-
-v0.23.1 完整包内置「画布修复助手」卡片。它不是只读问答：在用户确认修复方案后，会在本机工作区改源码、typecheck、build，并部署到当前画布 dist。
-
-- **完整包 / 小补丁**：Agent 服务、源码工作区和前端构建依赖只在完整包内，首次启动由启动器自动解压完整包根目录的 `assistant-runtime.zip`；应用内小补丁不携带这些大文件，卡片会提示「需要完整包」，不会启动服务，也不占性能。
-- **按需唤醒**：打开卡片或发第一条消息时，由网关分配空闲端口拉起服务；3 分钟没有提问、且没有在跑的对话/构建时自动休眠，下次发消息或再加卡自动唤起。多张卡共享同一个服务。
-- **修复记录**：应用过的修改记录在 `assistant/data`，整包更新后会自动重放到新源码并重新构建部署；无法重放的冲突会明确提示。部署会保留 `dist/config.js` 和用户自己加的插件文件。
-- **API Key**：只使用浏览器「设置 → 云端 API」里的配置，服务端不保存 Key；发布包、日志、工作区不包含 Key。
-- **构建护栏**：ComfyUI 正在生成或本机可用内存不足时，先拦下修复构建，避免边生成边构建。
-
 ### 局域网 / 多机访问（可选）
 
 默认全部只绑 `127.0.0.1`，单机行为不变。如果要在「工作站跑模型 + 其他设备浏览器打开 WebUI」，可在 `launcher/config.json` 增加：
@@ -126,7 +116,7 @@ v0.23.1 完整包内置「画布修复助手」卡片。它不是只读问答：
 ## 更新
 
 - 版本弹窗的「检查更新」由网关 `/api/update/check` 提供，读取项目根目录的 `update.json`；Git 克隆安装会从 `origin/main` 获取最新清单（点击检查时执行 `git fetch`）。
-- **文件夹安装**：点击「应用更新」会在软件内下载并校验代码补丁，只替换程序文件；`data/`、模型、`node_modules`、`resources/bundled`、`assistant/workspace`、`assistant/data` 和 `launcher/config.json` 不会被覆盖。更新完成后网关自动重启，新页面自动刷新。Agent 的工作区和构建依赖不进入小补丁；需要 Agent 的旧用户请下载 v0.23.1 完整包。
+- **文件夹安装**：点击「应用更新」会在软件内下载并校验代码补丁，只替换程序文件；`data/`、模型、`node_modules`、`resources/bundled` 和 `launcher/config.json` 不会被覆盖。更新完成后网关自动重启，新页面自动刷新。
 - **Git 克隆**：工作区没有已跟踪修改时执行 `git pull --ff-only`；`package-lock.json` 有变化时先在 `comfyui-gateway` 运行 `npm install`。启动器生成的 `infinite-canvas/web/dist/config.js` 不再被误判为本地修改。
 - **强制更新**：如果确实改过程序源码，更新弹窗会显示「强制更新（保留 data）」；用校验过的补丁覆盖程序文件，保留 `data/`、模型、`node_modules` 和 `launcher/config.json`，失败自动回滚。
 - **旧版本自举**：v0.22.6 及更早的 Git 安装如果被提示“工作区有未提交的修改”，先点「下载更新工具」运行一次，升到 v0.22.7 后即可正常使用应用内更新。
@@ -155,7 +145,7 @@ v0.23.1 完整包内置「画布修复助手」卡片。它不是只读问答：
 - 只有显式设置 `allowLan: true` 并配置 `canvasHost` / `gatewayHost` 才会放开监听；放开后只限可信内网，并配合防火墙限制来源，**不要映射到公网**。网关 `/api` 与 `/admin` 仍无鉴权，CORS 白名单不是访问控制。
 - 不要把 `:8188`、`:8190`、`:8290` 暴露到公网或不可信局域网。
 - 本地渠道默认 API Key 是占位值 `local`，网关不校验该值；仓库不包含真实 API Key、Token 或私钥。画布修复助手服务的 API Key 只在用户浏览器配置里，服务不落盘。
-- 不要提交 `launcher/config.json`、`comfyui-gateway/data/`、`assistant/data/`、任务输出、模型权重、`.env` 或任何密钥。
+- 不要提交 `launcher/config.json`、`comfyui-gateway/data/`、任务输出、模型权重、`.env` 或任何密钥。
 - `launcher/config.json` 含本机路径；仓库只提供 `config.example.json`。
 
 ## 署名与许可证

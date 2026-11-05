@@ -991,9 +991,13 @@ test("resource status exposes standalone four-view and hides all VDN workflow ca
         const h3 = status.packs.find((pack) => pack.id === "h3");
         assert.deepEqual(h3.workflows, ["video-h3-ref2va-novdn", "video-h3-t2v-novdn", "video-h3-frames-novdn"]);
         assert.deepEqual(h3.workflowDependencies.map((workflow) => workflow.id), [
+            "video-h3-ref2va",
+            "video-h3-t2v",
+            "video-h3-frames",
             "video-h3-ref2va-novdn",
             "video-h3-t2v-novdn",
             "video-h3-frames-novdn",
+            "video-h3-character-swap",
         ]);
         for (const id of ["h3_vdn_stage_model", "h3_character_swap_lora"]) {
             assert.equal(h3.resourceIds.includes(id), false);
@@ -1014,8 +1018,8 @@ test("resource status exposes standalone four-view and hides all VDN workflow ca
         assert.equal(existing.items.length, 0);
         const afterInstalled = manager.status();
         const installedH3 = afterInstalled.packs.find((pack) => pack.id === "h3");
-        assert.equal(installedH3.workflowDependencies.some((workflow) => workflow.id.includes("character-swap")), false);
-        assert.equal(installedH3.workflowDependencies.some((workflow) => /^video-h3-(ref2va|t2v|frames)$/.test(workflow.id)), false);
+        assert.equal(installedH3.workflowDependencies.some((workflow) => workflow.id.includes("character-swap")), true);
+        assert.equal(installedH3.workflowDependencies.some((workflow) => /^video-h3-(ref2va|t2v|frames)$/.test(workflow.id)), true);
     } finally {
         await fsp.rm(root, { recursive: true, force: true });
     }

@@ -1,0 +1,14 @@
+[Unit]
+Description=Wireless Canvas Lab Web (Vite development server)
+PartOf=canvas-lab.target
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/sean/projects/canvas-lab/infinite-canvas/web
+Environment=PATH=/home/sean/.local/share/fnm/node-versions/v24.18.0/installation/bin:/usr/local/bin:/usr/bin:/bin
+ExecStart=/home/sean/.local/share/fnm/node-versions/v24.18.0/installation/bin/node /home/sean/projects/canvas-lab/infinite-canvas/web/node_modules/vite/bin/vite.js --host 127.0.0.1 --port 3000 --strictPort
+Restart=on-failure
+RestartSec=3
+TimeoutStopSec=15
+

@@ -27,6 +27,7 @@ const RETIRED_IDS = [
 ];
 const VDN_MODELS = ["video-h3-ref2va", "video-h3-t2v", "video-h3-frames", "video-h3-character-swap"];
 const NOVDN_MODELS = ["video-h3-ref2va-novdn", "video-h3-t2v-novdn", "video-h3-frames-novdn"];
+const ALL_H3_MODELS = [...VDN_MODELS.slice(0, 3), ...NOVDN_MODELS, VDN_MODELS[3]];
 const MODEL_FILE = /\.(safetensors|sft|ckpt|pt|pth|bin|gguf|onnx|engine)$/i;
 
 function readIndex() {
@@ -213,7 +214,7 @@ test("refresh keeps installed VDN workflows in /v1/models and never re-opens dow
         console.log(
             `[h3-refresh] before=${beforeIds.filter((id) => VDN_MODELS.includes(id)).join(",")} after=${modelIds(after).filter((id) => VDN_MODELS.includes(id)).join(",")} revision=${before.revision}->${after.revision}`,
         );
-        for (const id of VDN_MODELS) {
+        for (const id of ALL_H3_MODELS) {
             const model = after.data.find((item) => item.id === id);
             assert.ok(model, `${id} must survive refresh`);
             assert.equal(model.metadata.availability.available, true);
@@ -228,7 +229,7 @@ test("refresh keeps installed VDN workflows in /v1/models and never re-opens dow
         assert.equal(status.packs.find((pack) => pack.id === "krea2-four-view").standalone, true);
         const h3 = h3Pack(status);
         assert.deepEqual(h3.workflows, NOVDN_MODELS);
-        assert.deepEqual(h3.workflowDependencies.map((workflow) => workflow.id), NOVDN_MODELS);
+        assert.deepEqual(h3.workflowDependencies.map((workflow) => workflow.id), ALL_H3_MODELS);
         for (const id of RETIRED_IDS) {
             const item = status.resources.find((entry) => entry.id === id);
             assert.equal(item.downloadable, false, `${id} must stay closed`);
@@ -260,7 +261,7 @@ test("refresh keeps installed VDN workflows in /v1/models and never re-opens dow
         console.log(`[h3-refresh] missingVdnDrop=${VDN_MODELS.filter((id) => !missing.data.some((model) => model.id === id)).join(",")} noVdnKept=${NOVDN_MODELS.filter((id) => missing.data.some((model) => model.id === id)).join(",")}`);
         const missingStatus = await (await fetch(`${baseUrl}/api/resources/status`)).json();
         const missingH3 = h3Pack(missingStatus);
-        assert.deepEqual(missingH3.workflowDependencies.map((workflow) => workflow.id), NOVDN_MODELS);
+        assert.deepEqual(missingH3.workflowDependencies.map((workflow) => workflow.id), ALL_H3_MODELS);
         for (const id of RETIRED_IDS) {
             assert.equal(missingH3.resourceIds.includes(id), false);
             assert.equal(missingH3.optionalIds.includes(id), false);
@@ -275,7 +276,7 @@ test("refresh keeps installed VDN workflows in /v1/models and never re-opens dow
         }
     } finally {
         if (gateway) {
-            await stopGateway({ tasks: gateway.tasks, comfy: gateway.comfy, setup: gateway.setup, server, abortActiveRequests: gateway.abortActiveRequests, assistant: gateway.assistant }).catch(() => {});
+            await stopGateway({ tasks: gateway.tasks, comfy: gateway.comfy, setup: gateway.setup, server, abortActiveRequests: gateway.abortActiveRequests }).catch(() => {});
         }
         if (server?.listening) await new Promise((resolve) => server.close(resolve));
         await new Promise((resolve) => (comfyServer ? comfyServer.close(resolve) : resolve()));

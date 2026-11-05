@@ -144,6 +144,13 @@ export function buildNodeGenerationInputs(nodeId: string, nodes: CanvasNodeData[
     });
 }
 
+export function hasMediaGenerationInputs(nodeId: string, nodes: CanvasNodeData[], connections: CanvasConnection[]) {
+    return buildNodeGenerationInputs(nodeId, nodes, connections).some((input) => {
+        const resources = input.type === "group" ? input.children : [input];
+        return resources.some((resource) => resource.type === "image" || resource.type === "video" || resource.type === "audio");
+    });
+}
+
 function flattenGenerationInputs(inputs: NodeGenerationInput[]) {
     const resources = inputs.flatMap((input) => (input.type === "group" ? input.children : [input]));
     return [...new Map(resources.map((input) => [input.nodeId, input])).values()];

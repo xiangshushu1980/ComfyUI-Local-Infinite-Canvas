@@ -3,6 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { applyModelAliases } from "./runner.js";
+import { createH3LoraWorkflow, h3EffectiveDuration } from "./h3-lora-workflow.js";
 import { ensureSpeakerTags } from "./speaker-tags.js";
 import { deepClone, sleep, truncate } from "./util.js";
 
@@ -47,11 +48,11 @@ function imageValue(uploaded) {
 
 function outputText(history) {
   const outputs = history?.outputs || {};
-  const direct = outputs["4"]?.text?.[0] || outputs["4"]?.input_text?.[0];
+  const direct = outputs["4"]?.text?.[0] || outputs["4"]?.input_text?.[0] || outputs["4"]?.ui?.text?.[0];
   if (typeof direct === "string" && direct.trim()) return direct;
   for (const output of Object.values(outputs)) {
     for (const key of ["text", "input_text"]) {
-      const value = output?.[key]?.[0];
+      const value = output?.[key]?.[0] || output?.ui?.[key]?.[0];
       if (typeof value === "string" && value.trim()) return value;
     }
   }
@@ -189,10 +190,6 @@ function buildCloudH3System(mode, duration, language) {
 对齐句由系统在正文前补充，正文不要另写。
 只输出最终 H3 提示词正文，不要输出思考过程、分析、解释、Markdown 代码块或前后缀。`;
 }
-
-const CLOUD_IMAGE_SYSTEM_PROMPT = `你是 AI 生图提示词专家。请把用户输入改写为一条可直接使用的生图/图生图提示词，只输出最终提示词本身，不要输出任何思考过程、分析、解释、Markdown 代码块、标题或前后缀。
-
-要求：主体明确，构图、镜头、光线、材质与风格具体；保留用户的主体和意图，不要编造品牌或画面文字；图生图时说明需要保留与需要改变的部分；输出语言与“输出语言”字段一致。`;
 
 function cloudContent(data) {
   const content = data?.choices?.[0]?.message?.content;
@@ -344,19 +341,6 @@ async function cloudOptimize({ prompt, mode, duration, referenceNote, language, 
   };
 }
 
-async function cloudOptimizeImage({ prompt, mode, language, imageCount = 0, cloud = {}, signal }) {
-  const userText = [
-    `任务模式：${mode}`,
-    `输出语言：${String(language || "zh").toLowerCase() === "en" ? "英文" : "中文"}`,
-    imageCount ? `参考图片：${imageCount} 张（云端模式仅使用文字说明）` : "",
-    `用户原始提示词：\n${prompt}`,
-  ].filter(Boolean).join("\n");
-  const { content, model, elapsedMs } = await cloudChat({ system: CLOUD_IMAGE_SYSTEM_PROMPT, userText, cloud, signal });
-  const result = sanitizeImagePrompt(content);
-  if (!result) throw new PromptOptimizeError("云端 API 没有返回提示词", { status: 502, code: "no_prompt_output" });
-  return { prompt: result, mode, provider: "cloud", model, elapsedMs };
-}
-
 export function createPromptOptimizer({ config, comfy, logger, modelAliasFor = null, loaderSpecs = undefined }) {
   // 反推/优化提交的是打包模板，模型名写死在模板里；必须和出图路径一样套别名。
   // loaderSpecs 允许传 getter：网关启动扫描可能还没完成，不能拿旧快照。
@@ -410,28 +394,12 @@ export function createPromptOptimizer({ config, comfy, logger, modelAliasFor = n
       return { ...cloudResult, prompt: ensureFrameAlignmentPrompt(cloudResult.prompt, taskType, optimizeSeconds) };
     }
 
-    const workflow = workflowTemplate();
-    workflow["2"].inputs["输入提示词"] = text;
-    workflow["2"].inputs["任务类型"] = taskType;
-    workflow["2"].inputs["视频时长"] = optimizeSeconds;
-    workflow["2"].inputs["参考素材说明"] = String(referenceNote || "").slice(0, 4000);
-    if (images.length) {
-      workflow["3"].inputs["输入模式"] = "图片";
-      images.forEach((uploaded, index) => {
-        const nodeId = String(9101 + index);
-        workflow[nodeId] = {
-          class_type: "LoadImage",
-          inputs: { image: imageValue(uploaded) },
-          _meta: { title: `H3 Ref ${index + 1}` },
-        };
-        workflow["3"].inputs[index === 0 ? "图片" : `图片${index + 1}`] = [nodeId, 0];
-      });
-    } else {
-      workflow["3"].inputs["输入模式"] = "文本";
+    let workflow;
+    try {
+      workflow = createH3LoraWorkflow({ rootDir: config.rootDir, prompt: text, mode: taskType, duration: optimizeSeconds, referenceNote, language: outputLanguage, images });
+    } catch (error) {
+      throw new PromptOptimizeError(`H3 本地重写工作流无法创建：${error.message}`, { status: 400, code: "h3_rewrite_invalid_input" });
     }
-    const baseSystemPrompt = String(workflow["3"].inputs["系统提示词"] || "").trim();
-    workflow["3"].inputs["系统提示词"] = `${baseSystemPrompt}${baseSystemPrompt ? "\n" : ""}${h3LanguageDirective(outputLanguage)}\n只输出最终提示词正文；禁止输出思考过程、分析、推理、解释、Markdown 代码块、前后缀或自我说明。`;
-
     const started = Date.now();
     const submitted = await comfy.submit(withAliases(workflow), { signal });
     const promptId = submitted.promptId;
@@ -447,7 +415,7 @@ export function createPromptOptimizer({ config, comfy, logger, modelAliasFor = n
     };
     if (signal) signal.addEventListener("abort", onAbort, { once: true });
     try {
-      const deadline = Date.now() + 180000;
+      const deadline = Date.now() + 360000;
       let history = null;
       while (Date.now() < deadline) {
         if (signal?.aborted) {
@@ -474,6 +442,15 @@ export function createPromptOptimizer({ config, comfy, logger, modelAliasFor = n
       const raw = outputText(history).trim();
       const result = sanitizeH3Prompt(raw);
       if (raw !== result) logger?.info?.(`prompt optimize sanitized ${raw.length}->${result.length}`);
+      const requiredSections = /全参考|Reference to Video/i.test(taskType)
+        ? ["subject_definitions", "summary", "retention_analysis", "detailed_description", "overall_soundscape", "non_diegetic_music"]
+        : ["integrated_multimodal_description", "overall_soundscape", "non_diegetic_music"];
+      const missingSections = requiredSections.filter((section) => !new RegExp(`(?:^|\\n)\\s*${section}\\s*:`, "i").test(result));
+      if (result && missingSections.length) {
+        throw new PromptOptimizeError(`H3 重写结果结构不完整：缺少 ${missingSections.join(", ")}`, {
+          status: 502, code: "h3_rewrite_incomplete", details: { missingSections, text: result.slice(0, 800) },
+        });
+      }
       if (!result) {
         throw new PromptOptimizeError("提示词工作流没有返回文本", {
           status: 502,
@@ -486,7 +463,7 @@ export function createPromptOptimizer({ config, comfy, logger, modelAliasFor = n
       if (speaker.fixed) logger?.info?.(`prompt optimize fixed ${speaker.fixed} speaker tag(s)`);
       if (speaker.issues.length) logger?.info?.(`prompt optimize speaker issues ${speaker.issues.length}`);
       return {
-        prompt: ensureFrameAlignmentPrompt(speaker.prompt, taskType, optimizeSeconds),
+        prompt: ensureFrameAlignmentPrompt(speaker.prompt, taskType, Number(h3EffectiveDuration(optimizeSeconds))),
         mode: taskType,
         duration: optimizeSeconds,
         promptId,
@@ -497,24 +474,29 @@ export function createPromptOptimizer({ config, comfy, logger, modelAliasFor = n
     } finally {
       running = false;
       signal?.removeEventListener("abort", onAbort);
+      // H3 video generation needs the same GPU; release the cached 9B encoder after use.
+      // Never unload while ComfyUI has another running or pending task.
+      if (process.env.H3_LORA_UNLOAD_AFTER_GENERATE !== "0" && typeof comfy.queue === "function" && typeof comfy.freeMemory === "function") {
+        try {
+          const queue = await comfy.queue();
+          if (!queue?.queue_running?.length && !queue?.queue_pending?.length) await comfy.freeMemory();
+        } catch (error) {
+          logger?.warn?.(`H3 重写后释放显存失败：${error.message}`);
+        }
+      }
     }
   }
 
-  async function optimizeImage({ prompt, mode, language, uploadedImages = [], imageCount = 0, signal, engine = "local", cloud = {} }) {
+  async function optimizeImage({ prompt, mode, uploadedImages = [], imageCount = 0, signal }) {
     const text = String(prompt || "").trim();
     if (!text) throw new PromptOptimizeError("缺少提示词", { status: 400, code: "missing_prompt" });
     if (text.length > 8000) throw new PromptOptimizeError("提示词过长", { status: 400, code: "prompt_too_long" });
     const images = uploadedImages.slice(0, 8);
-    const useCloud = String(engine || "local").toLowerCase() === "cloud";
     const referenceCount = images.length || Math.max(0, Number(imageCount) || 0);
     const taskMode = String(mode || "").toLowerCase() === "image" ? "图生图" : referenceCount ? "图生图" : "文生图";
-    if (!useCloud && taskMode === "图生图" && !images.length) {
+    if (taskMode === "图生图" && !images.length) {
       throw new PromptOptimizeError("图生图提示词优化需要至少 1 张参考图", { status: 400, code: "missing_reference_image" });
     }
-    if (useCloud) {
-      return cloudOptimizeImage({ prompt: text, mode: taskMode, language, imageCount: referenceCount, cloud, signal });
-    }
-
     const workflow = imageWorkflowTemplate();
     const isEdit = taskMode === "图生图";
     workflow["1"].inputs.clip_name = isEdit

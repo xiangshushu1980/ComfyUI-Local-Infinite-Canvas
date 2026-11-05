@@ -8,7 +8,7 @@ function sessionUrl(path: string) {
     return `${LOCAL_GATEWAY_BASE_URL.replace(/\/v1\/?$/, "")}${path}`;
 }
 
-// 本地模式：向网关注册画布会话，启动器据此在最后一个页面关闭后回收后台。
+// 向网关注册画布会话，启动器据此在最后一个页面关闭后回收后台。
 export function startLocalSession() {
     if (started || typeof window === "undefined") return;
     started = true;

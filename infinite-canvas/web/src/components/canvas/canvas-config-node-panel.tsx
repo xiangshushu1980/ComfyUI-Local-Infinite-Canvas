@@ -4,7 +4,7 @@ import { Button, Segmented } from "antd";
 import { useTranslation } from "react-i18next";
 
 import { BaseModelPicker, WorkflowModelPicker } from "@/components/model-picker";
-import { defaultConfig, resolveModelForCapability, useConfigStore, useEffectiveConfig, type AiConfig } from "@/stores/use-config-store";
+import { defaultConfig, modelCapabilityOf, resolveModelForCapability, useConfigStore, useEffectiveConfig, type AiConfig } from "@/stores/use-config-store";
 
 import { useCanvasTheme } from "@/lib/canvas/use-canvas-theme";
 import { videoModelForWorkflow, videoModelModePatch, videoWorkflowId, isNoVdnWorkflowId } from "@/lib/canvas/video-model-mode";
@@ -46,6 +46,31 @@ export function CanvasConfigNodePanel({ node, isRunning, inputSummary, onConfigC
         const nextModel = videoModelForWorkflow(config, baseId, { noVdn: isNoVdnWorkflowId(videoWorkflowId(config, config.model)) });
         onConfigChange(node.id, { ...(nextModel ? { model: nextModel } : {}), videoMode: value, ...(value === "frames" ? { frameMode } : {}) });
     };
+    const changeGenerationMode = (value: CanvasGenerationMode) => {
+        if (value !== "video") {
+            onConfigChange(node.id, { generationMode: value });
+            return;
+        }
+
+        const currentModel = node.metadata?.model;
+        const currentModelIsVideo = modelCapabilityOf(globalConfig, currentModel || "") === "video";
+        const hasImageReferences = inputSummary.imageCount > 0;
+        const noVdn = isNoVdnWorkflowId(videoWorkflowId(globalConfig, currentModelIsVideo ? currentModel! : globalConfig.videoModel));
+        const referenceModel = !currentModelIsVideo && hasImageReferences
+            ? videoModelForWorkflow(globalConfig, "video-h3-ref2va", { noVdn })
+            : "";
+        const nextModel = referenceModel || (currentModelIsVideo ? currentModel! : globalConfig.videoModel || defaultConfig.videoModel);
+        const modelModePatch = videoModelModePatch(globalConfig, nextModel);
+        const videoMode = referenceModel
+            ? "reference"
+            : modelModePatch.videoMode || node.metadata?.videoMode || globalConfig.videoMode || defaultConfig.videoMode;
+
+        onConfigChange(node.id, {
+            generationMode: value,
+            model: nextModel,
+            videoMode,
+        });
+    };
     const hasAnyInput = Boolean(inputSummary.textCount || inputSummary.imageCount || inputSummary.videoCount || inputSummary.audioCount);
     const hasComposerContent = Boolean((node.metadata?.composerContent ?? node.metadata?.prompt ?? "").trim());
     const canGenerate = hasComposerContent || (mode === "audio" ? inputSummary.textCount > 0 : hasAnyInput);
@@ -59,7 +84,7 @@ export function CanvasConfigNodePanel({ node, isRunning, inputSummary, onConfigC
                         size="small"
                         className="canvas-config-mode !rounded-md !p-0.5"
                         value={mode}
-                        onChange={(value) => onConfigChange(node.id, { generationMode: value as CanvasGenerationMode })}
+                        onChange={(value) => changeGenerationMode(value as CanvasGenerationMode)}
                         options={[
                             {
                                 value: "image",
@@ -174,9 +199,11 @@ function InputChip({ label, value, style }: { label: string; value: string; styl
 }
 
 function buildNodeConfig(globalConfig: AiConfig, node: CanvasNodeData, mode: CanvasGenerationMode): AiConfig {
+    const model = resolveModelForCapability(globalConfig, node.metadata?.model, mode);
+    const inferredVideoMode = mode === "video" && model ? videoModelModePatch(globalConfig, model).videoMode : undefined;
     return {
         ...globalConfig,
-        model: resolveModelForCapability(globalConfig, node.metadata?.model, mode),
+        model,
         reasoningEffort: node.metadata?.reasoningEffort || globalConfig.reasoningEffort || defaultConfig.reasoningEffort,
         quality: node.metadata?.quality || globalConfig.quality || defaultConfig.quality,
         size: node.metadata?.size || globalConfig.size || defaultConfig.size,
@@ -185,7 +212,7 @@ function buildNodeConfig(globalConfig: AiConfig, node: CanvasNodeData, mode: Can
         vquality: node.metadata?.vquality || globalConfig.vquality || defaultConfig.vquality,
         videoGenerateAudio: node.metadata?.generateAudio || globalConfig.videoGenerateAudio || defaultConfig.videoGenerateAudio,
         videoWatermark: node.metadata?.watermark || globalConfig.videoWatermark || defaultConfig.videoWatermark,
-        videoMode: node.metadata?.videoMode || globalConfig.videoMode || defaultConfig.videoMode,
+        videoMode: inferredVideoMode || node.metadata?.videoMode || globalConfig.videoMode || defaultConfig.videoMode,
         frameMode: node.metadata?.frameMode,
         imageMode: node.metadata?.imageMode || globalConfig.imageMode || "",
         outpaint: node.metadata?.outpaint || globalConfig.outpaint,

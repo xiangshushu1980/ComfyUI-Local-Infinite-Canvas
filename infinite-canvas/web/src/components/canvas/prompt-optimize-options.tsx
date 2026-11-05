@@ -2,6 +2,8 @@ import { Button } from "antd";
 import { X } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
+import { CanvasResourceMentionTextarea } from "@/components/canvas/canvas-resource-mention-textarea";
+import type { CanvasResourceReference } from "@/lib/canvas/canvas-resource-references";
 import { useCanvasTheme } from "@/lib/canvas/use-canvas-theme";
 
 export type PromptOptimizeEngine = "local" | "cloud";
@@ -14,7 +16,11 @@ type PromptOptimizeOptionsProps = {
     cloudModel?: string;
     localReady?: boolean;
     hideEngine?: boolean;
+    hideEngineAndLanguage?: boolean;
     title?: string;
+    imagePrompt?: string;
+    references?: CanvasResourceReference[];
+    onImagePromptChange?: (prompt: string) => void;
     disabled?: boolean;
     className?: string;
     onEngineChange: (engine: PromptOptimizeEngine) => void;
@@ -32,6 +38,7 @@ export function PromptOptimizeOptions({
     cloudModel,
     localReady = true,
     hideEngine = false,
+    hideEngineAndLanguage = false,
     title,
     disabled = false,
     className = "",
@@ -41,9 +48,33 @@ export function PromptOptimizeOptions({
     onOpenLocalSettings,
     onStart,
     onClose,
+    imagePrompt,
+    references = [],
+    onImagePromptChange,
 }: PromptOptimizeOptionsProps) {
     const { t } = useTranslation();
     const theme = useCanvasTheme();
+    if (imagePrompt !== undefined) {
+        return (
+            <div className={`space-y-2 rounded-xl border p-2 ${className}`} style={{ borderColor: theme.toolbar.border, background: theme.toolbar.panel }} onPointerDown={(event) => event.stopPropagation()}>
+                <CanvasResourceMentionTextarea
+                    value={imagePrompt}
+                    references={references}
+                    onChange={(value) => onImagePromptChange?.(value)}
+                    onKeyDown={(event) => event.stopPropagation()}
+                    containerClassName="!h-40"
+                    className="thin-scrollbar h-full w-full cursor-text resize-none rounded-xl px-3 py-2 text-sm leading-5 outline-none"
+                    style={{ background: "transparent", color: theme.node.text }}
+                    aria-label={t("canvas.promptPanel.imageOptimizeSource")}
+                />
+                <div className="flex justify-end gap-2">
+                    <Button size="small" type="primary" disabled={disabled || !imagePrompt.trim()} onClick={onStart}>
+                        {t("canvas.promptPanel.optimizeGenerate")}
+                    </Button>
+                </div>
+            </div>
+        );
+    }
     return (
         <div
             className={`space-y-2 rounded-xl border p-2 ${className}`}
@@ -61,7 +92,7 @@ export function PromptOptimizeOptions({
                     aria-label={t("canvas.promptPanel.optimizeClose")}
                 />
             </div>
-            {!hideEngine ? <div>
+            {!hideEngineAndLanguage && !hideEngine ? <div>
                 <div className="mb-1 text-[11px] opacity-70">{t("canvas.promptPanel.optimizeEngine")}</div>
                 <div className="grid grid-cols-2 gap-2">
                     <Button size="small" type={engine === "local" ? "primary" : "default"} onClick={() => onEngineChange("local")}>
@@ -94,7 +125,7 @@ export function PromptOptimizeOptions({
                     </div>
                 ) : null}
             </div> : null}
-            <div>
+            {!hideEngineAndLanguage ? <div>
                 <div className="mb-1 text-[11px] opacity-70">{t("canvas.promptPanel.optimizeLanguage")}</div>
                 <div className="grid grid-cols-2 gap-2">
                     <Button size="small" type={language === "zh" ? "primary" : "default"} onClick={() => onLanguageChange("zh")}>
@@ -104,7 +135,15 @@ export function PromptOptimizeOptions({
                         {t("canvas.promptPanel.optimizeLanguageEn")}
                     </Button>
                 </div>
-            </div>
+            </div> : null}
+            {hideEngineAndLanguage && engine === "local" && !localReady ? (
+                <div className="flex items-center justify-between gap-2 text-[11px] opacity-70">
+                    <span className="min-w-0 truncate">{t("canvas.promptPanel.optimizeLocalMissing")}</span>
+                    <Button size="small" className="shrink-0" onClick={onOpenLocalSettings || onOpenSettings}>
+                        {t("canvas.promptPanel.captionInstall")}
+                    </Button>
+                </div>
+            ) : null}
             <div className="flex justify-end gap-2">
                 <Button size="small" onClick={onClose}>
                     {t("canvas.promptPanel.optimizeClose")}

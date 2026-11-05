@@ -114,7 +114,11 @@ function assertNoRetiredEntries(status) {
     const h3 = packByName(status, "h3");
     assert.ok(h3, "h3 pack is missing");
     assert.deepEqual(h3.workflows, NOVDN_WORKFLOWS);
-    assert.deepEqual(h3.workflowDependencies.map((workflow) => workflow.id), NOVDN_WORKFLOWS);
+    assert.deepEqual(h3.workflowDependencies.map((workflow) => workflow.id), [
+        ...VDN_WORKFLOWS.slice(0, 3),
+        ...NOVDN_WORKFLOWS,
+        VDN_WORKFLOWS[3],
+    ]);
     for (const id of RETIRED_IDS) {
         assert.equal(h3.resourceIds.includes(id), false, `${id} leaked into pack resources`);
         assert.equal(h3.optionalIds.includes(id), false, `${id} leaked into pack optionals`);

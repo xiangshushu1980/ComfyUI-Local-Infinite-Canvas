@@ -4,7 +4,7 @@ import { persist } from "zustand/middleware";
 import { nanoid } from "nanoid";
 
 import i18n from "@/i18n";
-import { isLocalGatewayUrl, LOCAL_GATEWAY_BASE_URL, LOCAL_GATEWAY_CHANNEL_ID, LOCAL_GATEWAY_MODELS, LOCAL_GATEWAY_MODEL_VALUES } from "@/constant/app-mode";
+import { isLocalGatewayUrl, LOCAL_GATEWAY_BASE_URL, LOCAL_GATEWAY_CHANNEL_ID } from "@/constant/app-mode";
 import { normalizeProgressRingSkin, type ProgressRingSkinId } from "@/lib/canvas/progress-ring-skins";
 
 export type ApiCallFormat = "openai" | "gemini";
@@ -42,7 +42,6 @@ export type PromptCloudApi = {
 };
 
 export type AiConfig = {
-    channelMode: "remote" | "local";
     baseUrl: string;
     apiKey: string;
     apiFormat: ApiCallFormat;
@@ -132,7 +131,6 @@ export const LOCAL_PROXY_PACKAGE = "@basketikun/canvas-proxy";
 export const DEFAULT_LOCAL_PROXY_URL = "http://127.0.0.1:23210";
 
 const cloudDefaultConfig: AiConfig = {
-    channelMode: "local",
     baseUrl: OPENAI_BASE_URL,
     apiKey: "",
     apiFormat: "openai",
@@ -191,26 +189,23 @@ const cloudDefaultConfig: AiConfig = {
 
 const localDefaultChannel: ModelChannel = {
     id: LOCAL_GATEWAY_CHANNEL_ID,
-    name: "本地 ComfyUI",
+    name: "ComfyUI 网关",
     baseUrl: LOCAL_GATEWAY_BASE_URL,
     apiKey: "local",
     apiFormat: "openai",
-    models: LOCAL_GATEWAY_MODELS.map((model) => ({ name: model.name, capability: model.capability })),
+    models: [],
 };
-
-const localImageModel = `${LOCAL_GATEWAY_CHANNEL_ID}::image-z-image-turbo`;
-const localVideoModel = `${LOCAL_GATEWAY_CHANNEL_ID}::video-h3-t2v`;
 
 export const defaultConfig: AiConfig = {
     ...cloudDefaultConfig,
     baseUrl: LOCAL_GATEWAY_BASE_URL,
     apiKey: "local",
     channels: [localDefaultChannel, ...cloudDefaultConfig.channels],
-    model: localImageModel,
-    imageModel: localImageModel,
-    videoModel: localVideoModel,
+    model: "",
+    imageModel: "",
+    videoModel: "",
     videoMode: "text",
-    models: [...LOCAL_GATEWAY_MODEL_VALUES, ...cloudDefaultConfig.models],
+    models: cloudDefaultConfig.models,
 };
 
 export const defaultWebdavSyncConfig: WebdavSyncConfig = {
@@ -294,6 +289,10 @@ export function resolveModelForCapability(config: AiConfig, currentModel: string
 export function selectableModelsByCapability(config: AiConfig, capability?: ModelCapability) {
     if (!capability) return config.models;
     return config.channels.flatMap((channel) => channel.models.filter((model) => model.capability === capability).map((model) => encodeChannelModel(channel.id, model.name)));
+}
+
+export function hasLocalGatewayChannel(config: AiConfig) {
+    return config.channels.some((channel) => channel.id === LOCAL_GATEWAY_CHANNEL_ID || isLocalGatewayUrl(channel.baseUrl));
 }
 
 function channelModelEntries(config: AiConfig) {
@@ -525,6 +524,14 @@ export const useConfigStore = create<ConfigStore>()(
                     const remoteChannels = cloudDefaultConfig.channels.filter((channel) => !config.channels.some((existing) => existing.id === channel.id));
                     config.channels = [...config.channels, ...remoteChannels];
                 }
+                if (!config.channels.some((channel) => channel.id === LOCAL_GATEWAY_CHANNEL_ID || isLocalGatewayUrl(channel.baseUrl))) {
+                    config.channels = [{ ...localDefaultChannel, models: localDefaultChannel.models.map((model) => ({ ...model })) }, ...config.channels];
+                }
+                config.channels = config.channels.map((channel) =>
+                    channel.id === LOCAL_GATEWAY_CHANNEL_ID
+                        ? { ...channel, name: channel.name === "本地 ComfyUI" ? localDefaultChannel.name : channel.name, models: [] }
+                        : channel,
+                );
                 const channels = normalizeChannels(config);
                 const models = modelOptionsFromChannels(channels);
                 const imageModel = normalizeModelOptionValue(config.imageModel || config.model, channels);
@@ -535,7 +542,6 @@ export const useConfigStore = create<ConfigStore>()(
                     webdav: { ...defaultWebdavSyncConfig, ...persistedWebdav },
                     config: {
                         ...config,
-                        channelMode: config.channelMode === "remote" ? "remote" : "local",
                         model: config.model,
                         apiFormat: normalizeApiFormat(config.apiFormat),
                         channels,
@@ -716,7 +722,7 @@ function channelModelSignature(models: ChannelModel[]) {
 }
 
 /**
- * 把网关同步结果合并进本地渠道。只有 clear=true 时才清空模型和默认选择；
+ * 把网关同步结果合并进 ComfyUI 网关渠道。只有 clear=true 时才清空模型和默认选择；
  * 扫描中/降级/未知状态下的空结果由调用方决定保留，不会走到这里。
  * 保留渠道已有的 apiKey（为空时补 local）并跟到运行时 baseUrl。
  */

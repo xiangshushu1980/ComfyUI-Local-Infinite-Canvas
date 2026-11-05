@@ -21,6 +21,26 @@ function safeStat(file) {
 
 const execFileAsync = promisify(execFile);
 
+function windowsPowerShellPath() {
+    if (process.platform === "win32") {
+        const systemRoot = process.env.SystemRoot || "C:\\Windows";
+        return path.join(systemRoot, "System32", "WindowsPowerShell", "v1.0", "powershell.exe");
+    }
+    const candidates = [
+        process.env.POWERSHELL_PATH,
+        "/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe",
+        "/mnt/c/Windows/SysNative/WindowsPowerShell/v1.0/powershell.exe",
+    ].filter(Boolean);
+    return candidates.find((candidate) => fs.existsSync(candidate)) || "";
+}
+
+async function convertWslPath(value, mode) {
+    const { stdout } = await execFileAsync("wslpath", [mode, value], { timeout: 10000 });
+    const converted = String(stdout || "").trim();
+    if (!converted) throw new Error("WSL 路径转换失败");
+    return converted;
+}
+
 function normalizeAliasValue(value) {
     return String(value || "").replace(/\\/g, "/");
 }
@@ -531,6 +551,11 @@ export function createSetupManager({ config, registry, comfy, logger, mainModelF
         const roots = modelRootsForDir(dir).filter((root) => safeStat(root)?.isDirectory());
         if (!roots.length) throw new Error("未找到 ComfyUI 的模型目录");
         const initial = preferredModelRoot(roots);
+        const powershell = windowsPowerShellPath();
+        if (!powershell) {
+            throw new Error("当前环境没有可用的原生文件选择器；请安装 zenity，或设置 POWERSHELL_PATH 指向 Windows PowerShell");
+        }
+        const windowsInitial = process.platform === "win32" ? initial : await convertWslPath(initial, "-w");
         const quote = (value) => `'${String(value).replace(/'/g, "''")}'`;
         const foregroundType = [
             'Add-Type @"',
@@ -565,7 +590,7 @@ export function createSetupManager({ config, registry, comfy, logger, mainModelF
             foregroundType,
             "$d = New-Object System.Windows.Forms.OpenFileDialog",
             "$d.Title = '选择模型文件'",
-            `$d.InitialDirectory = ${quote(initial)}`,
+            `$d.InitialDirectory = ${quote(windowsInitial)}`,
             `$d.Filter = ${quote("模型文件|*.safetensors;*.sft;*.ckpt;*.pt;*.pth;*.bin;*.gguf;*.onnx;*.engine|所有文件|*.*")}`,
             "$d.Multiselect = $false",
             "$d.CheckFileExists = $true",
@@ -594,8 +619,7 @@ export function createSetupManager({ config, registry, comfy, logger, mainModelF
             // 控制台输出编码会按系统代码页走，中文路径会被读成 "?"；改用 UTF-8 Base64 回传。
             "if ($result -eq [System.Windows.Forms.DialogResult]::OK) { [Console]::Out.Write([Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes($d.FileName))) }",
         ].join("; ");
-        const systemRoot = process.env.SystemRoot || "C:\\Windows";
-        const powershell = path.join(systemRoot, "System32", "WindowsPowerShell", "v1.0", "powershell.exe");
+        
         // -EncodedCommand 用 UTF-16LE，避免含中文的模型路径在不同控制台编码下丢失。
         const encoded = Buffer.from(script, "utf16le").toString("base64");
         const { stdout } = await execFileAsync(powershell, ["-STA", "-NoProfile", "-EncodedCommand", encoded], {
@@ -604,7 +628,8 @@ export function createSetupManager({ config, registry, comfy, logger, mainModelF
             maxBuffer: 1024 * 1024,
         });
         const encodedPath = String(stdout || "").trim();
-        const selected = encodedPath ? Buffer.from(encodedPath, "base64").toString("utf8") : "";
+        const selectedWindowsPath = encodedPath ? Buffer.from(encodedPath, "base64").toString("utf8") : "";
+        const selected = selectedWindowsPath && process.platform !== "win32" ? await convertWslPath(selectedWindowsPath, "-u") : selectedWindowsPath;
         if (!selected) return null;
         const picked = modelRelativePath(roots, selected);
         if (!picked) {

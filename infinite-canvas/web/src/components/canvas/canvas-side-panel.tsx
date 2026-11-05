@@ -1,7 +1,7 @@
 import { Fragment, memo, useEffect, useMemo, useRef, useState, useSyncExternalStore, type PointerEvent as ReactPointerEvent } from "react";
 import { App, Empty, Input, Popconfirm, Select, Spin, Tag } from "antd";
 import { useQuery } from "@tanstack/react-query";
-import { BookOpen, Check, ChevronRight, Download, Eye, FileText, Image as ImageIcon, LayoutGrid, ListChecks, Music2, Pencil, Plus, RefreshCw, Rows3, Search, Settings2, Sparkles, Square, Trash2, Type, Video } from "lucide-react";
+import { BookOpen, Check, ChevronRight, Download, Eye, FileText, Filter, Image as ImageIcon, LayoutGrid, ListChecks, Music2, Pencil, Plus, RefreshCw, Rows3, Search, Settings2, Sparkles, Square, Trash2, Type, Video } from "lucide-react";
 import { motion } from "motion/react";
 import { useTranslation } from "react-i18next";
 
@@ -14,6 +14,7 @@ import { fetchSourcePrompts, type Prompt } from "@/services/api/prompts";
 import { uploadMediaFile } from "@/services/file-storage";
 import { previewUrlFor, subscribeImagePreviews, getImagePreviewRevision, uploadImage } from "@/services/image-storage";
 import { useAssetStore, type Asset, type AssetKind } from "@/stores/use-asset-store";
+import { AssetFlagBadges, AssetFlagPicker, FlagFilterPanel, QuickFlagFilters, matchesFlagFilter, type FlagFilter } from "@/components/assets/asset-flags";
 import { useEffectiveConfig } from "@/stores/use-config-store";
 import { fetchFreeWorkflows, deleteFreeWorkflow, renameFreeWorkflow, type FreeWorkflowSummary } from "@/services/api/free-workflow";
 import { usePromptSourceStore } from "@/stores/use-prompt-source-store";
@@ -456,20 +457,20 @@ const CanvasAssetsTab = memo(function CanvasAssetsTab({ onInsert, theme }: { onI
     const { message } = App.useApp();
     const { t } = useTranslation();
     const assets = useAssetStore((state) => state.assets);
+    const flags = useAssetStore((state) => state.flags);
     const addAsset = useAssetStore((state) => state.addAsset);
     const removeAsset = useAssetStore((state) => state.removeAsset);
     const [keyword, setKeyword] = useState("");
-    const [tagFilter, setTagFilter] = useState<string>("all");
+    const [flagFilter, setFlagFilter] = useState<FlagFilter>([]);
+    const [flagFilterOpen, setFlagFilterOpen] = useState(false);
     const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
     const [uploading, setUploading] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
-    const allTags = useMemo(() => Array.from(new Set(assets.flatMap((asset) => asset.tags || []))).slice(0, 20), [assets]);
-
     const filtered = useMemo(() => {
         const query = keyword.trim().toLowerCase();
-        return assets.filter((asset) => (tagFilter === "all" || (asset.tags || []).includes(tagFilter)) && (!query || [asset.title, ...(asset.tags || [])].join(" ").toLowerCase().includes(query)));
-    }, [assets, keyword, tagFilter]);
+        return assets.filter((asset) => matchesFlagFilter(asset, flagFilter) && (!query || [asset.title, ...(asset.tags || [])].join(" ").toLowerCase().includes(query)));
+    }, [assets, keyword, flagFilter]);
 
     const groups = useMemo(() => ASSET_GROUPS.map((group) => ({ ...group, items: filtered.filter((asset) => asset.kind === group.kind) })).filter((group) => group.items.length > 0), [filtered]);
 
@@ -519,18 +520,13 @@ const CanvasAssetsTab = memo(function CanvasAssetsTab({ onInsert, theme }: { onI
                 </button>
                 <input ref={fileInputRef} type="file" accept="image/*,video/*" multiple className="hidden" onChange={(e) => void handleFiles(e.target.files)} />
             </div>
-            {allTags.length ? (
-                <div className="flex flex-wrap gap-1.5 px-3 pb-2">
-                    <Tag.CheckableTag checked={tagFilter === "all"} className={cn("prompt-filter-tag", tagFilter === "all" && "is-active")} onChange={() => setTagFilter("all")}>
-                        {t("common.all")}
-                    </Tag.CheckableTag>
-                    {allTags.map((tag) => (
-                        <Tag.CheckableTag key={tag} checked={tagFilter === tag} className={cn("prompt-filter-tag", tagFilter === tag && "is-active")} onChange={() => setTagFilter((prev) => (prev === tag ? "all" : tag))}>
-                            {tag}
-                        </Tag.CheckableTag>
-                    ))}
+            {flags.length ? <div className="space-y-1 px-3 pb-2">
+                <div className="flex items-start gap-1">
+                    <div className="min-w-0 flex-1"><QuickFlagFilters value={flagFilter} onChange={setFlagFilter} /></div>
+                    <button type="button" onClick={() => setFlagFilterOpen((value) => !value)} className="grid size-6 shrink-0 place-items-center rounded opacity-55 transition hover:bg-black/5 hover:opacity-100 dark:hover:bg-white/10" title={t("assets.filters", { defaultValue: "Advanced filters" })} aria-label={t("assets.filters", { defaultValue: "Advanced filters" })}><Filter className="size-3.5" /></button>
                 </div>
-            ) : null}
+                {flagFilterOpen ? <FlagFilterPanel value={flagFilter} onChange={setFlagFilter} /> : null}
+            </div> : null}
             <div className="min-h-0 flex-1 overflow-y-auto px-2 pb-3">
                 {groups.length ? (
                     <div className="space-y-1">
@@ -569,9 +565,14 @@ const CanvasAssetsTab = memo(function CanvasAssetsTab({ onInsert, theme }: { onI
 
 function AssetCard({ asset, theme, onInsert, onRemove }: { asset: Asset; theme: CanvasTheme; onInsert: () => void; onRemove: () => void }) {
     const { t } = useTranslation();
+    const [flagMenuOpen, setFlagMenuOpen] = useState(false);
     return (
-        <div className="group relative aspect-square overflow-hidden rounded-xl border transition duration-200 hover:-translate-y-0.5 hover:shadow-lg" style={{ borderColor: theme.node.stroke, background: theme.node.panel }}>
+        <div className="group relative aspect-square overflow-hidden rounded-xl border transition duration-200 hover:-translate-y-0.5 hover:shadow-lg" style={{ borderColor: theme.node.stroke, background: theme.node.panel }} onContextMenu={(event) => { event.preventDefault(); setFlagMenuOpen(true); }}>
             <AssetCover asset={asset} />
+            <div className="pointer-events-none absolute bottom-1 left-1 max-w-[calc(100%-8px)] drop-shadow-[0_1px_1px_rgba(0,0,0,0.85)]">
+                <AssetFlagBadges asset={asset} showEmpty={false} />
+            </div>
+            <AssetFlagPicker assetIds={[asset.id]} triggerless open={flagMenuOpen} onOpenChange={setFlagMenuOpen} />
             <div className="absolute inset-0 flex items-center justify-center gap-2.5 opacity-0 transition duration-200 group-hover:opacity-100">
                 <button
                     type="button"

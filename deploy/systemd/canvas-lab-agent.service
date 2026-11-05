@@ -1,0 +1,15 @@
+[Unit]
+Description=Wireless Canvas Lab Canvas Agent (TypeScript watch mode)
+PartOf=canvas-lab.target
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/sean/projects/canvas-lab/infinite-canvas/canvas-agent
+Environment=HOST=127.0.0.1
+Environment=PORT=17373
+Environment=PATH=/home/sean/.local/share/fnm/node-versions/v24.18.0/installation/bin:/home/sean/projects/canvas-lab/infinite-canvas/canvas-agent/node_modules/.bin:/usr/local/bin:/usr/bin:/bin
+ExecStart=/home/sean/projects/canvas-lab/infinite-canvas/canvas-agent/node_modules/.bin/tsx watch src/index.ts
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=30

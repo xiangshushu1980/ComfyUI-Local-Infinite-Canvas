@@ -20,7 +20,6 @@ async function makeFixture(base) {
         "comfyui-gateway/prompts",
         "comfyui-gateway/workflows",
         "comfyui-gateway/resources/nodes",
-        "assistant",
         "infinite-canvas/web/dist/assets",
     ];
     for (const directory of directories) await fsp.mkdir(path.join(root, directory), { recursive: true });

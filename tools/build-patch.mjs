@@ -61,7 +61,6 @@ const INCLUDE = [
     "comfyui-gateway/resources/nodes",
     "comfyui-gateway/package.json",
     "comfyui-gateway/package-lock.json",
-    "assistant",
     "infinite-canvas/web/dist",
     "infinite-canvas/VERSION",
 ];
@@ -85,10 +84,6 @@ const EXCLUDE = [
     // 运行时配置由启动器按实际端口生成，补丁不能覆盖。
     /^infinite-canvas\/web\/dist\/config\.js$/i,
     /node_modules(\/|$)/i,
-    /^assistant\/(workspace|data|backups|logs)(\/|$)/i,
-    /^assistant\/runtime\.(zip|json)$/i,
-    /^assistant\/.*\.log$/i,
-    /^assistant\/fixes\.json$/i,
     /^comfyui-gateway\/resources\/nodes\/unpacked\/TE_MAN\/data(\/|$)/i,
     /^comfyui-gateway\/resources\/nodes\/unpacked\/TE_MAN\/te_bernini_backend\/text_embed_cache(\/|$)/i,
     /^comfyui-gateway\/resources\/nodes\/unpacked\/TE_MAN\/config[^/]*\.ini$/i,

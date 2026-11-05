@@ -52,7 +52,6 @@ after(async () => {
       setup: gateway.setup,
       server,
       abortActiveRequests: gateway.abortActiveRequests,
-      assistant: gateway.assistant,
     }).catch(() => {});
   }
   if (server?.listening) await new Promise((resolve) => server.close(resolve));

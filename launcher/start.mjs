@@ -628,94 +628,6 @@ function extractGatewayDeps(archive, destination) {
   if (result.status !== 0) throw new Error("解压网关依赖失败");
 }
 
-function assistantRuntimeReady(assistantDir) {
-  return (
-    isFile(path.join(assistantDir, "server.mjs")) &&
-    isDir(path.join(assistantDir, "node_modules", "@mariozechner", "pi-agent-core")) &&
-    isDir(path.join(assistantDir, "node_modules", "@mariozechner", "pi-ai")) &&
-    isFile(path.join(assistantDir, "workspace", "infinite-canvas", "web", "package.json")) &&
-    isDir(path.join(assistantDir, "workspace", "infinite-canvas", "web", "node_modules"))
-  );
-}
-
-export function ensureAssistantRuntime(root = ROOT, { logger = log } = {}) {
-  const assistantDir = path.join(root, "assistant");
-  const candidates = [path.join(assistantDir, "runtime.zip"), path.join(root, "assistant-runtime.zip")];
-  const archive = candidates.find((item) => isFile(item));
-  const markerFile = path.join(assistantDir, "runtime.json");
-  if (!archive) return { ok: true, extracted: false, reason: "no-runtime-zip" };
-  let stat;
-  try {
-    stat = fs.statSync(archive);
-  } catch (error) {
-    return { ok: false, extracted: false, error: `读取 Agent 运行时包失败：${error.message}` };
-  }
-  let marker = null;
-  try {
-    marker = JSON.parse(fs.readFileSync(markerFile, "utf8"));
-  } catch {
-    marker = null;
-  }
-  if (assistantRuntimeReady(assistantDir) && marker && marker.size === stat.size && marker.mtimeMs === stat.mtimeMs) {
-    return { ok: true, extracted: false, reason: "already-ready" };
-  }
-  if (assistantRuntimeReady(assistantDir)) {
-    // 运行时已经完整；仅缺标记时不能重新解压，否则旧 runtime.zip 会覆盖较新的源码。
-    try {
-      fs.writeFileSync(markerFile, `${JSON.stringify({ size: stat.size, mtimeMs: stat.mtimeMs, extractedAt: new Date().toISOString() }, null, 2)}\n`, "utf8");
-    } catch {
-      // 标记失败时下次仍走就绪检查，不影响本次使用。
-    }
-    return { ok: true, extracted: false, reason: "already-ready" };
-  }
-  const sizeMb = Math.round(stat.size / 1024 / 1024);
-  logger(`正在解压画布修复助手运行时（${sizeMb} MB，仅首次或整包更新后执行）…`);
-  const preservedSources = new Map();
-  for (const name of ["server.mjs", "repair-tools.mjs", "diagnostics.mjs", "skill.mjs", "package.json"]) {
-    const file = path.join(assistantDir, name);
-    if (!isFile(file)) continue;
-    try {
-      preservedSources.set(name, fs.readFileSync(file));
-    } catch {
-      // 读不到就交给解压结果，后续就绪检查会处理。
-    }
-  }
-  const tar = process.env.SystemRoot ? path.join(process.env.SystemRoot, "System32", "tar.exe") : "tar";
-  let result = spawnSync(tar, ["-xf", archive, "-C", assistantDir], { timeout: 600000, windowsHide: true });
-  if (result.status !== 0) {
-    const powershell = path.join(process.env.SystemRoot || "C:\\Windows", "System32", "WindowsPowerShell", "v1.0", "powershell.exe");
-    const quote = (value) => `'${String(value).replace(/'/g, "''")}'`;
-    result = spawnSync(powershell, ["-NoProfile", "-Command", `Expand-Archive -LiteralPath ${quote(archive)} -DestinationPath ${quote(assistantDir)} -Force`], {
-      timeout: 600000,
-      windowsHide: true,
-    });
-  }
-  if (result.status !== 0) {
-    const error = "解压 Agent 运行时失败；画布其他功能不受影响，助手卡会提示需要完整包。";
-    logger(error, "WARN");
-    return { ok: false, extracted: false, error };
-  }
-  for (const [name, content] of preservedSources) {
-    try {
-      fs.writeFileSync(path.join(assistantDir, name), content);
-    } catch {
-      // 保留源码失败属于严重异常，交由下方就绪检查和运维日志暴露。
-    }
-  }
-  if (!assistantRuntimeReady(assistantDir)) {
-    const error = "Agent 运行时包解压后仍缺少文件；助手卡会提示需要完整包。";
-    logger(error, "WARN");
-    return { ok: false, extracted: false, error };
-  }
-  try {
-    fs.writeFileSync(markerFile, `${JSON.stringify({ size: stat.size, mtimeMs: stat.mtimeMs, extractedAt: new Date().toISOString() }, null, 2)}\n`, "utf8");
-  } catch {
-    // 标记写失败只会导致下次重复解压，不影响本次使用。
-  }
-  logger("画布修复助手运行时已就绪。");
-  return { ok: true, extracted: true };
-}
-
 async function downloadGatewayDeps(destination) {
   log("本机没有可用的网关依赖包，正在从魔搭镜像下载…", "WARN");
   const response = await fetch(GATEWAY_DEPS_URL, { signal: AbortSignal.timeout(120000) });
@@ -803,7 +715,6 @@ async function quarantineTeManData(comfyRoot) {
 }
 
 function spawnGateway(cfg, comfyUrl, workflowsDir) {
-  ensureAssistantRuntime(ROOT);
   const serverEntry = path.join(cfg.gatewayDir, "src", "server.js");
   if (!isFile(serverEntry)) {
     throw new Error(`找不到网关入口：${serverEntry}`);

@@ -1,26 +1,40 @@
-# Canvas Lab Rebuild — 文档入口
+# Canvas Lab 文档入口
 
-> 本目录记录新工作树的当前结论和验证证据；根目录 `README.md` 仍为 fork 参考项目说明，不代表本项目已完成验证。
+> 本目录是当前 Rebuild 工作树的资料导航；项目实际状态以当前源码、Git diff 与新鲜验证为准。历史报告里的 HEAD/运行结果不可自动继承。根目录 README 含参考 fork 内容，不应当作本机验收记录。
 
-> 当前项目目录为 `/home/sean/projects/canvas-lib`。历史审查中的目录、分支、HEAD 和运行结果按其记录日期理解；当前 Git 快照见 [起点与 Git 基线](restart-baseline.md)，不能把历史验证视为当前 HEAD 的重新验证。
+## Agent 快速入口
 
-## 开始阅读
-- [起点与 Git 基线](restart-baseline.md)：当前代码来源、版本、未提交修改边界。
-- [功能审查](feature-audit.md)：保留、适配、剥离候选及依赖风险。
-- [核心链路静态定位](source-path-audit.md)：画布、Gateway、ComfyUI 与回写的文件级调用链。
-- [Agent 职责审查](agent-boundary-audit.md)：Canvas Agent 与源码修复助手的边界。
-- [Canvas Agent 升级与配置记录](canvas-agent-codex-upgrade-progress.md)：Codex 版本、MCP/Skill 配置及分层验证。
-- [WSL 验证协议](wsl-validation-protocol.md)：测试命令、副作用、分层验收。
-- [Project Memory 接入核查](project-memory-audit.md)：用户级技能、Hindsight 服务健康和未完成的 bank 归属。
-- [验证矩阵](validation-matrix.md)：哪些仅存在于源码，哪些实际测试通过。
-- [运行环境边界](runtime-boundary.md)：纯 WSL 部署、Gateway 和 ComfyUI 的安全约束。
-- [分阶段计划](rebuild-plan.md)：阶段、完成条件与回滚要求。
-- [知识归属](knowledge-governance.md)：仅记录本项目特定的文档/历史来源约定；常规管理由用户级 `project-memory` Skill 执行。
-- [旧项目来源索引](legacy-source-index.md)：按保留、摘录、拒绝继承的方式归类历史研究。
-- [内置资源安装安全审查](resource-install-audit.md)：资源来源固定、校验、安装副作用与 WSL 兼容性的静态审查（XIA-27）。
-- [自有工作流接入审查](workflow-integration-audit.md)：Registry 与自由工作流路径，以及 H3 样本适配边界（XIA-28）。
+- **代码定位、画布与 Gateway**：[当前代码地图](current-code-map.md) → [架构与工作流](architecture/README.md)
+- **Canvas Agent、MCP 与 Skill**：[Agent 与上下文](agent/README.md)
+- **H3 提示词、模型与生成工作流**：[工作流接入审查](workflow-integration-audit.md) → [Gateway H3 Skill](../comfyui-gateway/prompts/skills/h3-prompt-writing/SKILL.md) → [本地 H3 LoRA 说明](../comfyui-gateway/prompts/h3-lora/README.md)
+- **WSL 部署与排障**：[运行边界](runtime-boundary.md) → [验证与操作](validation/README.md)
+- **需求取舍与实施计划**：[规划与决策](planning/README.md)
+- **旧方案、来源和历史研究**：[历史研究](history/README.md)
 
-## 历史与证据
-- [ARCHITECTURE.md](ARCHITECTURE.md) 是参考 fork **v0.22.12 的历史说明**，不是当前实现权威。
-- 旧项目 `/home/sean/projects/canvas-lab-backup/docs/` 是历史研究来源，不共享可编辑的当前基线。
-- 代码及 Git 状态优先于 README 声明；当前机器实测须单独记录 commit、环境、命令和结果。
+## 分类目录
+
+| 类别 | 入口 | 主要用途 |
+| --- | --- | --- |
+| Agent 与上下文 | [agent/](agent/README.md) | Agent 职责、CodeGraph、Codex、记忆边界 |
+| 架构与工作流 | [architecture/](architecture/README.md) | 代码调用链、Gateway、工作流与资源 |
+| 验证与操作 | [validation/](validation/README.md) | 证据矩阵、WSL 验证、已有改动 |
+| 规划与决策 | [planning/](planning/README.md) | 功能取舍、阶段计划、Git 基线 |
+| 历史研究 | [history/](history/README.md) | 旧项目来源，非当前实现事实 |
+
+## 最小读取规则
+
+1. 先读根目录 [AGENTS.md](../AGENTS.md) 的约束；随后按任务选择上方一个分类。
+2. 定位源码时优先查 `.codegraph/`（确认索引新鲜度），然后只打开相关文件；不要一次性读取整个 `docs/`。
+3. 当前行为以源码、当前 Git diff、测试与运行实测为准。静态审查、规划、旧版本说明不能替代运行验收。
+4. 改动前先检查 `git status` 与相关 diff；不得因整理文档覆盖已有未提交工作。
+5. 用户级 `project-memory` 管理长期知识；本仓库保留项目专属决策与可复核证据。
+
+## 维护约定
+
+新增资料优先挂入对应分类入口；无需为短期调查重复创建总览。现有根级 `docs/*.md` 暂不迁移，以保持历史链接稳定。后续仅在引用清点和迁移测试完成后再做实体迁移。
+
+## 关于版本
+
+- [restart-baseline.md](restart-baseline.md) 是起点与历史工作树记录，不是自动更新的 HEAD 状态。
+- [ARCHITECTURE.md](ARCHITECTURE.md) 属参考 fork 旧版本架构说明，不代表当前 WSL 部署事实。
+- 旧项目 `/home/sean/projects/canvas-lab-backup/docs/` 仅可作为带来源的研究参考。
