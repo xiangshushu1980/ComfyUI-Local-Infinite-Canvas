@@ -1,0 +1,26 @@
+subject_definitions:
+<Subject 1> is A, the short dark curly-haired woman in <Picture 1>, wearing a green cardigan and pale purple top.
+<Subject 2> is B, the short dark-haired man in <Picture 2>, wearing a navy overshirt and white T-shirt.
+<Subject 3> is the daylight café, round table and two-person spatial arrangement described by <Picture 3>. The actual reference image files were not supplied for this text experiment.
+
+summary:
+[reference generation] An eight-second natural café scene with <Subject 1> left and <Subject 2> right in <Subject 3>. The sole white ceramic cup begins in front of <Subject 1>.
+
+retention_analysis:
+<Subject 1>: fully_preserved - retain the identity and clothing described by <Picture 1>.
+<Subject 2>: fully_preserved - retain the identity and clothing described by <Picture 2>.
+<Subject 3>: fully_preserved - retain the café, daylight, table and left-right layout described by <Picture 3>; exact measurements remain unknown.
+
+detailed_description:
+A realistic, natural scene in steady daylight by the café window. <Subject 1> stays on the left, <Subject 2> on the right. There is one white ceramic cup and no third person or extra dialogue.
+[Shot 1] A fixed eye-level medium two-shot, <Subject 1> (S1) left, <Subject 2> (S2) right, cup before <Subject 1> (S1). <Subject 1> (S1) looks at <Subject 2> (S2) and asks, <d>[Chinese] 你还好吗？</d>
+[Shot 2] At 00:02.200, A fixed eye-level close view of <Subject 2> (S2) from <Subject 1> (S1)’s side. <Subject 2> (S2) looks down, then raises his eyes to <Subject 1> (S1), and quietly says, <d>[Chinese] 有点累。</d> The cup remains before <Subject 1> (S1).
+[Shot 3] At 00:04.600, A fixed eye-level medium two-shot including both hands and the full cup. <Subject 1> (S1) pushes it along the table with her right hand; <Subject 2> (S2) catches it with his left, stops it in front of himself and keeps holding it.
+[Shot 4] At 00:07.000, A fixed eye-level close view of <Subject 2> (S2), his left hand and cup visible, with <Subject 1> (S1)’s smile at the frame edge. <Subject 2> (S2) raises his eyes to <Subject 1> (S1) and says, <d>[Chinese] 谢谢你。</d>
+The target timeline ends at 00:08.000.
+
+overall_soundscape:
+Quiet café room tone.
+
+non_diegetic_music:
+N/A

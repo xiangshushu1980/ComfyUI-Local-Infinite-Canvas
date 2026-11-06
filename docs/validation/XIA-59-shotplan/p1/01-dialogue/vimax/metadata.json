@@ -1,0 +1,17 @@
+{
+  "scene": "01-dialogue",
+  "condition": "vimax",
+  "compiler": "Codex (current conversation)",
+  "compiler_model": "not independently exposed in this session",
+  "p0_generator": "deepseek/deepseek-flash; thinking off",
+  "method": "manual Codex compilation using frozen H3 Ref2VA skill",
+  "source": "p0/batches/20261106-deepseek-offline/01-dialogue/vimax/raw-output.txt",
+  "source_sha256": "12a91af447489b3f273b18e1cdf733f6bb147396d3a262ff30558379151675e1",
+  "prompt_sha256": "923300e857e3d689076f9f2610f1af7c8902e5d5e1c761146d535a413c025e39",
+  "shots": 3,
+  "starts_s": [
+    0,
+    3.5,
+    6
+  ]
+}

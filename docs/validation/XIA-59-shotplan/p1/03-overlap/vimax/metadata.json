@@ -1,0 +1,16 @@
+{
+  "scene": "03-overlap",
+  "condition": "vimax",
+  "compiler": "Codex (current conversation)",
+  "compiler_model": "not independently exposed in this session",
+  "p0_generator": "deepseek/deepseek-flash; thinking off",
+  "method": "manual Codex compilation using frozen H3 Ref2VA skill",
+  "source": "p0/batches/20261106-deepseek-offline/03-overlap/vimax/raw-output.txt",
+  "source_sha256": "419104c60448462dd67062c0f4e376f0f3297b3c53784fc7f98e805535d5def9",
+  "prompt_sha256": "d85c91f87dc4b44306ef18df9003b61f7a7c3756bfd344d728f1fc0ced74b9df",
+  "shots": 2,
+  "starts_s": [
+    0,
+    4.6
+  ]
+}

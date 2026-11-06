@@ -1,0 +1,18 @@
+{
+  "scene": "02-handoff",
+  "condition": "toonflow",
+  "compiler": "Codex (current conversation)",
+  "compiler_model": "not independently exposed in this session",
+  "p0_generator": "deepseek/deepseek-flash; thinking off",
+  "method": "manual Codex compilation using frozen H3 Ref2VA skill",
+  "source": "p0/batches/20261106-deepseek-offline/02-handoff/toonflow/raw-output.txt",
+  "source_sha256": "a3f8eb659266e49933a1c440a49835c89c3bcbb5ffe86f2baff72884e3a02d73",
+  "prompt_sha256": "c1742891bf0acc08456b2ad57302141d8f639bbfdbeacf5d9f52c57148ea0d3b",
+  "shots": 4,
+  "starts_s": [
+    0,
+    2.2,
+    4.6,
+    7
+  ]
+}

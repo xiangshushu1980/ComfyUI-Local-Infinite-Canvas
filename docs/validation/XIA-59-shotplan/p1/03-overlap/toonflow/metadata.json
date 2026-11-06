@@ -1,0 +1,16 @@
+{
+  "scene": "03-overlap",
+  "condition": "toonflow",
+  "compiler": "Codex (current conversation)",
+  "compiler_model": "not independently exposed in this session",
+  "p0_generator": "deepseek/deepseek-flash; thinking off",
+  "method": "manual Codex compilation using frozen H3 Ref2VA skill",
+  "source": "p0/batches/20261106-deepseek-offline/03-overlap/toonflow/raw-output.txt",
+  "source_sha256": "05c645c5f967c7f902296656c1b81883850f0cd3bbff62ce4e0c751065f5d947",
+  "prompt_sha256": "f0265e3862d4c5f2fef51140f3133d3ce343ba87e4462eccb84a1f71ada05990",
+  "shots": 2,
+  "starts_s": [
+    0,
+    4.2
+  ]
+}

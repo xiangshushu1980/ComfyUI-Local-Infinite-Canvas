@@ -1,0 +1,15 @@
+{
+  "scene": "03-overlap",
+  "condition": "beat-direct",
+  "compiler": "Codex (current conversation)",
+  "compiler_model": "not independently exposed in this session",
+  "p0_generator": null,
+  "method": "independent Codex Beat-to-H3 baseline",
+  "source": "inputs/03-overlap.json",
+  "source_sha256": "7202ecd8c6fc3c77a76b84edbe212742d739ba261ed914f44c22755b53c7400a",
+  "prompt_sha256": "e32fb079b5d8b2c5e188064b5bb93953d970d5bdf599b6573cee67288a985441",
+  "shots": 1,
+  "starts_s": [
+    0
+  ]
+}

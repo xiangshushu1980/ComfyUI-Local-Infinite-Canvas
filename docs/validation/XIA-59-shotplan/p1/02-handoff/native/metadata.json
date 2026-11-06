@@ -1,0 +1,18 @@
+{
+  "scene": "02-handoff",
+  "condition": "native",
+  "compiler": "Codex (current conversation)",
+  "compiler_model": "not independently exposed in this session",
+  "p0_generator": "deepseek/deepseek-flash; thinking off",
+  "method": "manual Codex compilation using frozen H3 Ref2VA skill",
+  "source": "p0/batches/20261106-deepseek-offline/02-handoff/native/raw-output.txt",
+  "source_sha256": "bb5db30e220b072d109e549cf6827c254657b5da01c110393eb633a01f57ed4d",
+  "prompt_sha256": "980ce32e0e734fe3e2f7c3d23bb512196f39211ba3fe7aca51b3c1fa98525467",
+  "shots": 4,
+  "starts_s": [
+    0,
+    3,
+    5,
+    7
+  ]
+}

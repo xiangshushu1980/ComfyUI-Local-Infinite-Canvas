@@ -1,0 +1,15 @@
+{
+  "scene": "01-dialogue",
+  "condition": "beat-direct",
+  "compiler": "Codex (current conversation)",
+  "compiler_model": "not independently exposed in this session",
+  "p0_generator": null,
+  "method": "independent Codex Beat-to-H3 baseline",
+  "source": "inputs/01-dialogue.json",
+  "source_sha256": "1ed9fa65385496deb8bd65d1bdd1064ae420bdd6b0e529e2f35f68f77f10db77",
+  "prompt_sha256": "c1df774331ed06ff5c9523f278cef081451e094b158db49551521dcbc157ef55",
+  "shots": 1,
+  "starts_s": [
+    0
+  ]
+}

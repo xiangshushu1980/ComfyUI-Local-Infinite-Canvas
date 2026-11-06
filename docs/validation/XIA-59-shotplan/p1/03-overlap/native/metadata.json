@@ -1,0 +1,16 @@
+{
+  "scene": "03-overlap",
+  "condition": "native",
+  "compiler": "Codex (current conversation)",
+  "compiler_model": "not independently exposed in this session",
+  "p0_generator": "deepseek/deepseek-flash; thinking off",
+  "method": "manual Codex compilation using frozen H3 Ref2VA skill",
+  "source": "p0/batches/20261106-deepseek-offline/03-overlap/native/raw-output.txt",
+  "source_sha256": "8225bf8029d53988b81745930b559e83fde87a20247222db5b52559248df439c",
+  "prompt_sha256": "a3893c7c60dfd0482689efefa3a13f93476ed378d181e342b389492bc1913409",
+  "shots": 2,
+  "starts_s": [
+    0,
+    4.2
+  ]
+}

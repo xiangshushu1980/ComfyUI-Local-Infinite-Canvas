@@ -46,3 +46,7 @@
 ## 2026-11-06 P0 单轮结果
 
 [批次总览](p0/batches/20261106-deepseek-offline/RESULTS.md)及逐场人工对照： [对话](p0/batches/20261106-deepseek-offline/review-01.md)、[交杯](p0/batches/20261106-deepseek-offline/review-02.md)、[并行离开](p0/batches/20261106-deepseek-offline/review-03.md)。旧超时样本保留，未混入正式批次。P1 等待用户审阅后决定。
+
+## P1 静态编译进度
+
+用户已批准进入 P1。[P1 审查记录](p1/RESULTS.md)包含 12 份 Codex 编译初稿、3 份独立 Beat 直出及来源、限制和逐项审查。当前初稿有字段压缩，尚未通过原样无损编译验收。P2 需另行确认。
