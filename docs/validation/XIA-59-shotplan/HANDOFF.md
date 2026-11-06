@@ -1,5 +1,16 @@
 # XIA-59 · 新 Agent / Subagent 交接（2026-11-06）
 
+## 2026-11-06 用户更新：模型与阶段门
+
+已完成的 P0 正式批次由 `deepseek/deepseek-flash`、thinking off 生成，原始材料及案例对照原样保留；不因模型选择重做。若发现影响结论的具体证据缺口，先向用户说明原因与拟补测范围。
+
+后续文本生成或编译由 Codex 或 Codex subagent 直接完成，不通过 DeepSeek、Pi 或其他外部 LLM API 代为生成；记录能确认的模型和执行条件，无法确认的版本明确标记未知。跨模型结果分别标注来源，不将模型差异直接归因于 Skill 或方法。`runner/run_p0.py` 是历史 DeepSeek/Pi 批次的可审计记录，不用于后续生成。
+
+当前先提交并讨论 P0，等待用户确认才进入 P1；获准后使用冻结的 H3 Skill 静态编译各 Shot Plan，另保留独立 Beat→H3 直出基线。P2 视频仍需另行确认。禁止运行 GPU、修改 Canvas 或 XIA-56。
+
+
+> 下方交接正文是 P0 批次运行前的历史快照；当前状态及模型规则以上方更新和 README 为准。
+
 ## 从哪里开始
 
 **先阅读** [Linear XIA-59](https://linear.app/xiangshushu/issue/XIA-59) 描述与最新评论，再读本目录 [README.md](README.md)、[upstream/manifest.json](upstream/manifest.json)、[runner/run_p0.py](runner/run_p0.py)。研究结论以已完成的 [XIA-57](https://linear.app/xiangshushu/issue/XIA-57) 为准；背景摘要见 `../../planning/ai-filmmaking-open-source-directing-review.md`。XIA-56 的纯 Beat 原始实验必须保持独立。

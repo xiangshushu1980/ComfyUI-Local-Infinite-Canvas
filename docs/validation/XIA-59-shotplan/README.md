@@ -1,5 +1,14 @@
 # XIA-59 · P0 可追溯文本分镜对照（启动记录）
 
+## 2026-11-06 用户更新：模型与阶段门
+
+已完成的 P0 正式批次由 `deepseek/deepseek-flash`、thinking off 生成，原始材料及案例对照原样保留；不因模型选择重做。若发现影响结论的具体证据缺口，先向用户说明原因与拟补测范围。
+
+后续文本生成或编译由 Codex 或 Codex subagent 直接完成，不通过 DeepSeek、Pi 或其他外部 LLM API 代为生成；记录能确认的模型和执行条件，无法确认的版本明确标记未知。跨模型结果分别标注来源，不将模型差异直接归因于 Skill 或方法。`runner/run_p0.py` 是历史 DeepSeek/Pi 批次的可审计记录，不用于后续生成。
+
+当前先提交并讨论 P0，等待用户确认才进入 P1；获准后使用冻结的 H3 Skill 静态编译各 Shot Plan，另保留独立 Beat→H3 直出基线。P2 视频仍需另行确认。禁止运行 GPU、修改 Canvas 或 XIA-56。
+
+
 **新 Agent / subagent 交接入口：** [HANDOFF.md](HANDOFF.md)（已冻结文件、实际保存路径、当前失败记录、下一步执行指令）。
 
 状态：**P0 单轮文本对照已完成，等待用户审阅；不作方法排名**。依据 [Linear XIA-59](https://linear.app/xiangshushu/issue/XIA-59) 和已完成的 [XIA-57](https://linear.app/xiangshushu/issue/XIA-57)。只使用文本 LLM，**不调用 ComfyUI/H3 GPU、不更改 Canvas、不修改 XIA-56**。
@@ -22,7 +31,9 @@
 - **vimax**：原样注入 `storyboard_artist.py` 内的 `design_storyboard` / `decompose_visual_description` Prompt 与代码；**这是 Prompt replay / JSON adapter**，不等于运行原 LangChain+Pydantic 链；不涉及 Camera Tree 的图像依赖执行。要声称原生 ViMax 运行效果，需另做原管线试验。
 - **差异**：各组保留原规则语义和原文；唯一额外的文本是共同输出契约与“只执行文本规划”的隔离说明。源文件可通过 SHA256 核对；每轮完整输入另存 `p0/<scene>/<group>/input-prompt.txt`。
 
-## 执行及证据
+## 历史批次的执行及证据
+
+以下 runner 命令仅记录已完成的 DeepSeek/Pi P0，不是后续实验的执行指令。
 
 `python3 runner/run_p0.py --batch <新批次名> --scene 01-dialogue` 对四组依次独立调用。逐条保存 `metadata.json`、`input-prompt.txt`、`raw-output.txt`、`stderr.txt`。不要手改原始输出；失败或超时单独保留。随后执行 `python3 runner/evaluate.py --batch <批次名>`，其仅做 JSON/时段/原文台词的**机械检查**，不以该检查替代人工导演评审。
 
