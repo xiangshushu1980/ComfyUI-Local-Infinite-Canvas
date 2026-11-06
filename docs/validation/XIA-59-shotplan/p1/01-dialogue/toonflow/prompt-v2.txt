@@ -1,0 +1,25 @@
+subject_definitions:
+<Subject 1> is A, the short dark curly-haired woman in <Picture 1>, wearing a green cardigan and pale purple top.
+<Subject 2> is B, the short dark-haired man in <Picture 2>, wearing a navy overshirt and white T-shirt.
+<Subject 3> is the daylight café, round table and two-person spatial arrangement described by <Picture 3>.
+
+summary:
+[reference generation] An eight-second natural café scene with <Subject 1> left and <Subject 2> right in <Subject 3>. The sole white ceramic cup begins in front of <Subject 1>.
+
+retention_analysis:
+<Subject 1>: fully_preserved - retain the identity and clothing described by <Picture 1>.
+<Subject 2>: fully_preserved - retain the identity and clothing described by <Picture 2>.
+<Subject 3>: fully_preserved - retain the café, daylight, table and left-right layout described by <Picture 3>; exact measurements remain unknown.
+
+detailed_description:
+A realistic, natural scene in steady daylight by the café window. <Subject 1> stays on the left, <Subject 2> on the right. There is one white ceramic cup and no third person or extra dialogue.
+[Shot 1] An eye-level waist-up two-shot, <Subject 1> (S1) left and <Subject 2> (S2) right. The camera is fixed and also makes a very slow slight push from medium to close while keeping both in frame. <Subject 1> (S1) asks, <d>[Chinese] 你今天还好吗？</d> <Subject 2> (S2) initially meets her gaze. The view is from the side of the round table at seated eye level. Both are seated and looking toward each other; <Subject 1> keeps her right hand on the table without touching the cup. At the cut his gaze begins to move away.
+[Shot 2] At 00:03.000, A fixed close over-<Subject 1> (S1)-shoulder view of <Subject 2> (S2). He looks down and away, draws breath, tightens his lips, pauses, partly looks back and says, <d>[Chinese] 还好，只是有点累。</d> The close view is from behind <Subject 1>’s left shoulder, at eye level or slightly below. His shoulder rises on the breath and his lips tighten; her foreground shoulder stays still. He relaxes his shoulders after the answer, with his gaze back toward her.
+[Shot 3] At 00:06.000, A fixed reverse over-<Subject 2> (S2)-shoulder close-up of <Subject 1> (S1). Her brows draw together, lips press and blinking slows; she silently watches <Subject 2> (S2) without touching the cup. The reverse over-shoulder view looks from behind <Subject 2>’s right shoulder. <Subject 1> keeps both hands on the table and leaves the cup in place. Maintain the established eyeline axis.
+The target timeline ends at 00:08.000.
+
+overall_soundscape:
+Quiet café room tone.
+
+non_diegetic_music:
+N/A

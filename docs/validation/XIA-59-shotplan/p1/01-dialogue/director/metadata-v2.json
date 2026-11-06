@@ -1,0 +1,20 @@
+{
+  "scene": "01-dialogue",
+  "condition": "director",
+  "compiler": "Codex (current conversation)",
+  "compiler_model": "not independently exposed in this session",
+  "p0_generator": "deepseek/deepseek-flash; thinking off",
+  "method": "manual Codex compilation using frozen H3 Ref2VA skill",
+  "source": "p0/batches/20261106-deepseek-offline/01-dialogue/director/raw-output.txt",
+  "source_sha256": "19a09f5cfcb97147344dea7d3da531fe12f472365e61cc4833ef3665e2f9e2e3",
+  "prompt_sha256": "889edc4261322a3358b292ff114c9653ac5060d17319950ab489e63ef2651ca2",
+  "shots": 3,
+  "starts_s": [
+    0,
+    3,
+    5
+  ],
+  "revision": "v2",
+  "previous_prompt_sha256": "099a3f007927cdf089c5d86c4e68795367747a933b6cfce369e481484f2d28b4",
+  "review": "Codex manual targeted restoration; source ambiguities and remaining semantic limits documented in review-20261107"
+}

@@ -1,0 +1,25 @@
+subject_definitions:
+<Subject 1> is A, the short dark curly-haired woman in <Picture 1>, wearing a green cardigan and pale purple top.
+<Subject 2> is B, the short dark-haired man in <Picture 2>, wearing a navy overshirt and white T-shirt.
+<Subject 3> is the daylight café, round table and two-person spatial arrangement described by <Picture 3>.
+
+summary:
+[reference generation] An eight-second natural café scene with <Subject 1> left and <Subject 2> right in <Subject 3>. The sole white ceramic cup begins in front of <Subject 1>.
+
+retention_analysis:
+<Subject 1>: fully_preserved - retain the identity and clothing described by <Picture 1>.
+<Subject 2>: fully_preserved - retain the identity and clothing described by <Picture 2>.
+<Subject 3>: fully_preserved - retain the café, daylight, table and left-right layout described by <Picture 3>; exact measurements remain unknown.
+
+detailed_description:
+A realistic, natural scene in steady daylight by the café window. <Subject 1> stays on the left, <Subject 2> on the right. There is one white ceramic cup and no third person or extra dialogue.
+[Shot 1] Eye-level medium close two-shot, slightly toward <Subject 1> (S1). Camera fixed with a slight push in during the last half-second. <Subject 1> (S1) left asks, <d>[Chinese] 你还好吗？</d> <Subject 2> (S2) right looks down and quietly replies, <d>[Chinese] 有点累。</d> Cup before <Subject 1> (S1). The view runs from upper chests to part of the table, with window light on it. At the end their seats and the cup are unchanged and her right hand begins to rise toward the table for the following action.
+[Shot 2] At 00:03.500, An eye-level table-and-hands close-up, slightly downward. The camera tracks slightly from left to right with the cup as <Subject 1> (S1) pushes it with her right hand; <Subject 2> (S2) receives and holds it with his left in front of himself. Do not repeat the handoff. The close view contains the middle of the tabletop, both hands and portions of their faces at the edges. Her arm enters from the left, his left hand from the right; the cup ends at his right-side place.
+[Shot 3] At 00:06.000, A fixed eye-level medium close two-shot, tighter than the first. <Subject 2> (S2) holds the cup with his left hand, looks up at <Subject 1> (S1) and says, <d>[Chinese] 谢谢你。</d> <Subject 1> (S1) smiles reassuringly. Both face each other, she on the left and he on the right. He starts with his eyes toward the table or cup, then looks up while continuing to hold the cup with his left hand.
+The target timeline ends at 00:08.000.
+
+overall_soundscape:
+Quiet café room tone.
+
+non_diegetic_music:
+N/A

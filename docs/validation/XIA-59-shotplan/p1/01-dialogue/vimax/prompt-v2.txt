@@ -1,0 +1,25 @@
+subject_definitions:
+<Subject 1> is A, the short dark curly-haired woman in <Picture 1>, wearing a green cardigan and pale purple top.
+<Subject 2> is B, the short dark-haired man in <Picture 2>, wearing a navy overshirt and white T-shirt.
+<Subject 3> is the daylight café, round table and two-person spatial arrangement described by <Picture 3>.
+
+summary:
+[reference generation] An eight-second natural café scene with <Subject 1> left and <Subject 2> right in <Subject 3>. The sole white ceramic cup begins in front of <Subject 1>.
+
+retention_analysis:
+<Subject 1>: fully_preserved - retain the identity and clothing described by <Picture 1>.
+<Subject 2>: fully_preserved - retain the identity and clothing described by <Picture 2>.
+<Subject 3>: fully_preserved - retain the café, daylight, table and left-right layout described by <Picture 3>; exact measurements remain unknown.
+
+detailed_description:
+A realistic, natural scene in steady daylight by the café window. <Subject 1> stays on the left, <Subject 2> on the right. There is one white ceramic cup and no third person or extra dialogue.
+[Shot 1] Eye-level medium two-shot from slightly below seated eye height, camera fixed with a slight push. <Subject 1> (S1) left asks <Subject 2> (S2), <d>[Chinese] 你今天还好吗？</d> <Subject 2> (S2) right looks down to the right briefly, breathes in, then looks back. The cup remains untouched. The round table sits between them near the center. <Subject 1> keeps her hands near the table edge without touching the cup. At the cut <Subject 2> has looked back toward her and his lips are slightly parted after his breath.
+[Shot 2] At 00:03.500, A stationary close-up of <Subject 2> (S2), <Subject 1> (S1)’s shoulder at the edge. His gaze rests on <Subject 1> (S1) then drops, his throat moves; after a pause of several seconds he says, <d>[Chinese] 还好，只是有点累。</d> In the close shot the table edge and cup rim are low in frame, with <Subject 1>’s shoulder blurred at left. After the answer his eyes drop slightly then rise to meet hers, his expression calm but tired.
+[Shot 3] At 00:06.000, Close-up of <Subject 1> (S1) with <Subject 2> (S2)’s blurred shoulder, a very slow push in. Her polite smile fades, brow tightens, and she silently watches <Subject 2> (S2); the cup remains at <Subject 1> (S1)’s place. The table edge and cup rim remain low in frame; <Subject 2>’s shoulder is blurred at right. <Subject 1> ends with a faintly furrowed brow, lips closed and eyes on him; the cup remains in its original position.
+The target timeline ends at 00:08.000.
+
+overall_soundscape:
+Quiet café room tone.
+
+non_diegetic_music:
+N/A

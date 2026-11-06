@@ -1,0 +1,24 @@
+subject_definitions:
+<Subject 1> is A, the short dark curly-haired woman in <Picture 1>, wearing a green cardigan and pale purple top.
+<Subject 2> is B, the short dark-haired man in <Picture 2>, wearing a navy overshirt and white T-shirt.
+<Subject 3> is the daylight café, round table and two-person spatial arrangement described by <Picture 3>.
+
+summary:
+[reference generation] An eight-second natural café scene with <Subject 1> left and <Subject 2> right in <Subject 3>. The sole white ceramic cup begins in front of <Subject 1>.
+
+retention_analysis:
+<Subject 1>: fully_preserved - retain the identity and clothing described by <Picture 1>.
+<Subject 2>: fully_preserved - retain the identity and clothing described by <Picture 2>.
+<Subject 3>: fully_preserved - retain the café, daylight, table and left-right layout described by <Picture 3>; exact measurements remain unknown.
+
+detailed_description:
+A realistic, natural scene in steady daylight by the café window. <Subject 1> stays on the left, <Subject 2> on the right. There is one white ceramic cup and no third person or extra dialogue.
+[Shot 1] An eye-level medium two-shot with slight handheld feel: <Subject 1> left, <Subject 2> (S1) right and the cup before <Subject 1>. <Subject 2> (S1) begins the source line <d>[Chinese] 我以为你会留下来。</d> Before his speech ends, <Subject 1> rises and turns toward the left exit without touching the cup. At the cut <Subject 1> has left her seat and is moving left, <Subject 2> remains seated and his speech is near its end. The cup stays untouched at her former place.
+[Shot 2] At 00:04.200, A mostly fixed medium close shot favoring <Subject 2> (S1), the left edge retaining part of <Subject 1> and the exit direction, the cup visible in the foreground. <Subject 2> (S1)’s speech cuts off; he turns toward the left exit and remains silent as <Subject 1> continues away. The camera is just forward of <Subject 2> on his right, angled toward the left-side exit; the source allows an extremely slight following turn. He remains near his seat as she continues left; the cup remains unique and unmoved.
+The target timeline ends at 00:08.000.
+
+overall_soundscape:
+Quiet café room tone.
+
+non_diegetic_music:
+N/A

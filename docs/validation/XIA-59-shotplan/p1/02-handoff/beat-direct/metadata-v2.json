@@ -1,0 +1,18 @@
+{
+  "scene": "02-handoff",
+  "condition": "beat-direct",
+  "compiler": "Codex (current conversation)",
+  "compiler_model": "not independently exposed in this session",
+  "p0_generator": null,
+  "method": "independent Codex Beat-to-H3 baseline",
+  "source": "inputs/02-handoff.json",
+  "source_sha256": "fc1141260fa44f051b4a9728ed249a82c24c48728fab7fe104b75e354794d106",
+  "prompt_sha256": "02427e082ac0419e05037d2da84815886f141f512be086a084fdbc90e2f42d6e",
+  "shots": 1,
+  "starts_s": [
+    0
+  ],
+  "revision": "v2",
+  "previous_prompt_sha256": "0fd410929230ca6490a5eca11b67835b901e30b21bc864690d2e22427dc83f1c",
+  "review": "remove experiment provenance from the generation text; experiment metadata retains reference limitation"
+}
