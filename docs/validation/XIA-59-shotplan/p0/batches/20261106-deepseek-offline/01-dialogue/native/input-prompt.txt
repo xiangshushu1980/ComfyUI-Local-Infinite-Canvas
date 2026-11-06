@@ -1,0 +1,19 @@
+【实验类型】XIA-59 静态 Shot Plan; 不运行图像或视频生成。所有组使用相同素材与统一输出契约。以下已冻结的开源原文为该组唯一方法学依据，不要读取工作区的其他文档或历史样本。参考源里的项目生产/保存/媒体生成步骤不执行，只完成文本 Shot Plan。
+【原生基线】不提供任何额外导演方法、Skill 或检查清单。
+
+【固定场景与原始 Beat】
+{
+  "id": "01-dialogue",
+  "title": "问答迟疑反应",
+  "duration_seconds": 8,
+  "reference_images": {
+    "Picture 1": "A肖像",
+    "Picture 2": "B肖像",
+    "Picture 3": "咖啡馆两人同桌空间参考"
+  },
+  "fixed_context": "时长：8秒，单场景，咖啡馆内日光窗旁圆桌。人物A：女性，短深色卷发，绿色开衫、淡紫上衣，固定坐在画面左侧；人物B：男性，短深色发，藏蓝衬衫外套、白T恤，固定坐在画面右侧。Picture 1=A肖像，Picture 2=B肖像，Picture 3=两人同桌场景。白色陶瓷杯起始在A面前。参考图及衣着/相对位置不可改变。风格现实自然，不添加第三人、第二只杯子或额外台词。",
+  "beat": "A看向B并问：「你今天还好吗？」B短暂避开视线，吸一口气，停顿后回答：「还好，只是有点累。」A听到回答，神情变得担心，沉默看着B。杯子一直在A面前，无人触碰。"
+}
+
+【共同输出契约：仅为跨组评价接口，不含额外导演规则】
+仅输出 JSON 对象。字段: scenario_id(string), shots(array), continuity_notes(array), uncertainties(array)。每个 shots 元素字段: shot_id, start_s, end_s, purpose, framing, angle, camera_motion, visible_action, dialogue (array of {speaker,text}), blocking, state_in, state_out, continuity_handoff, cut_reason。时间覆盖0–8秒，镜头不能时间重叠且不留空白；无对白则 dialogue=[]。不增删或改写原台词，不添加剧情人物道具。可自由选择镜头数量，包括一个镜头。没有证据的空间测量保持未知。只返回 JSON，不带 markdown。

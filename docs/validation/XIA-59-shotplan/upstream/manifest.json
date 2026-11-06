@@ -1,0 +1,67 @@
+{
+  "toonflow/shotCraft.md": {
+    "source": "https://raw.githubusercontent.com/HBAI-Ltd/Toonflow-app/master/packages/skills/v118workflow/references/knowledge/shotCraft.md",
+    "sha256": "3567ca1ecb0e53522d7514ddb6240a488d28eb0794d7a2ee986aeebe6ec2bf3d",
+    "size": 16117
+  },
+  "toonflow/storyboardTable.md": {
+    "source": "https://raw.githubusercontent.com/HBAI-Ltd/Toonflow-app/master/packages/skills/v118workflow/references/storyboardTable.md",
+    "sha256": "7c6abfb0e9baad360f33589286a5384c58dff0e0a1e79a1c34269b926b6552b5",
+    "size": 5952
+  },
+  "toonflow/directorPlan.md": {
+    "source": "https://raw.githubusercontent.com/HBAI-Ltd/Toonflow-app/master/packages/skills/v118workflow/references/directorPlan.md",
+    "sha256": "a6fe68c1bb53d58f69cb3b5a398a414430b559c6a246ef53109f44ee0480e369",
+    "size": 4022
+  },
+  "director/SKILL.md": {
+    "source": "https://raw.githubusercontent.com/wuwangzhang1216/DirectorSKILL/main/SKILL.md",
+    "sha256": "543be6ece626beaa7dbc36b8225dcdc0b763d8044563189e842b306bb5cfd792",
+    "size": 32369
+  },
+  "director/beat-sheet-template.md": {
+    "source": "https://raw.githubusercontent.com/wuwangzhang1216/DirectorSKILL/main/assets/beat-sheet-template.md",
+    "sha256": "e53e846e9f43cdc80cf261bde4978001628d6383a6d4bd702762f88131e04bda",
+    "size": 10653
+  },
+  "director/blocking-and-staging.md": {
+    "source": "https://raw.githubusercontent.com/wuwangzhang1216/DirectorSKILL/main/references/blocking-and-staging.md",
+    "sha256": "16203dd654d61459df6eabb7754d5b450a17774ad18484f27a1c05e73d392402",
+    "size": 39568
+  },
+  "director/shot-plan-template.md": {
+    "source": "https://raw.githubusercontent.com/wuwangzhang1216/DirectorSKILL/main/assets/shot-plan-template.md",
+    "sha256": "74aad412013e13ff0b3ff05880f55f74aadf009a080188a7adc91b4b3ff87688",
+    "size": 17080
+  },
+  "director/continuity-bible.md": {
+    "source": "https://raw.githubusercontent.com/wuwangzhang1216/DirectorSKILL/main/references/continuity-bible.md",
+    "sha256": "92aad85488aee0fcad6d432ce29f66286d66245bb2a17499a325afb356c74826",
+    "size": 37392
+  },
+  "vimax/storyboard_artist.py": {
+    "source": "https://raw.githubusercontent.com/HKUDS/ViMax/main/agents/storyboard_artist.py",
+    "sha256": "92c84362770d9123d80c5595cbf526c8d34288f69385a96e9e40c5450e83488e",
+    "size": 18817
+  },
+  "vimax/camera_image_generator.py": {
+    "source": "https://raw.githubusercontent.com/HKUDS/ViMax/main/agents/camera_image_generator.py",
+    "sha256": "b3165016eb6942ebb3bfc3a4d93a73caad2b6d7700297642d6a2126a7c5e777c",
+    "size": 14092
+  },
+  "vimax/script2video_pipeline.py": {
+    "source": "https://raw.githubusercontent.com/HKUDS/ViMax/main/pipelines/script2video_pipeline.py",
+    "sha256": "682e1c2b6f726815ac4af34a09569af5309487ff48dbaf8c326305db68bf04e7",
+    "size": 55164
+  },
+  "h3/SKILL.md": {
+    "local_source": "/home/sean/projects/comfy-ops/.pi/skills/h3-prompt-writing/SKILL.md",
+    "sha256": "12f813d46f7c120c033d538b6c785837b94bdafd41498ed865a099c29331985d",
+    "size": 3640
+  },
+  "h3/references/ref-en.txt": {
+    "local_source": "/home/sean/projects/comfy-ops/.pi/skills/h3-prompt-writing/references/ref-en.txt",
+    "sha256": "1e574f356716ad55612247ffb7bbccbcdb484ad96599d63c7dca1af186b1fab7",
+    "size": 23553
+  }
+}

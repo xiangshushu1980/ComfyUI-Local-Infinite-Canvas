@@ -1,0 +1,394 @@
+[
+  {
+    "scene": "01-dialogue",
+    "group": "native",
+    "available": true,
+    "shots": 4,
+    "all_dialogue_literals_in_output": {
+      "你今天还好吗？": true,
+      "还好，只是有点累。": true
+    },
+    "durations": [
+      [
+        0,
+        3.2
+      ],
+      [
+        3.2,
+        6.0
+      ],
+      [
+        6.0,
+        7.2
+      ],
+      [
+        7.2,
+        8.0
+      ]
+    ],
+    "timeline_contiguous": true,
+    "human_review_required": [
+      "beat coverage",
+      "cut information gain",
+      "blocking and eyelines",
+      "state transitions and props",
+      "invented plot",
+      "visual feasibility"
+    ]
+  },
+  {
+    "scene": "01-dialogue",
+    "group": "toonflow",
+    "available": true,
+    "shots": 3,
+    "all_dialogue_literals_in_output": {
+      "你今天还好吗？": true,
+      "还好，只是有点累。": true
+    },
+    "durations": [
+      [
+        0,
+        3
+      ],
+      [
+        3,
+        6
+      ],
+      [
+        6,
+        8
+      ]
+    ],
+    "timeline_contiguous": true,
+    "human_review_required": [
+      "beat coverage",
+      "cut information gain",
+      "blocking and eyelines",
+      "state transitions and props",
+      "invented plot",
+      "visual feasibility"
+    ]
+  },
+  {
+    "scene": "01-dialogue",
+    "group": "director",
+    "available": true,
+    "shots": 3,
+    "all_dialogue_literals_in_output": {
+      "你今天还好吗？": true,
+      "还好，只是有点累。": true
+    },
+    "durations": [
+      [
+        0,
+        3
+      ],
+      [
+        3,
+        5
+      ],
+      [
+        5,
+        8
+      ]
+    ],
+    "timeline_contiguous": true,
+    "human_review_required": [
+      "beat coverage",
+      "cut information gain",
+      "blocking and eyelines",
+      "state transitions and props",
+      "invented plot",
+      "visual feasibility"
+    ]
+  },
+  {
+    "scene": "01-dialogue",
+    "group": "vimax",
+    "available": true,
+    "shots": 3,
+    "all_dialogue_literals_in_output": {
+      "你今天还好吗？": true,
+      "还好，只是有点累。": true
+    },
+    "durations": [
+      [
+        0,
+        3.5
+      ],
+      [
+        3.5,
+        6
+      ],
+      [
+        6,
+        8
+      ]
+    ],
+    "timeline_contiguous": true,
+    "human_review_required": [
+      "beat coverage",
+      "cut information gain",
+      "blocking and eyelines",
+      "state transitions and props",
+      "invented plot",
+      "visual feasibility"
+    ]
+  },
+  {
+    "scene": "02-handoff",
+    "group": "native",
+    "available": true,
+    "shots": 4,
+    "all_dialogue_literals_in_output": {
+      "你还好吗？": true,
+      "有点累。": true,
+      "谢谢你。": true
+    },
+    "durations": [
+      [
+        0,
+        3.0
+      ],
+      [
+        3.0,
+        5.0
+      ],
+      [
+        5.0,
+        7.0
+      ],
+      [
+        7.0,
+        8.0
+      ]
+    ],
+    "timeline_contiguous": true,
+    "human_review_required": [
+      "beat coverage",
+      "cut information gain",
+      "blocking and eyelines",
+      "state transitions and props",
+      "invented plot",
+      "visual feasibility"
+    ]
+  },
+  {
+    "scene": "02-handoff",
+    "group": "toonflow",
+    "available": true,
+    "shots": 4,
+    "all_dialogue_literals_in_output": {
+      "你还好吗？": true,
+      "有点累。": true,
+      "谢谢你。": true
+    },
+    "durations": [
+      [
+        0,
+        2.2
+      ],
+      [
+        2.2,
+        4.6
+      ],
+      [
+        4.6,
+        7.0
+      ],
+      [
+        7.0,
+        8.0
+      ]
+    ],
+    "timeline_contiguous": true,
+    "human_review_required": [
+      "beat coverage",
+      "cut information gain",
+      "blocking and eyelines",
+      "state transitions and props",
+      "invented plot",
+      "visual feasibility"
+    ]
+  },
+  {
+    "scene": "02-handoff",
+    "group": "director",
+    "available": true,
+    "shots": 3,
+    "all_dialogue_literals_in_output": {
+      "你还好吗？": true,
+      "有点累。": true,
+      "谢谢你。": true
+    },
+    "durations": [
+      [
+        0,
+        3.5
+      ],
+      [
+        3.5,
+        6.5
+      ],
+      [
+        6.5,
+        8.0
+      ]
+    ],
+    "timeline_contiguous": true,
+    "human_review_required": [
+      "beat coverage",
+      "cut information gain",
+      "blocking and eyelines",
+      "state transitions and props",
+      "invented plot",
+      "visual feasibility"
+    ]
+  },
+  {
+    "scene": "02-handoff",
+    "group": "vimax",
+    "available": true,
+    "shots": 3,
+    "all_dialogue_literals_in_output": {
+      "你还好吗？": true,
+      "有点累。": true,
+      "谢谢你。": true
+    },
+    "durations": [
+      [
+        0,
+        3.5
+      ],
+      [
+        3.5,
+        6.0
+      ],
+      [
+        6.0,
+        8.0
+      ]
+    ],
+    "timeline_contiguous": true,
+    "human_review_required": [
+      "beat coverage",
+      "cut information gain",
+      "blocking and eyelines",
+      "state transitions and props",
+      "invented plot",
+      "visual feasibility"
+    ]
+  },
+  {
+    "scene": "03-overlap",
+    "group": "native",
+    "available": true,
+    "shots": 2,
+    "all_dialogue_literals_in_output": {
+      "我以为你会留下来。": true
+    },
+    "durations": [
+      [
+        0,
+        4.2
+      ],
+      [
+        4.2,
+        8.0
+      ]
+    ],
+    "timeline_contiguous": true,
+    "human_review_required": [
+      "beat coverage",
+      "cut information gain",
+      "blocking and eyelines",
+      "state transitions and props",
+      "invented plot",
+      "visual feasibility"
+    ]
+  },
+  {
+    "scene": "03-overlap",
+    "group": "toonflow",
+    "available": true,
+    "shots": 2,
+    "all_dialogue_literals_in_output": {
+      "我以为你会留下来。": true
+    },
+    "durations": [
+      [
+        0,
+        4.2
+      ],
+      [
+        4.2,
+        8.0
+      ]
+    ],
+    "timeline_contiguous": true,
+    "human_review_required": [
+      "beat coverage",
+      "cut information gain",
+      "blocking and eyelines",
+      "state transitions and props",
+      "invented plot",
+      "visual feasibility"
+    ]
+  },
+  {
+    "scene": "03-overlap",
+    "group": "director",
+    "available": true,
+    "shots": 2,
+    "all_dialogue_literals_in_output": {
+      "我以为你会留下来。": true
+    },
+    "durations": [
+      [
+        0,
+        4.5
+      ],
+      [
+        4.5,
+        8
+      ]
+    ],
+    "timeline_contiguous": true,
+    "human_review_required": [
+      "beat coverage",
+      "cut information gain",
+      "blocking and eyelines",
+      "state transitions and props",
+      "invented plot",
+      "visual feasibility"
+    ]
+  },
+  {
+    "scene": "03-overlap",
+    "group": "vimax",
+    "available": true,
+    "shots": 2,
+    "all_dialogue_literals_in_output": {
+      "我以为你会留下来。": true
+    },
+    "durations": [
+      [
+        0.0,
+        4.6
+      ],
+      [
+        4.6,
+        8.0
+      ]
+    ],
+    "timeline_contiguous": true,
+    "human_review_required": [
+      "beat coverage",
+      "cut information gain",
+      "blocking and eyelines",
+      "state transitions and props",
+      "invented plot",
+      "visual feasibility"
+    ]
+  }
+]

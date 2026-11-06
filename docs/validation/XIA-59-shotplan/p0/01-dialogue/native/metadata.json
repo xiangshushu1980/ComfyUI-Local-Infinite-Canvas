@@ -1,0 +1,11 @@
+{
+  "condition": "native",
+  "scenario": "01-dialogue",
+  "provider": "deepseek",
+  "model": "deepseek-flash",
+  "thinking": "off",
+  "method": "upstream text prompt replay (not pipeline execution)",
+  "input_sha256": "2bdd599491565f6bf59b4e5c588181f11d1da479402d4b4343a454fe5fca0c78",
+  "start_utc": "2026-11-06T14:14:04.972397+00:00",
+  "error": "TIMEOUT 220s"
+}

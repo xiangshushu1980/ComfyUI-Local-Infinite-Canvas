@@ -1,0 +1,37 @@
+# XIA-59 · P0 可追溯文本分镜对照（启动记录）
+
+**新 Agent / subagent 交接入口：** [HANDOFF.md](HANDOFF.md)（已冻结文件、实际保存路径、当前失败记录、下一步执行指令）。
+
+状态：**P0 单轮文本对照已完成，等待用户审阅；不作方法排名**。依据 [Linear XIA-59](https://linear.app/xiangshushu/issue/XIA-59) 和已完成的 [XIA-57](https://linear.app/xiangshushu/issue/XIA-57)。只使用文本 LLM，**不调用 ComfyUI/H3 GPU、不更改 Canvas、不修改 XIA-56**。
+
+## 固定输入和上游快照
+
+- `inputs/01-dialogue.json`：问答、犹豫和反应（杯子不移动）。
+- `inputs/02-handoff.json`：在相同空间增加杯子归属和持物手转移。
+- `inputs/03-overlap.json`：并行说话/离开、发现后停止和转身。
+- `upstream/manifest.json`：各原始下载 URL、文件 SHA256、字节数；真实原文在 `upstream/toonflow/`、`upstream/director/`、`upstream/vimax/`，官方兼容 H3 Skill 冻结在 `upstream/h3/`。注意：下载的是访问时 main/master 分支的文件快照，不应误称所有项目都在同一个 Git 提交。
+- `runner/prepare.py` 创建快照和固定输入；重复运行会更新快照，**首次实验完成后不得重跑而不标记版本变化**。
+
+## 四组与适配声明（关键）
+
+共同契约：所有组生成 8 秒 JSON Shot Plan，字段见 `runner/run_p0.py`，不指定镜头数量。共同契约是**评估接口**，不是任何上游项目的原生文件格式。各组固定使用同一 `deepseek/deepseek-flash`、thinking off、无工具、独立进程、同场景同素材。提示词长度不是评分维度，原生格式差异需要保留说明。
+
+- **native**：固定场景、Beat 和共同格式契约；不提供导演方法。
+- **toonflow**：完整原文 `shotCraft.md` + `storyboardTable.md`；这是上游真实知识文本的隔离调用，跳过其产品 UI/资产生成步骤。未调用完整 Toonflow-app 团队流程。
+- **director**：原样注入 `SKILL.md`、Beat Sheet、Blocking、Shot Plan、Continuity Bible；只要求文本 Shot Plan。跳过原生产包其他步骤，故并非完整 Skill 全流程评测。
+- **vimax**：原样注入 `storyboard_artist.py` 内的 `design_storyboard` / `decompose_visual_description` Prompt 与代码；**这是 Prompt replay / JSON adapter**，不等于运行原 LangChain+Pydantic 链；不涉及 Camera Tree 的图像依赖执行。要声称原生 ViMax 运行效果，需另做原管线试验。
+- **差异**：各组保留原规则语义和原文；唯一额外的文本是共同输出契约与“只执行文本规划”的隔离说明。源文件可通过 SHA256 核对；每轮完整输入另存 `p0/<scene>/<group>/input-prompt.txt`。
+
+## 执行及证据
+
+`python3 runner/run_p0.py --batch <新批次名> --scene 01-dialogue` 对四组依次独立调用。逐条保存 `metadata.json`、`input-prompt.txt`、`raw-output.txt`、`stderr.txt`。不要手改原始输出；失败或超时单独保留。随后执行 `python3 runner/evaluate.py --batch <批次名>`，其仅做 JSON/时段/原文台词的**机械检查**，不以该检查替代人工导演评审。
+
+人工案例级检查：剧情/原对白完整性；每次切镜的新增信息；景别/角度/运动与观察重点；Blocking、人物相对位置/眼线、动作起止状态/held_by/hand；总时长、镜头数和 H3 可执行复杂度；是否新增剧情。记录逐句错误证据，**首轮不做胜率或方法优劣排名**。多轮调用须记录模型实际解析 ID、设置、重复次数和调用条件差异。
+
+## 阶段门槛
+
+当前仅 P0。任务正文 P0 部分要求用户确认诊断差异之后才能继续 P1（尽管概述处先列 P0/P1），故遵守较严格门槛：**先交 P0 供审阅，再决定 P1**。P1 使用同一个冻结的 H3 官方兼容 Skill 把各 Shot Plan 原样编译成六段 Ref2VA，不得二次导演改镜；保留 Beat→H3 直出额外独立链路。P2 H3 视频须再次单独获得用户确认；Canvas 留到最终测试讨论之后。
+
+## 2026-11-06 P0 单轮结果
+
+[批次总览](p0/batches/20261106-deepseek-offline/RESULTS.md)及逐场人工对照： [对话](p0/batches/20261106-deepseek-offline/review-01.md)、[交杯](p0/batches/20261106-deepseek-offline/review-02.md)、[并行离开](p0/batches/20261106-deepseek-offline/review-03.md)。旧超时样本保留，未混入正式批次。P1 等待用户审阅后决定。

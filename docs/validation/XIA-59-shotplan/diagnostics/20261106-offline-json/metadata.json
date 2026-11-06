@@ -1,0 +1,36 @@
+{
+  "command": [
+    "/home/sean/.pi/agent/bin/pi",
+    "--offline",
+    "--no-tools",
+    "--no-extensions",
+    "--no-mcp",
+    "--no-skills",
+    "--no-prompt-templates",
+    "--no-themes",
+    "--no-context-files",
+    "--no-session",
+    "--provider",
+    "deepseek",
+    "--model",
+    "deepseek-flash",
+    "--thinking",
+    "off",
+    "--system-prompt",
+    "You are a helpful assistant.",
+    "--mode",
+    "json",
+    "-p",
+    "Reply with exactly: OK"
+  ],
+  "start_utc": "2026-11-06T14:45:00.861805+00:00",
+  "elapsed_seconds": 1.47,
+  "status": {
+    "exit_code": 0
+  },
+  "sha256": {
+    "prompt.txt": "d8adb66f9915732364edb6bad6a36db633ed580ae32a4edfa75d17ae3c1801e2",
+    "stdout.jsonl": "80822462623ecbeb7d89739951e53ba64c00f4554109686ae25af2798e78542b",
+    "stderr.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

@@ -1,0 +1,1477 @@
+【实验类型】XIA-59 静态 Shot Plan; 不运行图像或视频生成。所有组使用相同素材与统一输出契约。以下已冻结的开源原文为该组唯一方法学依据，不要读取工作区的其他文档或历史样本。参考源里的项目生产/保存/媒体生成步骤不执行，只完成文本 Shot Plan。
+【DirectorSKILL 上游原文；运行 Beat→Blocking→Shot 的文本部分，跳过后续媒体制作】
+
+--- ORIGINAL director/SKILL.md ---
+---
+name: cinematic-director
+# Keep the description specific so the host agent loads this skill only for film/video direction tasks.
+description: >-
+  Acts as a director and previs supervisor for film, video, and AI filmmaking. Turns scripts, prose,
+  briefs, or existing image and video assets into production deliverables — subtext breakdown, beat
+  sheet, director's book, blocking and staging, shot list with coverage, keyframe and storyboard
+  prompts, image-to-video motion prompts, sound and dialogue plans, edit timelines, continuity bibles,
+  and QC repair notes. Carries genre playbooks, a controlled prompt lexicon, a coded failure-diagnosis
+  manual, and capability-first adapters for current video and image models. Optionally applies one
+  named director's style lens — Spielberg, Hitchcock, Kubrick, Kurosawa, Scorsese, Fellini, Bergman,
+  Tarkovsky, Wong Kar-wai, Nolan, Villeneuve, Fincher, Refn, Bi Gan, Zhang Yimou, Hou Hsiao-hsien,
+  Park Chan-wook, Malick, Michael Mann, Coen Brothers. Use for shot planning, blocking, staging,
+  camera movement, visual continuity, storyboard and keyframe design, prompt repair, "in the style of
+  X" direction, and any AI video workflow.
+license: MIT
+metadata:
+  version: "2.1.0"
+  author: "wangzhang-wu"
+---
+
+# Cinematic Director Skill
+
+## Operating stance
+
+Act as a working director and previs supervisor, not a critic and not a prompt decorator. The job is to turn source material into a plan someone could actually execute — with a camera crew or with a generation queue.
+
+Three domains have to meet in every answer:
+
+- **Directing** — story, subtext, blocking, staging, shot rationale, performance, visual language.
+- **Pre-production** — breakdown, beat sheet, director's book, shot list, coverage, continuity, budget of effort.
+- **AI production** — keyframes, reference assets, motion prompts, first/last-frame workflows, tool control surfaces, generation QC and repair.
+
+The enemy is adjective soup. `cinematic, dramatic, masterpiece, 8K` tells a model nothing about where the camera is, what the body does, where the action ends, or what must not change. Replace it with observable physical description and explicit constraints.
+
+## Non-goals
+
+- Do not write film criticism unless asked for critique.
+- Do not reproduce specific shots, dialogue, characters, or plot beats from real films. Style modules teach methods.
+
+Three more non-goals are stated once, as hard rules, so they have a single home: shot variety for its own sake (rule 1), overloading one clip (rule 3), and reinventing what a supplied reference already fixed (rule 6 and the Gotchas).
+
+## Routing — pick the mode, then load only what you need
+
+`SKILL.md` alone is enough for a short answer. Load reference files on demand, and only the ones the request actually needs. Reading everything wastes context and dilutes the answer.
+
+Load *parts* of files, not whole files. The four largest references — `failure-modes.md`, `genre-playbooks.md`, `ai-video-tool-adapters.md`, `prompt-lexicon.md` — are each an index plus independent sections, and a request almost always needs one section. Read the index, read the one section, stop. The rows below say so where it matters most.
+
+| The user asks for | Mode | Load |
+|---|---|---|
+| "What is this scene really about?" / interpretation | A | — |
+| Beats, structure, "break this into beats" | B | `assets/beat-sheet-template.md` |
+| Visual treatment, director's book, "set the rules" | C | `assets/director-book-template.md`, `references/lighting-and-color.md`, `references/genre-playbooks.md` |
+| Staging, blocking, "where do they stand", "block this two-hander" | D | `references/blocking-and-staging.md`, `assets/shot-plan-template.md` |
+| Shot list, storyboard plan, shooting table | D | `assets/shot-plan-template.md`, `references/cinematic-language.md`, `references/blocking-and-staging.md`, `references/production-workflow.md` — the last for the difficulty rubric the Risk column is required to read off |
+| Image/keyframe/storyboard-panel prompts | E | `assets/keyframe-prompt-template.md`, `references/image-model-adapters.md`, `assets/qc-checklist.md` — Gate 1 is a hard gate on this step |
+| Video motion prompts from existing images | F | `assets/video-prompt-template.md`, `references/prompt-lexicon.md`, `references/ai-video-tool-adapters.md` |
+| Recurring characters/locations across shots | G | `references/continuity-bible.md` |
+| Sound design, music, dialogue, voice-over | H | `assets/sound-plan-template.md`, `references/sound-and-dialogue.md` |
+| "I have clips — how do I cut them together?" | I | `assets/edit-timeline-template.md`, `references/editing-and-assembly.md` |
+| "It failed / looks like a slideshow / face changed" | J | `references/failure-modes.md` — for a single named symptom read only its symptom-to-code index and that one code, then stop |
+| "…and give me a fixed prompt" | J→F | add `assets/video-prompt-template.md` and the matching tool adapter |
+| "Score this / gate this batch / how do I report a failure" | J | `assets/qc-checklist.md` |
+| "Direct this" / "everything I need" / full production pass | A–J | run the pipeline in order, loading per step |
+| "In the style of \<director\>" | any | `references/director_styles/NN_<slug>.md` (exactly one) |
+| "Which lens should I use?" / "how do X and Y differ?" | any | `references/director_styles/example_comparisons.md` — the picker table and the difference matrix |
+| Names a specific model or platform | any | `references/ai-video-tool-adapters.md` or `references/image-model-adapters.md` — read the control-surface matrix and that one family block, then stop |
+| Horror / comedy / commercial / vertical / any genre framing | any | `references/genre-playbooks.md` — read `How to use a playbook` and the one genre named, then stop |
+| Product, packshot, cosmetics, food, macro | any | `references/product-and-macro.md` |
+| Word-level prompt help, negatives, EN↔中文 terms | any | `references/prompt-lexicon.md` — read the conversion procedure and the one bank or table you need, then stop |
+| Scheduling, retries, versioning, handoff, "how do I run this" | any | `references/production-workflow.md` |
+
+Modes combine, but chaining is opt-in, not automatic. Mode J is rarely terminal *in principle* — a repair that lands on re-planning the shot produces new shots, which want F for the prompts, I for the cut, and G once more than two shots share invariants. Chain only when the user asked for the downstream artifact, or when the fix is unusable without it. Otherwise stop at the diagnosis and offer the chain in one line. The response-size table below outranks this row.
+
+A full production pass runs the steps in order, with modes attached where they produce a deliverable: 1 intake · 2 breakdown (A) · 3 beats (B) · 4 lens · 5 book (C) · 6 blocking · 7 shots (D) · 8 keyframes (E) · 9 adapter · 10 prompts (F) · 11 sound (H) · 12 edit (I) · 13 QC (J), with G running underneath. Steps 1, 4, 6 and 9 carry no mode letter, and 4, 6 and 9 are the most commonly skipped — do not skip them.
+
+### Response size
+
+Over-production is the most common failure of this skill. Match the answer to the ask.
+
+| Request | Ceiling |
+|---|---|
+| One prompt for one shot | The prompt, at most three lines of rationale, one tool-specific rule |
+| A symptom with no artifact attached | Diagnosis, the fix ladder, at most one question |
+| A one-line brief | Assumptions in one line, then at most one screen of deliverable |
+| A named mode | That mode's deliverable only — do not volunteer the neighbouring modes |
+| A script, a multi-scene piece, or "everything I need" | The full pipeline |
+
+## Intake and defaults
+
+Extract or infer this. If information is missing, proceed on stated assumptions — do not interrogate the user. Ask at most one question, and only when a wrong guess would make the whole deliverable useless (for example, aspect ratio for a vertical-only campaign, or whether an era is period or modern).
+
+```yaml
+project:
+  title: optional
+  format: short film | trailer | social vertical | scene | commercial | music video | documentary | unknown
+  target_duration: seconds
+  aspect_ratio: 16:9 | 9:16 | 2.39:1 | 1.85:1 | 4:3 | 1:1 | unknown
+  target_tool: Runway | Veo | Kling | Luma | Sora-class | Hailuo | Pika | Vidu | Jimeng/Dreamina/Seedance | Wanxiang | other | unknown
+  genre: horror | thriller | drama | comedy | action | sci-fi | noir | romance | commercial | documentary | ...
+  director_style: spielberg | hitchcock | kubrick | kurosawa | scorsese | fellini | bergman | tarkovsky |
+                  wong_kar_wai | nolan | villeneuve | fincher | refn | bi_gan | zhang_yimou |
+                  hou_hsiao_hsien | park_chan_wook | malick | michael_mann | coen_brothers | none
+source:
+  text: script | prose | brief | logline
+  core_conflict: inferred
+  emotional_arc: inferred
+assets:
+  characters: reference images/videos if provided
+  locations: reference images/videos if provided
+  props: reference images/videos if provided
+  audio: voice/music/reference if provided
+constraints:
+  era: e.g. Republican-era China, modern Toronto
+  must_keep: identity, costume, lighting, setting, props, palette
+  must_avoid: named instances only — no plastic, no printed logos, no rubber soles, no wristwatch,
+              no text, no watermark, no extra people, no face change
+output:
+  deliverables: [A..J]
+  language: match the user's language
+```
+
+This block is a checklist for you. Never print it back to the user.
+
+Defaults when unspecified:
+
+- **Output language** — match the user's. **Generation prompt language** — English by default. If the user writes in Chinese and names no tool, assume a Chinese-UI tool: write the prompts in Chinese, keep camera and lighting terms in their standard Chinese trade forms (`推镜`, `侧逆光`, `景深`), and state the assumption in one line. Give both languages only when the user names an English-first tool or asks for a mirror.
+- **Aspect** — 16:9 for narrative, 9:16 if the user says social/短视频/Reels/抖音.
+- **Clip length** — 3–5s for character performance, 3–4s for fine hand work, 8–12s for environmental or product motion with no legible face. Longer only when the model holds narrative stably and the shot earns it. Duration strategy and its mechanism are owned by `references/ai-video-tool-adapters.md`.
+- **Camera** — locked or one slow push-in when continuity is fragile. Complex moves only when the story needs them and the tool controls them.
+- **Motion budget** — one primary subject action + one camera behavior + one environmental motion per clip. See the motion-budget model in `references/ai-video-tool-adapters.md`.
+- **Register** — set by genre (`references/genre-playbooks.md`) unless a director lens is named, which outranks it.
+
+## Hard rules
+
+1. **Story function first.** A shot with no story function is deleted, not improved.
+2. **Blocking before framing.** Decide what bodies do in space, then place the camera. A well-blocked scene reads even shot flat.
+3. **One dominant camera move and one primary action per clip.** No move at all is a legitimate choice and often the better one. Unrelated actions stacked into one clip is the same defect from the other side — the motion budget is owned by `references/ai-video-tool-adapters.md`.
+4. **Every action has an end state.** "He turns" is not a shot. "He turns until his profile is against the window, then stops" is.
+5. **Behavior, not emotion.** Never prompt "he is afraid." Prompt what fear looks like on a body.
+6. **Continuity is engineered.** Name the invariants — identity, wardrobe, light direction, era, geography — and repeat them verbatim across every prompt in a scene.
+7. **The keyframe is the control point.** A video model mostly re-animates what the still already decided. Fix the still before spending video generations.
+8. **Match the tool's control surface.** Do not ask a model for a feature it does not expose. Identify the surface, then pick the prompt shape.
+9. **Negatives are targeted, and they name instances.** Include only the constraints matching this shot's real risk. "No modern objects" is a category the model cannot resolve — name the things: no plastic, no lever handles, no rubber soles, no wristwatch, no printed logos. Long negative lists dilute and can invoke what they forbid.
+10. **One style lens at a time.** Mixing two directors produces incoherence. Pick one, say why, note what the other would have given.
+11. **Answer the size of the question.** A prompt request gets a prompt. Never expand a small ask into a production package, and never ask for information you can reasonably assume — state the assumption instead.
+
+## Pipeline
+
+Thirteen steps. Run only the ones the request needs, in this order. Each step names the file to load if you go deep.
+
+### 1. Intake and scope
+
+Fix the deliverable, duration, aspect, tool, genre, and constraints. State assumptions in one or two lines, then work. Decide the shot budget: target duration ÷ average shot length for the register gives the shot count (`references/editing-and-assembly.md`).
+
+### 2. Script and subtext breakdown
+
+Identify, in this order:
+
+- **Literal event** — what happens on the surface.
+- **Dramatic question** — what the audience should be wondering.
+- **Conflict** — external and internal.
+- **Subtext** — what the scene is actually about.
+- **Emotional movement** — opening emotion → pressure → turn → closing emotion.
+- **Visual thesis** — the simplest visual idea that governs the scene.
+
+The visual thesis must be concrete and testable: "the boy gets smaller as the room gets more judgmental," not "loneliness and fate." If you cannot state it as a change you could photograph, it is not a thesis yet.
+
+**Non-narrative work skips this block.** For commercial, product, corporate, fashion, music-video, and trailer briefs, the genre playbook's engine and audience contract replace it. The equivalent of a visual thesis is the claim and the single visible proof of it. Do not derive subtext for a lipstick.
+
+### 3. Beat map
+
+Break the scene into beats, not shots. A beat is a change in the balance of pressure — not a change of camera. Each beat carries: story function, character state in and out, visual action, pressure delta, and a likely shot family drawn from the nine functions owned by `references/cinematic-language.md` — establishing, relation, close-up, insert/detail, reaction, transition, aftermath, point-of-view, reveal. Do not coin others; Step 7 has to look the word up.
+
+For non-narrative formats, beats are the format's structural blocks — hook, demonstration, claim, end card — not pressure deltas. Template: `assets/beat-sheet-template.md`.
+
+### 4. Style lens selection (optional)
+
+If the user names a director or says "in the style of X," load exactly one file from `references/director_styles/` and treat its `风格参数 / Style parameters` YAML as the override set for Steps 5, 7, 8, and 10. Step 8 matters most: the still is where a style is actually fixed, and a lens applied to the shot list but not to the keyframe will not survive generation.
+
+Available: `spielberg`, `hitchcock`, `kubrick`, `kurosawa`, `scorsese`, `fellini`, `bergman`, `tarkovsky`, `wong_kar_wai`, `nolan`, `villeneuve`, `fincher`, `refn`, `bi_gan`, `zhang_yimou`, `hou_hsiao_hsien`, `park_chan_wook`, `malick`, `michael_mann`, `coen_brothers`. Index and how to add more: `references/director_styles/README.md`. Choosing between candidates, or explaining how two lenses differ: `references/director_styles/example_comparisons.md`, which directs one shared control scene through every lens.
+
+**If the named director has no module, do not silently substitute one.** Say in one line that there is no module for them, name the nearest module and the axis on which it differs, then build an ad-hoc lens: fill the same `风格参数` key set from the user's own reference images or description, and mark it as ad-hoc so later steps know it was not vetted. Silent substitution is worse than no lens, because the user cannot tell it happened.
+
+Precedence: **director lens > genre playbook > project tone > skill defaults.** If the user names two directors, pick the one that better serves the scene's dramatic core, say so in one line, and note what the other would have changed. If none is named, skip this step and let genre and tone set defaults at Step 5.
+
+Style modules describe high-level methods. Never copy specific shots, lines, characters, or plots from real films.
+
+### 5. Director's book / visual treatment
+
+The reusable rule set that stabilizes every later prompt: tone and genre, lens and framing policy, camera grammar and the allowed move set, lighting logic and key direction, palette and color script, production design and era lock, performance register, editing rhythm and target ASL, sound direction, and the **invariant clauses** — the identity strings and lighting invariant that get pasted verbatim into every prompt.
+
+Template: `assets/director-book-template.md`. Depth: `references/lighting-and-color.md`, `references/genre-playbooks.md`, and `references/continuity-bible.md` — the identity string is written *here*, at this step, and that file owns its recipe and its word budget. Writing one without the recipe is how a string ends up with no face geometry in it.
+
+A director's book entry is only done when two different people filling in shots from it would produce compatible work.
+
+### 6. Blocking and staging
+
+For every shot with people: start position, movement, interaction with space and props, camera relationship, end position, eyeline. Blocking is not where actors stand — it is how body position, movement, props, and camera placement reveal power, fear, attraction, secrecy, isolation, or irony.
+
+Depth: `references/blocking-and-staging.md` — staging geometries, proxemics, blocking notation, and the honest list of what AI models can and cannot render.
+
+### 7. Shot list and coverage
+
+Build rows only after beats and blocking are clear. Each shot: number, duration, scene/location, story function, shot size, lens, angle, camera movement, blocking as start → motion → end, light direction and atmosphere, continuity anchors, transition, risk, AI generation note.
+
+Template: `assets/shot-plan-template.md`. Grammar: `references/cinematic-language.md` — including the continuity geometry (axis of action, screen direction, eyeline match, the 30° rule) that a video model cannot infer on its own and must be encoded into keyframes. Risk values are read off the difficulty rubric in `references/production-workflow.md`; do not invent a second scale.
+
+If a style lens is active, its `风格参数` block sets `lens_kit_mm`, `camera`, `shot_size_bias`, `composition` and `editing` for every row here. Apply it now, not later — a lens that only reaches the prompts arrives after the shot has already been decided.
+
+### 8. Keyframe strategy
+
+Choose by continuity risk:
+
+- **Single first frame** — simple action inside one stable composition.
+- **First + last frame** — controlled transformation, a definite action endpoint, or a designed transition between two compositions.
+- **Per-shot keyframes** — whenever identity, costume, location, or blocking must hold.
+- **Storyboard panels** — when the model treats stills as slides. Every panel must imply a motion beginning, a motion just completed, a reveal, a power relationship, or a clue.
+
+Template: `assets/keyframe-prompt-template.md`. Consistency techniques (identity strings, character sheets, location plates, reference binding, building last frames from first frames): `references/image-model-adapters.md`.
+
+If a style lens is active, this is the step where it is actually fixed. Start from that module's `Keyframe / still prompt` template rather than the generic one, apply its `lighting`, `palette`, `composition` and `aspect_bias`, and append its `negative_prompt_adds`. A lens applied to the shot list but not to the keyframe does not survive generation.
+
+Gate: do not generate video from a keyframe that has not passed the pre-generation checks in `assets/qc-checklist.md`.
+
+### 9. Tool adapter selection
+
+Identify the control surface before writing a word. Read `references/ai-video-tool-adapters.md` (video) or `references/image-model-adapters.md` (stills). If the tool is unfamiliar, do not guess its features — ask which of these it exposes, or route by capability: text-to-video, image-to-video first frame, last-frame slot, reference binding, camera controls, motion strength, native audio, duration range, extend, multi-shot timestamps, seed, negative prompt, and video-to-video.
+
+That answer selects one of four prompt shapes: **S1** motion-only, **S2** full-description, **S3** keyframe-pair, **S4** multi-shot timestamped.
+
+Video-to-video — restyle, relight, regrade, reframe, or transfer a performance onto an existing clip — is a fifth control surface, not a fifth shape. It is chosen here, and it changes what you do at Step 13 rather than at Step 10: when a take is right and only its surface is wrong, it repairs the clip you already have. Details: `references/ai-video-tool-adapters.md`.
+
+### 10. AI video prompt construction
+
+**S1 — motion-only** (image-to-video). The image already carries identity, composition, lighting, setting, costume, and style. The text defines motion, camera, timing, end state, and constraints — in this order:
+
+```text
+[Camera behavior]. [Subject starts in visible state], then [one primary action with pace and direction].
+[Environment reacts subtly]. End with [clear final pose/composition].
+Maintain [identity / costume / location / light direction]. Avoid [failure modes matching this shot's risk].
+```
+
+**S2 — full description** (text-to-video). The text carries everything:
+
+```text
+[Format/style]. [Subject with concrete visual identity]. [Location + era + time + atmosphere].
+[Primary action]. [Shot size + lens + angle + camera movement]. [Light source + direction + quality].
+[Composition]. [Audio if supported]. [Constraints].
+```
+
+**S3 — keyframe pair** (first frame + last frame). Describe the bridge between two approved stills, not the stills themselves:
+
+```text
+Start from the first image and end on the second. Between them, [one continuous transformation].
+Camera [path, or explicitly locked]. Motion [eases in / holds a constant rate / accelerates once].
+Nothing else changes: [identity / costume / set / light direction] are identical in both frames.
+Avoid [failure modes matching this shot's risk].
+```
+
+**S4 — multi-shot timestamped**:
+
+```text
+Overall: [theme, tone, character and setting continuity rules]
+[00:00-00:03] Shot 1: [size/angle]. [action]. Camera [move]. [light or sound cue]
+[00:03-00:06] Shot 2: [size/angle]. [action]. Camera [move]. [light or sound cue]
+```
+
+Per-segment lines carry action, camera, and at most one light or sound cue. Identity, wardrobe,
+palette and lighting facts live in the `Overall:` block and are never restated in a segment — one
+re-description and the model recasts the character. No emotion word goes in a segment either: hard
+rule 5 applies inside S4 exactly as it does everywhere else, and an emotion adjective here is the
+fastest way to get a generic performance in every segment at once.
+
+Templates: `assets/video-prompt-template.md`. Word-level craft, verb banks, the replacement table, negative-prompt library by failure class, and EN↔中文 terms: `references/prompt-lexicon.md`.
+
+If a style lens is active, take its `camera`, `ai_video` and `negative_prompt_adds` values as the defaults for every prompt written here, and use its `Video / motion prompt` template as the shape.
+
+### 11. Sound and dialogue plan
+
+Sound is a directing decision, and in AI film it is the cheapest continuity glue available — one continuous ambience bed under a sequence hides an enormous amount of visual drift.
+
+Plan five layers per shot: room tone, ambience, foley, spot effects, score. For dialogue, respect the one-speaker-per-clip rule, label speakers unambiguously, and convert what cannot be generated into voice-over, off-screen line, or reaction-only. Template: `assets/sound-plan-template.md`. Depth: `references/sound-and-dialogue.md`.
+
+### 12. Edit and assembly plan
+
+Generated clips are raw material, not a cut. Specify the timeline: clip order, in/out points, trim handles, transition into each clip, and the audio layers running underneath. Design match cuts by building shot A's last frame and shot B's first frame together. Fix what can be fixed with a cutaway, a trim, or a dissolve rather than another generation.
+
+Template: `assets/edit-timeline-template.md`. Depth: `references/editing-and-assembly.md`.
+
+### 13. QC and repair loop
+
+Gate with `assets/qc-checklist.md` when scoring a clip or a batch. When something fails, diagnose in this order — each bucket with the codes it usually resolves to:
+
+1. **Asset mismatch** — references too inconsistent to hold identity (F1, F3, F16).
+2. **Prompt overload** — over motion budget: too many actions or camera moves (F4, F6).
+3. **Weak action** — the frame is a pose, not an implied motion (F2).
+4. **Missing endpoint** — the prompt never says where the action ends (F5).
+5. **Bad camera logic** — the move contradicts the framing or the space (F6).
+6. **Continuity gap** — shot A's end state does not match shot B's start state (F7).
+7. **Tool mismatch** — asking a model for a feature it does not control (F6, F11).
+
+If the user reports more than one symptom, collect **every** code before proposing anything. Multiple codes usually share one root decision, and fixing them one at a time re-spends the same generation.
+
+Then apply the **cost ladder** in order — prompt edit, parameter change, regenerate, rebuild the keyframe, a video-to-video pass over the delivered clip where the surface exposes one, re-plan the shot, fix in the edit, cut the shot — and stop at the first level that works. The video-to-video rung is the one that keeps an approved take: reach for it when the performance is right and only the light, grade, style or framing is wrong, and skip it when the defect is the action, the end state, or the angle. After three failed generations of the same shot, change the shot, not the prompt: shorter, closer, simpler, split in two, switched to first/last frame, moved off-screen so only its consequence is shown, or replaced by a reaction or insert.
+
+Never run a diagnostic questionnaire. Answer on stated assumptions, mark the assumptions that would change the code, and ask at most one question — the one whose answer changes the deliverable, not the one that would change the diagnosis. Full coded diagnosis (F1–F19), root causes, and before/after repairs: `references/failure-modes.md`.
+
+Repair output format:
+
+```markdown
+## Diagnosis
+- [failure code and the specific mechanism, not a generic guess; one line per code if several]
+- [shared root: the one decision that produced them all]
+
+## Fix
+- [the cheapest change on the cost ladder that addresses the root]
+
+## Revised prompt
+[clean prompt]
+
+## Why this should work
+[one or two sentences tied to the mechanism]
+```
+
+If no prompt, keyframe, or clip was supplied, do not invent the user's shot to fill the third section. Output the diagnosis, the fix ladder, and the prompt *shape* to rewrite into, then ask for the original prompt and which input mode produced it.
+
+## Output modes
+
+| Mode | Name | Use when | Template |
+|---|---|---|---|
+| A | Director Analysis | Interpretation, subtext, direction rules | inline (below) |
+| B | Beat Sheet | Structure before shots | `assets/beat-sheet-template.md` |
+| C | Director's Book | Rules that govern the whole piece | `assets/director-book-template.md` |
+| D | Shot Plan | Shot list, storyboard plan, shooting table | `assets/shot-plan-template.md` |
+| E | Keyframe Prompt Pack | Stills, first/last frames, panels, character sheets | `assets/keyframe-prompt-template.md` |
+| F | Video Motion Prompt Pack | Assets exist, motion prompts needed | `assets/video-prompt-template.md` |
+| G | Continuity Bible | Recurring characters, locations, multi-scene work | `references/continuity-bible.md` |
+| H | Sound & Dialogue Plan | Sound design, music, dialogue, VO | `assets/sound-plan-template.md` |
+| I | Edit & Assembly Plan | Cutting generated clips into a sequence | `assets/edit-timeline-template.md` |
+| J | QC & Repair | Something failed or looks wrong | `assets/qc-checklist.md` |
+
+Mode A shape:
+
+```markdown
+# Director Analysis
+
+## Dramatic core
+[one paragraph]
+
+## Subtext
+[one paragraph]
+
+## Emotional arc
+[opening → escalation → turn → closing]
+
+## Visual thesis
+[one concrete, photographable rule]
+
+## Direction rules
+- Camera:
+- Lens:
+- Lighting:
+- Palette:
+- Performance:
+- Editing:
+- Sound:
+```
+
+## Gotchas
+
+- More cinematic adjectives is not better direction. Cut every word that does not change a decision.
+- Beautiful shots that do not advance the story are the most expensive thing in the plan.
+- Do not write "camera rotates, zooms, pans, tracks, and shakes" unless the tool controls that combination and the story needs it.
+- Given reference images, do not reinvent costume, face, era, or location — describe them and lock them.
+- "Looks like a slideshow" is not fixed by adding "cinematic motion." Add a specific subject action, an environmental reaction, and a motivated camera behavior with an end state.
+- Horror and suspense want controlled stillness, negative space, delayed revelation, and sound — not constant camera movement.
+- Comedy wants a wider frame, a longer hold, and a flat register. Do not direct a joke like a tragedy.
+- Vertical is not cropped horizontal. Stage in depth, scale the subject up, and rethink every wide shot.
+- Literary or satirical material keeps its idea. Do not convert every scene into genre spectacle.
+- If the user reports a failure, diagnose the mechanism before rewriting. A rewrite that does not name the cause is a guess.
+
+## Minimal working example
+
+Request: "I have a keyframe of a man kneeling in a rainy old street. Make it into an AI video prompt."
+
+Good:
+
+```text
+Low-angle medium close shot, locked camera with a very slow push-in, no other movement. The man starts
+on one knee in the muddy rain-soaked street, one hand pressed flat against the wet ground. He breathes
+heavily, then slowly lifts his head just far enough for his wet hair to fall aside and reveal one tired
+eye. Rain keeps breaking the surface of the puddles around his robe; distant lightning briefly lifts the
+far end of the empty street. End with him half-raised and still unsteady, weight on the forward knee,
+head up. Maintain the same face, wet hair, crimson robe, stormy old Chinese street, low-key practical
+lighting from a single lantern camera-left. No text, no watermark, no extra people, no plastic, no
+rubber soles, no wristwatch, no printed logos.
+```
+
+Bad:
+
+```text
+Cinematic dark horror atmosphere, the man struggles in the rain and remembers his past, dramatic camera,
+emotional, high quality, masterpiece.
+```
+
+The good version names a camera behavior and forbids the rest, gives one primary action with visible body mechanics, adds one environmental reaction, states an end state, repeats the invariants, and lists only the negatives this shot actually risks — as nameable instances, not as the category "modern objects," which a model cannot resolve. The bad version names a mood and hopes.
+
+## Self-check before responding
+
+- Does every shot have a story function you could state in one clause?
+- Is there exactly one dominant camera move per clip — or a deliberate none?
+- Does every action have a start state and an end state?
+- Are the invariants written verbatim, identically, in every prompt of the scene?
+- Do adjacent shots clear the cut geometry — two size steps on an unchanged axis, or one step plus a
+  30°+ angle change — unless the match is deliberate? Rungs and the rule: `references/cinematic-language.md`.
+- Are the negatives limited to this shot's real risks?
+- If a style lens was named, would a reader be able to tell which one from the output alone?
+- Does the output stay clear of any specific shot, line, character, or plot beat from a real film?
+- Is the output proportional to what was asked?
+
+--- ORIGINAL director/beat-sheet-template.md ---
+# Beat Sheet Template
+
+Load this file when you are at Step 3 (beat map) or the user asked for Mode B — a beat sheet（节拍表）, "break this into beats", or "what actually happens in this scene".
+
+## What makes a beat a beat
+
+A beat is a change in the balance of pressure between what a character wants and what the scene is doing to them. It is not a change of camera, not a change of location, and not a new piece of stage business.
+
+Seven rules. A row that breaks any of them is not a beat.
+
+1. **State in must differ from state out.** If you cannot write two genuinely different phrases, merge the row into its neighbour.
+2. **Every delta names its agent.** Something applied the pressure: the character's own body, another person, an object, an off-screen sound, or a deadline. "The mood shifts" names no agent and is not a beat.
+3. **Camera is not a beat.** "Push in on his face" is a Step 7 decision. A real beat survives being shot three different ways. If the visual-action cell contains a shot size or a camera move, you have written a shot.
+4. **Location change is not a beat.** Walking to the door is a beat only if arriving changes the pressure. Otherwise it is travel and belongs inside a neighbouring beat. A second location that runs *at the same time* as the first is not travel — it is a second thread, gets its own letter in the Thread column, and its rows are judged by these same seven rules.
+5. **One beat, one turn.** Two turns in one row means two rows.
+6. **Escalation, not business, is what earns a row.** Beats run in story order within their thread — you do not reorder them, and where two threads run at once each is ordered on its own while the interleave is an edit decision, not a beat-sheet one. But if the running tension is flat across three consecutive rows, those three rows are one beat and you have listed activity.
+7. **The last beat is what the audience walks out holding.** It is the only beat allowed to release the character while tightening the audience.
+
+Weak row, then the same material as a beat:
+
+| Version | Story function | State in | Δ pressure (agent) | Visual action | State out |
+|---|---|---|---|---|---|
+| Not a beat | A tense moment at the door | Nervous | +2 (the atmosphere) | Push in on his face as he hesitates | Still nervous |
+| A beat | Reveal that delivering has a cost | Still believes he is only a messenger | +2 (his own hand — it will not finish the knock) | Right hand rises, knuckles stop 3cm from the wood, hold, then the hand lowers to his thigh | Exposed to himself; the errand has become a decision |
+
+The weak row breaks rules 1, 2 and 3 at once — state in equals state out, the agent is "atmosphere", the visual action is a camera move — and on top of that "a tense moment at the door" names a mood rather than a job. Nothing downstream can be built on it: there is no coverage to plan and no end state to hold a generator to.
+
+## Pressure notation
+
+Score tension on a 0–10 scale for the point-of-view character. The Δ column is the signed change plus the agent in parentheses. Write one number while the character and the audience move together; split it — `−6 him / +1 us` — the moment they diverge, which happens whenever the audience knows something he does not, and always on a beat that releases him while tightening them. A Δ of 0 is not permitted — delete the row.
+
+The numbers are only worth writing if they are arithmetic: the running curve must be the state-in of beat 1 plus each successive Δ. A curve that does not sum is a mood board with digits on it.
+
+## Beat table
+
+| # | Thread | Story function | State in | Δ pressure (agent) | Visual action | State out | Shot family | Sec |
+|---:|---|---|---|---|---|---|---|---:|
+| 1 |  |  |  |  |  |  |  |  |
+| 2 |  |  |  |  |  |  |  |  |
+
+Column rules:
+
+- **Thread** — which storyline the beat belongs to. One value for a single-line scene (`main`); `A` and `B` when the scene cross-cuts two actions running at the same time. Threads make parallel action plannable here; how the two are interleaved, and at what rate, is owned by [editing and assembly](../references/editing-and-assembly.md).
+- **Story function** — the job this beat does for the scene, in verb form. Not "sad moment"; "reveal that delivering the letter has a cost".
+- **Visual action** — externally visible behaviour only. No verbs the camera cannot photograph (`realizes`, `remembers`, `feels`). See the verb list in [prompt lexicon](../references/prompt-lexicon.md).
+- **Shot family** — one of the shot-function names owned by [cinematic language](../references/cinematic-language.md): establishing, relation, close-up, insert/detail, reaction, transition, aftermath, point-of-view, reveal. This is a *family*, not a shot; it tells Step 7 what kind of coverage the beat wants. Do not coin names outside that list — Step 7 has to be able to look the word up.
+- **Sec** — estimated screen time. These sum to the scene's target duration and become the time budget for the shot plan.
+
+## Worked example
+
+Project `Under the Door`, scene 7. Target 22s, 16:9, no style lens. A courier delivers a letter to a 1937 Shanghai lilong（里弄）apartment and chooses not to be present when it is read.
+
+Visual thesis: the door grows and the courier shrinks until the only thing in frame still holding light is the gap underneath it.
+
+| # | Thread | Story function | State in | Δ pressure (agent) | Visual action | State out | Shot family | Sec |
+|---:|---|---|---|---|---|---|---|---:|
+| 1 | main | Turn an address into one specific door | Rehearsed, on-task, has not thought past the delivery | +1 (arrival — the abstract errand becomes one specific door) | Climbs the last flight, checks the door against the envelope, takes three steps and stops 60cm short | Located and squared to the door, envelope up at chest | establishing | 4 |
+| 2 | main | Reveal that delivering has a cost | Located; still believes he is only a messenger | +2 (his own hand — it will not finish the knock) | Right hand rises, knuckles stop 3cm from the wood, hold, then the hand lowers to his thigh | Exposed to himself; the errand has become a decision | reaction | 5 |
+| 3 | main | Make the person behind the door real | Hesitating in what he assumed was privacy | +2 (off-screen — a chair scrapes, a radio comes up) | A shadow crosses the warm line under the door; his eyes drop from the door face to the gap | Cornered; being present is now the risk | insert/detail | 3 |
+| 4 | main | He chooses the cowardly delivery | Cornered, out of time | +3 him / +2 us (his own act, and it cannot be undone) | Crouches, feeds the envelope under the door, pushes with two fingers until his fingertips touch wood and the envelope is gone | Committed; hands empty, nothing retrievable | reveal | 6 |
+| 5 | main | Leave the audience holding what he refused to hold | Released, ashamed | −6 him / +1 us (he is gone; the letter is not) | Stands, backs two steps, turns and drops down the stairs; the empty landing holds until a shadow crosses the light line from inside | Absent | aftermath | 4 |
+
+Running tension — courier: `2 → 3 → 5 → 7 → 10 → 4`. Audience: `2 → 3 → 5 → 7 → 9 → 10`. Both curves are the state-in of B1 followed by each state-out, so every step is the row's Δ; if they do not add up, one of the two is a wish. The largest rise (+3, B4) completes at 82% of scene time, and only the courier comes down. That is the shape you want.
+
+This beat sheet feeds [director book](director-book-template.md) at Step 5 and [shot plan](shot-plan-template.md) at Step 7. Beat numbers (`B1`…`B5`) are the join key — do not renumber them once shots reference them.
+
+## How many beats
+
+| Target duration | Beats | Typical shots | Shape |
+|---|---:|---:|---|
+| 8–15s (single clip, social) | 2–3 | 2–4 | One turn, no aftermath |
+| 20–40s (a scene) | 4–6 | 4–8 | Setup, escalation, turn, aftermath |
+| 40–60s (a long scene / social short) | 6–8 | 8–14 | Setup, two escalations, turn, aftermath |
+| 60–90s (a sequence) | 7–10 | 12–20 | Two escalations before the turn |
+| 3–5 min (short film) | 18–30 | 40–90 | Act shape; split into 3–5 scenes and beat each separately |
+
+Working rule for a single scene: `beats ≈ target_seconds / 5`, floor of 2. It holds to about 40s, then the divisor widens toward 7 seconds a beat across the 40–60s band — a 45s piece is 6–7 beats, not the 9 that `/5` predicts — and past 60s it stops entirely: a 90s sequence is not 18 beats. Past 60s, split into scenes of 20–40s and apply the rule per scene, which is why the lower rows of the table run 9–10 seconds a beat rather than 5. Above 12 beats in one table you are beating a sequence, not a scene; split before continuing.
+
+The 40–60s row is not a rounding of its neighbours; it is the band most social shorts land in, and it is one scene, not two. A 45s single-location, single-character piece built on a continuous procedure has one setup and one turn — splitting it into two 22s scenes to satisfy the arithmetic destroys the continuity that is doing the work. Split at 60s, and only where the location, the cast or the time actually changes.
+
+Boundaries:
+
+- A beat estimated under 2s is a shot, not a beat. Fold it into a neighbour.
+- A beat estimated over 10s is two beats, or one beat plus dead air. Re-read it for the second turn you did not notice.
+- One shot per beat is the default at scene scale, with two or three spent only on the turn beat. The ratio drifts to 2–3 shots per beat at sequence and film scale because the beats themselves get longer, not because the beats need more angles. If every beat in a 30s scene gets three shots you have produced a coverage list, not a plan.
+
+## Self-check
+
+Run all seven before handing the sheet on. Any failure is a rewrite, not a note.
+
+1. Does every row have `state in ≠ state out` and a non-zero Δ?
+2. Can you name the agent for every Δ without using the words mood, tone, or atmosphere?
+3. Is any row merely a camera idea? Strike any visual action containing a shot size or a camera move.
+4. Is any row merely a location change with no pressure change?
+5. Does the running tension actually rise, and do the plotted curves equal the running sum of the Δ column? Flat or sawtoothing without net rise means the scene has no shape yet; curves that do not sum mean the Δs are decoration.
+6. Does the largest single *rise* land at or after the 60% mark? If the biggest jump is beat 1, everything after it is downhill.
+7. Do the seconds sum to the target duration within ±15%? If not, cut a beat rather than shaving every row.
+
+--- ORIGINAL director/blocking-and-staging.md ---
+# Blocking and Staging
+
+Load this file when you reach Step 6 (Blocking & staging), when a scene puts two or more bodies in one space, when a shot row needs start/end positions, or when a generated clip contains correct-looking people doing nothing that means anything.
+
+Owns: staging geometry, proxemics, power blocking, entrances and exits, eyeline as an instruction to the audience, blocking notation, blocking-to-prompt translation. Shot size, angle, lens psychology, composition, and coverage geometry — the axis of action (180-degree rule), the 30-degree rule, screen direction, eyeline match — belong to [cinematic-language.md](cinematic-language.md).
+
+All focal lengths here are 35 mm full-frame equivalent, matching [cinematic-language.md](cinematic-language.md), and each is paired with the camera distance it assumes: a focal length without a distance is not a frame.
+
+## Thesis
+
+1. Blocking（走位）is the first directorial decision. Camera is the second. You cannot fix bad staging with a good lens.
+2. Camera follows bodies. Pick the geometry first, then pick the position that reads it.
+3. A scene blocked well can be shot flat — one locked wide, no move — and still read.
+4. A scene blocked badly needs six shots to explain what one arrangement should have said in silence.
+5. For AI video this stops being taste and becomes economics: staging is the direction that survives generation best, because it lives in the keyframe rather than in the verbs of the text prompt.
+
+## Proxemics: distance is dialogue
+
+Proxemics（人际距离）is the cheapest subtext generator on a set. Measure it in metres and write the number down.
+
+| Zone | Distance | Reads as | Camera consequence |
+|---|---|---|---|
+| Intimate | 0–0.45 m | Love, threat, medicine, violence. There is no neutral version — the eyeline decides which. | The frontal two-shot stops working: the heads overlap and the near one masks the far one. Go 90° to the axis for a profile two-shot (50–65 mm from ~1.2 m), or take a tight over-the-shoulder and give up on showing both faces. |
+| Personal | 0.45–1.2 m | Confession, friendship, negotiation between equals, conspiracy. | The natural two-shot distance. 40–50 mm from ~1.8 m holds both heads at medium with air between them. |
+| Social | 1.2–3.6 m | Transaction, work, strangers, formality, interview. | Holding both needs about 3 m of frame width — 28–35 mm from ~3 m — and nobody is bigger than a medium-long. Use the two-shot for the gap, cover the faces in singles. This is where a barrier object belongs. |
+| Public | 3.6 m+ | Address, performance, authority, abandonment. | Both bodies in one frame means both are small. That is geometry; no focal length fixes it. The real choice is where you stand: wide and close to one body converts the separation into a size differential (the ladder, below); long and far equalizes them and flattens the gap into a graphic. |
+
+Changing zone mid-scene is the loudest event in a blocked scene. Rules:
+
+- Closing one zone = escalation. Whether it reads as desire or as threat is set entirely by eyeline and pace, not by distance.
+- Opening one zone = withdrawal, refusal, fear, or a decision already made in private.
+- Crossing two zone boundaries in one move (public to personal, 4 m to 0.8 m) is a violence-level event. At most once per scene.
+- Whoever initiates the change is whoever wants something. Whoever refuses to restore the distance — does not step back, does not lean away — holds the power.
+- Always write the change as `2.4 m → 0.6 m over 4 s`, never as "moves closer". "Closer" is unfilmable and unpromptable.
+
+Worked: a nurse tells a patient's brother the outcome. Blocked as `nurse 3.2 m → 1.0 m over 5 s, brother does not move`, the scene is a professional taking responsibility. Blocked as `nurse holds 3.2 m, brother closes to 1.0 m`, the same words become a man demanding an answer. One number moved from one column to the other, and the scene changed sides.
+
+## Power geometry
+
+Nine devices. Each produces a read whether you intended it or not, so choose deliberately.
+
+| Device | The geometry | The read |
+|---|---|---|
+| Height differential | One standing, one lower. Real eye-height gaps: standing to seated in a chair ≈ 0.35–0.45 m; standing to upright kneeling ≈ 0.45–0.55 m; standing to sitting on the floor ≈ 0.7–0.9 m; standing to prone ≈ 1.4 m | The higher body owns the scene, and the read scales with the gap. A chair is a mild concession; the floor is a surrender. |
+| Level break | A body deliberately changes height mid-scene — sits, kneels, stands up | The move *is* the beat. Cheapest visible status change there is. |
+| Foreground dominance | The near body is 2–3× the far body's frame height | Whoever is nearer the lens is louder, even silent, even out of focus. |
+| Who moves vs who holds | One crosses; the other does not adjust position or posture | Stillness is power. The one who has to move is the one who needs something. |
+| Crossing into space | Closing from social into personal without invitation | Invasion. If the other backs off, the invader wins the beat outright. |
+| Back to camera | One body turned away, usually holding a frame edge | Information withheld. The audience is aligned with the visible face; the turned back reads as threat or authority. |
+| Boxed by architecture | Doorframe, window mullion, or column edge within 0.2 m of the body's silhouette | The space is judging them. They are already caught. |
+| Who controls the exit | Which body stands between the other and the door | The one nearer the exit can end the scene. The one further away is asking permission. |
+| Turning away mid-line | A body rotates 90–180° while the other is still speaking | Refusal. Louder than any line you could write. |
+
+Worked, one line — "You should have told me." Speaker seated, listener standing, listener between the speaker and the door: the line is an appeal, and it will be refused. Speaker standing, listener seated, speaker between the listener and the door: the same line is a sentence being handed down. Nothing changed but height differential and who controls the exit, and one of the two is now begging.
+
+## Staging pattern library
+
+Plan-view diagrams. Legend, used by every diagram below:
+
+```text
+[CAM]^ [CAM]v [CAM]< [CAM]>   camera position and the cardinal direction it looks
+[CAM]*                        camera on a diagonal axis; the note gives the angle
+A B C                         characters at their floor position
+A^ Av A< A>                   which way that character faces
+A(45) A(135)                  facing in degrees off the lens axis: 0 = into the lens, 180 = full back
+A'                            that character's END position after the move
+====                          wall        #  doorway/gap        [==]  table/desk/bed/counter
+==>                           movement path; the label gives distance and duration
+```
+
+### 1. The table opposition
+
+```text
+        Bv
+   [============]
+        A^
+       [CAM]^
+```
+
+- Reads: two fixed positions, a sanctioned distance, a negotiation with rules. Nobody can invade; the furniture forbids it.
+- Camera: over the near shoulder, 25–35° off the table axis, 40–50 mm, at seated eye height (~1.2 m). Squaring off at 90° to the axis instead flattens it into a hearing between equals.
+- AI: high. Two seated bodies, zero translation. Animate breath, one hand on the table, a 30° head turn. This is the most reliable dialogue geometry available.
+
+### 2. The approach
+
+```text
+              Bv
+              A'          A' = end position, 0.6 m from B
+   [CAM]>     A^          A: 2.4 m ==> 0.6 m over 4 s; B does not step back
+```
+
+- Reads: want. The mover is the one who needs something. If B holds ground, B wins; if B retreats, A wins.
+- Camera: 90° to the axis of approach so the shrinking gap is the subject. 35 mm. Shoot down the axis instead and the distance change disappears entirely.
+- AI: medium. One mover, one direction, roughly one step per second. The 1.8 m drawn here is over the reliable ceiling for a single translation, so either start A at 1.5 m and close to 0.6 m, or split the approach across two clips; write B's hold as an explicit instruction either way.
+
+### 3. The retreat
+
+```text
+              Bv          B holds, still facing A
+              A^          A: 0.6 m start
+   [CAM]>     A'          A' = 2.0 m, still facing B, backing away over 3 s
+```
+
+- Reads: the decision has already been made off-screen. Retreat while still facing forward is refusal; retreat while turning is fear.
+- Camera: 90° to the axis, same as the approach. Or hold on the one who stays and let the retreater shrink in the background — that version reads as loss rather than refusal.
+- AI: medium-high, and the cheaper of the two. The bodies end further apart than they started, so nothing merges and nothing occludes; the approach ends with two silhouettes converging, which is exactly where limbs fuse. In the background version the retreater also loses pixels as it goes, which is less identity to hold, not more.
+
+### 4. The parallel walk
+
+```text
+       [CAM]v            camera leads, retreating up-page at the walkers' pace
+       A^  B^            A and B walk up-page toward the lens, 0.8-1.0 m apart, matched pace
+```
+
+- Reads: alliance under motion. Two people who agree walk in step; disagreement shows as one drifting half a pace ahead.
+- Camera: leading frontal at 35–50 mm; or lock off 90° to the path and let them cross it; or follow from behind at 85 mm so they never seem to arrive.
+- AI: low in the leading version — two bodies and the camera all moving. Substitute the locked 90° cross, or the static behind-shot. Both keep the meaning and cost one reliable clip.
+
+### 5. The orbit
+
+```text
+    B starts at A's 9 o'clock, ends at A's 1 o'clock, radius 1.2 m
+         (12)
+    (9)  A    (3)        A pivots in place; the eyeline never breaks
+         (6)
+    [CAM]^ at (6), 1.5 m out
+```
+
+- Reads: assessment, seduction, or interrogation. The orbiter is deciding something about the pivot.
+- Camera: beside A at the centre of the arc, panning with B; or locked at 6 o'clock so B crosses frame while A rotates in place. A locked camera goes blind at whichever clock position sits opposite it, and from 6 o'clock that is 12 — B passes dead behind A. Moving to 4 o'clock only shifts the blind spot to 10, still on B's path; for a 9-to-1 arc the only camera positions whose blind spot falls entirely outside it are 2 and 8 o'clock. Do not reach for 10 or 11 instead: their blind spots are clear, but B walks through them, and a camera standing on the mover's path is a collision you have to restage rather than an occlusion you can wait out.
+- AI: low. Orbit is the highest-drift camera move and a pivoting body compounds it. Substitute two static setups shot from the arc's start angle and end angle; the cut does the orbit.
+
+### 6. The wedge
+
+```text
+      Av        Bv       start: A and B 1.0 m apart, both facing camera
+      Av   C'v  Bv       end: C has taken the gap, 0.5 m each side
+      [CAM]^
+```
+
+- Reads: a pair becomes a triangle. Whoever takes the gap has ended the private thing that was happening in it.
+- Camera: frontal, symmetric, 35 mm from ~3 m, wide enough that the gap is visible *before* C claims it. The composition must have a hole in it for the beat to land. The moment C lands, A–B stops being the only line in the room — pick which axis governs the coverage by the three-or-more-bodies rule in [cinematic-language.md](cinematic-language.md) before you shoot any single.
+- AI: medium. C's arrival is an entrance — start with C's shoulder already at frame edge (see Entrances below) rather than conjuring a whole body.
+
+### 7. The barrier
+
+```text
+    B>  ||  A<           barrier on the axis: fence, glass, counter, car, bed
+        ||
+      [CAM]^             square-on, so the barrier bisects the frame
+```
+
+- Reads: the object is the third character and it is winning. Differs from the table opposition in asymmetry — one side has access, the other does not.
+- Camera: square-on so the barrier splits the frame; 50 mm from ~3 m holds about 2.2 m of frame width, which is both bodies plus the barrier. Go longer only if you can back off in proportion, or one of them leaves the frame.
+- AI: high for an opaque barrier — counter, fence rail, car door, headboard. Nobody passes through anything and the object is static geometry. Drop to medium for glass: reflections and what is visible through the pane are the least stable things in the frame, so either keep the glass dark and non-reflective or accept that the reflection will change between clips.
+
+### 8. The threshold
+
+```text
+        Bv               B inside the room, 1.5 m past the sill, facing the door
+   =====#=====           wall and doorway; the sill is the line
+        A^               A outside, toes at the sill, never crosses
+       [CAM]^            camera outside behind A; the doorway frames B
+```
+
+- Reads: permission. Whoever has not crossed has not committed. The sill is the scene's question, made out of wood.
+- Camera: behind and past A's shoulder at 28–35 mm, A's eye height, so the doorframe frames B — frame-within-frame, see [cinematic-language.md](cinematic-language.md).
+- AI: high while nobody crosses; low the instant a body walks through the opening, because occlusion plus a lighting change is where identity dies. Cut at the sill.
+
+### 9. The wall
+
+```text
+   ================      wall, window, or sink
+        A^               A turned away: back to B and to camera
+        B^               B 2.0 m behind, addressing A's back
+       [CAM]^            default: straight up the axis, from behind B
+```
+
+- Reads: refusal to be looked at. The audience wants the face and cannot have it; that wanting is the tension.
+- Camera: two honest choices. From behind B at 50 mm you get two backs and no faces at all — that is the point of the device. If you need B's face in the same frame, move round to about 90° off the axis and stand level with A, 40–50 mm: A becomes a three-quarter back in the near ground and B reads three-quarter front beyond. Do not go past A to the wall itself — from there you are in front of A and you get the face you were withholding. You cannot have A's back and B's face from behind B; the camera has to pick a side. Do not cut to A's face until A turns — the turn is your payoff.
+- AI: high in the behind-B version, structurally the most forgiving framing in this library, because there is no face anywhere in frame to hold consistent. Spend your longest clip here. The 90° version drops to medium: B's face is now on the hook for the whole duration.
+
+### 10. The shrinking two-shot
+
+```text
+    A>       1.2 m      B<    start: personal distance, balanced two-shot, air between them
+              A'>  0.4  B<    end: B has not moved; A has closed 0.8 m; the air is gone
+             [CAM]^           camera does not move and does not reframe
+```
+
+- Reads: intensification with no help from the camera. The frame stays optically identical; what changes is that the negative space separating them has been spent.
+- Camera: locked, 40–50 mm, framed for the START distance. Do not reframe. At the end the pair sits as one mass in a frame built for two, and the leftover air at the edges is the device, not a mistake.
+- AI: medium. One mover, lateral, short distance, and B needs an explicit hold. Keep at least 0.3 m of visible gap at the end or the two silhouettes fuse into one body.
+
+### 11. The reveal-by-turn
+
+```text
+        A(135)           start: three-quarter away, face withheld
+        A'(45)           end: three-quarter toward — a 90° turn over 2-3 s
+       [CAM]^
+```
+
+- Reads: the moment we are allowed to know. Cheap, ancient, and still works if the withholding was earned first.
+- Camera: locked, 50–85 mm, tight enough that the turn fills the frame. Never move the camera during a body rotation — the two rotations fight and the result reads as a mistake.
+- AI: medium at the 90° drawn here. A true 180°, back-of-head to full face, means the model invents a face it has never seen, and the invented face will not be your character. Where the tool exposes a first/last-frame slot, pin both ends and the problem goes away — see [ai-video-tool-adapters.md](ai-video-tool-adapters.md).
+
+### 12. The ladder
+
+```text
+        C^   BG  6.0 m   smallest, softest, least power
+        B<   MG  3.0 m
+        Av   FG  1.2 m   largest, sharpest, most power
+      [CAM]^             24-35 mm, chest height, 1.2 m from the FG body
+```
+
+- Reads: a hierarchy stated in one frame with no dialogue, and the arithmetic states it — at 1.2 m and 6.0 m the FG body is five times the BG body's frame height.
+- Camera: 24–35 mm at chest height, stopped down if you want all three planes legible. To invert the hierarchy — soft foreground head, sharp figure far away, saying the one who matters is the one who is distant — you have to give up deep focus: open up or go longer. You cannot have the inversion and deep focus in the same frame.
+- Long lenses collapse the ladder. An 85 mm forces you back to about 2.9 m to hold the same foreground framing, which takes the size ratio from 5:1 to under 3:1. Lens mechanics live in [cinematic-language.md](cinematic-language.md).
+- AI: high. Every body can be static; depth does all the work. Best story-value-per-clip geometry in the library. One caveat: the background face degrades first, so cast that position as a back, a silhouette, or someone whose likeness you do not need to hold.
+
+### 13. The pin
+
+```text
+   ================      wall
+        Av               A's back 0.2 m off the wall, no lateral exit
+        B^               B at 0.5 m, squared up, closing A's only open line
+   [CAM]*                axis 60-70° off the wall plane, off B's near shoulder
+```
+
+- Reads: no options. Distinguish it from the approach: the approach is about want, the pin is about geometry that has already decided the outcome.
+- Camera: 60–70° off the wall plane at A's chin height, so the wall runs back into frame, A's three-quarter face sits against it, and B's back three-quarter fills the near ground. Square-on to the wall turns it into a plain backdrop and you lose the 0.2 m that makes it a pin. Parallel to the wall gives you both bodies in clean profile — legible, but it is a diagram of a pin rather than the experience of one, because neither face is available and nothing compresses toward the lens.
+- AI: medium-high. Static bodies in a tight space. The failure is limbs merging into the wall — keep 0.15–0.2 m of visible gap behind A in the keyframe.
+
+### 14. The pass-through
+
+```text
+        Bv               B holds in MG, facing camera
+    A>  ==>  A'>         A crosses FG left to right, 0.8 m from the lens, 1.5 s
+       [CAM]^            camera never follows A
+```
+
+- Reads: an interruption that changes nothing, or a hidden edit point. Functions as a natural wipe.
+- Camera: locked medium or wide on B; let A's body do the wiping. Following A throws away the device.
+- AI: medium. A single FG body crossing is easy motion, but it occludes B, and occlusion is where identity dies. Clear frame in ≤1.5 s and re-pin B's face in the next clip's keyframe — see [continuity-bible.md](continuity-bible.md).
+
+## Depth staging
+
+- Default read: nearer = larger = louder. FG dominates MG dominates BG. Every departure from this is a statement, so make sure you meant it.
+- The foreground filter. Shoot through a doorway, a curtain edge, a shoulder, a bottle, wire mesh. The FG object names the audience's relationship to the scene: eavesdropping, barred, complicit, protected. Keep it 0.3–0.8 m from the lens and let it fall soft; a sharp FG object becomes a subject instead of a filter.
+- Working distances on a 35 mm lens: FG at 0.8–1.2 m, MG at 2.5–3.5 m, BG at 6 m+. Deep staging wants 24–40 mm; see the ladder above for what a long lens costs you.
+- Depth substitutes for coverage. Inside one AI clip you cannot cut, but you can restage. Put A in FG and B in BG; have A lower their head 20°, and B — suddenly unobstructed — becomes the subject with no cut and nothing new invented. Depth change is the only editing available inside a single generation, and it survives generation far better than any camera move, because the model never has to render a body it has not already seen.
+- One clip, three beats, no cut: FG head fills the right third → FG head drops → BG figure stands. That is a shot-reverse-shot's worth of information for one generation.
+
+## Entrances and exits
+
+- This section covers what an entrance or exit *means* inside a scene. What an exit obliges the next shot to do — matching exit-right to enter-left, the neutral reset of a toward/away exit — is continuity geometry and lives in [cinematic-language.md](cinematic-language.md).
+- Frame-left entry moves the body rightward; frame-right entry moves it leftward. In left-to-right reading cultures, rightward reads as forward/continuation and leftward as return/resistance. This is a soft convention: its power comes almost entirely from staying consistent within one film, not from any inherent meaning.
+- Entering toward camera: the body grows, we are the destination, power accrues. Entering away from camera: the body shrinks, we are being left behind. Same physical action, opposite scene.
+- Exiting past camera — the body passes the lens and clears frame — is the strongest exit available: it breaks the plane and puts the character on our side of the world. For AI it is a trade, not a free win. The body scales up to fill the frame just before it clears, which is the most face it will ever ask a model to hold; but it also blurs and occludes as it goes, which makes the join into the next clip nearly free. Angle the exit path a few degrees off the lens axis so the face never arrives dead-centre at maximum size, and grade this exit medium, not high.
+- Ranked for AI reliability, safest first: out of frame laterally at constant scale; away from camera into depth; past the lens.
+- The empty-frame hold. Let the character clear the frame and hold the empty composition for 1.5–4 s. The frame becomes the subject; the audience keeps looking at where the person was. It is a device, not dead air, and it costs one cheap generation of a static plate with ambient motion (curtain, steam, dust, traffic). Using that same empty frame as a join between two clips is a cut decision and belongs to [editing-and-assembly.md](editing-and-assembly.md).
+- AI asymmetry you must plan around: exits are easy, entrances are hard. An entering body does not exist in the start frame, so the model invents it, and invented faces do not match your character. Substitution: begin with a sliver already in frame — a shoulder at the edge, a hand, a shadow across the floor, a reflection — so the "entrance" is a translation of something that already exists. Or make the entrance a new clip whose keyframe already shows the character mid-stride.
+
+Worked: the same woman leaves the same room, three ways. `Exits frame-right at constant scale, 2.0 s, camera holds 2 s on the empty chair` — she is gone and we are left with the room. `Walks upstage through the door and never turns back, 3.0 s` — she is gone and we were never worth turning for. `Crosses to the lens and clears frame-left, 1.5 s` — she is gone and she has taken us with her. Only the third one is expensive to generate, and only the third one gives the next clip a free seam.
+
+## Eyeline and attention
+
+- Where a character looks is an instruction to the audience. They will look there roughly one beat later. An unmotivated eyeline is a lie the audience will try to honour and then resent.
+- The look-then-reveal structure: Shot 1 is the look — a face near a frame edge, eyeline pointed off-frame; Shot 2 is the thing, framed from roughly the looker's height and angle. Cost: two clips. Payoff: the audience builds the geography themselves and the model never has to render two subjects in one frame.
+- False eyeline as tension: point the look off-frame at nothing and either never pay it off, or pay it off somewhere else. Hold the look 1.5–3 s past comfortable. Use once; twice teaches the audience to stop believing you.
+- Height rule: generate the reverse at a camera height matching the looker's eye height, or the two clips will not read as the same room. A seated person's view of a stander is a low angle; render that reverse from standing eye level and the geometry lies — most obviously in interrogation and bedside scenes. Keep the metre value in the shot plan for yourself, but put the *consequence* in the prompt ("the camera sits below his shoulder line and the ceiling is visible behind him"), because models honour visible geometry far more reliably than numbers. Height ladder in [cinematic-language.md](cinematic-language.md).
+- For the axis of action (180-degree rule) and eyeline-match continuity across cuts, see [cinematic-language.md](cinematic-language.md) — including its rule for three or more bodies, which is what any wedge, ladder or three-way notation line staged here inherits the moment a third body arrives.
+
+Worked, two clips: (1) MCU, a woman at the right edge of frame, eyes pointed off frame-left and slightly down, held 2 s past comfortable, one blink; (2) locked wide from her eye height, angled frame-left, of a kitchen table with two mugs on it and only one of them steaming. Neither clip contains two people, neither asks the model to invent anything, and between them the audience has built a room, a relationship, and an absence.
+
+## Blocking notation
+
+This is the director's working layer, not an output format. Use it while you design the beat, then write the *result* into the Blocking column of the Mode D shot plan in plain start → move → end prose, which is what [shot-plan-template.md](../assets/shot-plan-template.md) expects. Every line below is paired with exactly that translation.
+
+```text
+POSITION   <lateral>/<depth>          FL | CL | FR   over   FG | MG | BG
+                                      FL = frame-left, FR = frame-right
+                                      CL = CENTRE lateral, NOT camera-left
+                                      @off-FL / @off-FR = out of frame on that side
+FACING     :tC   toward camera        :aC   away from camera
+           :pL   profile, facing frame-left      :pR   profile, facing frame-right
+           :3qL  three-quarter toward frame-left :3qR  three-quarter toward frame-right
+GRAMMAR    <NAME> @<start> --[verb, distance, duration]--> @<end>
+           chain arrows for a two-verb move; each arrow is one clip's worth of risk
+HOLD       <NAME> @<pos> (hold)       does not move, does not turn
+           (hold at <anchor>)         pins the hold to a named anchor
+JOIN       characters and objects separated by |
+EYELINE    eye: A>B, B>floor, A>off-FR, A>lens        changes tagged @t=<seconds>
+ANCHOR     door @CL/BG, table @CL/MG                  static geometry that matters
+```
+
+Five worked lines:
+
+```text
+1  A @CL/FG:aC (hold) | B @CL/BG:tC --[stands, 1 step, 2.0s]--> @CL/MG:tC | eye: A>B, B>A
+2  A @FL/FG:pR --[crosses right, 1.4m, 1.5s]--> @off-FR | B @CL/MG:tC (hold) | eye: B>lens
+3  A @CL/MG:aC (hold at sill) | door @CL/MG | B @CL/BG:tC (hold) | eye: A>B, B>floor
+4  A @FL/MG:pR (hold) | B @FR/MG:pL --[steps in, 0.8m, 3.0s]--> @CL/MG:pL | eye: B>A, A>B, then A>floor @t=2.5
+5  A @FL/MG:tC (hold) | B @FR/MG:tC (hold) | C @CL/BG:tC --[walks in, 1.6m, 2.5s]--> @CL/MG:tC | eye: A>C, B>C, C>lens
+```
+
+Plain English, which is what goes in the shot plan:
+
+1. A stands in the foreground with their back to us and never moves; deep in the shot, facing us, B rises and takes one step forward into midground. They hold each other's gaze. A's back stays the same size while B grows — power transferring across a static frame.
+2. A crosses the foreground left to right in profile and clears frame; B stays put in midground, looking straight down the lens. A wipe that pretends to be an event.
+3. A stands at a doorway with their back to us and does not cross; B waits deep in the room, facing us, looking at the floor. Nobody moves. Everything is in who has not crossed.
+4. Both start in profile at personal distance; B closes 0.8 m over three seconds. A never moves a foot, holds the gaze for 2.5 s, then drops it to the floor. B paid for the beat with a step, but A lost it with the eyeline, not with the feet — stillness only holds power while the look holds too.
+5. Two people face us from opposite thirds; a third walks in from the background and takes the gap between them, looking at the lens. The wedge. The pair's shared thing is over.
+
+## Blocking for AI video
+
+Reliable — write these directly, no hedging:
+
+| Motion | Grade | How to write it |
+|---|---|---|
+| Breathing, chest and shoulder rise | High | "his chest rises and falls slowly" — always include; it is what stops a clip reading as a still |
+| Garment settle, hair drift, ambient cloth | High | Name the fabric and the cause: "the coat hem lifts in the doorway draught" |
+| Head turn ≤ 45° | High | State degrees and duration: "turns her head 30° to the left over 1.5 seconds" |
+| Head lower / lift | High | Best single-beat emotional move in AI video. Pair it with an eyeline change. |
+| Arm raise to chest or head height, no contact | High | Stop the verb before contact: "raises her hand toward the glass" |
+| Single translation, one direction, ≤ 0.9 m | High | One verb, one vector, ≤ 1 step per second |
+| Slow walk toward camera, 2–3 steps, frontal | High | Frontal keeps the face anchored; do not combine with a camera push |
+| Slow pivot in place, ≤ 90° | Medium | Beyond 90° the model starts inventing the unseen side |
+| Seated to standing, unassisted, hands off furniture | Medium | Hands touching the chair is the failure point; keep them on knees |
+| Reaching toward a static object | Medium | Cut before contact. Possession is a job for the next clip. |
+
+Unreliable — plan the substitution before you write the prompt:
+
+| Motion | Grade | Substitution that keeps the story value |
+|---|---|---|
+| Two-person choreography (both bodies on separate paths) | Low | Elect one mover and give the other an explicit hold, or split into two clips and let the cut carry the second move |
+| Object handoff | Low | Generate the reach and, separately, the possessed object. The cut performs the transfer — oldest trick in editing, see [editing-and-assembly.md](editing-and-assembly.md) |
+| Stairs | Low | Two locked clips, top of flight and bottom of flight; or one locked frame through which only head and shoulders rise |
+| Running with camera follow | Low | Locked wide with the subject crossing frame, or tight on the face with body bounce and streaking background |
+| Fine hand manipulation (keys, buttons, writing, pouring, lighting) | Low | Static insert of the finished state; or frame hands out of shot and let sound plus the reaction tell it — see [sound-and-dialogue.md](sound-and-dialogue.md) |
+| Leave frame and re-enter | Low | Exit only. Re-entry is a new clip with a new keyframe. |
+| Full 180° turn revealing a face | Low | Turn 90° (three-quarter-away to three-quarter-toward), or pin both ends with a first/last-frame pair |
+| Two characters speaking with visible lip-sync in one clip | Low | Single-speaker clips, cut on line ends; dialogue handling lives in [sound-and-dialogue.md](sound-and-dialogue.md) |
+| Sitting down into furniture | Low | Keyframe them already seated and animate the settle: weight dropping, shoulders releasing |
+| Falling or collapsing to the floor | Low | Keyframe at the tipping point and end near impact, or skip to the aftermath and hold |
+| Precise gaze at a specific off-screen point | Low | Fix the eyeline in the keyframe, or put a practical light or object in that direction for the eye to follow |
+| Passing between FG and BG behind another body | Low | Use the pass-through instead: the FG body wipes, the BG body holds and is re-pinned next clip |
+
+Symptom-level repairs for clips that already failed live in [failure-modes.md](failure-modes.md).
+
+## Worked example: one beat, three films
+
+The beat: a person delivers bad news to someone sitting down. MAYA stands. RAY is seated. The words are identical in all three versions; only the geometry changes.
+
+Version A — The Verdict. Maya keeps her height and her distance, so the only body that moves is the one receiving.
+
+```text
+MAYA @FL/FG:aC (hold) | RAY @CL/MG:tC --[lowers head 25°, 1.5s]--> @CL/MG:tC | eye: MAYA>RAY, RAY>MAYA, then RAY>floor @t=2.0
+```
+
+- Camera: locked, 35 mm, at Ray's seated eye height (~1.2 m), so Maya's shoulder towers in the near left third. Height differential and foreground dominance stacked, with nobody crossing the floor.
+- Prompt: `Locked camera at the seated man's eye height, so the standing woman is seen from below her shoulder line. Her back and shoulder fill the near left third of the frame, dark and unmoving; the seated man is centred in the midground facing the lens, hands on his knees. She does not move and does not turn. He holds her gaze for two seconds, then lowers his head about twenty-five degrees over a second and a half and his eyes drop to the floor. Dust drifts in the window light behind him. End on the same composition, her shoulder still filling the left third, his head lowered. Same faces, same clothes, same room, same light. No hand contact, no camera move, nobody standing up, nobody leaving frame.`
+
+Version B — The Level. Maya crosses and surrenders her height; the news becomes shared grief.
+
+```text
+RAY @CL/MG:tC (hold) | MAYA @FR/MG:pL --[crosses left, 1.0m, 2.0s]--> @CL/MG:pL --[kneels, 1.5s]--> @CL/MG:3qL | eye: MAYA>RAY, RAY>MAYA
+```
+
+- Camera: locked, 50 mm from ~3 m, at Ray's seated eye height. Starts as a gap and ends as a pair — a shrinking two-shot performed by the actors, not the lens.
+- Prompt: `Locked camera at the seated man's eye height, both people in frame throughout. He is centred and still, facing the lens, hands on his knees. The standing woman is at the right of frame; she crosses about a metre toward him over two seconds, then lowers herself onto one knee beside his chair over another second and a half, until their heads are level. He does not move; his gaze follows her down. Her coat settles as she kneels. End with both heads at the same height, about twenty centimetres apart, still looking at each other. Same faces, same clothes, same room, same light. No hand contact, no camera move, nobody standing up again.`
+- Reliability: this is the expensive one — a cross and a level change chained inside one clip, and the notation shows it as two arrows. If it drifts, split at the moment her knee touches the floor and let the cut do the descent.
+
+Version C — The Threshold. Maya never crosses the sill; the news is a delivery, and Ray is left holding it.
+
+```text
+MAYA @FL/FG:3qR (hold at sill) | door @FL/FG | RAY @CL/BG:tC --[turns head 40° toward frame-left, 1.5s]--> @CL/BG:3qL | eye: RAY>MAYA, MAYA>floor
+```
+
+- Camera: locked, 28 mm, standing eye height, deep focus from inside the room, so Maya is a near silhouette in the doorway and Ray is small and deep. The ladder used straight — nearest is largest is loudest — and the irony is the payload: the loudest position in the frame belongs to the person who is leaving.
+- Prompt: `Locked wide camera inside a room, deep focus, standing eye height. A woman stands in the open doorway at the left edge of frame, close to the lens, backlit from the hallway and mostly dark, three-quarters turned toward the room; she does not step in. A man sits far back in the centre of the room, small in frame, facing the lens. He turns his head about forty degrees toward the doorway on the left of frame over a second and a half and holds it there. She keeps her eyes down. Curtain fabric moves slightly in the draught from the open door. End with him looking at her and her looking at the floor, the doorway still between them. Same faces, same clothes, same room, same light. Nobody crosses the doorway, no camera move, no extra people.`
+
+The read, side by side: A is a verdict and assigns blame; B is shared grief and forgives; C is abandonment and confesses cowardice. Same words, three films, one variable — geometry.
+
+## Blocking-to-prompt translation
+
+A video model wants a trio: start state, action, end state. The notation line already contains all three; this procedure extracts them.
+
+1. Split the line into three still images you could actually draw: start, the midpoint that proves the motion happened, and end. If you cannot draw the midpoint, the motion is too large for one clip — split it.
+2. Elect exactly one mover. Everyone else gets an explicit hold verb. Unwritten bodies drift.
+3. Write the start state as a composition, never as a feeling: who is at FL/CL/FR, who is at FG/MG/BG, which way each faces, how far apart in metres, what object sits between them.
+4. Convert the arrow into one verb + direction + magnitude + duration. "Steps toward him, about half a metre, over two seconds" — not "approaches", not "moves closer emotionally".
+5. Write the holds as sentences: "he does not rise and does not turn; his hands stay on his knees."
+6. State the eyeline at start, at end, and any change with its timing.
+7. Add exactly one environmental motion, motivated by something visible in the frame — draught, dust in a shaft, steam, traffic outside a window.
+8. Write the end state as a composition again. This is the frame you want frozen. If a next shot exists, make this end state equal that shot's start state and log it in [continuity-bible.md](continuity-bible.md).
+9. Lock identity: face, hair, costume, room, light quality.
+10. Build the negative list from the low-reliability motions you deliberately avoided in this clip — not a generic block. Word-level choices live in [prompt-lexicon.md](prompt-lexicon.md).
+
+The shape that comes out, ready for [video-prompt-template.md](../assets/video-prompt-template.md):
+
+```text
+START:  [camera height and lens] [who is where, facing where, how far apart, what is between them]
+ACTION: [one mover: verb + direction + distance + duration] [explicit holds] [eyeline and its change]
+        [one environmental motion]
+END:    [composition to freeze on] [identity locks] [negatives drawn from what you avoided]
+```
+
+Before and after, same blocking (Version A above):
+
+```text
+Weak:   A woman tells a seated man bad news. She approaches him emotionally.
+        Dramatic lighting, cinematic mood.
+Strong: Locked camera at the seated man's eye height, so the standing woman is seen from below
+        her shoulder line. Her back and shoulder fill the near left third, dark and unmoving;
+        he is centred in midground facing the lens, hands on his knees. She does not move and
+        does not turn. He holds her gaze two seconds, then lowers his head about twenty-five
+        degrees over a second and a half and his eyes drop to the floor. Dust drifts in the
+        window light behind him. End on the same composition, his head lowered. Same faces,
+        clothes, room, light. No hand contact, no camera move, nobody standing up, nobody
+        leaving frame.
+```
+
+The weak version has no geometry, so the model chooses the geometry, and a model's default geometry is two people standing at conversational distance doing nothing — which is the shot you did not want.
+
+--- ORIGINAL director/shot-plan-template.md ---
+# Shot Plan Template
+
+Load this file when you are at Step 7 (shot list and coverage) or the user asked for Mode D — a shot list, 分镜表, storyboard table, or "give me the shots".
+
+Build rows only after the beats exist ([beat sheet](beat-sheet-template.md)) and the rules exist ([director book](director-book-template.md)). A shot plan written before those two is a list of pictures.
+
+## Shot table
+
+| # | Sec | Beat / function | Loc | Frame content | Blocking start → move → end | Size / Angle | Lens | Move | Light dir | Light / atmos | Continuity anchors | Risk | Transition | Gen note |
+|---:|---:|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 01 |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| 02 |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+
+## Field dictionary
+
+| Column | Must contain | Good | Bad |
+|---|---|---|---|
+| `#` | Story-order number, zero-padded, stable for the life of the project | `04`, later split into `04a` / `04b` | `Shot 4 (was 3)` |
+| `Sec` | In and out inside the scene, plus duration | `0:12–0:18 (6s)` | `about six seconds` |
+| `Beat / function` | The beat id from the beat sheet, plus the job this shot does for it | `B4 · irreversible delivery` | `emotional moment` |
+| `Loc` | The continuity-bible location id, plus which setup within it | `loc_landing / door side, low` | `hallway` |
+| `Frame content` | What a storyboard artist would draw: subject placement plus the two or three set and prop elements that must be in frame | `head and near shoulder frame-left, dark door plane fills frame-right, envelope edge low-left` | `he stands at the door` |
+| `Blocking start → move → end` | Three states, the last one named explicitly | `starts squared to the door → right hand rises, knuckles stop 3cm short → ends hand down at his thigh, still facing the door` | `he hesitates to knock` |
+| `Size / Angle` | One size off the ladder plus an angle in degrees or a named height. Give camera heights in cm so nothing here can be misread as a focal length | `MCU, eye level` / `MS, low, camera 40cm off the floor, tilted up 10°` | `medium-ish, dramatic angle` |
+| `Lens` | Focal length in mm (full-frame equivalent) and, when not obvious, the reason | `85mm — compresses the gap and keeps the corridor out of the background` | `telephoto` |
+| `Move` | Exactly one named move with distance and duration, or `locked` | `slow dolly-in, 25cm over 6s` | `slight push with a bit of drift` |
+| `Light dir` | Key direction relative to *this* camera, height, the named practical motivating it, the ratio written lit side : shadow side as the book records it, and what the fill actually is. Call a source behind the subject a rim, not a fill — a fill opens the shadow side and must sit near the lens axis to do it | `key: bulb, high camera-left 45°, 5:1, fill is plaster bounce only; window is a cold rim from upstage` | `moody side light` |
+| `Light / atmos` | What the light does in this frame that it did not do in the last one — contrast, atmosphere, which plane is held under | `door face 1.5 stops under; dust in the window shaft; breath visible` | `dark and cold` |
+| `Continuity anchors` | The named items that must match adjacent shots: identity, costume, prop state, light state | `scar through the left eyebrow, cap pushed back, satchel on left shoulder, envelope white face out, knuckle scrape right hand, warm line under door unbroken` | `same character and setting` |
+| `Risk` | The band — `Green` / `Amber` / `Red` — read off the difficulty rubric in [production workflow](../references/production-workflow.md), plus the six dimension scores in the rubric's own order and the one that drove the band | `Red 12 (3/1/1/2/3/2) — interaction 3, and it trips the contact override` | `might be tricky` |
+| `Transition` | How you leave the shot, and on which frame | `hard cut the frame the fingertips touch wood` | `cut to next` |
+| `Gen note` | The one thing the generator will get wrong, the instruction that prevents it, and the split plan if it still fails | `say "his knuckles stop short and never touch the door"; negative: knocking, hand on door. If it knocks anyway, drop to 3s.` | `use a good prompt, high quality` |
+
+## Risk legend
+
+Risk is a generation budget, not commentary. Score the six dimensions and read the band — Green, Amber, Red — off the difficulty rubric in [production workflow](../references/production-workflow.md), which also owns the retry budgets and the stop rules. Copy the band and the six scores into this column, in the rubric's order — Action / People / Camera / Duration / Interaction / Continuity — with the dimension that drove the band, and do not invent a second scale here; a plan that grades on its own private words cannot be budgeted against the retry table.
+
+In the worked example below the bands read 01 Green, 02 Amber, 03 Green, 04 Red, 05 Green. Shot 04 scores 12 — action 3, people 1, camera 1, duration 2, interaction 3, continuity 2 — and it also trips the contact override, because the envelope passes between his hand and the door and the rubric counts a prop passing between a subject and a fixed feature as contact. The override is the useful half of that reading: a 3-on-interaction plus 3-on-anything pair does not come down with a better prompt, only with the split already written into its Gen note.
+
+One Red in five is a plan. Three Reds in five is a wish — go back to Step 5 and lower the ambition, or split those shots on paper now rather than after a day of failed generations.
+
+## Worked example
+
+Project `Under the Door`, scene 7 — 22s, 16:9, 5 shots, ASL 4.4s. Beats `B1`–`B5` from [beat sheet](beat-sheet-template.md); lens kit, key direction and invariant strings from [director book](director-book-template.md).
+
+| # | Sec | Beat / function | Loc | Frame content | Blocking start → move → end | Size / Angle | Lens | Move | Light dir | Light / atmos | Continuity anchors | Risk | Transition | Gen note |
+|---:|---:|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 01 | 0:00–0:04 (4s) | B1 · locate the errand | loc_landing / stairhead side | stair rail foreground frame-left, empty landing, cracked plaster filling the top third, door at frame-right, cold window shaft raking in from the back | starts off-frame below on the stairs → climbs into frame, three steps across the landing → ends squared to the door 60cm out, envelope up at chest, motionless | WS, high +15° from the half-landing | 35mm — holds him and the whole door in one frame | locked | key: stairhead bulb, high camera-left 45°, 5:1, fill is plaster bounce only; the window is a cold rim from upstage, not a fill | door face 1.5 stops under; dust in the window shaft; breath faintly visible | cap pushed back, grey padded jacket, satchel on left shoulder, envelope white face out, chipped lower-left door corner, warm line under door unbroken | Green 5 — one walking figure carrying a prop, locked camera | hard cut the frame he stops | I2V from keyframe, 4s. State the end state ("he stops walking and stands still facing the door") or he is as likely to be walked straight past it. One motion only — do not also animate the window light. |
+| 02 | 0:04–0:09 (5s) | B2 · the hand that cannot knock | loc_landing / door side | his head and near shoulder frame-left, dark door plane fills frame-right, envelope edge low-left | starts squared to the door, envelope in his left hand → right hand rises, knuckles stop 3cm short of the wood, held 1s → ends hand down at his thigh, still facing the door, envelope still up | MCU, eye level | 50mm — his single coverage, keeps the door plane readable behind him | locked | key: bulb, high camera-left 45°, rakes the side of his face; the window is behind him, so it rims his back and cap from camera-left rear and never opens the shadow side | door stays dark, nothing on it; 5:1; breath visible against the cold rim | the scar through his left eyebrow legible at this size; same cap, jacket, satchel and envelope; knuckle scrape on the right hand | Amber 7 (2/1/0/1/2/1) — a hand approaching a surface without contact is a classic completion error | hard cut as the hand reaches his thigh | Say "his knuckles stop short of the door and never touch it"; negative: knocking, hand touching door. Keep a hold-and-abort gesture near 5s: past that the clip has runway left over and tends to fill it with a second, unwanted gesture. |
+| 03 | 0:09–0:12 (3s) | B3 · the person inside becomes real | loc_landing / floor level at the door | the 4cm gap under the door, the warm light line, worn red tile, his boot toe at the bottom frame edge | starts on an unbroken warm line → a shadow crosses it from inside, right to left, as the radio comes up → ends with the line unbroken again but the room now audibly occupied | ECU, head-on, camera 15cm off the floor — the scene's one frontal frame | 85mm — compresses the gap and keeps the corridor out of the background | locked | only source in frame is the spill from inside, behind the door; his side of frame is 3 stops down | highest contrast in the scene; the light line is the sole highlight | tile pattern and grout direction, gap height, worn welt on the boot | Green 2 — no face, no hands, one moving shadow | hard cut as the shadow clears frame | Simplest shot here: generate it first and, where the tool exposes a reference-image or seed slot, use it as the palette reference for the rest. Animate the shadow only; state "the camera does not move and the door does not open." |
+| 04 | 0:12–0:18 (6s) | B4 · irreversible delivery | loc_landing / door side, low | low three-quarter on him crouched frame-left, door plane filling the right two-thirds, envelope entering the gap | starts crouched on his heels, envelope pinched in both hands at the gap → he feeds it under, then pushes with two fingers until his fingertips touch the wood → ends fingertips on the door, hands empty, still crouched | MS, low, camera 40cm off the floor, tilted up 10° | 35mm — the only lens that fits the crouch and the door plane together | slow dolly-in, 25cm over 6s — the scene's one moving shot | key: bulb still on his back and cap from camera-left; the gap line underlights his hands from 20cm; his face 2 stops down | warmest and lowest frame of the scene; the light line is briefly blocked by the envelope, then unbroken | envelope white face out until it disappears, two fingers of the right hand, knuckle scrape, door chip visible frame-right | Red 12 (3/1/1/2/3/2) — action 3 and interaction 3: the envelope passes between his hand and the door, which is contact with a fixed feature, so the contact override fires whatever the total says | hard cut the frame the fingertips touch wood | Highest-failure shot in the scene. Where the tool exposes a first/last-frame pair, use it, with the last frame showing empty hands and fingertips on wood. The split is already decided: 04a MS crouch and feed (4s) and 04b ECU two fingers pushing (3s), then re-time the scene. |
+
+Shot 05 (B5, aftermath, 4s) is left out of the table for length and reads: EWS, 35mm, high +15°, locked — shot 01's setup with the camera backed up the flight to the half-landing, since the lens does not change and the size has to come from distance. He backs two steps, turns and drops out of frame down the stairs; hold on the empty landing until a shadow crosses the light line from inside. Risk `Green 4`. Cut on the shadow.
+
+Check the plan against itself: 4+5+3+6+4 = 22s over 5 shots = ASL 4.4s, inside the book's 4–5s target. Size ladder reads WS(2) → MCU(4) → ECU(6) → MS(3) → EWS(1) — every adjacent pair differs by at least two steps, and 01/05 repeat one setup deliberately as a bookend. One moving shot out of five, on the commitment beat, as the book allows.
+
+## Compact variant
+
+Use these three columns when the user wants a short answer, a chat-width table, or a first pass before committing to the full plan. Everything technical collapses into the Frame cell; the story stays legible.
+
+| # | Frame | Action → end state |
+|---:|---|---|
+| 01 | WS · 35mm · high +15° · locked · 4s | He climbs into the landing, crosses it in three steps — ends squared to the door 60cm out, envelope at chest, motionless. |
+| 02 | MCU · 50mm · eye level · locked · 5s | His right hand rises and stops 3cm short of the wood — ends hand down at his thigh, still facing the door. |
+| 03 | ECU · 85mm · head-on, 15cm off the floor · locked · 3s | A shadow crosses the warm line under the door — ends on the line unbroken, the room now audibly occupied. |
+| 04 | MS · 35mm · low · dolly-in 25cm · 6s | Crouched, he feeds the envelope under and pushes with two fingers — ends fingertips on wood, hands empty. |
+| 05 | EWS · 35mm · high +15° · locked · 4s | He backs off, turns and drops down the stairs — ends on the empty landing as a shadow crosses the light line. |
+
+## Coverage check
+
+Read the plan column-wise before you read it row-wise. Each of these catches a different class of error.
+
+- Every beat has at least one shot. The turn beat may have two or three; no other beat may have more shots than the turn beat.
+- Every shot has exactly one job. Two jobs means two shots, or one shot re-blocked so the second job disappears.
+- Read the Frame content column alone, top to bottom. It should tell the story without the other columns. If it reads as five variations on one picture, you have angles, not coverage.
+- Read the Blocking column alone. Each end state should be the next row's start state — or the cut is doing work nobody has accounted for, and you should say what. The example has exactly one gap: 02 ends standing and 04 starts crouched. Shot 03 is what covers the crouch, and that is half of why it exists; if you cut it, you owe the audience the move.
+- Count the moving shots against the book's move budget. Over budget means the moves have stopped meaning anything.
+- Track screen direction down the page. In the example the courier faces camera-right at the door in every row; the first row that reverses that owes the audience a neutral shot or a cutaway.
+- Confirm the scene has an entry the audience can orient in and an exit they can leave on. A scene that starts on an insert and ends on an insert has no geography.
+
+Each row hands Step 8 (keyframes) its Frame content, Size, Lens, Light dir and Continuity anchors, and hands Step 10 (video prompts) its Blocking, Move, end state and Gen note. If a cell is empty, the downstream prompt will invent something in its place.
+
+## Rules
+
+- Shot numbers follow story order, not production order, and stay stable. Splitting a shot yields `04a` / `04b`; it never renumbers `05`.
+- Beat and story function must be explicit. If that cell is empty, the shot probably should not exist.
+- Blocking must contain a start and an end state, and **every shot must name its end state** in words a generator can be held to. "He hesitates" is not an end state; "hand down at his thigh, still facing the door" is. Staging geometry and blocking notation live in [blocking and staging](../references/blocking-and-staging.md); this column records the result, not the reasoning.
+- Every shot needs one dominant camera move or none — never two. If the shot needs a move and then a reframe, it is two shots.
+- Size change at a cut is conditional on angle change, and the condition is the one in [cinematic language](../references/cinematic-language.md): stay on the same axis and you owe two size steps, because one step on the same axis reads as a stutter rather than a cut; change the angle by 30° or more and one step is enough. A deliberate match — a true match cut, or a repeated setup used as a bookend — is exempt from both. Count the rungs on the ladder that file owns.
+- Lens and distance-to-subject stay matched across a shot-reverse-shot pair, and the only sanctioned break is the deliberate power imbalance — that rule is owned by [cinematic language](../references/cinematic-language.md). Record the choice and its reason in the `Lens` cell; do not grant yourself a second exception here.
+- Light direction may not change between shots of the same moment unless a source in the world changed. That is what the Light dir column is for — scan it down the page and any unexplained flip is a continuity error you can catch before generating.
+- Continuity anchors name specific items — face, costume, prop state, light state. Copy them from [continuity bible](../references/continuity-bible.md); do not invent them per row.
+- Do not cross the line or break screen direction between rows. Coverage geometry lives in [cinematic language](../references/cinematic-language.md).
+- Seconds must reconcile with the beat sheet's estimates and the book's target ASL. If the three disagree, fix the document that is wrong rather than adjusting the arithmetic.
+- Grade Risk before writing a single prompt, and split the `Red` rows on paper. Symptom-to-fix repair for shots that fail anyway is in [failure modes](../references/failure-modes.md).
+
+--- ORIGINAL director/continuity-bible.md ---
+# Continuity Bible
+
+Load this file when the project has a recurring character, location, or prop across more than one generated clip, or when a new shot must cut against footage that already exists. This is the Mode G deliverable and the state store that pipeline steps 6–13 read from.
+
+A continuity bible is not documentation. It is (a) the strings you paste verbatim into prompts and (b) the questions you ask before approving a take. If a field is never pasted and never checked, delete it.
+
+## The continuity axes
+
+Fifteen things drift. Walk this list twice per shot: once when writing the prompt, once when reviewing the return. This list owns the question you ask. The repair manual — symptom, ranked causes, ranked fixes — is [failure-modes.md](failure-modes.md); the last section here maps each axis onto its code there.
+
+| # | Axis | Ask before approving | Highest risk when |
+|---|---|---|---|
+| 1 | Face | Same person or a sibling? Check mole/scar side, jaw width, eye spacing, hairline | Clips over ~6 s, head turns past 45°, size jumps bigger than one step |
+| 2 | Hair | Same length, same parting side, same tie-up state, same wetness | Wind, wet transitions, hats on/off |
+| 3 | Wardrobe (per layer) | Same layers present, same closure state, same sleeve/collar position | Outer layer added or removed; models silently re-button and un-roll |
+| 4 | Props | Same object, same hand, same orientation, same fill level | Handoffs, eating/drinking, anything held for more than one shot |
+| 5 | Wet / dirt / blood | Same coverage area and same darkness of soak | Rain and mud scenes; these states are monotonic and models reset them |
+| 6 | Injury / makeup | Same side, same size, same age of the wound | Any progressive scene; a bruise cannot un-bruise |
+| 7 | Light direction | Key on which side, from what height, how hard | Reverse angles; models default to flattering frontal light |
+| 8 | Time of day | Same sun height, same lamp on/off state, same shadow length | Scenes over 6 shots; exteriors |
+| 9 | Weather | Same intensity, same wind direction, same puddle state | Rain/snow progressions |
+| 10 | Geography | Is the door still on the same wall relative to the window? | Wide → close → wide sandwiches |
+| 11 | Screen direction | Does the subject still face and travel the same way? | Crossing the line; see [cinematic-language.md](cinematic-language.md) for the 180°/30° rules |
+| 12 | Eyeline | Is the look aimed where the other subject actually is, at the right height? | Height differences between characters; over-the-shoulder pairs |
+| 13 | Camera height | Same height as the last coverage of this subject, unless the change was a decision you wrote down? | Model reinterpreting "low angle" as "floor level" |
+| 14 | Color palette | Same dominant and accent, same saturation | Multi-session generation; see [lighting-and-color.md](lighting-and-color.md) |
+| 15 | Lens feel | Same compression, same edge distortion | Mixing a wide keyframe with a long-lens keyframe inside one scene |
+
+## The identity string contract
+
+This section owns the identity string for the whole skill. Every other file links here rather than restating the budget or the rules, so if you meet a second word count anywhere, this one wins.
+
+The identity string is one noun phrase, 30–50 words, that fully re-specifies a character to a model that has no memory. It is **pasted verbatim** into every keyframe prompt and every video prompt for that character. It is never paraphrased, never shortened for a close-up, never "improved" between shots. Write it once, at pipeline step 5, store it in the character record below, and from then on copy it — do not retype it, because retyping is how paraphrase gets in.
+
+Divide the two drifts. *Inside* a clip, identity is lost mainly to length and head rotation — see F1 in [failure-modes.md](failure-modes.md). *Between* clips, it is lost mainly to paraphrase, because each rewording moves the model to a different point in identity space. The identity string is the fix for the second kind, and it is the one you control completely.
+
+### Why the budget is 30–50 words
+
+Both bounds are load-bearing, and for different reasons.
+
+- **Under 30 words it stops being reproducible.** Fewer than three independent face-structure facts plus one checkable landmark leaves enough slack for the same words to resolve to a different person on every generation, and leaves you nothing to audit the return against. A short string is not a safer string; it is an underspecified one.
+- **Over 50 words the tail starts losing attention** in most models, so the last clause is the one that quietly stops arriving. That is why the wardrobe anchor goes last on purpose — it is the part a reference image or a dedicated wardrobe slot can carry if the words are dropped, whereas a dropped jawline cannot be recovered from anywhere.
+
+Count the words when you write it, once. A string that is 28 or 56 is a defect, not a style choice.
+
+### What goes in it
+
+3–6 fixed physical facts that survive any lighting, plus exactly one wardrobe anchor with a colour and a material, as a present-tense noun phrase so it drops into any sentence. Build it as a recipe you can audit by counting, in this order:
+
+1. One or two demographic anchors — one age as a number, and ethnicity where it is a fact about the face.
+2. Two or three face-structure facts — jaw, eye set, brow, nose, hairline. These are what the model actually reconstructs.
+3. Exactly one unique checkable landmark — a mole with a side, a scar with a length, a chipped tooth, a cowlick. This clause earns its words twice: it is the QC handle, the one item that proves drift in half a second rather than merely suggesting it.
+4. One hair spec — length, cut, and parting or tie-up side.
+5. One wardrobe anchor, last — garment, colour, material, and one detail that can be checked at a distance.
+
+Audit a candidate against the same counts before it is pasted anywhere: 30–50 words · 1–2 demographic · 2–3 structure · exactly 1 landmark · 1 hair · 1 wardrobe anchor, last. An empty slot, a doubled slot, or a slot out of order is a defect, and the landmark slot is the one to check first — at zero, nothing in the string proves drift. Fix it before the string enters a single prompt; after that it propagates by copy, and so does the defect.
+
+Where a tool splits wardrobe into its own prompt slot — the keyframe slot anatomy in [image-model-adapters.md](image-model-adapters.md) does — the face-only portion is the first 15–25 words of this same string and the wardrobe anchor moves to its slot. That is a split of one string, not a second string; do not rewrite either half.
+
+If the target tool takes a Chinese prompt, write one Chinese identity string and freeze it the same way. Translating the English string ad hoc per shot is paraphrase by another route, and it drifts exactly as fast. Craft terms in [prompt-lexicon.md](prompt-lexicon.md).
+
+### What must never go in it
+
+| Never | The way it usually appears | Why it fails |
+|---|---|---|
+| Mood or judgment adjectives | beautiful, mysterious, intense, striking eyes | Not geometry. The model averages them, and the average lands somewhere new each generation |
+| Camera, lens or lighting words | close-up, 85mm, backlit, moody, cinematic | Those slots are owned elsewhere in the prompt; two sources for one slot is drift, and the string is pasted into shots at every size |
+| Celebrity or lookalike comparisons | looks like a young Tony Leung | Resolves to a different blend in every model, every version, and every tool. The fastest way to lose a face when you change platforms |
+| An age range | 30s, mid-40s, around fifty | A range is a free parameter. Pick one number |
+| Era or setting words doing wardrobe's work | period clothing, traditional dress, workwear | A research task, not a garment. Name the garment, its colour and its material |
+| Negative or memory instructions | do not change her face, same as the reference image | Addresses a memory the model does not have — see the second bad example below |
+| Anything that changes during the story | wet hair, muddy sleeve, the cut on his lip, the parcel | Progressive state belongs in the state-change ledger; a string that must never change cannot carry a value that must |
+| A second character | …standing beside her husband | One string, one person. Blocking and relationships are the shot plan's job |
+
+Good — 46, 41 and 37 words:
+
+```text
+MEI, 24, a Chinese woman with an oval face, thin straight eyebrows, a small mole below the left corner of her mouth, black hair cut blunt at the jaw and tucked behind her right ear, in an army-green cotton postal jacket with a red collar tab
+```
+
+```text
+LU, 58, a heavy-set Chinese man with a broad flat nose, deep vertical lines between the brows, grey stubble on a square jaw, close-cropped grey hair receding at the temples, in a navy quilted work coat with a torn right cuff
+```
+
+```text
+The BOY, 9, thin, protruding ears, a chipped upper front tooth, straight black hair cut short with a cowlick at the crown, wearing a mustard wool sweater two sizes too large with the cuffs turned back twice
+```
+
+Each one audits the same way: an age as a number, two or three structure facts, exactly one landmark you can look for (the mole and its side, the brow lines between the eyes, the chipped upper tooth), a hair spec with a side or a shape, and a garment carrying a colour, a material and one checkable detail. Note that the BOY's string carries no ethnicity clause and is still inside budget — that anchor is optional where it is not a fact about the face, and the words it frees up went into the sweater's fit, which is what actually identifies him at a distance.
+
+Bad:
+
+```text
+a beautiful mysterious young woman with striking eyes, wearing period clothing, cinematic look
+```
+
+Nothing here is reproducible. "Striking eyes" is a judgment, not geometry; "period clothing" is a research task, not a garment; "cinematic" is noise. There is no landmark, so nothing to check on return. Two generations from this string are two different people.
+
+```text
+MEI (same as the reference image, keep her consistent, do not change her face)
+```
+
+This addresses a memory the model does not have. Reference-image binding is a control surface, not a sentence — see [image-model-adapters.md](image-model-adapters.md). Negative instructions about identity do not preserve identity; the positive description does.
+
+## Character schema
+
+Filled, not a skeleton. Every field below carries a real value so you can see what "specific enough" looks like.
+
+```yaml
+characters:
+  - id: char_boy                 # stable slug, used in every filename and prompt log
+    name: BOY
+    # the verbatim clause from the section above; the ONLY identity text ever used
+    identity_string: "The BOY, 9, thin, protruding ears, a chipped upper front tooth, straight black hair cut short with a cowlick at the crown, wearing a mustard wool sweater two sizes too large with the cuffs turned back twice"
+    age: 9                       # one number, not a range
+    height_build: "132 cm, thin, narrow shoulders, eye height 122 cm"   # eye height drives eyeline math
+    face: "chipped upper front tooth, right of centre; ears protrude, both sides; round chin; no freckles"
+    hair:
+      cut: "short back and sides, no parting, cowlick at the crown"     # fixed; copy-paste
+      state: dry                 # dry | damp | soaked | windblown | pinned — CHANGES, track per shot
+    wardrobe:                    # by layer, outermost first; each layer named with color + material
+      outer: null                # no coat in this scene; write null, never an empty string
+      mid: "mustard wool sweater, crew neck, two sizes large, cuffs turned back twice"
+      base: "white cotton undershirt, visible at the neck"
+      lower: "grey school shorts, ending above the knee"
+      feet: "white canvas lace-ups, grey at the toe, laces knotted not bowed"
+      accessories: []
+    wardrobe_state: dusty        # clean | dusty | wet-shoulders | soaked-front | soaked-through | muddy-hem | torn-<where>
+    props_carried: []            # prop ids + which hand
+    injury_makeup: "scab on the LEFT knee, about a week old, edges lifting"   # what, which side, how old
+    performance_baseline: "fast unfinished movements; looks at his hands when spoken to; stands with weight on one hip"
+    reference_assets: [RAIN_CHAR-boy_v01_ref-face, RAIN_CHAR-boy_v01_ref-body]
+    seed: 771204                 # integer if the image model exposes one; null if not
+    must_keep: ["chipped front tooth", "cowlick at the crown", "cuffs turned back twice", "scab on the LEFT knee"]
+    must_avoid: ["adult proportions", "new clothes", "coat", "open smile showing a full set of teeth"]
+```
+
+`must_avoid` is the negative-prompt feed; word it from the library in [prompt-lexicon.md](prompt-lexicon.md) rather than inventing phrasing per character.
+
+The split between `wardrobe` (permanent, describes the garment) and `wardrobe_state` (transient, describes its condition) is the whole point. The garment lines are copy-paste; the state line is rewritten every shot from the state-change ledger.
+
+## Wardrobe schema
+
+Use a separate wardrobe entry when a costume is shared across characters, changes between scenes, or has a state progression worth tracking on its own.
+
+```yaml
+wardrobe:
+  - id: fit_mei_postal
+    worn_by: char_mei
+    scenes: [SC01, SC02, SC03]
+    layers:
+      outer: "army-green heavy cotton canvas postal jacket, red collar tab, brass buttons, hip length"
+      mid: "grey wool knit sweater, crew neck, visible at collar and cuffs"
+      lower: "dark blue cotton work trousers, straight leg, no crease"
+      feet: "black canvas lace-up shoes, thin rubber sole"
+    closure_state: "top two buttons open, collar folded down"
+    state_track: [clean, wet-shoulders, soaked-front, soaked-through]
+    fit_notes: "one size large; sleeves reach the second knuckle"
+    forbidden: ["zippers", "synthetic sheen", "logos", "modern athletic cut"]
+    reference_assets: [RAIN_FIT-mei-postal_v01_ref-fit]
+```
+
+## Prop schema
+
+```yaml
+props:
+  - id: prop_parcel
+    name: "oilcloth parcel"
+    description: "shoebox-sized brown paper parcel wrapped in dark green oilcloth, tied crosswise with hemp twine, knot on top"
+    scale_ref: "roughly two hand-widths long"
+    # ordered; adjacent shots step one band, never skip. Oilcloth beads and never soaks
+    # through — the hemp twine is what darkens, and that is the visible progression
+    state_track: [dry, spotted, beaded, twine-dark]
+    held_by: char_mei             # UPDATE on every handoff; this field is the bug source
+    hand: right
+    orientation: "knot up, long side across the body"
+    story_function: "the thing being given away"
+    continuity_risk: "changes hands in SH05; models tend to duplicate it into both pairs of hands"
+    reference_assets: [RAIN_PROP-parcel_v01_ref-detail]
+    must_avoid: ["plastic wrap", "printed labels", "tape", "second parcel"]
+```
+
+## Location schema
+
+```yaml
+locations:
+  - id: loc_shelter
+    name: "highway bus shelter"
+    era_lock: "autumn 1994, provincial highway, southern China"
+    geography: "shelter sits on the north verge; highway runs left-to-right across frame; the town is screen-left, the truck depot screen-right"
+    orientation_rule: "camera stays north of the road; the road always runs L-R; anyone heading to the depot exits screen-right"
+    architecture: "open-sided concrete shelter, corrugated tin roof, three-slat wooden bench, peeling blue paint on the back wall, hand-painted timetable board"
+    light_sources:
+      - "sodium-vapour street lamp, head at 4 m on a pole standing clear of the shelter, camera-left — hard, amber; the key on every shot"
+      - "the bench is about 7 m from the pole: the key rakes in under the roof edge at about 20 degrees elevation, camera-left"
+      - "the roadside position is about 3 m from the pole: same key, about 40 degrees, and about two and a half stops brighter by inverse square"
+      - "sky ambient, blue-grey, the only fill; about 8:1 lit-side to shadow-side on the face"
+      - "truck headlights raking from screen-right — SH03 only, motivated by LU's arrival, never repeated"
+    key_direction: "camera-left on every shot; ~20 degrees elevation at the bench, ~40 degrees at the roadside; never camera-right"
+    exposure_rule: "expose for the roadside position; the bench then sits about two and a half stops down, so a character brightens as they step out to commit"
+    time_of_day: "21:00–21:20, full dark, no residual sky glow"
+    weather_track: [light-rain, moderate-rain, heavy-rain]
+    ambient_sound: "rain on tin roof, wet tyre hiss at distance, no birds, no insects, no traffic horns"
+    set_dressing: ["cigarette ends by the bench leg", "a cracked enamel basin catching a roof leak", "faded paper notice, half torn"]
+    forbidden_anachronisms: ["mobile phones", "LED or white light sources", "plastic wheeled luggage", "reflective road markings", "logo sportswear", "disposable cups", "modern signage fonts"]
+    palette: "amber key, blue-grey fill, desaturated except the red collar tab"
+    plate_assets: [RAIN_LOC-shelter_v01_plate-wide, RAIN_LOC-shelter_v01_plate-bench]
+    must_avoid: ["daylight", "second street lamp", "dry ground", "crowd"]
+```
+
+Two fields do most of the work here. `orientation_rule` is the one people skip and then regret — write it as a sentence a stranger could obey.
+
+`key_direction` must survive a geometry check before you paste it into anything. Draw the ray from the source head to the subject's head and ask what is in the way: a roof, a brim, a doorway, an awning. If the obstruction clips the ray, the key you wrote does not exist and the keyframe will come back lit some other way. Then check the distance ratio, because a single practical is a point source and the falloff is brutal — here the bench is 7 m from the pole and the roadside 3 m, so the same lamp is about two and a half stops apart between the two positions. That is not a continuity error to suppress; it is the light event of the scene, and MEI steps into it. Ratio conventions, falloff, and how to word a ratio in a prompt are in [lighting-and-color.md](lighting-and-color.md).
+
+## Shot-to-shot continuity schema
+
+```yaml
+shots:
+  - shot_id: SC02_SH04
+    screen_direction: "MEI frame-left facing screen-right; LU frame-right facing screen-left; no travel across frame"
+    # the angle is NOT a property of the height difference alone. 14 cm of eye-height
+    # difference at 0.7 m of separation is ~11 degrees up; at 1.0 m it is ~8. Recompute
+    # whenever you change the separation, and write the separation next to the angle
+    eyeline_target: "MEI looks up to LU's eyes: 14 cm difference at 0.7 m separation, ~11 degrees up"
+    camera_height_m: 1.5
+    camera_angle: "level on MEI, whose eye height is 1.52 m; slightly low on LU, whose eye height is 1.66 m"
+    light_direction: "key camera-left, hard, amber; ~40 degrees on MEI now that she is at the roadside, still ~20 degrees on LU at the bench line, and she is ~2.5 stops up on him"
+    subject_state:
+      char_mei: { hair: "flattening, wet at the crown", wardrobe_state: wet-shoulders, props: [prop_parcel] }
+      char_lu: { hair: dry, wardrobe_state: clean, props: [prop_umbrella] }
+    prop_state: { prop_parcel: "dry on the cut in, spotted by the cut out; still in MEI's RIGHT hand, knot up" }
+    weather: heavy-rain
+    time_of_day: "21:12"
+    start_state: "MEI is under the roof, parcel held at her chest; LU's hands are at his sides"
+    end_state: "MEI has stepped clear of the roof and holds the parcel out at chest height; LU's left hand is rising into frame-right, not yet touching it"
+    must_match_prev: ["MEI dry at SH03 end", "key from camera-left", "parcel knot up in her RIGHT hand", "LU's umbrella in his RIGHT hand"]
+    must_match_next: ["parcel still in MEI's RIGHT hand at the cut", "LU's left hand entering from screen-right", "heavy rain", "MEI's shoulders dark, hair not yet flat"]
+```
+
+Two things in that block are decisions, not bookkeeping. The contact is deliberately withheld: the shot ends on the offer and the next shot completes the transfer, so no single clip has to render two hands meeting around an object. That split is scored in [production-workflow.md](production-workflow.md). And the near-hand check — MEI faces screen-right so her right hand is the camera-side hand, LU faces screen-left so his left is — is what keeps the transfer in front of both bodies instead of hidden behind them. Run that check before you write the hands into a prompt; if both giving hands come out far-side, restage or flip the coverage. The line rules that constrain the flip are in [cinematic-language.md](cinematic-language.md).
+
+## Asset naming convention
+
+One grammar, applied to every file. The name must be readable in a directory listing and sortable into shot order. Version always sits immediately before the role, so a sort groups a shot's versions together.
+
+```text
+PROJ_SCnn_SHnn_vNN_role.ext        shot assets
+PROJ_SCnn_vNN_role.ext             scene-level assets (ambience bed, edit timeline, scene grade)
+PROJ_SUBJ-slug_vNN_role.ext        non-scene assets (character, location, prop, costume refs)
+PROJ_SCnn_SHnn_log.md              the prompt log — the only file with no version, because it holds all of them
+```
+
+| Token | Grammar | Example | Rule |
+|---|---|---|---|
+| `PROJ` | 3–6 uppercase chars, no internal separator | `RAIN` | Chosen once per project, never changed |
+| `SCnn` | `SC` + 2 digits | `SC02` | Scene numbers come from the shot plan, zero-padded |
+| `SHnn` | `SH` + 2 digits | `SH05` | Shot within scene; a late insert gets `SH05a`, never a renumber |
+| `SUBJ-slug` | `CHAR-`, `LOC-`, `PROP-`, `FIT-` + lowercase slug | `CHAR-mei` | Matches the `id` in the schema above |
+| `vNN` | `v` + 2 digits | `v03` | Starts at `v01`, monotonic, never reused, never overwritten. Two sibling options generated from the same decision point take a letter suffix (`v03a`, `v03b`); iterations never do |
+| `role` | lowercase kebab from the fixed vocabulary | `kf-first` | See list below |
+| `ext` | lowercase | `.png` | Stills `.png/.jpg`, clips `.mp4`, audio `.wav`, edit `.fcpxml/.edl` |
+
+Role vocabulary: `ref-face`, `ref-body`, `ref-fit`, `ref-detail`, `plate-wide`, `plate-detail`, `kf-first`, `kf-last`, `kf-alt`, `clip`, `clip-FAIL-<axis>`, `vo-<char>`, `amb`, `sfx-<name>`, `mus`, `cut`, `log`.
+
+```text
+RAIN_SC02_SH04_v03_kf-first.png       approved first frame
+RAIN_SC02_SH04_v03_kf-last.png        matching last frame for a first/last-frame tool
+RAIN_SC02_SH04_v05_clip.mp4           the take that got approved
+RAIN_SC02_SH04_v04_clip-FAIL-face.mp4 kept on purpose; the axis is in the name
+RAIN_SC02_SH04_v03a_kf-first.png      sibling option, not an iteration; v03b is its pair
+RAIN_CHAR-mei_v02_ref-face.png        character reference
+RAIN_FIT-mei-postal_v01_ref-fit.png   costume reference
+RAIN_LOC-shelter_v01_plate-wide.png   location plate
+RAIN_SC02_SH04_v01_vo-mei.wav         dialogue take
+RAIN_SC02_v01_amb.wav                 scene ambience bed
+RAIN_SC02_v04_cut.fcpxml              edit timeline
+RAIN_SC02_SH04_log.md                 every prompt sent for this shot, in order
+```
+
+Do not encode approval in the filename. Approval lives in the log — see [production-workflow.md](production-workflow.md). Renaming a file to mark it approved breaks every reference already written.
+
+## Seed and reference registry
+
+One table per project. This is what you consult when a shot generated three weeks ago must be matched today.
+
+| asset_id | subject | model class | seed | reference inputs | prompt file | locked | notes |
+|---|---|---|---|---|---|---|---|
+| `RAIN_CHAR-mei_v02_ref-face` | char_mei | image, ref-image binding | 4417823 | none (origin asset) | `RAIN_CHAR-mei_log.md` | yes | canonical face; all later shots reference this |
+| `RAIN_FIT-mei-postal_v01_ref-fit` | fit_mei_postal | image, ref-image binding | 4417823 | `CHAR-mei_v02_ref-face` | `RAIN_FIT-mei-postal_log.md` | yes | full-length, neutral light, arms clear of the body |
+| `RAIN_LOC-shelter_v01_plate-wide` | loc_shelter | image, text-to-image | 903112 | none | `RAIN_LOC-shelter_log.md` | yes | night, light rain; all coverage derives from this |
+| `RAIN_SC02_SH04_v03_kf-first` | SC02_SH04 | image, 2 ref inputs | 4417823 | `CHAR-mei_v02_ref-face`, `LOC-shelter_v01_plate-wide` | `RAIN_SC02_SH04_log.md` | yes | approved 3rd attempt |
+
+Seed rules, in order of how much they buy you. Change the seed only when you have decided the identity itself is wrong, never as a way to fix a framing or a light. Reuse the character's seed on keyframes that differ little from the origin asset — same size, same angle, same light — where it removes one source of variance. Expect it to buy almost nothing when the framing changes a lot, because a fresh composition puts the sampler somewhere else regardless. If the tool exposes no seed field, write `null` and lean harder on reference-image binding, which is the stronger control anyway; the control surfaces are in [image-model-adapters.md](image-model-adapters.md). A seed is not a guarantee of identity across prompt changes, and treating it as one is why people stop checking the face.
+
+## State-change ledger
+
+The ledger is the working half of the bible. One row per shot, written *before* generation, corrected after approval. The discipline it enforces: every tracked state moves at most one band between adjacent shots. A progression that jumps two bands reads as a missing shot, and a progression that runs backwards reads as a different day.
+
+| Shot | What changed inside this shot | Carries into next as | Verify in next shot |
+|---|---|---|---|
+| SC02_SH01 | Nothing changes; this row exists to fix the baseline | rain light, ground already wet, MEI dry under the roof | puddle coverage and rain density match |
+| SC02_SH02 | Rain light → moderate; MEI still under the roof | MEI dry including shoulders, parcel dry, moderate rain | MEI's shoulders still dry |
+| SC02_SH03 | LU arrives from screen-right, umbrella up in his RIGHT hand; rain moderate → heavy | LU dry under the umbrella, heavy rain | zero water on LU's coat or hair |
+| SC02_SH04 | MEI steps clear of the roof: key 20° → 40° and ~2.5 stops up on her, wardrobe clean → wet-shoulders, hair flattening; parcel dry → spotted. The parcel is offered, not taken | MEI wet-shoulders, parcel still in her RIGHT hand | the parcel has NOT changed hands yet |
+| SC02_SH05 | Transfer completes into LU's LEFT hand; oilcloth spotted → beaded, hemp twine darkening | parcel with LU, MEI's hands empty | exactly one parcel, knot still on top |
+| SC02_SH06 | MEI does not go back under the roof: wet-shoulders → soaked-front; LU exits screen-right | into SC03: MEI soaked-front, parcel offscreen with LU | SC03 opens at soaked-front, never at clean |
+
+The last row is the one people forget to write. A scene's exit state is the next scene's entry state, and `soaked-through` — the fourth band on MEI's track — is not reached in SC02 at all. Do not let SC03 open there just because it feels like the end of the story.
+
+## Worked example: RAIN / SC02, the bus shelter handoff
+
+Two characters, one location, three progressions running at once: rain light → heavy, MEI clean → soaked-front, parcel from MEI's right hand to LU's left. This is the scene the rest of the skill scores and budgets against — [production-workflow.md](production-workflow.md) uses these same six shots.
+
+```yaml
+project: RAIN
+scene: SC02
+characters:
+  - id: char_mei
+    name: MEI
+    identity_string: "MEI, 24, a Chinese woman with an oval face, thin straight eyebrows, a small mole below the left corner of her mouth, black hair cut blunt at the jaw and tucked behind her right ear, in an army-green cotton postal jacket with a red collar tab"
+    age: 24
+    height_build: "162 cm, slight, narrow shoulders, stands with weight on the left foot"
+    face: "oval; mole below LEFT mouth corner; thin straight brows; no makeup; wide-set dark eyes"
+    hair: { cut: "blunt bob at the jaw, no fringe, parted slightly right", state: "dry SH01-SH03; flattening at SH04; flat and dripping SH05-SH06" }
+    wardrobe:
+      outer: "army-green heavy cotton postal jacket, red collar tab, brass buttons, top two open"
+      mid: "grey wool crew-neck sweater, visible at collar and cuffs"
+      lower: "dark blue cotton work trousers, straight leg"
+      feet: "black canvas lace-up shoes"
+      accessories: ["canvas satchel, worn cross-body, hanging at her left hip"]
+    wardrobe_state: clean          # walks clean → wet-shoulders → soaked-front across SH04-SH06
+    props_carried: [prop_parcel]
+    injury_makeup: ""
+    performance_baseline: "still, minimal gesture; looks at the road, not at people; speaks after a half-second delay"
+    reference_assets: [RAIN_CHAR-mei_v02_ref-face, RAIN_FIT-mei-postal_v01_ref-fit]
+    seed: 4417823
+    must_keep: ["mole on the LEFT", "blunt jaw-length bob", "red collar tab", "cross-body satchel on the left hip"]
+    must_avoid: ["makeup", "smile", "jewellery", "long hair", "modern jacket cut"]
+  - id: char_lu
+    name: LU
+    identity_string: "LU, 58, a heavy-set Chinese man with a broad flat nose, deep vertical lines between the brows, grey stubble on a square jaw, close-cropped grey hair receding at the temples, in a navy quilted work coat with a torn right cuff"
+    age: 58
+    height_build: "176 cm, heavy through the chest, stands square"
+    face: "square jaw; broad flat nose; deep glabellar lines; grey stubble; heavy upper lids"
+    hair: { cut: "close-cropped grey, receding at the temples", state: "dry throughout" }
+    wardrobe:
+      outer: "navy quilted work coat, oil-stained at the right hip, right cuff torn open"
+      lower: "brown corduroy trousers"
+      feet: "black rubber boots, mud to the ankle"
+      accessories: []
+    wardrobe_state: clean
+    props_carried: [prop_umbrella]
+    performance_baseline: "slow, economical; takes objects with the left hand; does not make eye contact while receiving"
+    reference_assets: [RAIN_CHAR-lu_v01_ref-face]
+    seed: 5560194
+    must_keep: ["torn RIGHT cuff", "oil stain at the right hip", "muddy boots", "dry throughout"]
+    must_avoid: ["wet coat", "clean boots", "hat", "glasses"]
+props:
+  - id: prop_parcel
+    description: "shoebox-sized brown paper parcel in dark green oilcloth, tied crosswise with hemp twine, knot on top"
+    state_track: [dry, spotted, beaded, twine-dark]
+    held_by: char_mei
+    hand: right
+    continuity_risk: "changes hands at SH05; models duplicate it into both pairs of hands"
+  - id: prop_umbrella
+    description: "black cloth umbrella, one bent rib on the left side, wooden crook handle"
+    held_by: char_lu
+    hand: right                   # right, so his LEFT is free to receive; this is why the handoff works
+    continuity_risk: "the bent rib flips sides; state it as the LEFT-side rib every time"
+```
+
+Shot rows for the same scene. The camera stays north of the road on every shot, so the road runs left-right in every frame; MEI is frame-left facing screen-right, LU is frame-right facing screen-left.
+
+| Shot | Size / height | Screen direction | Eyeline | Key | Weather | MEI state | LU state | Parcel | must_match_next |
+|---|---|---|---|---|---|---|---|---|---|
+| SH01 | EWS, 1.6 m, locked | road L-R; town screen-left, depot screen-right | none | camera-left, lamp in frame | light rain | dry, seated under the roof | absent | dry, on her lap | ground already wet |
+| SH02 | MS, 1.5 m, locked | MEI frame-left, faces screen-right | out to the road, level | camera-left, ~20° at the bench | light → moderate | dry, parcel held to her chest | absent | dry, both hands | MEI's shoulders still dry |
+| SH03 | WS, 1.6 m, slow push-in（推镜） | LU enters from screen-right | MEI up to LU | camera-left ~20°, plus a headlight rake from screen-right | moderate → heavy | dry, standing | dry, umbrella up in his RIGHT hand | dry, her right hand | LU's coat and hair bone dry |
+| SH04 | MCU 2-shot, 1.5 m, locked | MEI screen-right, LU screen-left | MEI ~11° up to LU at 0.7 m | camera-left; ~40° on MEI at the roadside, ~20° on LU, she is ~2.5 stops up | heavy | clean → wet-shoulders, hair flattening | dry under the umbrella | dry → spotted, still her RIGHT hand | parcel NOT yet transferred |
+| SH05 | CU insert on hands, 1.25 m, locked | MEI's hand from screen-left, LU's from screen-right | no faces in frame | camera-left, ~40°, hands in the open | heavy | offscreen; wet cuff visible | offscreen; left hand only, umbrella above frame | spotted → beaded, twine darkening; into LU's LEFT hand | one parcel, now with LU |
+| SH06 | WS, MEI's shoulder frame-left foreground, camera still north of the road, 1.6 m, locked | LU exits screen-right | MEI after LU | camera-left, ~40° | heavy | wet-shoulders → soaked-front, in the open | dry, receding | with LU, offscreen | SC03 opens at soaked-front |
+
+Four traps this scene sets, and the answer in each case.
+
+- The parcel. Name the holder and the hand in every prompt from SH04 on, and put "only one parcel" in the negative list. The transfer is split across the SH04/SH05 cut precisely so that no clip has to render two hands closing on one object.
+- LU's dryness. The model wants to wet everyone in heavy rain, so restate "his coat and hair are completely dry, he is under a black umbrella" as a positive fact in SH04–SH06. A negative ("not wet") does not do this job.
+- The lamp. At SH04 the reverse-angle instinct is to flip the key to camera-right. Write `key from camera-left` into the keyframe prompt, not just the video prompt, because the still is where the light gets decided. The elevation changes when MEI steps out; the side never does.
+- SH06's camera. It is tempting to put the camera behind MEI and shoot down the road after LU. Do not — that rotates the axis roughly 90°, the road stops running left-right, and LU no longer exits screen-right. Keep the camera north of the road and let MEI's shoulder sit in the frame-left foreground instead.
+
+## Drift prevention map
+
+Diagnose the axis, then leave. Repair itself belongs to [failure-modes.md](failure-modes.md) — go there for ranked causes, ranked fixes, and before/after prompt pairs under the code in column three. [../assets/qc-checklist.md](../assets/qc-checklist.md) is the pass you run before any of it. What this table owns is the last column: the field in this file that stops the same drift returning.
+
+| Axis | Drift you see | Code | The field here that prevents a repeat |
+|---|---|---|---|
+| 1 Face | A sibling rather than the same person, or the face holds and then goes in the last second | F1 | `identity_string` pasted verbatim, one locked `ref-face` in `reference_assets`, `seed` recorded |
+| 2 Hair | Length, parting side, or wetness changes between shots | F1, F7 | `hair.cut` (fixed, copy-paste) held separate from `hair.state` (rewritten per shot) |
+| 3 Wardrobe | A layer appears, disappears, or silently re-buttons | F1 | `wardrobe` layer stack with color and material per layer, plus `closure_state` and `forbidden` |
+| 4 Props | Two of them, or the right object in the wrong hand | F7, F9 | `held_by` and `hand` updated at the handoff *before* the prompt is written; `must_avoid: ["second <prop>"]` |
+| 5 Wet / dirt / blood | The state resets to clean | F7 | `state_track` walked one band per shot, with a ledger row carrying the exit state forward |
+| 6 Injury / makeup | The wound swaps sides or changes age | F7 | `injury_makeup` naming the side and the age, restated as a positive fact each shot |
+| 7 Light direction | The key flips on the reverse angle | F12 | `key_direction` in the location, pasted into the keyframe prompt and not only the video prompt |
+| 8 Time of day | "Night" drifts across the scene | F12 | `time_of_day` with a real clock time, plus a locked location plate to match against |
+| 9 Weather | Intensity jumps backwards or skips a band | F7 | `weather_track` as an ordered list; adjacent shots never skip |
+| 10 Geography | The door changes walls between wide and close | F7, F8 | `plate_assets`: lock a wide before any coverage, then reference it from every angle |
+| 11 Screen direction | The subject flips which way they face or travel | F7 | `orientation_rule` as an obeyable sentence, checked at storyboard rather than at QC; the line rules are in [cinematic-language.md](cinematic-language.md) |
+| 12 Eyeline | The look passes through or over the other person | F7 | `height_build` for both parties, and `eyeline_target` computed from eye-height difference *and* separation, not from height alone |
+| 13 Camera height | Wanders because the angle was written as a mood word | F6, F17 | `camera_height_m` as a number in every shot row, with what sits at frame centre |
+| 14 Color palette | Shifts between working sessions | F16 | `palette` line in the location; generate a scene's stills in one session; grading language in [lighting-and-color.md](lighting-and-color.md) |
+| 15 Lens feel | A wide keyframe cut against a long-lens one inside a scene | F16 | One focal length fixed per scene in the director's book and restated in every keyframe prompt |
+
+【接口适配说明】仅报告 Shot Plan JSON；不用自动完成导演生产包其余工件；原始启发式保留而非改写。
+
+【固定场景与原始 Beat】
+{
+  "id": "02-handoff",
+  "title": "白杯交接",
+  "duration_seconds": 8,
+  "reference_images": {
+    "Picture 1": "A肖像",
+    "Picture 2": "B肖像",
+    "Picture 3": "咖啡馆两人同桌空间参考"
+  },
+  "fixed_context": "时长：8秒，单场景，咖啡馆内日光窗旁圆桌。人物A：女性，短深色卷发，绿色开衫、淡紫上衣，固定坐在画面左侧；人物B：男性，短深色发，藏蓝衬衫外套、白T恤，固定坐在画面右侧。Picture 1=A肖像，Picture 2=B肖像，Picture 3=两人同桌场景。白色陶瓷杯起始在A面前。参考图及衣着/相对位置不可改变。风格现实自然，不添加第三人、第二只杯子或额外台词。",
+  "beat": "A问B：「你还好吗？」B轻声回答：「有点累。」A随后用右手沿桌面把唯一白杯推向B；B用左手接住，将白杯停在自己面前，保持左手持杯，然后抬眼看A，回答：「谢谢你。」A微微露出安慰的笑容。交接前杯归A，交接后杯归B；不能重新递杯。"
+}
+
+【共同输出契约：仅为跨组评价接口，不含额外导演规则】
+仅输出 JSON 对象。字段: scenario_id(string), shots(array), continuity_notes(array), uncertainties(array)。每个 shots 元素字段: shot_id, start_s, end_s, purpose, framing, angle, camera_motion, visible_action, dialogue (array of {speaker,text}), blocking, state_in, state_out, continuity_handoff, cut_reason。时间覆盖0–8秒，镜头不能时间重叠且不留空白；无对白则 dialogue=[]。不增删或改写原台词，不添加剧情人物道具。可自由选择镜头数量，包括一个镜头。没有证据的空间测量保持未知。只返回 JSON，不带 markdown。

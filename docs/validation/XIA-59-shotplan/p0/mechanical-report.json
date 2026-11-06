@@ -1,0 +1,62 @@
+[
+  {
+    "scene": "01-dialogue",
+    "group": "native",
+    "available": false
+  },
+  {
+    "scene": "01-dialogue",
+    "group": "toonflow",
+    "available": false
+  },
+  {
+    "scene": "01-dialogue",
+    "group": "director",
+    "available": false
+  },
+  {
+    "scene": "01-dialogue",
+    "group": "vimax",
+    "available": false
+  },
+  {
+    "scene": "02-handoff",
+    "group": "native",
+    "available": false
+  },
+  {
+    "scene": "02-handoff",
+    "group": "toonflow",
+    "available": false
+  },
+  {
+    "scene": "02-handoff",
+    "group": "director",
+    "available": false
+  },
+  {
+    "scene": "02-handoff",
+    "group": "vimax",
+    "available": false
+  },
+  {
+    "scene": "03-overlap",
+    "group": "native",
+    "available": false
+  },
+  {
+    "scene": "03-overlap",
+    "group": "toonflow",
+    "available": false
+  },
+  {
+    "scene": "03-overlap",
+    "group": "director",
+    "available": false
+  },
+  {
+    "scene": "03-overlap",
+    "group": "vimax",
+    "available": false
+  }
+]
