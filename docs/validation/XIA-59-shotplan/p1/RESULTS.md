@@ -1,5 +1,7 @@
 # XIA-59 P1：静态编译与对照（2026-11-06）
 
+> 后续复核：请先看 [逐字段复核记录及 Director 修订稿](review-20261106/REVIEW.md)。下方初稿评价为历史快照；其余 11 份仍待逐字段复核。
+
 ## 条件与边界
 
 用户确认进入 P1。四路 P0 输入由 DeepSeek `deepseek/deepseek-flash`、thinking off 生成；P1 由本对话 Codex 手工翻译、编排与审阅，具体后端模型版本未由运行环境独立提供，标记未知。没有调用 DeepSeek、Pi 或其他外部 LLM 生成本阶段文本。每个样本 `metadata.json` 给出输入路径与 SHA256、输出 SHA256 和镜头起点；P0 原件保留不变。

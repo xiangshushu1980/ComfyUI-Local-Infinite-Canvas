@@ -1,0 +1,24 @@
+subject_definitions:
+<Subject 1> is the woman A from <Picture 1>, with short dark curly hair, a green cardigan, and a pale-purple top.
+<Subject 2> is the man B from <Picture 2>, with short dark hair, a navy overshirt, and a white T-shirt.
+<Subject 3> is the café setting and two-person seating arrangement described by <Picture 3>.
+
+summary:
+[reference generation] In an eight-second natural café scene, <Subject 1> sits on the left and <Subject 2> on the right at a round table. A single white ceramic cup passes once from <Subject 1> to <Subject 2>.
+
+retention_analysis:
+<Subject 1> (appears in [Shot 1], [Shot 2], [Shot 3]): fully_preserved - retain the specified identity, clothing and position.
+<Subject 2> (appears in [Shot 1], [Shot 2], [Shot 3]): fully_preserved - retain the specified identity, clothing and position.
+<Subject 3> (appears in [Shot 1], [Shot 2], [Shot 3]): fully_preserved - retain the café, round table, seating relationship and window-side daylight.
+
+detailed_description:
+A realistic, natural café scene in daylight from the window side. Keep the light direction, the seated left-right positions and the clothing consistent. There is only one white ceramic cup, no third person and no additional dialogue.
+[Shot 1] A fixed medium two-shot, with an over-shoulder side view specified as approximately 30–35 degrees to the table and close to seated eye level. <Subject 1> sits on the left, her torso turned about three-quarters toward <Subject 2>. <Subject 2> sits on the right, leaning back slightly, his gaze low and shoulders somewhat lowered; both hands stay on his side and do not touch the cup. The cup is upright on the table directly in front of <Subject 1>. Without leaving her seat she leans slightly toward him and asks, <Subject 1> (S1): <d>[Chinese] 你还好吗？</d> <Subject 2> (S2) quietly answers, <d>[Chinese] 有点累。</d> His head lifts only slightly, with a small movement of breath and shoulders; at the end she remains slightly forward, his gaze stays low, and the cup remains unmoved in front of her.
+[Shot 2] At 00:03.500, cut to a fixed medium close view of the tabletop and both people's hands, the cup in the lower central frame. The planned side angle is approximately 35–40 degrees to the table, with the camera close to tabletop height, below seated eye level; do not follow the hands. The cup begins upright in front of <Subject 1>, her right hand beside it, while <Subject 2>'s left hand rests at his side of the table edge. <Subject 1> pushes the cup along the table toward him with her right hand, approximately one forearm's distance, then releases the cup and withdraws her hand. <Subject 2> reaches with his left hand, receives the cup and holds it stationary in front of him. Her hands return to her side. The single transfer is complete; the cup belongs to <Subject 2> and is not passed again.
+[Shot 3] At 00:06.500, cut to a fixed close view favoring <Subject 2>, near his seated eye level and on the same side of the axis. Keep <Subject 1> visible at the left edge, and his left hand holding the cup in frame. Initially his gaze is down at the cup. He raises his head by approximately thirty degrees toward <Subject 1> and says, <Subject 2> (S2): <d>[Chinese] 谢谢你。</d> She looks at his face, her posture relaxed, and her mouth lifts into a small reassuring smile. He continues to look at her and hold the cup in his left hand before him; the video ends at 00:08.000.
+
+overall_soundscape:
+Quiet café room tone.
+
+non_diegetic_music:
+N/A
