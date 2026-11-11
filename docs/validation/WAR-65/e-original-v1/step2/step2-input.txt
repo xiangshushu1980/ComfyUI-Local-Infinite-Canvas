@@ -481,4 +481,5 @@ The good version names a camera behavior and forbids the rest, gives one primary
 6. 不新增人物回忆画面、过去发生的事件、搬家原因，或两人未来的决定。
 
 【实验说明】人物外观、家具和照片的具体图像资产均未制作；创作意图与限制属于确认的剧本资料，而非新增 Toonflow Skill 规则。
+
 <<<END_LOCKED_SCRIPT_E>>>
