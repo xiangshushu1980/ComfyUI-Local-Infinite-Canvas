@@ -34,6 +34,12 @@
 - `minimal-C-text-v1/`：冻结的三镜候选、Prompt 消息、Schema、原始输出、Codex JSONL、stderr、执行条件和 SHA 清单；两阶段退出码均为 0。
 - 模型：Eric Codex CLI 0.166.0 / gpt-6.1-terra / medium / ephemeral / read-only。三镜分解聚合成一次调用，不可等同 ViMax 原版逐镜调用；Camera Tree 单独一次。
 
+## 独立调用复核（2026-11-11）
+
+- `minimal-C-independent-v1/REVIEW.md`：三镜分别调用与此前集中调用的逐镜对照、越界动作及状态时序问题、适配差异、因果限制。
+- `minimal-C-independent-v1/shot-{0,1,2}/`：逐镜完整请求/输出、调用日志与执行信息；总 SHA：`minimal-C-independent-v1/sha256-manifest.json`；可复现脚本 `independent_C_runner.py`。
+- 观察：独立 Shot 0 增加未授权离场动作且未反映至 LF；Shot 1/2 首帧与 Motion 部分动作重复；两种调用方式均保留主要持票/离场状态。单轮观察**不能证明集中调用更好**，更不能单独归因于单镜提示词专业度。
+
 ## 下一步
 
-已完成三镜候选的两阶段 Codex CLI 文本回放。下一步审阅 minimal-C-text-v1/REVIEW.md 的机制边界、适配差异及风险，结合 WAR-59 综合讨论；不自动恢复 C/D/E 实跑或生成媒体。
+已完成集中回放与三镜独立回放，审阅两个 REVIEW.md 后进入 WAR-59 综合讨论；不自动恢复 C/D/E 实跑或生成媒体。

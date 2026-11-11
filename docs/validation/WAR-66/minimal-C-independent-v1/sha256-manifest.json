@@ -1,0 +1,90 @@
+{
+  "protocol": "Each shot separate Codex exec, isolated run root, same frozen original ViMax system/human message content and same model settings as batch; Codex role packaging and JSON schema are adapters, not native ViMax.",
+  "model": "gpt-6.1-terra",
+  "effort": "medium",
+  "codex_cli": "0.166.0",
+  "comparison_source": "../minimal-C-text-v1/decomposition-raw.txt",
+  "original_prompt_source": "../minimal-C-text-v1/decomposition-messages.json",
+  "files": {
+    "shot-0/events.jsonl": {
+      "sha256": "0823859b78d390b82aaa3e396a87701b65fcb2cbc74da64c54de234d7fcbec2d",
+      "bytes": 1264
+    },
+    "shot-0/execution.json": {
+      "sha256": "8f80e3acdb53a54c59011a859c130013136ceece62c2662099aa69fa0072abfb",
+      "bytes": 758
+    },
+    "shot-0/messages.json": {
+      "sha256": "78568863125296c702069090cb2b0f9efdb2ce157a8338a5823c31a987ef5a39",
+      "bytes": 6015
+    },
+    "shot-0/request.txt": {
+      "sha256": "10f42a0de5547fde2e7c49909870c52cc3d4eb4ce0ea1db5c7d45c805dd569d9",
+      "bytes": 5947
+    },
+    "shot-0/response.json": {
+      "sha256": "3c95ef382b76013642ef29af232874eb22ab68b9b4c2c91fc973bcb541ea34da",
+      "bytes": 898
+    },
+    "shot-0/stderr.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "shot-1/events.jsonl": {
+      "sha256": "810ed9a9ad339796e2fd64d4c880e7543753df4e6229975ec76aa24f1a4fe04e",
+      "bytes": 1182
+    },
+    "shot-1/execution.json": {
+      "sha256": "e1ded471679a4993e0a789e8a76cc49e83b691dc18709c4bfbd789443ae49762",
+      "bytes": 758
+    },
+    "shot-1/messages.json": {
+      "sha256": "442fbf967a85951dab98de6ad7d2931a0cc7a36d409e9dd1579fae4ffa23cb45",
+      "bytes": 5931
+    },
+    "shot-1/request.txt": {
+      "sha256": "b83c46e7ac1810159633f307e92e5a87bba4ec4de83f247b00ab44fce43f5b37",
+      "bytes": 5863
+    },
+    "shot-1/response.json": {
+      "sha256": "16ca55bd94c57896e29bb02447953b2aed353edf62442a9b615eb177b9692261",
+      "bytes": 808
+    },
+    "shot-1/stderr.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "shot-2/events.jsonl": {
+      "sha256": "23731c418b55422753b34f4cc2aa2bb4414667b627e504e445ef79b1005c600f",
+      "bytes": 1336
+    },
+    "shot-2/execution.json": {
+      "sha256": "ea905d71ff9602ba936692f95f3a58eb396c1befc50a5676a7fe9734593ca339",
+      "bytes": 758
+    },
+    "shot-2/messages.json": {
+      "sha256": "bc12ace6a1e5f2d2c9145a4e62f629bf2c02022d0da6afb1fc046e6552153f0b",
+      "bytes": 5997
+    },
+    "shot-2/request.txt": {
+      "sha256": "434c2cafb2567d57e8bd9a993d01e1c20e0960157235a882676587274ea2d0e6",
+      "bytes": 5929
+    },
+    "shot-2/response.json": {
+      "sha256": "0d57ed1ec79ea5dc23f07bc94acba6c979edf745a767096e34087391071718a3",
+      "bytes": 966
+    },
+    "shot-2/stderr.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "single-schema.json": {
+      "sha256": "4d28613b41321d026f7ab09f387e55309fee239f72c3462e4cf9b2353205af10",
+      "bytes": 786
+    },
+    "REVIEW.md": {
+      "sha256": "4d6d5e9f4977b5dab701b556e4a07b1cab2ac535276c3fd9f2f5b8a645a1566b",
+      "bytes": 5729
+    }
+  }
+}

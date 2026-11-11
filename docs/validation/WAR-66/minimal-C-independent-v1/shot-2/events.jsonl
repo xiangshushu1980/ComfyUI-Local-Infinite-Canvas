@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"01a1ca9d-8e20-7ea3-a4bf-d23c82757f79"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"{\"ff_desc\":\"固定机位的双人宽全景。陈站在画面左侧的立柱旁，手握车票，面向右侧的许；背着小包的许站在画面右侧，头朝向陈。远处可见检票口。\",\"ff_vis_char_idxs\":[0,1],\"lf_desc\":\"固定机位的双人宽全景。陈仍站在画面左侧的立柱旁，手握车票，面向检票口方向；背着小包的许位于远处，背对镜头，面向检票口。两人之间的距离明显拉开。\",\"lf_vis_char_idxs\":[0,1],\"motion_desc\":\"镜头始终保持静止。画面中，背着小包的女子转头看向立柱旁手握车票的男子，说：“你照顾好自己。”男子轻轻点头，回应：“嗯。”随后女子转身面向远处检票口，逐渐走远；男子留在原地，没有追上去，两人之间的距离逐渐拉开。\",\"variation_type\":\"small\",\"variation_reason\":\"镜头固定，画面变化主要来自人物转头、点头、转身和走远，人物与场景构图保持连续。\"}"}}
+{"type":"turn.completed","usage":{"input_tokens":18793,"cached_input_tokens":14592,"cache_write_input_tokens":0,"output_tokens":312,"reasoning_output_tokens":18}}
