@@ -40,6 +40,12 @@
 - `minimal-C-independent-v1/shot-{0,1,2}/`：逐镜完整请求/输出、调用日志与执行信息；总 SHA：`minimal-C-independent-v1/sha256-manifest.json`；可复现脚本 `independent_C_runner.py`。
 - 观察：独立 Shot 0 增加未授权离场动作且未反映至 LF；Shot 1/2 首帧与 Motion 部分动作重复；两种调用方式均保留主要持票/离场状态。单轮观察**不能证明集中调用更好**，更不能单独归因于单镜提示词专业度。
 
-## 下一步
+## 最终收口（2026-11-11）
 
-已完成集中回放与三镜独立回放，审阅两个 REVIEW.md 后进入 WAR-59 综合讨论；不自动恢复 C/D/E 实跑或生成媒体。
+**用户已批准 WAR-66 完成。缩减后的验收已满足：原理/Prompt/调用边界分析、C 三镜 FF/Motion/LF 与 Camera Tree 最小实测，以及批量 vs 独立拆解的对照观察均已完成，原始证据与 SHA 已冻结。**
+
+**带往 WAR-59 的决定性结论**：DirectorSKILL 的 Shot Plan/Blocking 是叙事与场面调度决策；ViMax 的 FF/Motion/LF 描述镜内动作和起终态，Camera Tree 管理机位视觉参考依赖，两者不可相互替代。独立测试的越界离场/首帧动作重复表明拆解仍需输出复检；单轮测试不能证明集中上下文更优。
+
+**明确未测**：ViMax 完整原版 Python 管线、C/D/E 完整 Storyboard、图像/真实机位生成、3D 空间校验、H3 成片，以及专业单镜输入 vs 多镜共享上下文的因果效应。它们不属于缩减后验收要求，不作为本 Issue 未完成阻塞。
+
+**接续**：WAR-59 将 Toonflow（WAR-61）、DirectorSKILL（WAR-65）与 ViMax 的阶段职责与可重用机制综合比较；不自动发起下一轮模型或 GPU 实验。
