@@ -1,0 +1,295 @@
+{
+  "archive_sha256": "c484936a3ab3ad00f4217c752f16602516e97d740493c683d4a297b416749d2e",
+  "archive_members": [
+    {
+      "path": "toonflow-20261107/storyboard-A-embedded.log",
+      "bytes": 34149,
+      "sha256": "dc7654a4643d4892c55be349574d94292d9e784952719eed79b637326cd1bcca"
+    },
+    {
+      "path": "toonflow-20261107/next-stage-observation/observer-output.txt",
+      "bytes": 4271,
+      "sha256": "74ce2765ae5a83c92a8c12b176592e3987eff5e45e37fea7bd715cb99369db30"
+    },
+    {
+      "path": "toonflow-20261107/next-stage-observation/observer-log.txt",
+      "bytes": 80436,
+      "sha256": "2019c87016fcb555028e54bb47da43faba5387f8dbb86f85ccb6505423b9383f"
+    },
+    {
+      "path": "toonflow-20261107/next-stage-observation/observer-input.txt",
+      "bytes": 71501,
+      "sha256": "b4abe4055e6c573ceefa61419dd2a637635b15fdda0c6f84a8364174ec740a47"
+    },
+    {
+      "path": "toonflow-20261107/director-B-embedded.txt",
+      "bytes": 3399,
+      "sha256": "c9e367edc8784898a831ca728e8d938ad154330a704cf38763ac52cc07c54e11"
+    },
+    {
+      "path": "toonflow-20261107/storyboard-B-embedded.log",
+      "bytes": 43926,
+      "sha256": "de540d41f16e9ea8f3bea1d00feba5b20fdcb8f3b04a5a1c7b73c54d752e5050"
+    },
+    {
+      "path": "toonflow-20261107/storyboard-input-B-embedded.txt",
+      "bytes": 27707,
+      "sha256": "f520376dfbc5ddd358c74074b0b9deba909a9058a2957d381f3e46618bdbb6e0"
+    },
+    {
+      "path": "toonflow-20261107/director-A.log",
+      "bytes": 4477,
+      "sha256": "541e44b64901001483f2134e603ef8f6600fb1a2bb3a90dcb00e0e3ccd2d4d6f"
+    },
+    {
+      "path": "toonflow-20261107/xia-61-script-D/director-input.txt",
+      "bytes": 9483,
+      "sha256": "eda42bd20e6a76cba2e435080d7f7730e04899c5bcce40114fe8dd4f1bce7a28"
+    },
+    {
+      "path": "toonflow-20261107/xia-61-script-D/storyboard-output.txt",
+      "bytes": 8621,
+      "sha256": "7d8c9ea2d87b3ad9ca8dff48e168ae413874a2b8c9845cdcdaaa7f741ce5ce37"
+    },
+    {
+      "path": "toonflow-20261107/xia-61-script-D/director-output.txt",
+      "bytes": 2784,
+      "sha256": "3eea62ebf4a97084d197a357bc6cc8bc6a64e84f14b21989df5cc49722bfadf1"
+    },
+    {
+      "path": "toonflow-20261107/xia-61-script-D/script-D.txt",
+      "bytes": 2177,
+      "sha256": "65b8a2f83cefc2281879fb254d3ee25dfd68d72e7cd0d811a2afbade5c1e165d"
+    },
+    {
+      "path": "toonflow-20261107/xia-61-script-D/storyboard-input.txt",
+      "bytes": 28055,
+      "sha256": "295996ca4251abbbb0e1c58f783e84a7088fc66b8db06edee3199f0fc4ecf509"
+    },
+    {
+      "path": "toonflow-20261107/xia-61-script-D/director-log.txt",
+      "bytes": 15459,
+      "sha256": "0c053041ebbf525e0ce6bd27a9e6d8c55f32bd8e279bad216aba65eb8350cf7b"
+    },
+    {
+      "path": "toonflow-20261107/xia-61-script-D/storyboard-log.txt",
+      "bytes": 45706,
+      "sha256": "f985ff5e0060dfd993a9d23caa572dd4cb02ae08d4899be4f056c80414f4ca61"
+    },
+    {
+      "path": "toonflow-20261107/xia-61-script-C/director-input.txt",
+      "bytes": 8977,
+      "sha256": "505dd155183e375fdbe4aa4dade6f2d989d6cd47175f10b0be4804a1ae446545"
+    },
+    {
+      "path": "toonflow-20261107/xia-61-script-C/storyboard-output.txt",
+      "bytes": 7822,
+      "sha256": "769adbb7277969b3b14682e18408169070e47a24a62977498fa5ab6829cb63ac"
+    },
+    {
+      "path": "toonflow-20261107/xia-61-script-C/script-C.txt",
+      "bytes": 1671,
+      "sha256": "ba56afb91c117d06ced4089456f5e713435e99cfbf287fd3ee5a5b88ee50153d"
+    },
+    {
+      "path": "toonflow-20261107/xia-61-script-C/director-output.txt",
+      "bytes": 2648,
+      "sha256": "6174646f605b39bcc48b3853a13daf039ecf66a68e4056ec5e0ad2d0d640366e"
+    },
+    {
+      "path": "toonflow-20261107/xia-61-script-C/storyboard-input.txt",
+      "bytes": 27413,
+      "sha256": "c2af87accf6a6a6e8bab69f2c81ae7dffd12c8e3a78f70d6f367023e413bc981"
+    },
+    {
+      "path": "toonflow-20261107/xia-61-script-C/director-log.txt",
+      "bytes": 14681,
+      "sha256": "a730dc176b3062af10670f69bc8cbab7723b3551d9fdd1f08c0f9b3a6b73fc12"
+    },
+    {
+      "path": "toonflow-20261107/xia-61-script-C/storyboard-log.txt",
+      "bytes": 43466,
+      "sha256": "6a886beab8cf1bfcecedbf07a3a8e59e43b7fe38fe792d9606f325eca74889e5"
+    },
+    {
+      "path": "toonflow-20261107/director-input-A-embedded.txt",
+      "bytes": 8028,
+      "sha256": "93a6ba56a48af92e661adfe80c481f167a69b60c41cc935c0f367622f8252268"
+    },
+    {
+      "path": "toonflow-20261107/shotCraft.md",
+      "bytes": 16117,
+      "sha256": "3567ca1ecb0e53522d7514ddb6240a488d28eb0794d7a2ee986aeebe6ec2bf3d"
+    },
+    {
+      "path": "toonflow-20261107/director-A-embedded.log",
+      "bytes": 15004,
+      "sha256": "909a5ea54743b8116d7404a9337f47f42edb73c79e53460b02cbad6d15831dd2"
+    },
+    {
+      "path": "toonflow-20261107/script-B.txt",
+      "bytes": 1236,
+      "sha256": "890e8a3b4cf4d7737e89458b677e7b81258bc4433c5136a7c8e907924af8a8f7"
+    },
+    {
+      "path": "toonflow-20261107/director-A-embedded.txt",
+      "bytes": 3165,
+      "sha256": "42cb7b1e6ff8a70dc8c34c21fffe7addac952b543e20c111e8df075ee06bf766"
+    },
+    {
+      "path": "toonflow-20261107/director-B-embedded.log",
+      "bytes": 15944,
+      "sha256": "eb3254b195126c678352f4624b392b345fc94910cba8c762e747d80b01a5ee85"
+    },
+    {
+      "path": "toonflow-20261107/next-stage-upstream/references__storyboardPanel.md",
+      "bytes": 5431,
+      "sha256": "ed63c701ea7b10b8bb9db25b75aa4ae91ae65332f5541012369533ea91f3b4ec"
+    },
+    {
+      "path": "toonflow-20261107/next-stage-upstream/references__sourceMap.md",
+      "bytes": 16958,
+      "sha256": "1f0ca376f243d2bd6051909ff4a786ff16f93f9918c9706f3fed833d13b818a8"
+    },
+    {
+      "path": "toonflow-20261107/next-stage-upstream/references__deriveAssets.md",
+      "bytes": 5867,
+      "sha256": "b0b8665fa3384ae11bbc3e581af611948021388fe6213eba94cc8ea128206fab"
+    },
+    {
+      "path": "toonflow-20261107/next-stage-upstream/references__knowledge__videoPromptCraft.md",
+      "bytes": 15025,
+      "sha256": "4afee97c078bbee14f7813eabdea2bbe2db7e7f80b21d15f9bc504724949b2c4"
+    },
+    {
+      "path": "toonflow-20261107/next-stage-upstream/SKILL.md",
+      "bytes": 11517,
+      "sha256": "9d4a2cb89d1403187e883762b272d035b953894573f937b2e57d250b33b91928"
+    },
+    {
+      "path": "toonflow-20261107/next-stage-upstream/references__videoProduction.md",
+      "bytes": 6205,
+      "sha256": "464612cb92017900a4f0c644654de901bea6d96621cd340d79e67a51cdbe9f4b"
+    },
+    {
+      "path": "toonflow-20261107/next-stage-upstream/references__canvasOperations.md",
+      "bytes": 8511,
+      "sha256": "f7542191210499366f51287d5dec6d333932ec0c3feccb00d306885d011ba8c8"
+    },
+    {
+      "path": "toonflow-20261107/directorPlan.md",
+      "bytes": 4022,
+      "sha256": "a6fe68c1bb53d58f69cb3b5a398a414430b559c6a246ef53109f44ee0480e369"
+    },
+    {
+      "path": "toonflow-20261107/director-input-B-embedded.txt",
+      "bytes": 8521,
+      "sha256": "423fa682943ed1e3c643ab855c434bd4349e2f5b48de008aacbfe7561a802c08"
+    },
+    {
+      "path": "toonflow-20261107/director-A.txt",
+      "bytes": 1054,
+      "sha256": "65dfce83987a67b90e2ad064f7b92fd77c91d8ffa18e8109f9eaedbf20ebfdd8"
+    },
+    {
+      "path": "toonflow-20261107/MANIFEST.json",
+      "bytes": 3112,
+      "sha256": "d13ac1488947e3125849c365ba1a8914a0e9763d0311c43f15e1be28b13c78f7"
+    },
+    {
+      "path": "toonflow-20261107/storyboard-A-embedded.txt",
+      "bytes": 3395,
+      "sha256": "f19c60f09750da0d63070893f2cb3bca7103cfdcbb7a434fb00ed13b9b5895f6"
+    },
+    {
+      "path": "toonflow-20261107/terra-replay-B/director-input.txt",
+      "bytes": 8542,
+      "sha256": "a59dc727c63be684b7cfa333e2079ac390c1842e9fd801fdf463d9b3362b6eae"
+    },
+    {
+      "path": "toonflow-20261107/terra-replay-B/storyboard-output.txt",
+      "bytes": 10730,
+      "sha256": "acfa8f4b4fff8a64f72ee084da51e9d8b66a99fd4b5e75a4ef74f79590803317"
+    },
+    {
+      "path": "toonflow-20261107/terra-replay-B/director-output.txt",
+      "bytes": 3100,
+      "sha256": "6e484e79f90cecde50639823782c28bc66126136e16dbbc1f3a218e8f394fa83"
+    },
+    {
+      "path": "toonflow-20261107/terra-replay-B/storyboard-input.txt",
+      "bytes": 27429,
+      "sha256": "2b4fbda3b4f86119b1a594e2e46fdb4c921a79f6a21f31c9a96e0684b25dc786"
+    },
+    {
+      "path": "toonflow-20261107/terra-replay-B/manifest.json",
+      "bytes": 983,
+      "sha256": "a5cd6770d1a57ef719f1ae006cf0d2b9bbe7e8db7586c863f4c6bfa6f9e1c74c"
+    },
+    {
+      "path": "toonflow-20261107/terra-replay-B/director-log.txt",
+      "bytes": 15132,
+      "sha256": "d018b3b0f2a801e732f285f6638e10e12cc25e1d2ee9216e15271ad8969b22ea"
+    },
+    {
+      "path": "toonflow-20261107/terra-replay-B/storyboard-log.txt",
+      "bytes": 49280,
+      "sha256": "0f088fab86a98026bb9664d14a95dd9f9f54696e83747c18827662ac3473f0be"
+    },
+    {
+      "path": "toonflow-20261107/storyboard-input-A-embedded.txt",
+      "bytes": 26980,
+      "sha256": "3b0697a759638fcdfe6dd70f6f5f4cbb4977b1ef8b39f39f805384b235716b8f"
+    },
+    {
+      "path": "toonflow-20261107/xia-61-script-E/director-input.txt",
+      "bytes": 9841,
+      "sha256": "09f854ccfa22c4b5b866bc849505d2106c2ce27d044560651683a1b41fb7848e"
+    },
+    {
+      "path": "toonflow-20261107/xia-61-script-E/storyboard-output.txt",
+      "bytes": 9723,
+      "sha256": "1d517f94703f1a61e7a5b675c0e72e44d80ae9a866ea07c1ee4438dc20fde02e"
+    },
+    {
+      "path": "toonflow-20261107/xia-61-script-E/director-output.txt",
+      "bytes": 2844,
+      "sha256": "27997c74a19868919332fc0551a4c58ddc0a200dc3d4544fbb25d4e0f7b4dfb4"
+    },
+    {
+      "path": "toonflow-20261107/xia-61-script-E/script-E.txt",
+      "bytes": 2535,
+      "sha256": "466d257d3ac684ea20e76eb01f80589270484478cc75b084c1f0640c77d576ec"
+    },
+    {
+      "path": "toonflow-20261107/xia-61-script-E/storyboard-input.txt",
+      "bytes": 28473,
+      "sha256": "cd443b32ad79254809942209018983e3977455874bd740d1069605082e42e759"
+    },
+    {
+      "path": "toonflow-20261107/xia-61-script-E/director-log.txt",
+      "bytes": 15937,
+      "sha256": "ab51dd5a8141dbd49456bda3bb89831e0e3dc6691a5d6ddf490867a2fce19e50"
+    },
+    {
+      "path": "toonflow-20261107/xia-61-script-E/storyboard-log.txt",
+      "bytes": 48328,
+      "sha256": "6de64e73a8984a5a3d5508ff8885ee058214914b5c1e0f79b99fa4557968a23d"
+    },
+    {
+      "path": "toonflow-20261107/script-A.txt",
+      "bytes": 743,
+      "sha256": "d936fe262c36e29ef81198732cc4bfaa3adcaeb8611b983bbecfe311b097d9c8"
+    },
+    {
+      "path": "toonflow-20261107/storyboard-B-embedded.txt",
+      "bytes": 7920,
+      "sha256": "93ddcf62f7f424ca8c00f967b7d0f1957fc7afcfa1eb4f4985dd3936ebdab7fc"
+    },
+    {
+      "path": "toonflow-20261107/storyboardTable.md",
+      "bytes": 5952,
+      "sha256": "7c6abfb0e9baad360f33589286a5384c58dff0e0a1e79a1c34269b926b6552b5"
+    }
+  ]
+}

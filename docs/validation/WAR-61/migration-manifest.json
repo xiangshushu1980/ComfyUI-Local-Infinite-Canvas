@@ -1,0 +1,94 @@
+{
+  "task": "WAR-67",
+  "parent_issue": "WAR-61",
+  "documents": [
+    {
+      "id": "efb20567-b60f-43da-92b8-1dd5e30892fc",
+      "title": "WAR-61｜C/D/E 原始文本输出（剧本／Director／Storyboard）",
+      "path": "linear-export/cde-original-texts.md",
+      "bytes": 43869,
+      "sha256": "68a8b8210bbc0277c938772234e0f9767b54f19b183b498dfc59b8f4f43bd963"
+    },
+    {
+      "id": "adba3a13-f8f3-492f-b968-bcfbc0820520",
+      "title": "WAR-61｜Toonflow C/D/E 历史研究进度与判断（整理前正文）",
+      "path": "linear-export/history-and-analysis.md",
+      "bytes": 31003,
+      "sha256": "c62c78936c571a5af616da5763476cf70ec4d8ecc07d23fc7798e342dfe38ade"
+    }
+  ],
+  "resource_archive": {
+    "linear_attachment_id": "60845978-fa75-4612-b9ed-2a607a2fc258",
+    "title": "WAR-61｜Toonflow 原始文本研究完整证据（C/D/E + 前置样本）",
+    "path": "evidence/war-61-original-evidence.tar.gz",
+    "compressed_bytes": 280221,
+    "sha256": "c484936a3ab3ad00f4217c752f16602516e97d740493c683d4a297b416749d2e",
+    "expected_sha256": "c484936a3ab3ad00f4217c752f16602516e97d740493c683d4a297b416749d2e",
+    "matches_linear_record": true,
+    "tar_members": 65,
+    "regular_files": 58,
+    "directories": 7,
+    "uncompressed_regular_bytes": 912413
+  },
+  "cde_frozen_text_checks": [
+    {
+      "path": "xia-61-script-C/script-C.txt",
+      "sha256": "ba56afb91c117d06ced4089456f5e713435e99cfbf287fd3ee5a5b88ee50153d",
+      "matches_linear_document": true,
+      "bytes": 1671
+    },
+    {
+      "path": "xia-61-script-C/director-output.txt",
+      "sha256": "6174646f605b39bcc48b3853a13daf039ecf66a68e4056ec5e0ad2d0d640366e",
+      "matches_linear_document": true,
+      "bytes": 2648
+    },
+    {
+      "path": "xia-61-script-C/storyboard-output.txt",
+      "sha256": "769adbb7277969b3b14682e18408169070e47a24a62977498fa5ab6829cb63ac",
+      "matches_linear_document": true,
+      "bytes": 7822
+    },
+    {
+      "path": "xia-61-script-D/script-D.txt",
+      "sha256": "65b8a2f83cefc2281879fb254d3ee25dfd68d72e7cd0d811a2afbade5c1e165d",
+      "matches_linear_document": true,
+      "bytes": 2177
+    },
+    {
+      "path": "xia-61-script-D/director-output.txt",
+      "sha256": "3eea62ebf4a97084d197a357bc6cc8bc6a64e84f14b21989df5cc49722bfadf1",
+      "matches_linear_document": true,
+      "bytes": 2784
+    },
+    {
+      "path": "xia-61-script-D/storyboard-output.txt",
+      "sha256": "7d8c9ea2d87b3ad9ca8dff48e168ae413874a2b8c9845cdcdaaa7f741ce5ce37",
+      "matches_linear_document": true,
+      "bytes": 8621
+    },
+    {
+      "path": "xia-61-script-E/script-E.txt",
+      "sha256": "466d257d3ac684ea20e76eb01f80589270484478cc75b084c1f0640c77d576ec",
+      "matches_linear_document": true,
+      "bytes": 2535
+    },
+    {
+      "path": "xia-61-script-E/director-output.txt",
+      "sha256": "27997c74a19868919332fc0551a4c58ddc0a200dc3d4544fbb25d4e0f7b4dfb4",
+      "matches_linear_document": true,
+      "bytes": 2844
+    },
+    {
+      "path": "xia-61-script-E/storyboard-output.txt",
+      "sha256": "1d517f94703f1a61e7a5b675c0e72e44d80ae9a866ea07c1ee4438dc20fde02e",
+      "matches_linear_document": true,
+      "bytes": 9723
+    }
+  ],
+  "original_member_manifest": "evidence/member-manifest.json",
+  "notes": [
+    "All C/D/E script, Director output and Storyboard output SHA-256 values match the Linear source document.",
+    "C/D/E director and storyboard logs record gpt-6.1-terra, reasoning effort medium. The package-root MANIFEST.json covers 19 earlier A/B files and says gpt-6-luna/high; it must not be applied to C/D/E."
+  ]
+}
