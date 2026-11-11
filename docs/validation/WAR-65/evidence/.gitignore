@@ -1,0 +1,2 @@
+# Original model logs/archive remain local; tracked manifest records immutable SHA256.
+*.tar.gz

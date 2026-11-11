@@ -1,0 +1,704 @@
+{
+  "archive": "evidence/war-65-cd-original-execution-20261111.tar.gz",
+  "archive_sha256": "3cd2eb5b84653aaa384612b05f49166283454faa17cff1a407125a784629cc51",
+  "archive_bytes": 2229743,
+  "archive_member_count": 137,
+  "source_host": "Terry",
+  "destination_host": "Eric",
+  "source_archive_created": "2026-11-11",
+  "source_path": "/home/ubuntu/research/xia-59/directorskill-20261109/war-65-cd-raw-evidence-transfer-20261111.tar.gz",
+  "contains": [
+    "C step2-7 complete original execution tree",
+    "D-assisted v1 step2-7 complete original execution tree",
+    "original C evidence attachment archive",
+    "original frozen script D",
+    "D-assisted v1 auxiliary input"
+  ],
+  "members": [
+    {
+      "path": "war-65-script-C/step2/SKILL.md",
+      "bytes": 32369,
+      "sha256": "543be6ece626beaa7dbc36b8225dcdc0b763d8044563189e842b306bb5cfd792"
+    },
+    {
+      "path": "war-65-script-C/step2/manifest-pre.json",
+      "bytes": 599,
+      "sha256": "36f8aed51e9fab7d60ec25b1cba314f3c4e07ea129a2096586b6051e6710b313"
+    },
+    {
+      "path": "war-65-script-C/step2/script-C.txt",
+      "bytes": 1671,
+      "sha256": "ba56afb91c117d06ced4089456f5e713435e99cfbf287fd3ee5a5b88ee50153d"
+    },
+    {
+      "path": "war-65-script-C/step2/step2-input.txt",
+      "bytes": 34940,
+      "sha256": "aad56bd6d63a9de1312ab797a471e004b0d653c1c822ca0cb7b534387dcd8093"
+    },
+    {
+      "path": "war-65-script-C/step2/step2-log.txt",
+      "bytes": 40714,
+      "sha256": "ea3977974f6a214cdfc80158196bc2603221075a3026da45e251a277979f715c"
+    },
+    {
+      "path": "war-65-script-C/step2/step2-output.txt",
+      "bytes": 2677,
+      "sha256": "8c890ed9c80258fa9f148cc4f1180f461f0c826de966d7b9af251bc38d7dd0c0"
+    },
+    {
+      "path": "war-65-script-C/step3/SKILL.md",
+      "bytes": 32369,
+      "sha256": "543be6ece626beaa7dbc36b8225dcdc0b763d8044563189e842b306bb5cfd792"
+    },
+    {
+      "path": "war-65-script-C/step3/beat-sheet-template.md",
+      "bytes": 10653,
+      "sha256": "e53e846e9f43cdc80cf261bde4978001628d6383a6d4bd702762f88131e04bda"
+    },
+    {
+      "path": "war-65-script-C/step3/manifest-pre.json",
+      "bytes": 816,
+      "sha256": "9b048964326f3fd00d0509b420311a77a35e525688f3c0ec2ca867d731ecd518"
+    },
+    {
+      "path": "war-65-script-C/step3/script-C.txt",
+      "bytes": 1671,
+      "sha256": "ba56afb91c117d06ced4089456f5e713435e99cfbf287fd3ee5a5b88ee50153d"
+    },
+    {
+      "path": "war-65-script-C/step3/step2-output.txt",
+      "bytes": 2677,
+      "sha256": "8c890ed9c80258fa9f148cc4f1180f461f0c826de966d7b9af251bc38d7dd0c0"
+    },
+    {
+      "path": "war-65-script-C/step3/step3-exit-code.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "war-65-script-C/step3/step3-input.txt",
+      "bytes": 49155,
+      "sha256": "a2b3e3a388599e47344d28ff29cd7e60869c0f334a722afae4f43c3e5aeb4da1"
+    },
+    {
+      "path": "war-65-script-C/step3/step3-log.txt",
+      "bytes": 55484,
+      "sha256": "b73142f2ad7730180cc1b2dbf913d9d035773c382e6aed8f8194dce1d36faa30"
+    },
+    {
+      "path": "war-65-script-C/step3/step3-output.txt",
+      "bytes": 2895,
+      "sha256": "7a0ffb334a0d37eb9ef270f3167e4820f26caa153230bad958462a5442bdd041"
+    },
+    {
+      "path": "war-65-script-C/step5/SKILL.md",
+      "bytes": 32369,
+      "sha256": "543be6ece626beaa7dbc36b8225dcdc0b763d8044563189e842b306bb5cfd792"
+    },
+    {
+      "path": "war-65-script-C/step5/continuity-bible.md",
+      "bytes": 37392,
+      "sha256": "92aad85488aee0fcad6d432ce29f66286d66245bb2a17499a325afb356c74826"
+    },
+    {
+      "path": "war-65-script-C/step5/director-book-template.md",
+      "bytes": 16714,
+      "sha256": "d6f0901207a822220fe87a7ca2feeea0ddeaf142a168a03704456e69b0ad68b0"
+    },
+    {
+      "path": "war-65-script-C/step5/genre-playbooks.md",
+      "bytes": 58886,
+      "sha256": "5713431b20dcd6c4804d086385106ecce9ef483210287dfdceacc351077d33e1"
+    },
+    {
+      "path": "war-65-script-C/step5/lighting-and-color.md",
+      "bytes": 40978,
+      "sha256": "fb34edea030bbb29b047ff7e489968dded8978f1a3acb768ede230a1c106792b"
+    },
+    {
+      "path": "war-65-script-C/step5/manifest-post.json",
+      "bytes": 2104,
+      "sha256": "afa9bfee969a1536ba6d3e90dcb1f494f2b971470a3afbe3aa30a1a6947563fd"
+    },
+    {
+      "path": "war-65-script-C/step5/manifest-pre.json",
+      "bytes": 1828,
+      "sha256": "67922c5ef29101dd2f03e2723d047c872f59894ca622e9069d8f1fb6b4d20f86"
+    },
+    {
+      "path": "war-65-script-C/step5/reference-excerpts.txt",
+      "bytes": 48152,
+      "sha256": "8c796c1c719c781b840d3bbed05fa9f82c144300a72a77c9bca6715fa75e0e2f"
+    },
+    {
+      "path": "war-65-script-C/step5/script-C.txt",
+      "bytes": 1671,
+      "sha256": "ba56afb91c117d06ced4089456f5e713435e99cfbf287fd3ee5a5b88ee50153d"
+    },
+    {
+      "path": "war-65-script-C/step5/step2-output.txt",
+      "bytes": 2677,
+      "sha256": "8c890ed9c80258fa9f148cc4f1180f461f0c826de966d7b9af251bc38d7dd0c0"
+    },
+    {
+      "path": "war-65-script-C/step5/step3-output.txt",
+      "bytes": 2895,
+      "sha256": "7a0ffb334a0d37eb9ef270f3167e4820f26caa153230bad958462a5442bdd041"
+    },
+    {
+      "path": "war-65-script-C/step5/step4-decision.txt",
+      "bytes": 129,
+      "sha256": "b1cad3fd7bde3e3b74ac70b498694c382e30150f837da52a706962f7f39a3ced"
+    },
+    {
+      "path": "war-65-script-C/step5/step5-exit-code.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "war-65-script-C/step5/step5-input.txt",
+      "bytes": 106124,
+      "sha256": "4c7f969f6e8af817542272431179f566fa11af94e8dcf80bc4ec6bae559eae84"
+    },
+    {
+      "path": "war-65-script-C/step5/step5-log.txt",
+      "bytes": 126872,
+      "sha256": "379baeda3d7ad06da2f3340ab7c87b88a7a1f6cdb0399d0535dd901d206d696a"
+    },
+    {
+      "path": "war-65-script-C/step5/step5-output.txt",
+      "bytes": 10164,
+      "sha256": "21187c2fc7c8bf45608f4d5c975c574b1173706429d9c6e2bb640df3f7e2027a"
+    },
+    {
+      "path": "war-65-script-C/step6/SKILL.md",
+      "bytes": 32369,
+      "sha256": "543be6ece626beaa7dbc36b8225dcdc0b763d8044563189e842b306bb5cfd792"
+    },
+    {
+      "path": "war-65-script-C/step6/blocking-and-staging.md",
+      "bytes": 39568,
+      "sha256": "16203dd654d61459df6eabb7754d5b450a17774ad18484f27a1c05e73d392402"
+    },
+    {
+      "path": "war-65-script-C/step6/manifest-post.json",
+      "bytes": 1684,
+      "sha256": "cd6da620249dffade6a54267efa7b4e583c70bc54c47c7ff32d0bdc1bd04a0fd"
+    },
+    {
+      "path": "war-65-script-C/step6/manifest-pre.json",
+      "bytes": 1281,
+      "sha256": "16a80285b0c718980785d8187f1798d6e77a464b9bcbaa4839096641224db7af"
+    },
+    {
+      "path": "war-65-script-C/step6/script-C.txt",
+      "bytes": 1671,
+      "sha256": "ba56afb91c117d06ced4089456f5e713435e99cfbf287fd3ee5a5b88ee50153d"
+    },
+    {
+      "path": "war-65-script-C/step6/shot-plan-template.md",
+      "bytes": 17080,
+      "sha256": "74aad412013e13ff0b3ff05880f55f74aadf009a080188a7adc91b4b3ff87688"
+    },
+    {
+      "path": "war-65-script-C/step6/step2-output.txt",
+      "bytes": 2677,
+      "sha256": "8c890ed9c80258fa9f148cc4f1180f461f0c826de966d7b9af251bc38d7dd0c0"
+    },
+    {
+      "path": "war-65-script-C/step6/step3-output.txt",
+      "bytes": 2895,
+      "sha256": "7a0ffb334a0d37eb9ef270f3167e4820f26caa153230bad958462a5442bdd041"
+    },
+    {
+      "path": "war-65-script-C/step6/step4-decision.txt",
+      "bytes": 129,
+      "sha256": "b1cad3fd7bde3e3b74ac70b498694c382e30150f837da52a706962f7f39a3ced"
+    },
+    {
+      "path": "war-65-script-C/step6/step5-output.txt",
+      "bytes": 10164,
+      "sha256": "21187c2fc7c8bf45608f4d5c975c574b1173706429d9c6e2bb640df3f7e2027a"
+    },
+    {
+      "path": "war-65-script-C/step6/step6-exit-code.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "war-65-script-C/step6/step6-input.txt",
+      "bytes": 108883,
+      "sha256": "d1cd208c43da0ab1d290aaad00f2b1ee24f33018a2eea4c072fb58ccc27b1046"
+    },
+    {
+      "path": "war-65-script-C/step6/step6-log.txt",
+      "bytes": 118099,
+      "sha256": "f74128c047fe9c969641bce9162169908f85d8d0f88553891892199b90085f3e"
+    },
+    {
+      "path": "war-65-script-C/step6/step6-output.txt",
+      "bytes": 4398,
+      "sha256": "589b75e533f4c70d4dac01560611517dc1772193084ee4fee31cb2eee5f05bd3"
+    },
+    {
+      "path": "war-65-script-C/step7/SKILL.md",
+      "bytes": 32369,
+      "sha256": "543be6ece626beaa7dbc36b8225dcdc0b763d8044563189e842b306bb5cfd792"
+    },
+    {
+      "path": "war-65-script-C/step7/blocking-and-staging.md",
+      "bytes": 39568,
+      "sha256": "16203dd654d61459df6eabb7754d5b450a17774ad18484f27a1c05e73d392402"
+    },
+    {
+      "path": "war-65-script-C/step7/cinematic-language.md",
+      "bytes": 45560,
+      "sha256": "2e899733fdefb12d316faeeaed1a5dc466dea55ef3818b28e7cec13d7a501933"
+    },
+    {
+      "path": "war-65-script-C/step7/continuity-bible.md",
+      "bytes": 37392,
+      "sha256": "92aad85488aee0fcad6d432ce29f66286d66245bb2a17499a325afb356c74826"
+    },
+    {
+      "path": "war-65-script-C/step7/editing-and-assembly.md",
+      "bytes": 32110,
+      "sha256": "8256bb843e8d45ba66aba927edef30cd586a0a32030e4a4639d26be156e850de"
+    },
+    {
+      "path": "war-65-script-C/step7/lighting-and-color.md",
+      "bytes": 40978,
+      "sha256": "fb34edea030bbb29b047ff7e489968dded8978f1a3acb768ede230a1c106792b"
+    },
+    {
+      "path": "war-65-script-C/step7/manifest-post.json",
+      "bytes": 2789,
+      "sha256": "18da8cf2defdfa5f13168ef9dfdb3e7cb275efdf3658bc1d1601d01b088e3151"
+    },
+    {
+      "path": "war-65-script-C/step7/manifest-pre.json",
+      "bytes": 2355,
+      "sha256": "d942c16180399c7df80f4ad99871887071b955c368bbc9e87a279c0e585659cc"
+    },
+    {
+      "path": "war-65-script-C/step7/production-workflow.md",
+      "bytes": 30657,
+      "sha256": "3f5e431b23931ae636d6637c92b63bc084407a1b4a8b1625fb5e9c393bb97998"
+    },
+    {
+      "path": "war-65-script-C/step7/script-C.txt",
+      "bytes": 1671,
+      "sha256": "ba56afb91c117d06ced4089456f5e713435e99cfbf287fd3ee5a5b88ee50153d"
+    },
+    {
+      "path": "war-65-script-C/step7/shot-plan-template.md",
+      "bytes": 17080,
+      "sha256": "74aad412013e13ff0b3ff05880f55f74aadf009a080188a7adc91b4b3ff87688"
+    },
+    {
+      "path": "war-65-script-C/step7/step2-output.txt",
+      "bytes": 2677,
+      "sha256": "8c890ed9c80258fa9f148cc4f1180f461f0c826de966d7b9af251bc38d7dd0c0"
+    },
+    {
+      "path": "war-65-script-C/step7/step3-output.txt",
+      "bytes": 2895,
+      "sha256": "7a0ffb334a0d37eb9ef270f3167e4820f26caa153230bad958462a5442bdd041"
+    },
+    {
+      "path": "war-65-script-C/step7/step4-decision.txt",
+      "bytes": 129,
+      "sha256": "b1cad3fd7bde3e3b74ac70b498694c382e30150f837da52a706962f7f39a3ced"
+    },
+    {
+      "path": "war-65-script-C/step7/step5-output.txt",
+      "bytes": 10164,
+      "sha256": "21187c2fc7c8bf45608f4d5c975c574b1173706429d9c6e2bb640df3f7e2027a"
+    },
+    {
+      "path": "war-65-script-C/step7/step6-output.txt",
+      "bytes": 4398,
+      "sha256": "589b75e533f4c70d4dac01560611517dc1772193084ee4fee31cb2eee5f05bd3"
+    },
+    {
+      "path": "war-65-script-C/step7/step7-exit-code.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "war-65-script-C/step7/step7-input.txt",
+      "bytes": 198168,
+      "sha256": "2581cae269f9baa3295c7bb2c70a17cd453e7b6033b8bfe0d7e287cfc3b9997c"
+    },
+    {
+      "path": "war-65-script-C/step7/step7-log.txt",
+      "bytes": 218094,
+      "sha256": "c95f78ed7beeb6370bf72671c6bfe859b2f3932e29e447230fd8ae667eccaea4"
+    },
+    {
+      "path": "war-65-script-C/step7/step7-output.txt",
+      "bytes": 9753,
+      "sha256": "cec8e3e89ae509dec907dc061e830bb31e0db425651c3a8c919ae7cbd46d79da"
+    },
+    {
+      "path": "war-65-script-C/step7/step7-reference-excerpts.txt",
+      "bytes": 124449,
+      "sha256": "0773a4d632fd6c63ab02d094824d448cbece2b10dc6d86b0266d8e7124b4f93f"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step2/D-assisted-v1-input.md",
+      "bytes": 2755,
+      "sha256": "d0d8968488d23e627bf020776786e64e1ac2efef94eadc974ed3704e3e7f6c49"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step2/SKILL.md",
+      "bytes": 32369,
+      "sha256": "543be6ece626beaa7dbc36b8225dcdc0b763d8044563189e842b306bb5cfd792"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step2/manifest-pre.json",
+      "bytes": 768,
+      "sha256": "a9194e4f91c5dbe59fdfa561d110d7b49207fdd4b88dbadcf189276e637659d2"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step2/script-D.txt",
+      "bytes": 2177,
+      "sha256": "65b8a2f83cefc2281879fb254d3ee25dfd68d72e7cd0d811a2afbade5c1e165d"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step2/step2-input.txt",
+      "bytes": 38444,
+      "sha256": "6a34178067366d38e9d89784b01fd83b6461c0f1dcdf765f735f51b7f31db0fb"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step2/step2-log.txt",
+      "bytes": 45644,
+      "sha256": "543dbfdc1129d79850638c6a092ee9a13f2ba551771572b729ebacce6199ef49"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step2/step2-output.txt",
+      "bytes": 3384,
+      "sha256": "8c06dbcdd1f88a4156b6e41fc79f9fca574c9c205b24e7c899cf25352d9a9f4b"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step3/D-assisted-v1-input.md",
+      "bytes": 2755,
+      "sha256": "d0d8968488d23e627bf020776786e64e1ac2efef94eadc974ed3704e3e7f6c49"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step3/SKILL.md",
+      "bytes": 32369,
+      "sha256": "543be6ece626beaa7dbc36b8225dcdc0b763d8044563189e842b306bb5cfd792"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step3/beat-sheet-template.md",
+      "bytes": 10653,
+      "sha256": "e53e846e9f43cdc80cf261bde4978001628d6383a6d4bd702762f88131e04bda"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step3/manifest-pre.json",
+      "bytes": 914,
+      "sha256": "68e1e79f9206e7b6cfc76d3605c0ab4cf4d8512fcfacbd30461af8ff83dbe0ce"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step3/script-D.txt",
+      "bytes": 2177,
+      "sha256": "65b8a2f83cefc2281879fb254d3ee25dfd68d72e7cd0d811a2afbade5c1e165d"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step3/step2-output.txt",
+      "bytes": 3384,
+      "sha256": "8c06dbcdd1f88a4156b6e41fc79f9fca574c9c205b24e7c899cf25352d9a9f4b"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step3/step3-exit-code.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step3/step3-input.txt",
+      "bytes": 53495,
+      "sha256": "e4e66c5a56dfa1fb789073e37e49ad7da0747a03e536c229a8b1c72c09278fbf"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step3/step3-log.txt",
+      "bytes": 61489,
+      "sha256": "8d54c52c9da2e96719243478f2e93ee487e4ed2033a1b54212aab7d169dbd3ce"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step3/step3-output.txt",
+      "bytes": 3781,
+      "sha256": "eb9cde50bd2f7331c83e1baa67b3c13cd68a5c9de96c302a1df2e99ab9993fd8"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step5/D-assisted-v1-input.md",
+      "bytes": 2755,
+      "sha256": "d0d8968488d23e627bf020776786e64e1ac2efef94eadc974ed3704e3e7f6c49"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step5/SKILL.md",
+      "bytes": 32369,
+      "sha256": "543be6ece626beaa7dbc36b8225dcdc0b763d8044563189e842b306bb5cfd792"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step5/continuity-bible.md",
+      "bytes": 37392,
+      "sha256": "92aad85488aee0fcad6d432ce29f66286d66245bb2a17499a325afb356c74826"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step5/director-book-template.md",
+      "bytes": 16714,
+      "sha256": "d6f0901207a822220fe87a7ca2feeea0ddeaf142a168a03704456e69b0ad68b0"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step5/genre-playbooks.md",
+      "bytes": 58886,
+      "sha256": "5713431b20dcd6c4804d086385106ecce9ef483210287dfdceacc351077d33e1"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step5/lighting-and-color.md",
+      "bytes": 40978,
+      "sha256": "fb34edea030bbb29b047ff7e489968dded8978f1a3acb768ede230a1c106792b"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step5/manifest-pre.json",
+      "bytes": 1347,
+      "sha256": "9bfd5d7c9ac80beef062520e0c59ae9b93c1a1167701ed4e1873d15186a42f74"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step5/reference-excerpts.txt",
+      "bytes": 48152,
+      "sha256": "8c796c1c719c781b840d3bbed05fa9f82c144300a72a77c9bca6715fa75e0e2f"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step5/script-D.txt",
+      "bytes": 2177,
+      "sha256": "65b8a2f83cefc2281879fb254d3ee25dfd68d72e7cd0d811a2afbade5c1e165d"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step5/step2-output.txt",
+      "bytes": 3384,
+      "sha256": "8c06dbcdd1f88a4156b6e41fc79f9fca574c9c205b24e7c899cf25352d9a9f4b"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step5/step3-output.txt",
+      "bytes": 3781,
+      "sha256": "eb9cde50bd2f7331c83e1baa67b3c13cd68a5c9de96c302a1df2e99ab9993fd8"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step5/step4-decision.txt",
+      "bytes": 103,
+      "sha256": "4ce596f1020ccc7be6ddf60963fa1a3dee2669d664efe3b7c70a187c56effa82"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step5/step5-exit-code.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step5/step5-input.txt",
+      "bytes": 110987,
+      "sha256": "0b863cb2645bd3a41c55a486efb528484d6c7db1fafffe81722d19eefc55928c"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step5/step5-log.txt",
+      "bytes": 134152,
+      "sha256": "2a37defe813649eeb1ab1ad6617e0707ed664175267bd0c6a0c1bd6fefcee934"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step5/step5-output.txt",
+      "bytes": 11296,
+      "sha256": "03ca3a5549fb1419cd945305d6f4465ec0b2ec21ee6072b9f3cbf7bad55442c9"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step6/D-assisted-v1-input.md",
+      "bytes": 2755,
+      "sha256": "d0d8968488d23e627bf020776786e64e1ac2efef94eadc974ed3704e3e7f6c49"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step6/SKILL.md",
+      "bytes": 32369,
+      "sha256": "543be6ece626beaa7dbc36b8225dcdc0b763d8044563189e842b306bb5cfd792"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step6/blocking-and-staging.md",
+      "bytes": 39568,
+      "sha256": "16203dd654d61459df6eabb7754d5b450a17774ad18484f27a1c05e73d392402"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step6/manifest-pre.json",
+      "bytes": 1112,
+      "sha256": "ceca57bbf0142584e7ea757fa5971f6278a4b356d39cb03e26f8bbd22ea9e1f2"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step6/script-D.txt",
+      "bytes": 2177,
+      "sha256": "65b8a2f83cefc2281879fb254d3ee25dfd68d72e7cd0d811a2afbade5c1e165d"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step6/shot-plan-template.md",
+      "bytes": 17080,
+      "sha256": "74aad412013e13ff0b3ff05880f55f74aadf009a080188a7adc91b4b3ff87688"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step6/step2-output.txt",
+      "bytes": 3384,
+      "sha256": "8c06dbcdd1f88a4156b6e41fc79f9fca574c9c205b24e7c899cf25352d9a9f4b"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step6/step3-output.txt",
+      "bytes": 3781,
+      "sha256": "eb9cde50bd2f7331c83e1baa67b3c13cd68a5c9de96c302a1df2e99ab9993fd8"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step6/step4-decision.txt",
+      "bytes": 103,
+      "sha256": "4ce596f1020ccc7be6ddf60963fa1a3dee2669d664efe3b7c70a187c56effa82"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step6/step5-output.txt",
+      "bytes": 11296,
+      "sha256": "03ca3a5549fb1419cd945305d6f4465ec0b2ec21ee6072b9f3cbf7bad55442c9"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step6/step6-exit-code.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step6/step6-input.txt",
+      "bytes": 114206,
+      "sha256": "3c9675ab7cfc7eb86fc450186ded838fcaaff39bb8d8bdb0348ae01b8c4dd5e5"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step6/step6-log.txt",
+      "bytes": 133143,
+      "sha256": "e50e08954883029422e95dfdbf660d16c66d3161df0151b75a76c21110f69a74"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step6/step6-output.txt",
+      "bytes": 9150,
+      "sha256": "3e889853b6f3471846f42829ca67518ea374b55dcbc4ca189b0b43507b91785a"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step7/D-assisted-v1-input.md",
+      "bytes": 2755,
+      "sha256": "d0d8968488d23e627bf020776786e64e1ac2efef94eadc974ed3704e3e7f6c49"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step7/SKILL.md",
+      "bytes": 32369,
+      "sha256": "543be6ece626beaa7dbc36b8225dcdc0b763d8044563189e842b306bb5cfd792"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step7/blocking-and-staging.md",
+      "bytes": 39568,
+      "sha256": "16203dd654d61459df6eabb7754d5b450a17774ad18484f27a1c05e73d392402"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step7/cinematic-language.md",
+      "bytes": 45560,
+      "sha256": "2e899733fdefb12d316faeeaed1a5dc466dea55ef3818b28e7cec13d7a501933"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step7/continuity-bible.md",
+      "bytes": 37392,
+      "sha256": "92aad85488aee0fcad6d432ce29f66286d66245bb2a17499a325afb356c74826"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step7/editing-and-assembly.md",
+      "bytes": 32110,
+      "sha256": "8256bb843e8d45ba66aba927edef30cd586a0a32030e4a4639d26be156e850de"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step7/lighting-and-color.md",
+      "bytes": 40978,
+      "sha256": "fb34edea030bbb29b047ff7e489968dded8978f1a3acb768ede230a1c106792b"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step7/manifest-pre.json",
+      "bytes": 1795,
+      "sha256": "46a61a88a8536914fb03cb4246545705d1404fb610af78aab86794a0d643d825"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step7/production-workflow.md",
+      "bytes": 30657,
+      "sha256": "3f5e431b23931ae636d6637c92b63bc084407a1b4a8b1625fb5e9c393bb97998"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step7/script-D.txt",
+      "bytes": 2177,
+      "sha256": "65b8a2f83cefc2281879fb254d3ee25dfd68d72e7cd0d811a2afbade5c1e165d"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step7/shot-plan-template.md",
+      "bytes": 17080,
+      "sha256": "74aad412013e13ff0b3ff05880f55f74aadf009a080188a7adc91b4b3ff87688"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step7/step2-output.txt",
+      "bytes": 3384,
+      "sha256": "8c06dbcdd1f88a4156b6e41fc79f9fca574c9c205b24e7c899cf25352d9a9f4b"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step7/step3-output.txt",
+      "bytes": 3781,
+      "sha256": "eb9cde50bd2f7331c83e1baa67b3c13cd68a5c9de96c302a1df2e99ab9993fd8"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step7/step4-decision.txt",
+      "bytes": 103,
+      "sha256": "4ce596f1020ccc7be6ddf60963fa1a3dee2669d664efe3b7c70a187c56effa82"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step7/step5-output.txt",
+      "bytes": 11296,
+      "sha256": "03ca3a5549fb1419cd945305d6f4465ec0b2ec21ee6072b9f3cbf7bad55442c9"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step7/step6-output.txt",
+      "bytes": 9150,
+      "sha256": "3e889853b6f3471846f42829ca67518ea374b55dcbc4ca189b0b43507b91785a"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step7/step7-exit-code.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step7/step7-input.txt",
+      "bytes": 208484,
+      "sha256": "b43e8a2b2dd413bc750015fbb9dc09fcbfb16adb8b2f1de5ca3aa5b98bcf8bed"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step7/step7-log.txt",
+      "bytes": 238568,
+      "sha256": "2b57887bbc5a85e3b6611ff80428ebd88fdfe5aee7f4faf4a9a956858b7d6e35"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step7/step7-output.txt",
+      "bytes": 14755,
+      "sha256": "e6d53368094b9398dc1d47002bfa17f8fe96c6d38dadded228bcc704eb792706"
+    },
+    {
+      "path": "war-65-script-D-assisted-v1/step7/step7-reference-excerpts.txt",
+      "bytes": 124449,
+      "sha256": "0773a4d632fd6c63ab02d094824d448cbece2b10dc6d86b0266d8e7124b4f93f"
+    },
+    {
+      "path": "D-assisted-v1-input.md",
+      "bytes": 2755,
+      "sha256": "d0d8968488d23e627bf020776786e64e1ac2efef94eadc974ed3704e3e7f6c49"
+    },
+    {
+      "path": "war-65-script-C-raw-evidence-20261109.tar.gz",
+      "bytes": 731934,
+      "sha256": "272523022e3361dc7a46590852317deb8677b1b417e89f5d33eb8df2b3814266"
+    },
+    {
+      "path": "source-script-D/script-D.txt",
+      "bytes": 2177,
+      "sha256": "65b8a2f83cefc2281879fb254d3ee25dfd68d72e7cd0d811a2afbade5c1e165d"
+    }
+  ]
+}
