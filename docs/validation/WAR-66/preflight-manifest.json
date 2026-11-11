@@ -1,0 +1,39 @@
+{
+  "task": "WAR-66",
+  "phase": "preflight+C-input-frozen",
+  "status": "pipeline_not_executed",
+  "machine": "Eric",
+  "source_manifest": "docs/validation/XIA-59-shotplan/upstream/manifest.json",
+  "code_snapshot": {
+    "storyboard_artist.py": {
+      "path": "docs/validation/XIA-59-shotplan/upstream/vimax/storyboard_artist.py",
+      "sha256": "92c84362770d9123d80c5595cbf526c8d34288f69385a96e9e40c5450e83488e",
+      "bytes": 18817
+    },
+    "camera_image_generator.py": {
+      "path": "docs/validation/XIA-59-shotplan/upstream/vimax/camera_image_generator.py",
+      "sha256": "b3165016eb6942ebb3bfc3a4d93a73caad2b6d7700297642d6a2126a7c5e777c",
+      "bytes": 14092
+    },
+    "script2video_pipeline.py": {
+      "path": "docs/validation/XIA-59-shotplan/upstream/vimax/script2video_pipeline.py",
+      "sha256": "682e1c2b6f726815ac4af34a09569af5309487ff48dbaf8c326305db68bf04e7",
+      "bytes": 55164
+    }
+  },
+  "C_input": {
+    "path": "docs/validation/WAR-66/c-original-v1/script-C-frozen.txt",
+    "sha256": "ba56afb91c117d06ced4089456f5e713435e99cfbf287fd3ee5a5b88ee50153d",
+    "bytes": 1671,
+    "archive_source": "docs/validation/WAR-65/evidence/war-65-cd-original-execution-20261111.tar.gz",
+    "archive_member": "war-65-script-C/step2/script-C.txt"
+  },
+  "model": "not invoked",
+  "render": "not invoked",
+  "known_missing_default_python_modules": [
+    "langchain",
+    "langchain_core",
+    "moviepy"
+  ],
+  "upstream_git_commit": "unknown (snapshot from main URL, not a pinned commit)"
+}
