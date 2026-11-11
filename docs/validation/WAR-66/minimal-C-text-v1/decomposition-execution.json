@@ -1,0 +1,28 @@
+{
+  "command": [
+    "codex",
+    "exec",
+    "-m",
+    "gpt-6.1-terra",
+    "-c",
+    "model_reasoning_effort=\"medium\"",
+    "--ephemeral",
+    "--ignore-user-config",
+    "--ignore-rules",
+    "--sandbox",
+    "read-only",
+    "--skip-git-repo-check",
+    "-C",
+    "/home/sean/projects/canvas-lab/docs/validation/WAR-66/minimal-C-text-v1",
+    "--json",
+    "--output-schema",
+    "/home/sean/projects/canvas-lab/docs/validation/WAR-66/minimal-C-text-v1/decomposition-schema.json",
+    "-o",
+    "/home/sean/projects/canvas-lab/docs/validation/WAR-66/minimal-C-text-v1/decomposition-raw.txt",
+    "-"
+  ],
+  "start": "2026-11-11T20:26:21.748573",
+  "end": "2026-11-11T20:26:41.512308",
+  "returncode": 0,
+  "response_exists": true
+}

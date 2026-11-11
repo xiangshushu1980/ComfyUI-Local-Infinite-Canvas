@@ -1,0 +1,55 @@
+{
+  "type": "object",
+  "properties": {
+    "camera_parent_items": {
+      "type": "array",
+      "items": {
+        "type": [
+          "object",
+          "null"
+        ],
+        "properties": {
+          "parent_cam_idx": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "parent_shot_idx": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "reason": {
+            "type": "string"
+          },
+          "is_parent_fully_covers_child": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "missing_info": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "parent_cam_idx",
+          "parent_shot_idx",
+          "reason",
+          "is_parent_fully_covers_child",
+          "missing_info"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "camera_parent_items"
+  ],
+  "additionalProperties": false
+}

@@ -15,7 +15,7 @@
 
 - 取消原定 C/D/E 全量模型回放、跨样本 ViMax 评审及以此为前提的完整 Python 环境/Codex CLI 适配；不为形式对称而实跑。
 - 首先复用 Eric 的源码快照和 WAR-57 研究；不自动部署 ViMax、下载依赖、调用外部付费 API。
-- 如源码不能回答关键问题，可提议仅用 C 的一个代表镜头进行有界文本试验，待用户决定；试验不是当前验收必需项，也不能伪称原版 Python 管线运行。
+- 用户已授权 C 三镜最小文本实验；使用 Codex CLI 回放原版 Shot Decomposition 与 Camera Tree Prompt（有单次批量包装及 JSON Schema 适配），不是原版 Python Pipeline。原始输入、输出、日志与 SHA 全部归档。
 - 不生成图片/视频、不调用 GPU/H3、不修改 ViMax、Canvas/ComfyUI、不覆盖冻结证据。
 - FF/Motion/LF 是单镜头内部拆解；Camera Tree 是机位/参考图依赖，不等于跨镜剧情状态账本或真实几何校验。
 
@@ -28,6 +28,12 @@
 - 源码位置 docs/validation/XIA-59-shotplan/upstream/vimax/；上游 manifest 为 docs/validation/XIA-59-shotplan/upstream/manifest.json。
 - 跨项目参考 docs/planning/ai-filmmaking-open-source-directing-review.md；关联 WAR-61 和 WAR-65。
 
+## 最小文本测试（2026-11-11）
+
+- `minimal-C-text-v1/REVIEW.md`：三镜 FF/Motion/LF 与 Camera Tree 观察、职责映射及限制。
+- `minimal-C-text-v1/`：冻结的三镜候选、Prompt 消息、Schema、原始输出、Codex JSONL、stderr、执行条件和 SHA 清单；两阶段退出码均为 0。
+- 模型：Eric Codex CLI 0.166.0 / gpt-6.1-terra / medium / ephemeral / read-only。三镜分解聚合成一次调用，不可等同 ViMax 原版逐镜调用；Camera Tree 单独一次。
+
 ## 下一步
 
-按缺口补齐针对性源码机制分析，形成职责映射和选用建议，随后交 WAR-59 综合讨论。确需模型输出时另议一个镜头试验，不自动恢复 C/D/E 实跑。
+已完成三镜候选的两阶段 Codex CLI 文本回放。下一步审阅 minimal-C-text-v1/REVIEW.md 的机制边界、适配差异及风险，结合 WAR-59 综合讨论；不自动恢复 C/D/E 实跑或生成媒体。

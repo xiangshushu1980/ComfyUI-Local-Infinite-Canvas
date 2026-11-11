@@ -1,0 +1,66 @@
+{
+  "camera-tree-events.jsonl": {
+    "sha256": "e770ee730930f3666baaf70e67bd7994749a35f4616eb7d82a94b515bd423d2c",
+    "bytes": 888
+  },
+  "camera-tree-execution.json": {
+    "sha256": "77565151bb37f2e3cb50e662c15db8299823d4d4b90234a039a7e7bbd1ee3519",
+    "bytes": 733
+  },
+  "camera-tree-messages.json": {
+    "sha256": "1890516456aa238129b422ce15fd33fdca47b22732c585143825e7f8ee0f13e7",
+    "bytes": 5550
+  },
+  "camera-tree-raw.txt": {
+    "sha256": "7b878ac2798314968cbdc35ae856580efbd9cd1266e592e3f5462ed6d7a76bc6",
+    "bytes": 518
+  },
+  "camera-tree-request.txt": {
+    "sha256": "7917efc07b75fbc7ec6d05e37180fd4dcc3965370cabc16db63330479d0d7b2c",
+    "bytes": 5619
+  },
+  "camera-tree-schema.json": {
+    "sha256": "9310151a6319a87be2b3639e7f34165eeb264337cb17dd89ba7f909f3a26e910",
+    "bytes": 1099
+  },
+  "camera-tree-stderr.txt": {
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bytes": 0
+  },
+  "decomposition-events.jsonl": {
+    "sha256": "da8991140ed1d63df8536170fa425fe360f1c1bb86efe9e30e50dc6fe5693558",
+    "bytes": 2777
+  },
+  "decomposition-execution.json": {
+    "sha256": "d591f4ceae0e3dd18e1677c171366b14cbb7e638a2ecdc27f05da0b41c750903",
+    "bytes": 737
+  },
+  "decomposition-messages.json": {
+    "sha256": "a476adb3394f0cf02b9da4f13349b9794747601c016c9a627d8c3c1e22bc16c7",
+    "bytes": 17691
+  },
+  "decomposition-raw.txt": {
+    "sha256": "88cdf92942438cfd8ec915935f91a2dda8f253bd9643f5a2728f0ec1b3a8346b",
+    "bytes": 2356
+  },
+  "decomposition-request.txt": {
+    "sha256": "8712deb523ba7e8b52d66db6419932034662a6c3bd8f85b4674f3a57a8f50163",
+    "bytes": 17684
+  },
+  "decomposition-schema.json": {
+    "sha256": "bd7376091a63d4a1b8b70b8c33723c14c22dac1d99e714007c6df359cc72b220",
+    "bytes": 1329
+  },
+  "decomposition-stderr.txt": {
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bytes": 0
+  },
+  "fixture-shots.json": {
+    "sha256": "8c36464843f58430ee96d62401c3b27a3b97a89803c1d505f86f35a8632c6369",
+    "bytes": 1470
+  },
+  "REVIEW.md": {
+    "sha256": "c84e50f839ced422b86d429e63c177a88e13401f41e819d1c6de0039a49528b4",
+    "bytes": 5940
+  }
+}

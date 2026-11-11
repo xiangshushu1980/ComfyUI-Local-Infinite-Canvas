@@ -1,0 +1,1 @@
+{"camera_parent_items":[{"parent_cam_idx":null,"parent_shot_idx":null,"reason":"首个机位作为根节点。","is_parent_fully_covers_child":null,"missing_info":null},{"parent_cam_idx":0,"parent_shot_idx":0,"reason":"机位 0 的宽全景包含左侧的陈及其手中的车票，空间位置与机位 1 的中近景相符。","is_parent_fully_covers_child":false,"missing_info":"宽全景未描述陈低头看票、抬头看向许及说话后停住的动作，也未提供其中近景的面部与手部细节。"}]}

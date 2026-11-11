@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"01a1ca93-1f22-7920-8aa5-948fc4a5bd62"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"{\"camera_parent_items\":[{\"parent_cam_idx\":null,\"parent_shot_idx\":null,\"reason\":\"首个机位作为根节点。\",\"is_parent_fully_covers_child\":null,\"missing_info\":null},{\"parent_cam_idx\":0,\"parent_shot_idx\":0,\"reason\":\"机位 0 的宽全景包含左侧的陈及其手中的车票，空间位置与机位 1 的中近景相符。\",\"is_parent_fully_covers_child\":false,\"missing_info\":\"宽全景未描述陈低头看票、抬头看向许及说话后停住的动作，也未提供其中近景的面部与手部细节。\"}]}"}}
+{"type":"turn.completed","usage":{"input_tokens":19365,"cached_input_tokens":0,"cache_write_input_tokens":0,"output_tokens":198,"reasoning_output_tokens":36}}

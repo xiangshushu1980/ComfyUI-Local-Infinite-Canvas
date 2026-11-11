@@ -1,0 +1,63 @@
+{
+  "type": "object",
+  "properties": {
+    "decompositions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "idx": {
+            "type": "integer"
+          },
+          "ff_desc": {
+            "type": "string"
+          },
+          "ff_vis_char_idxs": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "lf_desc": {
+            "type": "string"
+          },
+          "lf_vis_char_idxs": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "motion_desc": {
+            "type": "string"
+          },
+          "variation_type": {
+            "type": "string",
+            "enum": [
+              "large",
+              "medium",
+              "small"
+            ]
+          },
+          "variation_reason": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "idx",
+          "ff_desc",
+          "ff_vis_char_idxs",
+          "lf_desc",
+          "lf_vis_char_idxs",
+          "motion_desc",
+          "variation_type",
+          "variation_reason"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "decompositions"
+  ],
+  "additionalProperties": false
+}
