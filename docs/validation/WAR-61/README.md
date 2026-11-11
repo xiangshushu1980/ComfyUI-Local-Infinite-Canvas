@@ -29,7 +29,7 @@ C/D/E 三个文本样本已逐例收口并经用户审阅；**WAR-61 整体仍 I
 - 附件包 SHA-256 为 `c484936a3ab3ad00f4217c752f16602516e97d740493c683d4a297b416749d2e`，280,221 bytes；归档含 65 个 tar 条目（58 个文件、7 个目录），普通文件解包共 912,413 bytes。
 - C/D/E 九份 script、Director 输出和 Storyboard 输出的 SHA-256 均与 Linear 原始文本导出所列相符；两个 Linear Document 的原始内容以 UTF-8 原样写入并与来源响应 SHA-256 相符。
 - 证据包根部 `MANIFEST.json` 中的 `gpt-6-luna/high` 和 19 项清单适用于较早的 A/B 样本；**不能用于标注 C/D/E**。C/D/E 自身日志均记录 `gpt-6.1-terra/medium`。
-- 二进制原始包和解包证据保留在 Eric 本机工作树，尚未核验异机备份；不得据此声称已完成灾备。Terry 上旧副本及 Linear Documents/Resources 均未删除。
+- Eric 本机保存已迁移的原始包与解包证据，尚未核验异机备份；不得据此声称已完成灾备。Terry 原始目录已在逐文件 SHA-256 与字节数匹配迁移副本后删除。Linear Resources 关联已移除，但 Linear 上传对象本身仍留在存储服务；当前 connector 没有永久删除附件对象的操作。两份旧 Linear Document 仍可访问，当前 connector 没有删除或 archive Document 的操作。
 
 ## 文件索引
 
