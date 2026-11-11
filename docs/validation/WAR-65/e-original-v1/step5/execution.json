@@ -1,0 +1,22 @@
+{
+  "step": 5,
+  "model": "gpt-6.1-terra",
+  "reasoning": "medium",
+  "sandbox": "read-only",
+  "ephemeral": true,
+  "ignore_user_config": true,
+  "ignore_rules": true,
+  "pinned_skill_commit": "c65ae0d14457053efb1e354c7e7f7e120d97fad1",
+  "input_sha256": "f26cbf694092607f03940a5aa590940b9f49d7527d1c92e2c2859661b582e64c",
+  "references": [
+    "director-book-template.md",
+    "lighting-and-color.md",
+    "genre-playbooks.md",
+    "continuity-bible.md"
+  ],
+  "start_utc": "2026-11-11T08:31:29.531780+00:00",
+  "end_utc": "2026-11-11T08:32:30.688503+00:00",
+  "exit_code": 0,
+  "output_sha256": "40d9c8453eea893bc3469bdd6bda8a15d142bf19cc50b730b29793d38a3337fc",
+  "output_bytes": 10684
+}

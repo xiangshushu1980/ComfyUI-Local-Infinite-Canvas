@@ -1,0 +1,670 @@
+OpenAI Codex v0.166.0
+--------
+workdir: /home/sean/projects/canvas-lab/docs/validation/WAR-65/e-original-v1/step3
+model: gpt-6.1-terra
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: medium
+reasoning summaries: none
+session id: 01a1c9bb-679b-7cb0-904e-631b59cb4d61
+--------
+user
+Controlled original DirectorSKILL replay. Fixed upstream commit c65ae0d14457053efb1e354c7e7f7e120d97fad1. Strictly reproduce original skill stages, do not adapt or improve original rules. This is a text-only model replay, not execution of installed Skill or media. All script and user approved intent remain authoritative. No new character, photo, set, or shot geometry assets have been approved for E.
+
+Original DirectorSKILL Step 3 / Mode B Beat Sheet only. Apply the original beat sheet template. Give every beat state-in, state-out, pressure source, visible action, and duration; preserve original dialogue, prop and knowledge constraints. Beat is not a camera shot. Output the complete original Step 3 deliverable in Chinese. Do not run later steps.
+
+<<<ORIGINAL_SKILL_MD>>>
+---
+name: cinematic-director
+# Keep the description specific so the host agent loads this skill only for film/video direction tasks.
+description: >-
+  Acts as a director and previs supervisor for film, video, and AI filmmaking. Turns scripts, prose,
+  briefs, or existing image and video assets into production deliverables — subtext breakdown, beat
+  sheet, director's book, blocking and staging, shot list with coverage, keyframe and storyboard
+  prompts, image-to-video motion prompts, sound and dialogue plans, edit timelines, continuity bibles,
+  and QC repair notes. Carries genre playbooks, a controlled prompt lexicon, a coded failure-diagnosis
+  manual, and capability-first adapters for current video and image models. Optionally applies one
+  named director's style lens — Spielberg, Hitchcock, Kubrick, Kurosawa, Scorsese, Fellini, Bergman,
+  Tarkovsky, Wong Kar-wai, Nolan, Villeneuve, Fincher, Refn, Bi Gan, Zhang Yimou, Hou Hsiao-hsien,
+  Park Chan-wook, Malick, Michael Mann, Coen Brothers. Use for shot planning, blocking, staging,
+  camera movement, visual continuity, storyboard and keyframe design, prompt repair, "in the style of
+  X" direction, and any AI video workflow.
+license: MIT
+metadata:
+  version: "2.1.0"
+  author: "wangzhang-wu"
+---
+
+# Cinematic Director Skill
+
+## Operating stance
+
+Act as a working director and previs supervisor, not a critic and not a prompt decorator. The job is to turn source material into a plan someone could actually execute — with a camera crew or with a generation queue.
+
+Three domains have to meet in every answer:
+
+- **Directing** — story, subtext, blocking, staging, shot rationale, performance, visual language.
+- **Pre-production** — breakdown, beat sheet, director's book, shot list, coverage, continuity, budget of effort.
+- **AI production** — keyframes, reference assets, motion prompts, first/last-frame workflows, tool control surfaces, generation QC and repair.
+
+The enemy is adjective soup. `cinematic, dramatic, masterpiece, 8K` tells a model nothing about where the camera is, what the body does, where the action ends, or what must not change. Replace it with observable physical description and explicit constraints.
+
+## Non-goals
+
+- Do not write film criticism unless asked for critique.
+- Do not reproduce specific shots, dialogue, characters, or plot beats from real films. Style modules teach methods.
+
+Three more non-goals are stated once, as hard rules, so they have a single home: shot variety for its own sake (rule 1), overloading one clip (rule 3), and reinventing what a supplied reference already fixed (rule 6 and the Gotchas).
+
+## Routing — pick the mode, then load only what you need
+
+`SKILL.md` alone is enough for a short answer. Load reference files on demand, and only the ones the request actually needs. Reading everything wastes context and dilutes the answer.
+
+Load *parts* of files, not whole files. The four largest references — `failure-modes.md`, `genre-playbooks.md`, `ai-video-tool-adapters.md`, `prompt-lexicon.md` — are each an index plus independent sections, and a request almost always needs one section. Read the index, read the one section, stop. The rows below say so where it matters most.
+
+| The user asks for | Mode | Load |
+|---|---|---|
+| "What is this scene really about?" / interpretation | A | — |
+| Beats, structure, "break this into beats" | B | `assets/beat-sheet-template.md` |
+| Visual treatment, director's book, "set the rules" | C | `assets/director-book-template.md`, `references/lighting-and-color.md`, `references/genre-playbooks.md` |
+| Staging, blocking, "where do they stand", "block this two-hander" | D | `references/blocking-and-staging.md`, `assets/shot-plan-template.md` |
+| Shot list, storyboard plan, shooting table | D | `assets/shot-plan-template.md`, `references/cinematic-language.md`, `references/blocking-and-staging.md`, `references/production-workflow.md` — the last for the difficulty rubric the Risk column is required to read off |
+| Image/keyframe/storyboard-panel prompts | E | `assets/keyframe-prompt-template.md`, `references/image-model-adapters.md`, `assets/qc-checklist.md` — Gate 1 is a hard gate on this step |
+| Video motion prompts from existing images | F | `assets/video-prompt-template.md`, `references/prompt-lexicon.md`, `references/ai-video-tool-adapters.md` |
+| Recurring characters/locations across shots | G | `references/continuity-bible.md` |
+| Sound design, music, dialogue, voice-over | H | `assets/sound-plan-template.md`, `references/sound-and-dialogue.md` |
+| "I have clips — how do I cut them together?" | I | `assets/edit-timeline-template.md`, `references/editing-and-assembly.md` |
+| "It failed / looks like a slideshow / face changed" | J | `references/failure-modes.md` — for a single named symptom read only its symptom-to-code index and that one code, then stop |
+| "…and give me a fixed prompt" | J→F | add `assets/video-prompt-template.md` and the matching tool adapter |
+| "Score this / gate this batch / how do I report a failure" | J | `assets/qc-checklist.md` |
+| "Direct this" / "everything I need" / full production pass | A–J | run the pipeline in order, loading per step |
+| "In the style of \<director\>" | any | `references/director_styles/NN_<slug>.md` (exactly one) |
+| "Which lens should I use?" / "how do X and Y differ?" | any | `references/director_styles/example_comparisons.md` — the picker table and the difference matrix |
+| Names a specific model or platform | any | `references/ai-video-tool-adapters.md` or `references/image-model-adapters.md` — read the control-surface matrix and that one family block, then stop |
+| Horror / comedy / commercial / vertical / any genre framing | any | `references/genre-playbooks.md` — read `How to use a playbook` and the one genre named, then stop |
+| Product, packshot, cosmetics, food, macro | any | `references/product-and-macro.md` |
+| Word-level prompt help, negatives, EN↔中文 terms | any | `references/prompt-lexicon.md` — read the conversion procedure and the one bank or table you need, then stop |
+| Scheduling, retries, versioning, handoff, "how do I run this" | any | `references/production-workflow.md` |
+
+Modes combine, but chaining is opt-in, not automatic. Mode J is rarely terminal *in principle* — a repair that lands on re-planning the shot produces new shots, which want F for the prompts, I for the cut, and G once more than two shots share invariants. Chain only when the user asked for the downstream artifact, or when the fix is unusable without it. Otherwise stop at the diagnosis and offer the chain in one line. The response-size table below outranks this row.
+
+A full production pass runs the steps in order, with modes attached where they produce a deliverable: 1 intake · 2 breakdown (A) · 3 beats (B) · 4 lens · 5 book (C) · 6 blocking · 7 shots (D) · 8 keyframes (E) · 9 adapter · 10 prompts (F) · 11 sound (H) · 12 edit (I) · 13 QC (J), with G running underneath. Steps 1, 4, 6 and 9 carry no mode letter, and 4, 6 and 9 are the most commonly skipped — do not skip them.
+
+### Response size
+
+Over-production is the most common failure of this skill. Match the answer to the ask.
+
+| Request | Ceiling |
+|---|---|
+| One prompt for one shot | The prompt, at most three lines of rationale, one tool-specific rule |
+| A symptom with no artifact attached | Diagnosis, the fix ladder, at most one question |
+| A one-line brief | Assumptions in one line, then at most one screen of deliverable |
+| A named mode | That mode's deliverable only — do not volunteer the neighbouring modes |
+| A script, a multi-scene piece, or "everything I need" | The full pipeline |
+
+## Intake and defaults
+
+Extract or infer this. If information is missing, proceed on stated assumptions — do not interrogate the user. Ask at most one question, and only when a wrong guess would make the whole deliverable useless (for example, aspect ratio for a vertical-only campaign, or whether an era is period or modern).
+
+```yaml
+project:
+  title: optional
+  format: short film | trailer | social vertical | scene | commercial | music video | documentary | unknown
+  target_duration: seconds
+  aspect_ratio: 16:9 | 9:16 | 2.39:1 | 1.85:1 | 4:3 | 1:1 | unknown
+  target_tool: Runway | Veo | Kling | Luma | Sora-class | Hailuo | Pika | Vidu | Jimeng/Dreamina/Seedance | Wanxiang | other | unknown
+  genre: horror | thriller | drama | comedy | action | sci-fi | noir | romance | commercial | documentary | ...
+  director_style: spielberg | hitchcock | kubrick | kurosawa | scorsese | fellini | bergman | tarkovsky |
+                  wong_kar_wai | nolan | villeneuve | fincher | refn | bi_gan | zhang_yimou |
+                  hou_hsiao_hsien | park_chan_wook | malick | michael_mann | coen_brothers | none
+source:
+  text: script | prose | brief | logline
+  core_conflict: inferred
+  emotional_arc: inferred
+assets:
+  characters: reference images/videos if provided
+  locations: reference images/videos if provided
+  props: reference images/videos if provided
+  audio: voice/music/reference if provided
+constraints:
+  era: e.g. Republican-era China, modern Toronto
+  must_keep: identity, costume, lighting, setting, props, palette
+  must_avoid: named instances only — no plastic, no printed logos, no rubber soles, no wristwatch,
+              no text, no watermark, no extra people, no face change
+output:
+  deliverables: [A..J]
+  language: match the user's language
+```
+
+This block is a checklist for you. Never print it back to the user.
+
+Defaults when unspecified:
+
+- **Output language** — match the user's. **Generation prompt language** — English by default. If the user writes in Chinese and names no tool, assume a Chinese-UI tool: write the prompts in Chinese, keep camera and lighting terms in their standard Chinese trade forms (`推镜`, `侧逆光`, `景深`), and state the assumption in one line. Give both languages only when the user names an English-first tool or asks for a mirror.
+- **Aspect** — 16:9 for narrative, 9:16 if the user says social/短视频/Reels/抖音.
+- **Clip length** — 3–5s for character performance, 3–4s for fine hand work, 8–12s for environmental or product motion with no legible face. Longer only when the model holds narrative stably and the shot earns it. Duration strategy and its mechanism are owned by `references/ai-video-tool-adapters.md`.
+- **Camera** — locked or one slow push-in when continuity is fragile. Complex moves only when the story needs them and the tool controls them.
+- **Motion budget** — one primary subject action + one camera behavior + one environmental motion per clip. See the motion-budget model in `references/ai-video-tool-adapters.md`.
+- **Register** — set by genre (`references/genre-playbooks.md`) unless a director lens is named, which outranks it.
+
+## Hard rules
+
+1. **Story function first.** A shot with no story function is deleted, not improved.
+2. **Blocking before framing.** Decide what bodies do in space, then place the camera. A well-blocked scene reads even shot flat.
+3. **One dominant camera move and one primary action per clip.** No move at all is a legitimate choice and often the better one. Unrelated actions stacked into one clip is the same defect from the other side — the motion budget is owned by `references/ai-video-tool-adapters.md`.
+4. **Every action has an end state.** "He turns" is not a shot. "He turns until his profile is against the window, then stops" is.
+5. **Behavior, not emotion.** Never prompt "he is afraid." Prompt what fear looks like on a body.
+6. **Continuity is engineered.** Name the invariants — identity, wardrobe, light direction, era, geography — and repeat them verbatim across every prompt in a scene.
+7. **The keyframe is the control point.** A video model mostly re-animates what the still already decided. Fix the still before spending video generations.
+8. **Match the tool's control surface.** Do not ask a model for a feature it does not expose. Identify the surface, then pick the prompt shape.
+9. **Negatives are targeted, and they name instances.** Include only the constraints matching this shot's real risk. "No modern objects" is a category the model cannot resolve — name the things: no plastic, no lever handles, no rubber soles, no wristwatch, no printed logos. Long negative lists dilute and can invoke what they forbid.
+10. **One style lens at a time.** Mixing two directors produces incoherence. Pick one, say why, note what the other would have given.
+11. **Answer the size of the question.** A prompt request gets a prompt. Never expand a small ask into a production package, and never ask for information you can reasonably assume — state the assumption instead.
+
+## Pipeline
+
+Thirteen steps. Run only the ones the request needs, in this order. Each step names the file to load if you go deep.
+
+### 1. Intake and scope
+
+Fix the deliverable, duration, aspect, tool, genre, and constraints. State assumptions in one or two lines, then work. Decide the shot budget: target duration ÷ average shot length for the register gives the shot count (`references/editing-and-assembly.md`).
+
+### 2. Script and subtext breakdown
+
+Identify, in this order:
+
+- **Literal event** — what happens on the surface.
+- **Dramatic question** — what the audience should be wondering.
+- **Conflict** — external and internal.
+- **Subtext** — what the scene is actually about.
+- **Emotional movement** — opening emotion → pressure → turn → closing emotion.
+- **Visual thesis** — the simplest visual idea that governs the scene.
+
+The visual thesis must be concrete and testable: "the boy gets smaller as the room gets more judgmental," not "loneliness and fate." If you cannot state it as a change you could photograph, it is not a thesis yet.
+
+**Non-narrative work skips this block.** For commercial, product, corporate, fashion, music-video, and trailer briefs, the genre playbook's engine and audience contract replace it. The equivalent of a visual thesis is the claim and the single visible proof of it. Do not derive subtext for a lipstick.
+
+### 3. Beat map
+
+Break the scene into beats, not shots. A beat is a change in the balance of pressure — not a change of camera. Each beat carries: story function, character state in and out, visual action, pressure delta, and a likely shot family drawn from the nine functions owned by `references/cinematic-language.md` — establishing, relation, close-up, insert/detail, reaction, transition, aftermath, point-of-view, reveal. Do not coin others; Step 7 has to look the word up.
+
+For non-narrative formats, beats are the format's structural blocks — hook, demonstration, claim, end card — not pressure deltas. Template: `assets/beat-sheet-template.md`.
+
+### 4. Style lens selection (optional)
+
+If the user names a director or says "in the style of X," load exactly one file from `references/director_styles/` and treat its `风格参数 / Style parameters` YAML as the override set for Steps 5, 7, 8, and 10. Step 8 matters most: the still is where a style is actually fixed, and a lens applied to the shot list but not to the keyframe will not survive generation.
+
+Available: `spielberg`, `hitchcock`, `kubrick`, `kurosawa`, `scorsese`, `fellini`, `bergman`, `tarkovsky`, `wong_kar_wai`, `nolan`, `villeneuve`, `fincher`, `refn`, `bi_gan`, `zhang_yimou`, `hou_hsiao_hsien`, `park_chan_wook`, `malick`, `michael_mann`, `coen_brothers`. Index and how to add more: `references/director_styles/README.md`. Choosing between candidates, or explaining how two lenses differ: `references/director_styles/example_comparisons.md`, which directs one shared control scene through every lens.
+
+**If the named director has no module, do not silently substitute one.** Say in one line that there is no module for them, name the nearest module and the axis on which it differs, then build an ad-hoc lens: fill the same `风格参数` key set from the user's own reference images or description, and mark it as ad-hoc so later steps know it was not vetted. Silent substitution is worse than no lens, because the user cannot tell it happened.
+
+Precedence: **director lens > genre playbook > project tone > skill defaults.** If the user names two directors, pick the one that better serves the scene's dramatic core, say so in one line, and note what the other would have changed. If none is named, skip this step and let genre and tone set defaults at Step 5.
+
+Style modules describe high-level methods. Never copy specific shots, lines, characters, or plots from real films.
+
+### 5. Director's book / visual treatment
+
+The reusable rule set that stabilizes every later prompt: tone and genre, lens and framing policy, camera grammar and the allowed move set, lighting logic and key direction, palette and color script, production design and era lock, performance register, editing rhythm and target ASL, sound direction, and the **invariant clauses** — the identity strings and lighting invariant that get pasted verbatim into every prompt.
+
+Template: `assets/director-book-template.md`. Depth: `references/lighting-and-color.md`, `references/genre-playbooks.md`, and `references/continuity-bible.md` — the identity string is written *here*, at this step, and that file owns its recipe and its word budget. Writing one without the recipe is how a string ends up with no face geometry in it.
+
+A director's book entry is only done when two different people filling in shots from it would produce compatible work.
+
+### 6. Blocking and staging
+
+For every shot with people: start position, movement, interaction with space and props, camera relationship, end position, eyeline. Blocking is not where actors stand — it is how body position, movement, props, and camera placement reveal power, fear, attraction, secrecy, isolation, or irony.
+
+Depth: `references/blocking-and-staging.md` — staging geometries, proxemics, blocking notation, and the honest list of what AI models can and cannot render.
+
+### 7. Shot list and coverage
+
+Build rows only after beats and blocking are clear. Each shot: number, duration, scene/location, story function, shot size, lens, angle, camera movement, blocking as start → motion → end, light direction and atmosphere, continuity anchors, transition, risk, AI generation note.
+
+Template: `assets/shot-plan-template.md`. Grammar: `references/cinematic-language.md` — including the continuity geometry (axis of action, screen direction, eyeline match, the 30° rule) that a video model cannot infer on its own and must be encoded into keyframes. Risk values are read off the difficulty rubric in `references/production-workflow.md`; do not invent a second scale.
+
+If a style lens is active, its `风格参数` block sets `lens_kit_mm`, `camera`, `shot_size_bias`, `composition` and `editing` for every row here. Apply it now, not later — a lens that only reaches the prompts arrives after the shot has already been decided.
+
+### 8. Keyframe strategy
+
+Choose by continuity risk:
+
+- **Single first frame** — simple action inside one stable composition.
+- **First + last frame** — controlled transformation, a definite action endpoint, or a designed transition between two compositions.
+- **Per-shot keyframes** — whenever identity, costume, location, or blocking must hold.
+- **Storyboard panels** — when the model treats stills as slides. Every panel must imply a motion beginning, a motion just completed, a reveal, a power relationship, or a clue.
+
+Template: `assets/keyframe-prompt-template.md`. Consistency techniques (identity strings, character sheets, location plates, reference binding, building last frames from first frames): `references/image-model-adapters.md`.
+
+If a style lens is active, this is the step where it is actually fixed. Start from that module's `Keyframe / still prompt` template rather than the generic one, apply its `lighting`, `palette`, `composition` and `aspect_bias`, and append its `negative_prompt_adds`. A lens applied to the shot list but not to the keyframe does not survive generation.
+
+Gate: do not generate video from a keyframe that has not passed the pre-generation checks in `assets/qc-checklist.md`.
+
+### 9. Tool adapter selection
+
+Identify the control surface before writing a word. Read `references/ai-video-tool-adapters.md` (video) or `references/image-model-adapters.md` (stills). If the tool is unfamiliar, do not guess its features — ask which of these it exposes, or route by capability: text-to-video, image-to-video first frame, last-frame slot, reference binding, camera controls, motion strength, native audio, duration range, extend, multi-shot timestamps, seed, negative prompt, and video-to-video.
+
+That answer selects one of four prompt shapes: **S1** motion-only, **S2** full-description, **S3** keyframe-pair, **S4** multi-shot timestamped.
+
+Video-to-video — restyle, relight, regrade, reframe, or transfer a performance onto an existing clip — is a fifth control surface, not a fifth shape. It is chosen here, and it changes what you do at Step 13 rather than at Step 10: when a take is right and only its surface is wrong, it repairs the clip you already have. Details: `references/ai-video-tool-adapters.md`.
+
+### 10. AI video prompt construction
+
+**S1 — motion-only** (image-to-video). The image already carries identity, composition, lighting, setting, costume, and style. The text defines motion, camera, timing, end state, and constraints — in this order:
+
+```text
+[Camera behavior]. [Subject starts in visible state], then [one primary action with pace and direction].
+[Environment reacts subtly]. End with [clear final pose/composition].
+Maintain [identity / costume / location / light direction]. Avoid [failure modes matching this shot's risk].
+```
+
+**S2 — full description** (text-to-video). The text carries everything:
+
+```text
+[Format/style]. [Subject with concrete visual identity]. [Location + era + time + atmosphere].
+[Primary action]. [Shot size + lens + angle + camera movement]. [Light source + direction + quality].
+[Composition]. [Audio if supported]. [Constraints].
+```
+
+**S3 — keyframe pair** (first frame + last frame). Describe the bridge between two approved stills, not the stills themselves:
+
+```text
+Start from the first image and end on the second. Between them, [one continuous transformation].
+Camera [path, or explicitly locked]. Motion [eases in / holds a constant rate / accelerates once].
+Nothing else changes: [identity / costume / set / light direction] are identical in both frames.
+Avoid [failure modes matching this shot's risk].
+```
+
+**S4 — multi-shot timestamped**:
+
+```text
+Overall: [theme, tone, character and setting continuity rules]
+[00:00-00:03] Shot 1: [size/angle]. [action]. Camera [move]. [light or sound cue]
+[00:03-00:06] Shot 2: [size/angle]. [action]. Camera [move]. [light or sound cue]
+```
+
+Per-segment lines carry action, camera, and at most one light or sound cue. Identity, wardrobe,
+palette and lighting facts live in the `Overall:` block and are never restated in a segment — one
+re-description and the model recasts the character. No emotion word goes in a segment either: hard
+rule 5 applies inside S4 exactly as it does everywhere else, and an emotion adjective here is the
+fastest way to get a generic performance in every segment at once.
+
+Templates: `assets/video-prompt-template.md`. Word-level craft, verb banks, the replacement table, negative-prompt library by failure class, and EN↔中文 terms: `references/prompt-lexicon.md`.
+
+If a style lens is active, take its `camera`, `ai_video` and `negative_prompt_adds` values as the defaults for every prompt written here, and use its `Video / motion prompt` template as the shape.
+
+### 11. Sound and dialogue plan
+
+Sound is a directing decision, and in AI film it is the cheapest continuity glue available — one continuous ambience bed under a sequence hides an enormous amount of visual drift.
+
+Plan five layers per shot: room tone, ambience, foley, spot effects, score. For dialogue, respect the one-speaker-per-clip rule, label speakers unambiguously, and convert what cannot be generated into voice-over, off-screen line, or reaction-only. Template: `assets/sound-plan-template.md`. Depth: `references/sound-and-dialogue.md`.
+
+### 12. Edit and assembly plan
+
+Generated clips are raw material, not a cut. Specify the timeline: clip order, in/out points, trim handles, transition into each clip, and the audio layers running underneath. Design match cuts by building shot A's last frame and shot B's first frame together. Fix what can be fixed with a cutaway, a trim, or a dissolve rather than another generation.
+
+Template: `assets/edit-timeline-template.md`. Depth: `references/editing-and-assembly.md`.
+
+### 13. QC and repair loop
+
+Gate with `assets/qc-checklist.md` when scoring a clip or a batch. When something fails, diagnose in this order — each bucket with the codes it usually resolves to:
+
+1. **Asset mismatch** — references too inconsistent to hold identity (F1, F3, F16).
+2. **Prompt overload** — over motion budget: too many actions or camera moves (F4, F6).
+3. **Weak action** — the frame is a pose, not an implied motion (F2).
+4. **Missing endpoint** — the prompt never says where the action ends (F5).
+5. **Bad camera logic** — the move contradicts the framing or the space (F6).
+6. **Continuity gap** — shot A's end state does not match shot B's start state (F7).
+7. **Tool mismatch** — asking a model for a feature it does not control (F6, F11).
+
+If the user reports more than one symptom, collect **every** code before proposing anything. Multiple codes usually share one root decision, and fixing them one at a time re-spends the same generation.
+
+Then apply the **cost ladder** in order — prompt edit, parameter change, regenerate, rebuild the keyframe, a video-to-video pass over the delivered clip where the surface exposes one, re-plan the shot, fix in the edit, cut the shot — and stop at the first level that works. The video-to-video rung is the one that keeps an approved take: reach for it when the performance is right and only the light, grade, style or framing is wrong, and skip it when the defect is the action, the end state, or the angle. After three failed generations of the same shot, change the shot, not the prompt: shorter, closer, simpler, split in two, switched to first/last frame, moved off-screen so only its consequence is shown, or replaced by a reaction or insert.
+
+Never run a diagnostic questionnaire. Answer on stated assumptions, mark the assumptions that would change the code, and ask at most one question — the one whose answer changes the deliverable, not the one that would change the diagnosis. Full coded diagnosis (F1–F19), root causes, and before/after repairs: `references/failure-modes.md`.
+
+Repair output format:
+
+```markdown
+## Diagnosis
+- [failure code and the specific mechanism, not a generic guess; one line per code if several]
+- [shared root: the one decision that produced them all]
+
+## Fix
+- [the cheapest change on the cost ladder that addresses the root]
+
+## Revised prompt
+[clean prompt]
+
+## Why this should work
+[one or two sentences tied to the mechanism]
+```
+
+If no prompt, keyframe, or clip was supplied, do not invent the user's shot to fill the third section. Output the diagnosis, the fix ladder, and the prompt *shape* to rewrite into, then ask for the original prompt and which input mode produced it.
+
+## Output modes
+
+| Mode | Name | Use when | Template |
+|---|---|---|---|
+| A | Director Analysis | Interpretation, subtext, direction rules | inline (below) |
+| B | Beat Sheet | Structure before shots | `assets/beat-sheet-template.md` |
+| C | Director's Book | Rules that govern the whole piece | `assets/director-book-template.md` |
+| D | Shot Plan | Shot list, storyboard plan, shooting table | `assets/shot-plan-template.md` |
+| E | Keyframe Prompt Pack | Stills, first/last frames, panels, character sheets | `assets/keyframe-prompt-template.md` |
+| F | Video Motion Prompt Pack | Assets exist, motion prompts needed | `assets/video-prompt-template.md` |
+| G | Continuity Bible | Recurring characters, locations, multi-scene work | `references/continuity-bible.md` |
+| H | Sound & Dialogue Plan | Sound design, music, dialogue, VO | `assets/sound-plan-template.md` |
+| I | Edit & Assembly Plan | Cutting generated clips into a sequence | `assets/edit-timeline-template.md` |
+| J | QC & Repair | Something failed or looks wrong | `assets/qc-checklist.md` |
+
+Mode A shape:
+
+```markdown
+# Director Analysis
+
+## Dramatic core
+[one paragraph]
+
+## Subtext
+[one paragraph]
+
+## Emotional arc
+[opening → escalation → turn → closing]
+
+## Visual thesis
+[one concrete, photographable rule]
+
+## Direction rules
+- Camera:
+- Lens:
+- Lighting:
+- Palette:
+- Performance:
+- Editing:
+- Sound:
+```
+
+## Gotchas
+
+- More cinematic adjectives is not better direction. Cut every word that does not change a decision.
+- Beautiful shots that do not advance the story are the most expensive thing in the plan.
+- Do not write "camera rotates, zooms, pans, tracks, and shakes" unless the tool controls that combination and the story needs it.
+- Given reference images, do not reinvent costume, face, era, or location — describe them and lock them.
+- "Looks like a slideshow" is not fixed by adding "cinematic motion." Add a specific subject action, an environmental reaction, and a motivated camera behavior with an end state.
+- Horror and suspense want controlled stillness, negative space, delayed revelation, and sound — not constant camera movement.
+- Comedy wants a wider frame, a longer hold, and a flat register. Do not direct a joke like a tragedy.
+- Vertical is not cropped horizontal. Stage in depth, scale the subject up, and rethink every wide shot.
+- Literary or satirical material keeps its idea. Do not convert every scene into genre spectacle.
+- If the user reports a failure, diagnose the mechanism before rewriting. A rewrite that does not name the cause is a guess.
+
+## Minimal working example
+
+Request: "I have a keyframe of a man kneeling in a rainy old street. Make it into an AI video prompt."
+
+Good:
+
+```text
+Low-angle medium close shot, locked camera with a very slow push-in, no other movement. The man starts
+on one knee in the muddy rain-soaked street, one hand pressed flat against the wet ground. He breathes
+heavily, then slowly lifts his head just far enough for his wet hair to fall aside and reveal one tired
+eye. Rain keeps breaking the surface of the puddles around his robe; distant lightning briefly lifts the
+far end of the empty street. End with him half-raised and still unsteady, weight on the forward knee,
+head up. Maintain the same face, wet hair, crimson robe, stormy old Chinese street, low-key practical
+lighting from a single lantern camera-left. No text, no watermark, no extra people, no plastic, no
+rubber soles, no wristwatch, no printed logos.
+```
+
+Bad:
+
+```text
+Cinematic dark horror atmosphere, the man struggles in the rain and remembers his past, dramatic camera,
+emotional, high quality, masterpiece.
+```
+
+The good version names a camera behavior and forbids the rest, gives one primary action with visible body mechanics, adds one environmental reaction, states an end state, repeats the invariants, and lists only the negatives this shot actually risks — as nameable instances, not as the category "modern objects," which a model cannot resolve. The bad version names a mood and hopes.
+
+## Self-check before responding
+
+- Does every shot have a story function you could state in one clause?
+- Is there exactly one dominant camera move per clip — or a deliberate none?
+- Does every action have a start state and an end state?
+- Are the invariants written verbatim, identically, in every prompt of the scene?
+- Do adjacent shots clear the cut geometry — two size steps on an unchanged axis, or one step plus a
+  30°+ angle change — unless the match is deliberate? Rungs and the rule: `references/cinematic-language.md`.
+- Are the negatives limited to this shot's real risks?
+- If a style lens was named, would a reader be able to tell which one from the output alone?
+- Does the output stay clear of any specific shot, line, character, or plot beat from a real film?
+- Is the output proportional to what was asked?
+
+<<<END_ORIGINAL_SKILL_MD>>>
+
+<<<ORIGINAL_REFERENCE_BEAT_SHEET_TEMPLATE_MD>>>
+# Beat Sheet Template
+
+Load this file when you are at Step 3 (beat map) or the user asked for Mode B — a beat sheet（节拍表）, "break this into beats", or "what actually happens in this scene".
+
+## What makes a beat a beat
+
+A beat is a change in the balance of pressure between what a character wants and what the scene is doing to them. It is not a change of camera, not a change of location, and not a new piece of stage business.
+
+Seven rules. A row that breaks any of them is not a beat.
+
+1. **State in must differ from state out.** If you cannot write two genuinely different phrases, merge the row into its neighbour.
+2. **Every delta names its agent.** Something applied the pressure: the character's own body, another person, an object, an off-screen sound, or a deadline. "The mood shifts" names no agent and is not a beat.
+3. **Camera is not a beat.** "Push in on his face" is a Step 7 decision. A real beat survives being shot three different ways. If the visual-action cell contains a shot size or a camera move, you have written a shot.
+4. **Location change is not a beat.** Walking to the door is a beat only if arriving changes the pressure. Otherwise it is travel and belongs inside a neighbouring beat. A second location that runs *at the same time* as the first is not travel — it is a second thread, gets its own letter in the Thread column, and its rows are judged by these same seven rules.
+5. **One beat, one turn.** Two turns in one row means two rows.
+6. **Escalation, not business, is what earns a row.** Beats run in story order within their thread — you do not reorder them, and where two threads run at once each is ordered on its own while the interleave is an edit decision, not a beat-sheet one. But if the running tension is flat across three consecutive rows, those three rows are one beat and you have listed activity.
+7. **The last beat is what the audience walks out holding.** It is the only beat allowed to release the character while tightening the audience.
+
+Weak row, then the same material as a beat:
+
+| Version | Story function | State in | Δ pressure (agent) | Visual action | State out |
+|---|---|---|---|---|---|
+| Not a beat | A tense moment at the door | Nervous | +2 (the atmosphere) | Push in on his face as he hesitates | Still nervous |
+| A beat | Reveal that delivering has a cost | Still believes he is only a messenger | +2 (his own hand — it will not finish the knock) | Right hand rises, knuckles stop 3cm from the wood, hold, then the hand lowers to his thigh | Exposed to himself; the errand has become a decision |
+
+The weak row breaks rules 1, 2 and 3 at once — state in equals state out, the agent is "atmosphere", the visual action is a camera move — and on top of that "a tense moment at the door" names a mood rather than a job. Nothing downstream can be built on it: there is no coverage to plan and no end state to hold a generator to.
+
+## Pressure notation
+
+Score tension on a 0–10 scale for the point-of-view character. The Δ column is the signed change plus the agent in parentheses. Write one number while the character and the audience move together; split it — `−6 him / +1 us` — the moment they diverge, which happens whenever the audience knows something he does not, and always on a beat that releases him while tightening them. A Δ of 0 is not permitted — delete the row.
+
+The numbers are only worth writing if they are arithmetic: the running curve must be the state-in of beat 1 plus each successive Δ. A curve that does not sum is a mood board with digits on it.
+
+## Beat table
+
+| # | Thread | Story function | State in | Δ pressure (agent) | Visual action | State out | Shot family | Sec |
+|---:|---|---|---|---|---|---|---|---:|
+| 1 |  |  |  |  |  |  |  |  |
+| 2 |  |  |  |  |  |  |  |  |
+
+Column rules:
+
+- **Thread** — which storyline the beat belongs to. One value for a single-line scene (`main`); `A` and `B` when the scene cross-cuts two actions running at the same time. Threads make parallel action plannable here; how the two are interleaved, and at what rate, is owned by [editing and assembly](../references/editing-and-assembly.md).
+- **Story function** — the job this beat does for the scene, in verb form. Not "sad moment"; "reveal that delivering the letter has a cost".
+- **Visual action** — externally visible behaviour only. No verbs the camera cannot photograph (`realizes`, `remembers`, `feels`). See the verb list in [prompt lexicon](../references/prompt-lexicon.md).
+- **Shot family** — one of the shot-function names owned by [cinematic language](../references/cinematic-language.md): establishing, relation, close-up, insert/detail, reaction, transition, aftermath, point-of-view, reveal. This is a *family*, not a shot; it tells Step 7 what kind of coverage the beat wants. Do not coin names outside that list — Step 7 has to be able to look the word up.
+- **Sec** — estimated screen time. These sum to the scene's target duration and become the time budget for the shot plan.
+
+## Worked example
+
+Project `Under the Door`, scene 7. Target 22s, 16:9, no style lens. A courier delivers a letter to a 1937 Shanghai lilong（里弄）apartment and chooses not to be present when it is read.
+
+Visual thesis: the door grows and the courier shrinks until the only thing in frame still holding light is the gap underneath it.
+
+| # | Thread | Story function | State in | Δ pressure (agent) | Visual action | State out | Shot family | Sec |
+|---:|---|---|---|---|---|---|---|---:|
+| 1 | main | Turn an address into one specific door | Rehearsed, on-task, has not thought past the delivery | +1 (arrival — the abstract errand becomes one specific door) | Climbs the last flight, checks the door against the envelope, takes three steps and stops 60cm short | Located and squared to the door, envelope up at chest | establishing | 4 |
+| 2 | main | Reveal that delivering has a cost | Located; still believes he is only a messenger | +2 (his own hand — it will not finish the knock) | Right hand rises, knuckles stop 3cm from the wood, hold, then the hand lowers to his thigh | Exposed to himself; the errand has become a decision | reaction | 5 |
+| 3 | main | Make the person behind the door real | Hesitating in what he assumed was privacy | +2 (off-screen — a chair scrapes, a radio comes up) | A shadow crosses the warm line under the door; his eyes drop from the door face to the gap | Cornered; being present is now the risk | insert/detail | 3 |
+| 4 | main | He chooses the cowardly delivery | Cornered, out of time | +3 him / +2 us (his own act, and it cannot be undone) | Crouches, feeds the envelope under the door, pushes with two fingers until his fingertips touch wood and the envelope is gone | Committed; hands empty, nothing retrievable | reveal | 6 |
+| 5 | main | Leave the audience holding what he refused to hold | Released, ashamed | −6 him / +1 us (he is gone; the letter is not) | Stands, backs two steps, turns and drops down the stairs; the empty landing holds until a shadow crosses the light line from inside | Absent | aftermath | 4 |
+
+Running tension — courier: `2 → 3 → 5 → 7 → 10 → 4`. Audience: `2 → 3 → 5 → 7 → 9 → 10`. Both curves are the state-in of B1 followed by each state-out, so every step is the row's Δ; if they do not add up, one of the two is a wish. The largest rise (+3, B4) completes at 82% of scene time, and only the courier comes down. That is the shape you want.
+
+This beat sheet feeds [director book](director-book-template.md) at Step 5 and [shot plan](shot-plan-template.md) at Step 7. Beat numbers (`B1`…`B5`) are the join key — do not renumber them once shots reference them.
+
+## How many beats
+
+| Target duration | Beats | Typical shots | Shape |
+|---|---:|---:|---|
+| 8–15s (single clip, social) | 2–3 | 2–4 | One turn, no aftermath |
+| 20–40s (a scene) | 4–6 | 4–8 | Setup, escalation, turn, aftermath |
+| 40–60s (a long scene / social short) | 6–8 | 8–14 | Setup, two escalations, turn, aftermath |
+| 60–90s (a sequence) | 7–10 | 12–20 | Two escalations before the turn |
+| 3–5 min (short film) | 18–30 | 40–90 | Act shape; split into 3–5 scenes and beat each separately |
+
+Working rule for a single scene: `beats ≈ target_seconds / 5`, floor of 2. It holds to about 40s, then the divisor widens toward 7 seconds a beat across the 40–60s band — a 45s piece is 6–7 beats, not the 9 that `/5` predicts — and past 60s it stops entirely: a 90s sequence is not 18 beats. Past 60s, split into scenes of 20–40s and apply the rule per scene, which is why the lower rows of the table run 9–10 seconds a beat rather than 5. Above 12 beats in one table you are beating a sequence, not a scene; split before continuing.
+
+The 40–60s row is not a rounding of its neighbours; it is the band most social shorts land in, and it is one scene, not two. A 45s single-location, single-character piece built on a continuous procedure has one setup and one turn — splitting it into two 22s scenes to satisfy the arithmetic destroys the continuity that is doing the work. Split at 60s, and only where the location, the cast or the time actually changes.
+
+Boundaries:
+
+- A beat estimated under 2s is a shot, not a beat. Fold it into a neighbour.
+- A beat estimated over 10s is two beats, or one beat plus dead air. Re-read it for the second turn you did not notice.
+- One shot per beat is the default at scene scale, with two or three spent only on the turn beat. The ratio drifts to 2–3 shots per beat at sequence and film scale because the beats themselves get longer, not because the beats need more angles. If every beat in a 30s scene gets three shots you have produced a coverage list, not a plan.
+
+## Self-check
+
+Run all seven before handing the sheet on. Any failure is a rewrite, not a note.
+
+1. Does every row have `state in ≠ state out` and a non-zero Δ?
+2. Can you name the agent for every Δ without using the words mood, tone, or atmosphere?
+3. Is any row merely a camera idea? Strike any visual action containing a shot size or a camera move.
+4. Is any row merely a location change with no pressure change?
+5. Does the running tension actually rise, and do the plotted curves equal the running sum of the Δ column? Flat or sawtoothing without net rise means the scene has no shape yet; curves that do not sum mean the Δs are decoration.
+6. Does the largest single *rise* land at or after the 60% mark? If the biggest jump is beat 1, everything after it is downhill.
+7. Do the seconds sum to the target duration within ±15%? If not, cut a beat rather than shaving every row.
+
+<<<END_ORIGINAL_REFERENCE_BEAT_SHEET_TEMPLATE_MD>>>
+
+<<<LOCKED_SCRIPT_E>>>
+# 《最后一张照片》
+类型：现实主义悬念短剧情
+目标时长：约 40 秒
+地点：一间旧居客厅，下午
+人物：林（女，35岁）、周（男，40岁）
+
+内景 · 旧居客厅 · 下午
+
+客厅里的家具已经盖上防尘布。桌上放着一个打开的旧相册和几张散落的照片。
+林站在桌旁整理照片。周站在窗边，望着屋外。
+
+林：「这些都要带走吗？」
+周：「留下来也没人看了。」
+
+林翻过一张照片，放进相册。
+她拿起最后一张照片。
+照片正面是一张多年前的家庭合影。
+林看了一会儿，准备将它放进相册。
+
+周转过身。
+周：「等等。」
+林停下动作。
+周：「看看背面。」
+
+林翻过照片。
+照片背面写着一行手写字：
+「我们一定会回到这里。——2006年夏」
+
+林读着这行字，没有说话。
+周走到桌旁，看着照片。
+林：「那时候我们真的这么想。」
+周看向盖着防尘布的家具。
+周：「嗯。」
+
+林把照片正面朝上，轻轻放在相册旁边，没有收进去。
+两人站在桌旁，短暂沉默。
+
+【已确认的创作意图】
+这是一段关于过去的承诺与当下现实之间落差的故事。
+- 前半段的重点是整理旧物和准备离开，观众尚不知道照片背面的文字。
+- 周知道照片背面写着什么，并主动提醒林去看。
+- 林在翻过照片后第一次看见那行字。
+- 观众应与林同时第一次看清完整文字，不能通过前面的镜头提前读到。
+- 那行字改变了这张照片在两人心中的意义，但并不改变两人即将离开的现实。
+- 情绪由平常、略显冷淡，转向短暂的怀念与失落；没有争吵、哭泣或突然改变决定。
+- 最后的“没有收进相册”是一个有意义的行动，表示林暂时不愿把它当成普通旧物整理掉，不代表她决定留下房子。
+
+【信息与连续性约束】
+1. 全片只有这一张关键家庭合影。
+2. 照片背面的完整文字只能在林翻过照片之后，让观众看清。
+3. 周在提醒之前已经知道背面的文字；林尚未知道。
+4. 林翻照片的动作必须先于文字揭示。
+5. 林最后将照片正面朝上放在相册旁边，没有放入相册。
+6. 不新增人物回忆画面、过去发生的事件、搬家原因，或两人未来的决定。
+
+【实验说明】人物外观、家具和照片的具体图像资产均未制作；创作意图与限制属于确认的剧本资料，而非新增 Toonflow Skill 规则。
+
+<<<END_LOCKED_SCRIPT_E>>>
+
+<<<FROZEN_STEP2_OUTPUT>>>
+# 导演分析
+
+## 戏剧核心
+
+**表层事件：**下午，林和周在家具已盖上防尘布的旧居客厅整理照片，准备离开。林翻过一张照片并把它放进相册；随后拿起最后一张家庭合影，准备收进去。周叫停她，让她看背面。林翻过照片，读到「我们一定会回到这里。——2006年夏」。两人简短交谈后，林把合影正面朝上放在相册旁边，没有收进去。
+
+**戏剧问题：**周为什么要林看照片背面？当林读到那句过去的承诺，这张照片对他们的意义会发生什么变化？
+
+**冲突：**外部压力来自整理旧物、准备离开的现实；内部冲突是曾经相信会回到这里，与如今即将离开之间的落差。周提前知道文字，林与观众在翻面后才第一次看清它；这种知识差让周的提醒成为情绪转折，但不暗示他还有剧本之外的秘密。
+
+## 潜台词
+
+**导演解读：**两人表面上在决定照片如何归置，实际面对的是一句曾经真心相信、如今再读已有不同分量的承诺。林说「那时候我们真的这么想。」不是对周的责问；周的「嗯。」也不需要补成解释。最后林没有把照片收进相册，表示她暂时不愿把它当作普通旧物整理掉，而不是决定留下房子。
+
+## 情绪变化
+
+平常、略显冷淡地整理 → 周叫停动作，生出短暂疑问 → 林与观众同时读到背面的字，转向怀念与失落 → 两人沉默；照片被暂时留在相册旁，即将离开的现实不变。
+
+## 视觉主旨
+
+**导演提议：**用照片的两次朝向和最终位置呈现意义变化：背面的字只在林翻面后才完整可读；最后照片正面朝上，留在相册旁边，而不是被收进去。观众可以直接看到这个变化，无须赋予照片未获确认的图像细节。
+
+## 导演处理原则
+
+- **摄影机：**让整理动作、周的提醒和林的阅读保持清楚；在林翻面之前，不让观众读到背面完整文字。
+- **镜头：**以能辨认人物行动和照片状态为原则；待林翻面后，保证观众与她同时第一次看清完整文字。
+- **光线：**服务于下午室内的现实感，并确保文字揭示时可读；不预设剧本未确认的具体光位。
+- **色彩：**保持克制、可信的现实主义观感；具体色彩和物件外观留待资产确定。
+- **表演：**前半段以日常整理和简短对答为主；读字后，让停顿和最后的放置动作承载变化，不演成争吵、哭泣或改变决定。
+- **剪辑：**保持知识顺序：周先知情并提醒，林翻面，观众与林同时看清文字；给阅读和结尾的短暂沉默留出可感知的时间。
+- **声音：**保留原有台词及其顺序，让整理照片的细微声音和停顿支持场景；不加入暗示额外往事或结果的声音信息。
+<<<END_FROZEN_STEP2_OUTPUT>>>
+
+codex
+# 《最后一张照片》节拍表
+
+**时长估计：40 秒。**单一叙事线；以林为压力曲线的视点人物。节拍描述故事中的压力变化，不等同于镜头。
+
+| # | 线索 | 故事功能 | 进入状态 | 压力变化（来源） | 可见行动 | 退出状态 | 镜头功能类别 | 秒 |
+|---:|---|---|---|---|---|---|---|---:|
+| B1 | main | 确立整理与离开的现实 | 林在桌旁整理照片，尚在询问如何处置；周站在窗边望着屋外 | +1（周的回答：留下来也没人看了） | 林问：「这些都要带走吗？」周说：「留下来也没人看了。」 | 照片的去留被摆到眼前，整理继续 | relation | 6 |
+| B2 | main | 将最后一张合影带入整理流程 | 林继续按整理旧物的方式处理照片 | +1（最后一张家庭合影：轮到它被归置） | 林翻过一张照片，放进相册；她拿起最后一张照片，看着正面的家庭合影，准备放入相册 | 合影即将像前一张照片一样被收起；林尚不知道背面的字 | insert/detail | 6 |
+| B3 | main | 中断收起合影的动作 | 林正准备将合影放进相册 | +1（周主动叫停并提醒她看背面） | 周转过身，说：「等等。」林停下动作。周说：「看看背面。」 | 合影尚未收起；林的注意转向尚未看过的背面 | relation | 5 |
+| B4 | main | 揭示过去的承诺，改变合影的意义 | 林知道周要她看背面，但尚未看见文字；周已经知道内容 | +3（照片背面的手写承诺） | 林翻过照片。翻面之后，林与观众同时第一次看清完整文字：「我们一定会回到这里。——2006年夏」；林读着，没有说话 | 林第一次知道这句承诺；合影不再只是待整理的旧物 | reveal | 8 |
+| B5 | main | 让两人面对过去的相信与当下的落差 | 林读完文字，周仍在窗边 | +1（林说出的那句共同相信，加上周的简短回应） | 周走到桌旁看着照片。林说：「那时候我们真的这么想。」周看向盖着防尘布的家具，说：「嗯。」 | 两人短暂面对承诺与现实的落差；即将离开的现实没有改变 | relation | 7 |
+| B6 | main | 以暂不收起合影的行动留下余意 | 合影背面朝上，林与周站在桌旁 | −1（林将合影暂时放在相册旁） | 林把照片正面朝上，轻轻放在相册旁边，没有收进去。两人站在桌旁，短暂沉默 | 合影正面朝上留在相册旁；林暂时没有把它当作普通旧物收起 | aftermath | 8 |
+
+**压力曲线（林与观众）：**`2 → 3 → 4 → 5 → 8 → 9 → 8`。最大单次上升发生在 B4，结束于第 25 秒，约为全场的 62.5%；各节拍合计 **40 秒**。
+
+周在提醒前已知文字；林和观众都在林翻面后才第一次看清完整文字。全场只有这一张关键家庭合影，其具体图像内容不作新增设定。
+tokens used
+18,246
+# 《最后一张照片》节拍表
+
+**时长估计：40 秒。**单一叙事线；以林为压力曲线的视点人物。节拍描述故事中的压力变化，不等同于镜头。
+
+| # | 线索 | 故事功能 | 进入状态 | 压力变化（来源） | 可见行动 | 退出状态 | 镜头功能类别 | 秒 |
+|---:|---|---|---|---|---|---|---|---:|
+| B1 | main | 确立整理与离开的现实 | 林在桌旁整理照片，尚在询问如何处置；周站在窗边望着屋外 | +1（周的回答：留下来也没人看了） | 林问：「这些都要带走吗？」周说：「留下来也没人看了。」 | 照片的去留被摆到眼前，整理继续 | relation | 6 |
+| B2 | main | 将最后一张合影带入整理流程 | 林继续按整理旧物的方式处理照片 | +1（最后一张家庭合影：轮到它被归置） | 林翻过一张照片，放进相册；她拿起最后一张照片，看着正面的家庭合影，准备放入相册 | 合影即将像前一张照片一样被收起；林尚不知道背面的字 | insert/detail | 6 |
+| B3 | main | 中断收起合影的动作 | 林正准备将合影放进相册 | +1（周主动叫停并提醒她看背面） | 周转过身，说：「等等。」林停下动作。周说：「看看背面。」 | 合影尚未收起；林的注意转向尚未看过的背面 | relation | 5 |
+| B4 | main | 揭示过去的承诺，改变合影的意义 | 林知道周要她看背面，但尚未看见文字；周已经知道内容 | +3（照片背面的手写承诺） | 林翻过照片。翻面之后，林与观众同时第一次看清完整文字：「我们一定会回到这里。——2006年夏」；林读着，没有说话 | 林第一次知道这句承诺；合影不再只是待整理的旧物 | reveal | 8 |
+| B5 | main | 让两人面对过去的相信与当下的落差 | 林读完文字，周仍在窗边 | +1（林说出的那句共同相信，加上周的简短回应） | 周走到桌旁看着照片。林说：「那时候我们真的这么想。」周看向盖着防尘布的家具，说：「嗯。」 | 两人短暂面对承诺与现实的落差；即将离开的现实没有改变 | relation | 7 |
+| B6 | main | 以暂不收起合影的行动留下余意 | 合影背面朝上，林与周站在桌旁 | −1（林将合影暂时放在相册旁） | 林把照片正面朝上，轻轻放在相册旁边，没有收进去。两人站在桌旁，短暂沉默 | 合影正面朝上留在相册旁；林暂时没有把它当作普通旧物收起 | aftermath | 8 |
+
+**压力曲线（林与观众）：**`2 → 3 → 4 → 5 → 8 → 9 → 8`。最大单次上升发生在 B4，结束于第 25 秒，约为全场的 62.5%；各节拍合计 **40 秒**。
+
+周在提醒前已知文字；林和观众都在林翻面后才第一次看清完整文字。全场只有这一张关键家庭合影，其具体图像内容不作新增设定。
