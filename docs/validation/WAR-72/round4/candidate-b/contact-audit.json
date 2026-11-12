@@ -1,0 +1,294 @@
+{
+  "filename": "\\\\wsl.localhost\\udev\\home\\sean\\projects\\canvas-lab\\docs\\validation\\WAR-72\\round4\\candidate-b\\WAR72_physical_B.blend",
+  "contact_matrix": {
+    "1": {
+      "LIN_TORSO / DESK_TOP": false,
+      "LIN_HEAD / DESK_TOP": false,
+      "LIN_L_FOREARM / DESK_TOP": false,
+      "LIN_R_FOREARM / DESK_TOP": true,
+      "LIN_LEFT_HAND / PAPER_MOVING": false,
+      "LIN_LEFT_HAND / BLUE_FOLDER": false,
+      "PAPER_MOVING / BLUE_FOLDER": false,
+      "BLUE_FOLDER / KEY_FIXED_RING": false,
+      "PAPER_MOVING / KEY_FIXED_RING": false,
+      "LIN_LEFT_HAND / KEY_FIXED_RING": false,
+      "desk_top": [
+        0.7,
+        0.75
+      ],
+      "key_torus": [
+        0.75,
+        0.76
+      ],
+      "file_paper": [
+        0.761,
+        0.767
+      ],
+      "folder": [
+        0.75,
+        0.764
+      ],
+      "lin_left_hand": [
+        0.771,
+        0.839
+      ]
+    },
+    "8": {
+      "LIN_TORSO / DESK_TOP": false,
+      "LIN_HEAD / DESK_TOP": false,
+      "LIN_L_FOREARM / DESK_TOP": false,
+      "LIN_R_FOREARM / DESK_TOP": true,
+      "LIN_LEFT_HAND / PAPER_MOVING": false,
+      "LIN_LEFT_HAND / BLUE_FOLDER": false,
+      "PAPER_MOVING / BLUE_FOLDER": false,
+      "BLUE_FOLDER / KEY_FIXED_RING": false,
+      "PAPER_MOVING / KEY_FIXED_RING": false,
+      "LIN_LEFT_HAND / KEY_FIXED_RING": false,
+      "desk_top": [
+        0.7,
+        0.75
+      ],
+      "key_torus": [
+        0.75,
+        0.76
+      ],
+      "file_paper": [
+        0.828,
+        0.834
+      ],
+      "folder": [
+        0.75,
+        0.764
+      ],
+      "lin_left_hand": [
+        0.846,
+        0.914
+      ]
+    },
+    "20": {
+      "LIN_TORSO / DESK_TOP": false,
+      "LIN_HEAD / DESK_TOP": false,
+      "LIN_L_FOREARM / DESK_TOP": false,
+      "LIN_R_FOREARM / DESK_TOP": true,
+      "LIN_LEFT_HAND / PAPER_MOVING": false,
+      "LIN_LEFT_HAND / BLUE_FOLDER": false,
+      "PAPER_MOVING / BLUE_FOLDER": false,
+      "BLUE_FOLDER / KEY_FIXED_RING": false,
+      "PAPER_MOVING / KEY_FIXED_RING": false,
+      "LIN_LEFT_HAND / KEY_FIXED_RING": false,
+      "desk_top": [
+        0.7,
+        0.75
+      ],
+      "key_torus": [
+        0.75,
+        0.76
+      ],
+      "file_paper": [
+        0.7855,
+        0.7915
+      ],
+      "folder": [
+        0.75,
+        0.764
+      ],
+      "lin_left_hand": [
+        0.793,
+        0.861
+      ]
+    },
+    "30": {
+      "LIN_TORSO / DESK_TOP": false,
+      "LIN_HEAD / DESK_TOP": false,
+      "LIN_L_FOREARM / DESK_TOP": false,
+      "LIN_R_FOREARM / DESK_TOP": true,
+      "LIN_LEFT_HAND / PAPER_MOVING": false,
+      "LIN_LEFT_HAND / BLUE_FOLDER": false,
+      "PAPER_MOVING / BLUE_FOLDER": false,
+      "BLUE_FOLDER / KEY_FIXED_RING": false,
+      "PAPER_MOVING / KEY_FIXED_RING": false,
+      "LIN_LEFT_HAND / KEY_FIXED_RING": false,
+      "desk_top": [
+        0.7,
+        0.75
+      ],
+      "key_torus": [
+        0.75,
+        0.76
+      ],
+      "file_paper": [
+        0.7855,
+        0.7915
+      ],
+      "folder": [
+        1.063,
+        1.077
+      ],
+      "lin_left_hand": [
+        1.078,
+        1.146
+      ]
+    },
+    "34": {
+      "LIN_TORSO / DESK_TOP": false,
+      "LIN_HEAD / DESK_TOP": false,
+      "LIN_L_FOREARM / DESK_TOP": false,
+      "LIN_R_FOREARM / DESK_TOP": true,
+      "LIN_LEFT_HAND / PAPER_MOVING": false,
+      "LIN_LEFT_HAND / BLUE_FOLDER": false,
+      "PAPER_MOVING / BLUE_FOLDER": false,
+      "BLUE_FOLDER / KEY_FIXED_RING": false,
+      "PAPER_MOVING / KEY_FIXED_RING": false,
+      "LIN_LEFT_HAND / KEY_FIXED_RING": false,
+      "desk_top": [
+        0.7,
+        0.75
+      ],
+      "key_torus": [
+        0.75,
+        0.76
+      ],
+      "file_paper": [
+        0.7855,
+        0.7915
+      ],
+      "folder": [
+        0.903,
+        0.917
+      ],
+      "lin_left_hand": [
+        0.918,
+        0.986
+      ]
+    },
+    "40": {
+      "LIN_TORSO / DESK_TOP": false,
+      "LIN_HEAD / DESK_TOP": false,
+      "LIN_L_FOREARM / DESK_TOP": false,
+      "LIN_R_FOREARM / DESK_TOP": true,
+      "LIN_LEFT_HAND / PAPER_MOVING": false,
+      "LIN_LEFT_HAND / BLUE_FOLDER": false,
+      "PAPER_MOVING / BLUE_FOLDER": true,
+      "BLUE_FOLDER / KEY_FIXED_RING": false,
+      "PAPER_MOVING / KEY_FIXED_RING": false,
+      "LIN_LEFT_HAND / KEY_FIXED_RING": false,
+      "desk_top": [
+        0.7,
+        0.75
+      ],
+      "key_torus": [
+        0.75,
+        0.76
+      ],
+      "file_paper": [
+        0.7855,
+        0.7915
+      ],
+      "folder": [
+        0.7915,
+        0.8055
+      ],
+      "lin_left_hand": [
+        0.8085,
+        0.8765
+      ]
+    }
+  },
+  "screen_extent": {
+    "20": {
+      "SHOT02_40MM": {
+        "left": 0.33282,
+        "right": 0.36069,
+        "bottom": 0.19981,
+        "top": 0.21711,
+        "span_px": 26.76,
+        "height_px": 9.34
+      },
+      "SHOT03_85MM": {
+        "left": 0.60223,
+        "right": 0.75568,
+        "bottom": 0.35401,
+        "top": 0.48163,
+        "span_px": 147.31,
+        "height_px": 68.92
+      }
+    },
+    "40": {
+      "SHOT02_40MM": {
+        "left": 0.33282,
+        "right": 0.36069,
+        "bottom": 0.19981,
+        "top": 0.21711,
+        "span_px": 26.76,
+        "height_px": 9.34
+      },
+      "SHOT03_85MM": {
+        "left": 0.60223,
+        "right": 0.75568,
+        "bottom": 0.35401,
+        "top": 0.48163,
+        "span_px": 147.31,
+        "height_px": 68.92
+      }
+    }
+  },
+  "axis_cross_sign": {
+    "SHOT02_40MM": {
+      "min": -6.328,
+      "max": -2.1424,
+      "crosses_axis": false,
+      "samples": [
+        -6.328,
+        -6.11872,
+        -5.90944,
+        -5.70016,
+        -5.49088,
+        -5.2816,
+        -5.07232,
+        -4.86304,
+        -4.65376,
+        -4.44448,
+        -4.2352,
+        -4.02592,
+        -3.81664,
+        -3.60736,
+        -3.39808,
+        -3.1888,
+        -2.97952,
+        -2.77024,
+        -2.56096,
+        -2.35168,
+        -2.1424
+      ]
+    },
+    "SHOT03_85MM": {
+      "min": -1.982,
+      "max": -0.5804,
+      "crosses_axis": false,
+      "samples": [
+        -1.982,
+        -1.91192,
+        -1.84184,
+        -1.77176,
+        -1.70168,
+        -1.6316,
+        -1.56152,
+        -1.49144,
+        -1.42136,
+        -1.35128,
+        -1.2812,
+        -1.21112,
+        -1.14104,
+        -1.07096,
+        -1.00088,
+        -0.9308,
+        -0.86072,
+        -0.79064,
+        -0.72056,
+        -0.65048,
+        -0.5804
+      ]
+    }
+  },
+  "derived_only": true
+}

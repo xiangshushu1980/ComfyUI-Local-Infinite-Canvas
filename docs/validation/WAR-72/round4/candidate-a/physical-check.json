@@ -1,0 +1,1436 @@
+{
+  "context": "WAR-72 independent next physics gate, candidate A",
+  "source_blend": "\\\\wsl.localhost\\udev\\home\\sean\\projects\\canvas-lab\\docs\\validation\\WAR-72\\round3\\revision\\WAR72_revision.blend",
+  "blender_version": "5.2.3 LTS",
+  "cpu_only": true,
+  "derived": {
+    "K": [
+      -0.25,
+      0.44999998807907104,
+      0.7549999952316284
+    ],
+    "K_z_shift_m": -0.037,
+    "table_top": 0.75,
+    "LinFeet": [
+      0.42,
+      -0.28
+    ],
+    "LinBentShoulders": [
+      0.10499999672174454,
+      0.05999999865889549,
+      1.2899999618530273
+    ],
+    "left_shoulder": [
+      -0.12999999523162842,
+      0.05999999865889549,
+      1.2899999618530273
+    ],
+    "arm_segments": [
+      0.385,
+      0.385
+    ],
+    "ZhouStart": [
+      2.0,
+      -1.2999999523162842,
+      0.0
+    ],
+    "ZhouEnd": [
+      1.100000023841858,
+      -0.5199999809265137,
+      0.0
+    ],
+    "paper_z": {
+      "1": 0.764,
+      "8": 0.831,
+      "20": 0.7885,
+      "30": 0.7885,
+      "34": 0.7885,
+      "40": 0.7885
+    },
+    "folder_z": {
+      "1": 0.757,
+      "8": 0.757,
+      "20": 0.757,
+      "30": 1.07,
+      "34": 0.91,
+      "40": 0.791
+    }
+  },
+  "arm_reach": [
+    {
+      "f": 1,
+      "hand": "L",
+      "shoulder_wrist_distance_m": 0.6584,
+      "arm_length_m": 0.77,
+      "can_reach": true,
+      "upper_length_m": 0.385,
+      "forearm_length_m": 0.385
+    },
+    {
+      "f": 1,
+      "hand": "R",
+      "shoulder_wrist_distance_m": 0.48835,
+      "arm_length_m": 0.77,
+      "can_reach": true,
+      "upper_length_m": 0.385,
+      "forearm_length_m": 0.385
+    },
+    {
+      "f": 8,
+      "hand": "L",
+      "shoulder_wrist_distance_m": 0.62698,
+      "arm_length_m": 0.77,
+      "can_reach": true,
+      "upper_length_m": 0.385,
+      "forearm_length_m": 0.385
+    },
+    {
+      "f": 8,
+      "hand": "R",
+      "shoulder_wrist_distance_m": 0.48835,
+      "arm_length_m": 0.77,
+      "can_reach": true,
+      "upper_length_m": 0.385,
+      "forearm_length_m": 0.385
+    },
+    {
+      "f": 20,
+      "hand": "L",
+      "shoulder_wrist_distance_m": 0.73785,
+      "arm_length_m": 0.77,
+      "can_reach": true,
+      "upper_length_m": 0.385,
+      "forearm_length_m": 0.385
+    },
+    {
+      "f": 20,
+      "hand": "R",
+      "shoulder_wrist_distance_m": 0.48835,
+      "arm_length_m": 0.77,
+      "can_reach": true,
+      "upper_length_m": 0.385,
+      "forearm_length_m": 0.385
+    },
+    {
+      "f": 30,
+      "hand": "L",
+      "shoulder_wrist_distance_m": 0.6229,
+      "arm_length_m": 0.77,
+      "can_reach": true,
+      "upper_length_m": 0.385,
+      "forearm_length_m": 0.385
+    },
+    {
+      "f": 30,
+      "hand": "R",
+      "shoulder_wrist_distance_m": 0.48835,
+      "arm_length_m": 0.77,
+      "can_reach": true,
+      "upper_length_m": 0.385,
+      "forearm_length_m": 0.385
+    },
+    {
+      "f": 34,
+      "hand": "L",
+      "shoulder_wrist_distance_m": 0.61516,
+      "arm_length_m": 0.77,
+      "can_reach": true,
+      "upper_length_m": 0.385,
+      "forearm_length_m": 0.385
+    },
+    {
+      "f": 34,
+      "hand": "R",
+      "shoulder_wrist_distance_m": 0.48835,
+      "arm_length_m": 0.77,
+      "can_reach": true,
+      "upper_length_m": 0.385,
+      "forearm_length_m": 0.385
+    },
+    {
+      "f": 40,
+      "hand": "L",
+      "shoulder_wrist_distance_m": 0.67148,
+      "arm_length_m": 0.77,
+      "can_reach": true,
+      "upper_length_m": 0.385,
+      "forearm_length_m": 0.385
+    },
+    {
+      "f": 40,
+      "hand": "R",
+      "shoulder_wrist_distance_m": 0.48835,
+      "arm_length_m": 0.77,
+      "can_reach": true,
+      "upper_length_m": 0.385,
+      "forearm_length_m": 0.385
+    }
+  ],
+  "path_21": [
+    {
+      "i": 0,
+      "ratio": 0.0,
+      "zhou_xy": [
+        2.0,
+        -1.3
+      ],
+      "left": {
+        "blocker": "LIN_TORSO",
+        "blocked": true,
+        "distance_from_eye_m": 1.81605,
+        "lin_occluder": true
+      },
+      "right": {
+        "blocker": "LIN_TORSO",
+        "blocked": true,
+        "distance_from_eye_m": 1.82455,
+        "lin_occluder": true
+      },
+      "both_lin_hidden_at_safe_distance": true,
+      "cam2_clear": true,
+      "cam3_clear": true,
+      "center_separation_m": 1.8806
+    },
+    {
+      "i": 1,
+      "ratio": 0.05,
+      "zhou_xy": [
+        1.955,
+        -1.261
+      ],
+      "left": {
+        "blocker": "LIN_TORSO",
+        "blocked": true,
+        "distance_from_eye_m": 1.7614,
+        "lin_occluder": true
+      },
+      "right": {
+        "blocker": "LIN_TORSO",
+        "blocked": true,
+        "distance_from_eye_m": 1.77002,
+        "lin_occluder": true
+      },
+      "both_lin_hidden_at_safe_distance": true,
+      "cam2_clear": true,
+      "cam3_clear": true,
+      "center_separation_m": 1.8217
+    },
+    {
+      "i": 2,
+      "ratio": 0.1,
+      "zhou_xy": [
+        1.91,
+        -1.222
+      ],
+      "left": {
+        "blocker": "LIN_TORSO",
+        "blocked": true,
+        "distance_from_eye_m": 1.70691,
+        "lin_occluder": true
+      },
+      "right": {
+        "blocker": "LIN_TORSO",
+        "blocked": true,
+        "distance_from_eye_m": 1.71566,
+        "lin_occluder": true
+      },
+      "both_lin_hidden_at_safe_distance": true,
+      "cam2_clear": true,
+      "cam3_clear": true,
+      "center_separation_m": 1.7628
+    },
+    {
+      "i": 3,
+      "ratio": 0.15,
+      "zhou_xy": [
+        1.865,
+        -1.183
+      ],
+      "left": {
+        "blocker": "LIN_TORSO",
+        "blocked": true,
+        "distance_from_eye_m": 1.65258,
+        "lin_occluder": true
+      },
+      "right": {
+        "blocker": "LIN_TORSO",
+        "blocked": true,
+        "distance_from_eye_m": 1.66145,
+        "lin_occluder": true
+      },
+      "both_lin_hidden_at_safe_distance": true,
+      "cam2_clear": true,
+      "cam3_clear": true,
+      "center_separation_m": 1.7039
+    },
+    {
+      "i": 4,
+      "ratio": 0.2,
+      "zhou_xy": [
+        1.82,
+        -1.144
+      ],
+      "left": {
+        "blocker": "LIN_TORSO",
+        "blocked": true,
+        "distance_from_eye_m": 1.59841,
+        "lin_occluder": true
+      },
+      "right": {
+        "blocker": "LIN_TORSO",
+        "blocked": true,
+        "distance_from_eye_m": 1.60742,
+        "lin_occluder": true
+      },
+      "both_lin_hidden_at_safe_distance": true,
+      "cam2_clear": true,
+      "cam3_clear": true,
+      "center_separation_m": 1.6451
+    },
+    {
+      "i": 5,
+      "ratio": 0.25,
+      "zhou_xy": [
+        1.775,
+        -1.105
+      ],
+      "left": {
+        "blocker": "LIN_TORSO",
+        "blocked": true,
+        "distance_from_eye_m": 1.54441,
+        "lin_occluder": true
+      },
+      "right": {
+        "blocker": "LIN_TORSO",
+        "blocked": true,
+        "distance_from_eye_m": 1.55356,
+        "lin_occluder": true
+      },
+      "both_lin_hidden_at_safe_distance": true,
+      "cam2_clear": true,
+      "cam3_clear": true,
+      "center_separation_m": 1.5864
+    },
+    {
+      "i": 6,
+      "ratio": 0.3,
+      "zhou_xy": [
+        1.73,
+        -1.066
+      ],
+      "left": {
+        "blocker": "LIN_TORSO",
+        "blocked": true,
+        "distance_from_eye_m": 1.4906,
+        "lin_occluder": true
+      },
+      "right": {
+        "blocker": "LIN_TORSO",
+        "blocked": true,
+        "distance_from_eye_m": 1.49989,
+        "lin_occluder": true
+      },
+      "both_lin_hidden_at_safe_distance": true,
+      "cam2_clear": true,
+      "cam3_clear": true,
+      "center_separation_m": 1.5277
+    },
+    {
+      "i": 7,
+      "ratio": 0.35,
+      "zhou_xy": [
+        1.685,
+        -1.027
+      ],
+      "left": {
+        "blocker": "LIN_TORSO",
+        "blocked": true,
+        "distance_from_eye_m": 1.43697,
+        "lin_occluder": true
+      },
+      "right": {
+        "blocker": "LIN_TORSO",
+        "blocked": true,
+        "distance_from_eye_m": 1.44641,
+        "lin_occluder": true
+      },
+      "both_lin_hidden_at_safe_distance": true,
+      "cam2_clear": true,
+      "cam3_clear": true,
+      "center_separation_m": 1.4691
+    },
+    {
+      "i": 8,
+      "ratio": 0.4,
+      "zhou_xy": [
+        1.64,
+        -0.988
+      ],
+      "left": {
+        "blocker": "LIN_TORSO",
+        "blocked": true,
+        "distance_from_eye_m": 1.38354,
+        "lin_occluder": true
+      },
+      "right": {
+        "blocker": "LIN_TORSO",
+        "blocked": true,
+        "distance_from_eye_m": 1.39313,
+        "lin_occluder": true
+      },
+      "both_lin_hidden_at_safe_distance": true,
+      "cam2_clear": true,
+      "cam3_clear": true,
+      "center_separation_m": 1.4106
+    },
+    {
+      "i": 9,
+      "ratio": 0.45,
+      "zhou_xy": [
+        1.595,
+        -0.949
+      ],
+      "left": {
+        "blocker": "LIN_TORSO",
+        "blocked": true,
+        "distance_from_eye_m": 1.33032,
+        "lin_occluder": true
+      },
+      "right": {
+        "blocker": "LIN_TORSO",
+        "blocked": true,
+        "distance_from_eye_m": 1.34006,
+        "lin_occluder": true
+      },
+      "both_lin_hidden_at_safe_distance": true,
+      "cam2_clear": true,
+      "cam3_clear": true,
+      "center_separation_m": 1.3521
+    },
+    {
+      "i": 10,
+      "ratio": 0.5,
+      "zhou_xy": [
+        1.55,
+        -0.91
+      ],
+      "left": {
+        "blocker": "LIN_TORSO",
+        "blocked": true,
+        "distance_from_eye_m": 1.27731,
+        "lin_occluder": true
+      },
+      "right": {
+        "blocker": "LIN_TORSO",
+        "blocked": true,
+        "distance_from_eye_m": 1.28834,
+        "lin_occluder": true
+      },
+      "both_lin_hidden_at_safe_distance": true,
+      "cam2_clear": true,
+      "cam3_clear": true,
+      "center_separation_m": 1.2938
+    },
+    {
+      "i": 11,
+      "ratio": 0.55,
+      "zhou_xy": [
+        1.505,
+        -0.871
+      ],
+      "left": {
+        "blocker": "LIN_TORSO",
+        "blocked": true,
+        "distance_from_eye_m": 1.22645,
+        "lin_occluder": true
+      },
+      "right": {
+        "blocker": "LIN_TORSO",
+        "blocked": true,
+        "distance_from_eye_m": 1.23769,
+        "lin_occluder": true
+      },
+      "both_lin_hidden_at_safe_distance": true,
+      "cam2_clear": true,
+      "cam3_clear": true,
+      "center_separation_m": 1.2355
+    },
+    {
+      "i": 12,
+      "ratio": 0.6,
+      "zhou_xy": [
+        1.46,
+        -0.832
+      ],
+      "left": {
+        "blocker": "LIN_TORSO",
+        "blocked": true,
+        "distance_from_eye_m": 1.17594,
+        "lin_occluder": true
+      },
+      "right": {
+        "blocker": "LIN_TORSO",
+        "blocked": true,
+        "distance_from_eye_m": 1.18735,
+        "lin_occluder": true
+      },
+      "both_lin_hidden_at_safe_distance": true,
+      "cam2_clear": true,
+      "cam3_clear": true,
+      "center_separation_m": 1.1774
+    },
+    {
+      "i": 13,
+      "ratio": 0.65,
+      "zhou_xy": [
+        1.415,
+        -0.793
+      ],
+      "left": {
+        "blocker": "LIN_TORSO",
+        "blocked": true,
+        "distance_from_eye_m": 1.12576,
+        "lin_occluder": true
+      },
+      "right": {
+        "blocker": "LIN_TORSO",
+        "blocked": true,
+        "distance_from_eye_m": 1.13733,
+        "lin_occluder": true
+      },
+      "both_lin_hidden_at_safe_distance": true,
+      "cam2_clear": true,
+      "cam3_clear": true,
+      "center_separation_m": 1.1195
+    },
+    {
+      "i": 14,
+      "ratio": 0.7,
+      "zhou_xy": [
+        1.37,
+        -0.754
+      ],
+      "left": {
+        "blocker": "LIN_TORSO",
+        "blocked": true,
+        "distance_from_eye_m": 1.07591,
+        "lin_occluder": true
+      },
+      "right": {
+        "blocker": "LIN_TORSO",
+        "blocked": true,
+        "distance_from_eye_m": 1.08765,
+        "lin_occluder": true
+      },
+      "both_lin_hidden_at_safe_distance": true,
+      "cam2_clear": true,
+      "cam3_clear": true,
+      "center_separation_m": 1.0617
+    },
+    {
+      "i": 15,
+      "ratio": 0.75,
+      "zhou_xy": [
+        1.325,
+        -0.715
+      ],
+      "left": {
+        "blocker": "LIN_TORSO",
+        "blocked": true,
+        "distance_from_eye_m": 1.02641,
+        "lin_occluder": true
+      },
+      "right": {
+        "blocker": "LIN_TORSO",
+        "blocked": true,
+        "distance_from_eye_m": 1.03832,
+        "lin_occluder": true
+      },
+      "both_lin_hidden_at_safe_distance": true,
+      "cam2_clear": true,
+      "cam3_clear": true,
+      "center_separation_m": 1.0041
+    },
+    {
+      "i": 16,
+      "ratio": 0.8,
+      "zhou_xy": [
+        1.28,
+        -0.676
+      ],
+      "left": {
+        "blocker": "LIN_TORSO",
+        "blocked": true,
+        "distance_from_eye_m": 0.97727,
+        "lin_occluder": true
+      },
+      "right": {
+        "blocker": "LIN_TORSO",
+        "blocked": true,
+        "distance_from_eye_m": 0.98936,
+        "lin_occluder": true
+      },
+      "both_lin_hidden_at_safe_distance": true,
+      "cam2_clear": true,
+      "cam3_clear": true,
+      "center_separation_m": 0.9468
+    },
+    {
+      "i": 17,
+      "ratio": 0.85,
+      "zhou_xy": [
+        1.235,
+        -0.637
+      ],
+      "left": {
+        "blocker": "LIN_TORSO",
+        "blocked": true,
+        "distance_from_eye_m": 0.92851,
+        "lin_occluder": true
+      },
+      "right": {
+        "blocker": "LIN_TORSO",
+        "blocked": true,
+        "distance_from_eye_m": 0.94079,
+        "lin_occluder": true
+      },
+      "both_lin_hidden_at_safe_distance": true,
+      "cam2_clear": true,
+      "cam3_clear": true,
+      "center_separation_m": 0.8898
+    },
+    {
+      "i": 18,
+      "ratio": 0.9,
+      "zhou_xy": [
+        1.19,
+        -0.598
+      ],
+      "left": {
+        "blocker": "LIN_TORSO",
+        "blocked": true,
+        "distance_from_eye_m": 0.88015,
+        "lin_occluder": true
+      },
+      "right": {
+        "blocker": "LIN_TORSO",
+        "blocked": true,
+        "distance_from_eye_m": 0.89262,
+        "lin_occluder": true
+      },
+      "both_lin_hidden_at_safe_distance": true,
+      "cam2_clear": true,
+      "cam3_clear": true,
+      "center_separation_m": 0.8331
+    },
+    {
+      "i": 19,
+      "ratio": 0.95,
+      "zhou_xy": [
+        1.145,
+        -0.559
+      ],
+      "left": {
+        "blocker": "LIN_TORSO",
+        "blocked": true,
+        "distance_from_eye_m": 0.83291,
+        "lin_occluder": true
+      },
+      "right": {
+        "blocker": "LIN_TORSO",
+        "blocked": true,
+        "distance_from_eye_m": 0.84679,
+        "lin_occluder": true
+      },
+      "both_lin_hidden_at_safe_distance": true,
+      "cam2_clear": true,
+      "cam3_clear": true,
+      "center_separation_m": 0.7768
+    },
+    {
+      "i": 20,
+      "ratio": 1.0,
+      "zhou_xy": [
+        1.1,
+        -0.52
+      ],
+      "left": {
+        "blocker": "LIN_TORSO",
+        "blocked": true,
+        "distance_from_eye_m": 0.78837,
+        "lin_occluder": true
+      },
+      "right": {
+        "blocker": "LIN_TORSO",
+        "blocked": true,
+        "distance_from_eye_m": 0.80241,
+        "lin_occluder": true
+      },
+      "both_lin_hidden_at_safe_distance": true,
+      "cam2_clear": true,
+      "cam3_clear": true,
+      "center_separation_m": 0.7211
+    }
+  ],
+  "path_21_summary": {
+    "n": 21,
+    "both_hidden": 21,
+    "failed_indices": [],
+    "cam2_clear": 21,
+    "cam3_clear": 21,
+    "min_centers_m": 0.7211
+  },
+  "path_81_summary": {
+    "n": 81,
+    "both_hidden": 81,
+    "failed_indices": [],
+    "cam2_clear": 81,
+    "cam3_clear": 81,
+    "min_centers_m": 0.7211
+  },
+  "sensitivity_summary": {
+    "left12": {
+      "n": 21,
+      "both_hidden": 21,
+      "failed_indices": [],
+      "cam2_clear": 21,
+      "cam3_clear": 21,
+      "min_centers_m": 0.7211
+    },
+    "right12": {
+      "n": 21,
+      "both_hidden": 21,
+      "failed_indices": [],
+      "cam2_clear": 21,
+      "cam3_clear": 21,
+      "min_centers_m": 0.7211
+    },
+    "short1.5": {
+      "n": 21,
+      "both_hidden": 21,
+      "failed_indices": [],
+      "cam2_clear": 21,
+      "cam3_clear": 21,
+      "min_centers_m": 0.7211
+    },
+    "tall1.7": {
+      "n": 21,
+      "both_hidden": 21,
+      "failed_indices": [],
+      "cam2_clear": 21,
+      "cam3_clear": 21,
+      "min_centers_m": 0.7211
+    }
+  },
+  "actor_surface_overlaps_21": [
+    {
+      "i": 0,
+      "world_mesh_triangle_overlap_pairs": []
+    },
+    {
+      "i": 1,
+      "world_mesh_triangle_overlap_pairs": []
+    },
+    {
+      "i": 2,
+      "world_mesh_triangle_overlap_pairs": []
+    },
+    {
+      "i": 3,
+      "world_mesh_triangle_overlap_pairs": []
+    },
+    {
+      "i": 4,
+      "world_mesh_triangle_overlap_pairs": []
+    },
+    {
+      "i": 5,
+      "world_mesh_triangle_overlap_pairs": []
+    },
+    {
+      "i": 6,
+      "world_mesh_triangle_overlap_pairs": []
+    },
+    {
+      "i": 7,
+      "world_mesh_triangle_overlap_pairs": []
+    },
+    {
+      "i": 8,
+      "world_mesh_triangle_overlap_pairs": []
+    },
+    {
+      "i": 9,
+      "world_mesh_triangle_overlap_pairs": []
+    },
+    {
+      "i": 10,
+      "world_mesh_triangle_overlap_pairs": []
+    },
+    {
+      "i": 11,
+      "world_mesh_triangle_overlap_pairs": []
+    },
+    {
+      "i": 12,
+      "world_mesh_triangle_overlap_pairs": []
+    },
+    {
+      "i": 13,
+      "world_mesh_triangle_overlap_pairs": []
+    },
+    {
+      "i": 14,
+      "world_mesh_triangle_overlap_pairs": []
+    },
+    {
+      "i": 15,
+      "world_mesh_triangle_overlap_pairs": []
+    },
+    {
+      "i": 16,
+      "world_mesh_triangle_overlap_pairs": []
+    },
+    {
+      "i": 17,
+      "world_mesh_triangle_overlap_pairs": []
+    },
+    {
+      "i": 18,
+      "world_mesh_triangle_overlap_pairs": []
+    },
+    {
+      "i": 19,
+      "world_mesh_triangle_overlap_pairs": []
+    },
+    {
+      "i": 20,
+      "world_mesh_triangle_overlap_pairs": []
+    }
+  ],
+  "prop_states": {
+    "1": {
+      "key_bounds": [
+        [
+          -0.289,
+          -0.241
+        ],
+        [
+          0.42624,
+          0.47376
+        ],
+        [
+          0.75,
+          0.76
+        ]
+      ],
+      "moving_paper_bounds": [
+        [
+          -0.42,
+          -0.11
+        ],
+        [
+          0.34,
+          0.56
+        ],
+        [
+          0.761,
+          0.767
+        ]
+      ],
+      "folder_bounds": [
+        [
+          -1.02,
+          -0.58
+        ],
+        [
+          -0.03,
+          0.29
+        ],
+        [
+          0.75,
+          0.764
+        ]
+      ],
+      "top_stack_page_bounds": [
+        [
+          -0.72,
+          -0.34
+        ],
+        [
+          0.33,
+          0.59
+        ],
+        [
+          0.777,
+          0.784
+        ]
+      ]
+    },
+    "8": {
+      "key_bounds": [
+        [
+          -0.289,
+          -0.241
+        ],
+        [
+          0.42624,
+          0.47376
+        ],
+        [
+          0.75,
+          0.76
+        ]
+      ],
+      "moving_paper_bounds": [
+        [
+          -0.555,
+          -0.245
+        ],
+        [
+          0.34,
+          0.56
+        ],
+        [
+          0.828,
+          0.834
+        ]
+      ],
+      "folder_bounds": [
+        [
+          -1.02,
+          -0.58
+        ],
+        [
+          -0.03,
+          0.29
+        ],
+        [
+          0.75,
+          0.764
+        ]
+      ],
+      "top_stack_page_bounds": [
+        [
+          -0.72,
+          -0.34
+        ],
+        [
+          0.33,
+          0.59
+        ],
+        [
+          0.777,
+          0.784
+        ]
+      ]
+    },
+    "10": {
+      "key_bounds": [
+        [
+          -0.289,
+          -0.241
+        ],
+        [
+          0.42624,
+          0.47376
+        ],
+        [
+          0.75,
+          0.76
+        ]
+      ],
+      "moving_paper_bounds": [
+        [
+          -0.59832,
+          -0.28832
+        ],
+        [
+          0.34,
+          0.56
+        ],
+        [
+          0.82485,
+          0.83085
+        ]
+      ],
+      "folder_bounds": [
+        [
+          -1.02,
+          -0.58
+        ],
+        [
+          -0.03,
+          0.29
+        ],
+        [
+          0.75,
+          0.764
+        ]
+      ],
+      "top_stack_page_bounds": [
+        [
+          -0.72,
+          -0.34
+        ],
+        [
+          0.33,
+          0.59
+        ],
+        [
+          0.777,
+          0.784
+        ]
+      ]
+    },
+    "20": {
+      "key_bounds": [
+        [
+          -0.289,
+          -0.241
+        ],
+        [
+          0.42624,
+          0.47376
+        ],
+        [
+          0.75,
+          0.76
+        ]
+      ],
+      "moving_paper_bounds": [
+        [
+          -0.685,
+          -0.375
+        ],
+        [
+          0.34,
+          0.56
+        ],
+        [
+          0.7855,
+          0.7915
+        ]
+      ],
+      "folder_bounds": [
+        [
+          -1.02,
+          -0.58
+        ],
+        [
+          -0.03,
+          0.29
+        ],
+        [
+          0.75,
+          0.764
+        ]
+      ],
+      "top_stack_page_bounds": [
+        [
+          -0.72,
+          -0.34
+        ],
+        [
+          0.33,
+          0.59
+        ],
+        [
+          0.777,
+          0.784
+        ]
+      ]
+    },
+    "30": {
+      "key_bounds": [
+        [
+          -0.289,
+          -0.241
+        ],
+        [
+          0.42624,
+          0.47376
+        ],
+        [
+          0.75,
+          0.76
+        ]
+      ],
+      "moving_paper_bounds": [
+        [
+          -0.685,
+          -0.375
+        ],
+        [
+          0.34,
+          0.56
+        ],
+        [
+          0.7855,
+          0.7915
+        ]
+      ],
+      "folder_bounds": [
+        [
+          -0.89,
+          -0.45
+        ],
+        [
+          0.14,
+          0.46
+        ],
+        [
+          1.063,
+          1.077
+        ]
+      ],
+      "top_stack_page_bounds": [
+        [
+          -0.72,
+          -0.34
+        ],
+        [
+          0.33,
+          0.59
+        ],
+        [
+          0.777,
+          0.784
+        ]
+      ]
+    },
+    "34": {
+      "key_bounds": [
+        [
+          -0.289,
+          -0.241
+        ],
+        [
+          0.42624,
+          0.47376
+        ],
+        [
+          0.75,
+          0.76
+        ]
+      ],
+      "moving_paper_bounds": [
+        [
+          -0.685,
+          -0.375
+        ],
+        [
+          0.34,
+          0.56
+        ],
+        [
+          0.7855,
+          0.7915
+        ]
+      ],
+      "folder_bounds": [
+        [
+          -0.7,
+          -0.26
+        ],
+        [
+          0.27,
+          0.59
+        ],
+        [
+          0.903,
+          0.917
+        ]
+      ],
+      "top_stack_page_bounds": [
+        [
+          -0.72,
+          -0.34
+        ],
+        [
+          0.33,
+          0.59
+        ],
+        [
+          0.777,
+          0.784
+        ]
+      ]
+    },
+    "40": {
+      "key_bounds": [
+        [
+          -0.289,
+          -0.241
+        ],
+        [
+          0.42624,
+          0.47376
+        ],
+        [
+          0.75,
+          0.76
+        ]
+      ],
+      "moving_paper_bounds": [
+        [
+          -0.685,
+          -0.375
+        ],
+        [
+          0.34,
+          0.56
+        ],
+        [
+          0.7855,
+          0.7915
+        ]
+      ],
+      "folder_bounds": [
+        [
+          -0.59,
+          -0.15
+        ],
+        [
+          0.3,
+          0.62
+        ],
+        [
+          0.784,
+          0.798
+        ]
+      ],
+      "top_stack_page_bounds": [
+        [
+          -0.72,
+          -0.34
+        ],
+        [
+          0.33,
+          0.59
+        ],
+        [
+          0.777,
+          0.784
+        ]
+      ]
+    }
+  },
+  "key_3x3_visibility": {
+    "1": {
+      "cam2": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "cam3": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    "20": {
+      "cam2": [
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "cam3": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    "34": {
+      "cam2": [
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "cam3": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    "40": {
+      "cam2": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "cam3": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ]
+    }
+  },
+  "views": {
+    "SHOT02_40MM_1": {
+      "K": [
+        0.3437,
+        0.2066,
+        3.676
+      ],
+      "LinHead": [
+        0.4822,
+        0.5921,
+        3.6446
+      ],
+      "ZhouHead": [
+        1.1304,
+        0.7075,
+        3.9951
+      ],
+      "LeftHand": [
+        0.34,
+        0.2167,
+        3.6627
+      ]
+    },
+    "SHOT02_40MM_20": {
+      "K": [
+        0.3437,
+        0.2066,
+        3.676
+      ],
+      "LinHead": [
+        0.4822,
+        0.5921,
+        3.6446
+      ],
+      "ZhouHead": [
+        0.9563,
+        0.7074,
+        3.932
+      ],
+      "LeftHand": [
+        0.2726,
+        0.2064,
+        3.4684
+      ]
+    },
+    "SHOT03_85MM_20": {
+      "K": [
+        0.6605,
+        0.4046,
+        1.4978
+      ],
+      "LinHead": [
+        1.7196,
+        2.6465,
+        1.0681
+      ],
+      "ZhouHead": [
+        7.4334,
+        3.9092,
+        0.7619
+      ],
+      "LeftHand": [
+        0.247,
+        0.3447,
+        1.3571
+      ]
+    },
+    "SHOT03_85MM_34": {
+      "K": [
+        0.6605,
+        0.4046,
+        1.4978
+      ],
+      "LinHead": [
+        1.7196,
+        2.6465,
+        1.0681
+      ],
+      "ZhouHead": [
+        5.3862,
+        3.7853,
+        0.8559
+      ],
+      "LeftHand": [
+        0.3327,
+        0.7361,
+        1.2968
+      ]
+    },
+    "SHOT03_85MM_40": {
+      "K": [
+        0.6605,
+        0.4046,
+        1.4978
+      ],
+      "LinHead": [
+        1.7196,
+        2.6465,
+        1.0681
+      ],
+      "ZhouHead": [
+        5.1693,
+        3.7722,
+        0.8672
+      ],
+      "LeftHand": [
+        0.4854,
+        0.4677,
+        1.4313
+      ]
+    }
+  },
+  "limits": [
+    "BVH mesh surface intersection may miss total mesh containment",
+    "Elbow IK tests key poses, not continuous joint biomechanics",
+    "Path samples do not prove every continuous point",
+    "Rendered framing does not prove attention",
+    "Blue folder and paper have no rigid-body gravity simulation"
+  ]
+}
