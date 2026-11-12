@@ -1,0 +1,500 @@
+{
+  "units": "m",
+  "world": "x east+, y north+",
+  "frozen_constraints": [
+    "north-wall table",
+    "east-wall door",
+    "Lin south of table",
+    "Zhou door to table",
+    "K fixed"
+  ],
+  "derived_2D_assumptions": {
+    "table": [
+      -1.1,
+      1.1,
+      0.0,
+      0.8
+    ],
+    "key_K": [
+      -0.25,
+      0.45
+    ],
+    "lin_center": [
+      0.35,
+      -0.45
+    ],
+    "lin_occluder_disc_radius_m": 0.4,
+    "zhou_start": [
+      2.0,
+      -1.3
+    ],
+    "zhou_end": [
+      0.85,
+      -0.35
+    ],
+    "paper_at_initial": [
+      -0.38,
+      -0.12,
+      0.32,
+      0.57
+    ],
+    "folder_after_B3": [
+      -0.55,
+      -0.03,
+      0.3,
+      0.62
+    ],
+    "paper_and_folder_are_top_down_cover_rectangles": true,
+    "key_nominal_width_m": 0.06
+  },
+  "candidate_A": {
+    "camera": [
+      1.55,
+      -1.5
+    ],
+    "camera_blocked_by_lin_2D": true,
+    "camera_line_clear_2D": false,
+    "camera_line_min_distance_to_lin_m": 0.1696,
+    "zhou_samples": [
+      {
+        "fraction": 0.0,
+        "zhou": [
+          2.0,
+          -1.3
+        ],
+        "lin_blocks_K_2D": true,
+        "distance_to_line_m": 0.3421,
+        "axis_side": -0.7125
+      },
+      {
+        "fraction": 0.05,
+        "zhou": [
+          1.942,
+          -1.252
+        ],
+        "lin_blocks_K_2D": true,
+        "distance_to_line_m": 0.3429,
+        "axis_side": -0.7091
+      },
+      {
+        "fraction": 0.1,
+        "zhou": [
+          1.885,
+          -1.205
+        ],
+        "lin_blocks_K_2D": true,
+        "distance_to_line_m": 0.3437,
+        "axis_side": -0.7057
+      },
+      {
+        "fraction": 0.15,
+        "zhou": [
+          1.828,
+          -1.157
+        ],
+        "lin_blocks_K_2D": true,
+        "distance_to_line_m": 0.3446,
+        "axis_side": -0.7024
+      },
+      {
+        "fraction": 0.2,
+        "zhou": [
+          1.77,
+          -1.11
+        ],
+        "lin_blocks_K_2D": true,
+        "distance_to_line_m": 0.3456,
+        "axis_side": -0.699
+      },
+      {
+        "fraction": 0.25,
+        "zhou": [
+          1.712,
+          -1.062
+        ],
+        "lin_blocks_K_2D": true,
+        "distance_to_line_m": 0.3466,
+        "axis_side": -0.6956
+      },
+      {
+        "fraction": 0.3,
+        "zhou": [
+          1.655,
+          -1.015
+        ],
+        "lin_blocks_K_2D": true,
+        "distance_to_line_m": 0.3477,
+        "axis_side": -0.6922
+      },
+      {
+        "fraction": 0.35,
+        "zhou": [
+          1.598,
+          -0.968
+        ],
+        "lin_blocks_K_2D": true,
+        "distance_to_line_m": 0.3488,
+        "axis_side": -0.6889
+      },
+      {
+        "fraction": 0.4,
+        "zhou": [
+          1.54,
+          -0.92
+        ],
+        "lin_blocks_K_2D": true,
+        "distance_to_line_m": 0.35,
+        "axis_side": -0.6855
+      },
+      {
+        "fraction": 0.45,
+        "zhou": [
+          1.482,
+          -0.873
+        ],
+        "lin_blocks_K_2D": true,
+        "distance_to_line_m": 0.3513,
+        "axis_side": -0.6821
+      },
+      {
+        "fraction": 0.5,
+        "zhou": [
+          1.425,
+          -0.825
+        ],
+        "lin_blocks_K_2D": true,
+        "distance_to_line_m": 0.3527,
+        "axis_side": -0.6788
+      },
+      {
+        "fraction": 0.55,
+        "zhou": [
+          1.368,
+          -0.777
+        ],
+        "lin_blocks_K_2D": true,
+        "distance_to_line_m": 0.3542,
+        "axis_side": -0.6754
+      },
+      {
+        "fraction": 0.6,
+        "zhou": [
+          1.31,
+          -0.73
+        ],
+        "lin_blocks_K_2D": true,
+        "distance_to_line_m": 0.3558,
+        "axis_side": -0.672
+      },
+      {
+        "fraction": 0.65,
+        "zhou": [
+          1.252,
+          -0.682
+        ],
+        "lin_blocks_K_2D": true,
+        "distance_to_line_m": 0.3576,
+        "axis_side": -0.6686
+      },
+      {
+        "fraction": 0.7,
+        "zhou": [
+          1.195,
+          -0.635
+        ],
+        "lin_blocks_K_2D": true,
+        "distance_to_line_m": 0.3594,
+        "axis_side": -0.6653
+      },
+      {
+        "fraction": 0.75,
+        "zhou": [
+          1.138,
+          -0.588
+        ],
+        "lin_blocks_K_2D": true,
+        "distance_to_line_m": 0.3615,
+        "axis_side": -0.6619
+      },
+      {
+        "fraction": 0.8,
+        "zhou": [
+          1.08,
+          -0.54
+        ],
+        "lin_blocks_K_2D": true,
+        "distance_to_line_m": 0.3637,
+        "axis_side": -0.6585
+      },
+      {
+        "fraction": 0.85,
+        "zhou": [
+          1.022,
+          -0.493
+        ],
+        "lin_blocks_K_2D": true,
+        "distance_to_line_m": 0.3661,
+        "axis_side": -0.6551
+      },
+      {
+        "fraction": 0.9,
+        "zhou": [
+          0.965,
+          -0.445
+        ],
+        "lin_blocks_K_2D": true,
+        "distance_to_line_m": 0.3688,
+        "axis_side": -0.6518
+      },
+      {
+        "fraction": 0.95,
+        "zhou": [
+          0.908,
+          -0.398
+        ],
+        "lin_blocks_K_2D": true,
+        "distance_to_line_m": 0.3717,
+        "axis_side": -0.6484
+      },
+      {
+        "fraction": 1.0,
+        "zhou": [
+          0.85,
+          -0.35
+        ],
+        "lin_blocks_K_2D": true,
+        "distance_to_line_m": 0.375,
+        "axis_side": -0.645
+      }
+    ],
+    "zhou_all_blocked_2D": true,
+    "axis_sign_constant": true,
+    "camera_key_distance_m": 2.654,
+    "key_width_fraction_40mm_36mm_sensor_approx": 0.0251
+  },
+  "candidate_B": {
+    "camera": [
+      -1.6,
+      -1.6
+    ],
+    "camera_blocked_by_lin_2D": false,
+    "camera_line_clear_2D": true,
+    "camera_line_min_distance_to_lin_m": 0.9961,
+    "zhou_samples": [
+      {
+        "fraction": 0.0,
+        "zhou": [
+          2.0,
+          -1.3
+        ],
+        "lin_blocks_K_2D": true,
+        "distance_to_line_m": 0.3421,
+        "axis_side": -3.555
+      },
+      {
+        "fraction": 0.05,
+        "zhou": [
+          1.942,
+          -1.252
+        ],
+        "lin_blocks_K_2D": true,
+        "distance_to_line_m": 0.3429,
+        "axis_side": -3.3963
+      },
+      {
+        "fraction": 0.1,
+        "zhou": [
+          1.885,
+          -1.205
+        ],
+        "lin_blocks_K_2D": true,
+        "distance_to_line_m": 0.3437,
+        "axis_side": -3.2375
+      },
+      {
+        "fraction": 0.15,
+        "zhou": [
+          1.828,
+          -1.157
+        ],
+        "lin_blocks_K_2D": true,
+        "distance_to_line_m": 0.3446,
+        "axis_side": -3.0788
+      },
+      {
+        "fraction": 0.2,
+        "zhou": [
+          1.77,
+          -1.11
+        ],
+        "lin_blocks_K_2D": true,
+        "distance_to_line_m": 0.3456,
+        "axis_side": -2.92
+      },
+      {
+        "fraction": 0.25,
+        "zhou": [
+          1.712,
+          -1.062
+        ],
+        "lin_blocks_K_2D": true,
+        "distance_to_line_m": 0.3466,
+        "axis_side": -2.7613
+      },
+      {
+        "fraction": 0.3,
+        "zhou": [
+          1.655,
+          -1.015
+        ],
+        "lin_blocks_K_2D": true,
+        "distance_to_line_m": 0.3477,
+        "axis_side": -2.6025
+      },
+      {
+        "fraction": 0.35,
+        "zhou": [
+          1.598,
+          -0.968
+        ],
+        "lin_blocks_K_2D": true,
+        "distance_to_line_m": 0.3488,
+        "axis_side": -2.4438
+      },
+      {
+        "fraction": 0.4,
+        "zhou": [
+          1.54,
+          -0.92
+        ],
+        "lin_blocks_K_2D": true,
+        "distance_to_line_m": 0.35,
+        "axis_side": -2.285
+      },
+      {
+        "fraction": 0.45,
+        "zhou": [
+          1.482,
+          -0.873
+        ],
+        "lin_blocks_K_2D": true,
+        "distance_to_line_m": 0.3513,
+        "axis_side": -2.1263
+      },
+      {
+        "fraction": 0.5,
+        "zhou": [
+          1.425,
+          -0.825
+        ],
+        "lin_blocks_K_2D": true,
+        "distance_to_line_m": 0.3527,
+        "axis_side": -1.9675
+      },
+      {
+        "fraction": 0.55,
+        "zhou": [
+          1.368,
+          -0.777
+        ],
+        "lin_blocks_K_2D": true,
+        "distance_to_line_m": 0.3542,
+        "axis_side": -1.8088
+      },
+      {
+        "fraction": 0.6,
+        "zhou": [
+          1.31,
+          -0.73
+        ],
+        "lin_blocks_K_2D": true,
+        "distance_to_line_m": 0.3558,
+        "axis_side": -1.65
+      },
+      {
+        "fraction": 0.65,
+        "zhou": [
+          1.252,
+          -0.682
+        ],
+        "lin_blocks_K_2D": true,
+        "distance_to_line_m": 0.3576,
+        "axis_side": -1.4913
+      },
+      {
+        "fraction": 0.7,
+        "zhou": [
+          1.195,
+          -0.635
+        ],
+        "lin_blocks_K_2D": true,
+        "distance_to_line_m": 0.3594,
+        "axis_side": -1.3325
+      },
+      {
+        "fraction": 0.75,
+        "zhou": [
+          1.138,
+          -0.588
+        ],
+        "lin_blocks_K_2D": true,
+        "distance_to_line_m": 0.3615,
+        "axis_side": -1.1738
+      },
+      {
+        "fraction": 0.8,
+        "zhou": [
+          1.08,
+          -0.54
+        ],
+        "lin_blocks_K_2D": true,
+        "distance_to_line_m": 0.3637,
+        "axis_side": -1.015
+      },
+      {
+        "fraction": 0.85,
+        "zhou": [
+          1.022,
+          -0.493
+        ],
+        "lin_blocks_K_2D": true,
+        "distance_to_line_m": 0.3661,
+        "axis_side": -0.8563
+      },
+      {
+        "fraction": 0.9,
+        "zhou": [
+          0.965,
+          -0.445
+        ],
+        "lin_blocks_K_2D": true,
+        "distance_to_line_m": 0.3688,
+        "axis_side": -0.6975
+      },
+      {
+        "fraction": 0.95,
+        "zhou": [
+          0.908,
+          -0.398
+        ],
+        "lin_blocks_K_2D": true,
+        "distance_to_line_m": 0.3717,
+        "axis_side": -0.5388
+      },
+      {
+        "fraction": 1.0,
+        "zhou": [
+          0.85,
+          -0.35
+        ],
+        "lin_blocks_K_2D": true,
+        "distance_to_line_m": 0.375,
+        "axis_side": -0.38
+      }
+    ],
+    "zhou_all_blocked_2D": true,
+    "axis_sign_constant": true,
+    "camera_key_distance_m": 2.455,
+    "key_width_fraction_40mm_36mm_sensor_approx": 0.0272
+  }
+}
