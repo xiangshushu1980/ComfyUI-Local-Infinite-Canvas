@@ -1,0 +1,342 @@
+{
+  "model": "derived finite-height oriented ellipse body; 201 uniform points per ray (not continuous root solver)",
+  "reference": "WAR-72 2026-11-12 first pass",
+  "camera": [
+    -1.6,
+    -1.6,
+    1.55
+  ],
+  "key": [
+    -0.25,
+    0.45,
+    0.76
+  ],
+  "eye_separation_m": 0.064,
+  "path_samples": 21,
+  "scenarios": [
+    {
+      "scenario": "prior cylinder equivalent",
+      "lin_center": [
+        0.35,
+        -0.45
+      ],
+      "ellipse_half_axes": [
+        0.4,
+        0.4
+      ],
+      "body_rotation_degrees": 0,
+      "eye_z": 1.6,
+      "camera_clear": true,
+      "both_eyes_occluded_count": 21,
+      "total_path_points": 21,
+      "first_failed_index": null,
+      "failed_indices": [],
+      "both_eyes_all_blocked": true
+    },
+    {
+      "scenario": "torso width 0.48m, depth 0.28m",
+      "lin_center": [
+        0.35,
+        -0.45
+      ],
+      "ellipse_half_axes": [
+        0.24,
+        0.14
+      ],
+      "body_rotation_degrees": 0,
+      "eye_z": 1.6,
+      "camera_clear": true,
+      "both_eyes_occluded_count": 0,
+      "total_path_points": 21,
+      "first_failed_index": 0,
+      "failed_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ],
+      "both_eyes_all_blocked": false
+    },
+    {
+      "scenario": "broader torso width 0.60m, depth 0.34m",
+      "lin_center": [
+        0.35,
+        -0.45
+      ],
+      "ellipse_half_axes": [
+        0.3,
+        0.17
+      ],
+      "body_rotation_degrees": 0,
+      "eye_z": 1.6,
+      "camera_clear": true,
+      "both_eyes_occluded_count": 0,
+      "total_path_points": 21,
+      "first_failed_index": 0,
+      "failed_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ],
+      "both_eyes_all_blocked": false
+    },
+    {
+      "scenario": "shoulders 0.76m, depth 0.38m",
+      "lin_center": [
+        0.35,
+        -0.45
+      ],
+      "ellipse_half_axes": [
+        0.38,
+        0.19
+      ],
+      "body_rotation_degrees": 0,
+      "eye_z": 1.6,
+      "camera_clear": true,
+      "both_eyes_occluded_count": 0,
+      "total_path_points": 21,
+      "first_failed_index": 0,
+      "failed_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ],
+      "both_eyes_all_blocked": false
+    },
+    {
+      "scenario": "shoulders 0.76m, rotated 30deg",
+      "lin_center": [
+        0.35,
+        -0.45
+      ],
+      "ellipse_half_axes": [
+        0.38,
+        0.19
+      ],
+      "body_rotation_degrees": 30,
+      "eye_z": 1.6,
+      "camera_clear": true,
+      "both_eyes_occluded_count": 4,
+      "total_path_points": 21,
+      "first_failed_index": 4,
+      "failed_indices": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ],
+      "both_eyes_all_blocked": false
+    },
+    {
+      "scenario": "shoulders 0.76m, rotated 60deg",
+      "lin_center": [
+        0.35,
+        -0.45
+      ],
+      "ellipse_half_axes": [
+        0.38,
+        0.19
+      ],
+      "body_rotation_degrees": 60,
+      "eye_z": 1.6,
+      "camera_clear": true,
+      "both_eyes_occluded_count": 15,
+      "total_path_points": 21,
+      "first_failed_index": 15,
+      "failed_indices": [
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ],
+      "both_eyes_all_blocked": false
+    },
+    {
+      "scenario": "old cylinder shifted Lin 0.10m west",
+      "lin_center": [
+        0.24999999999999997,
+        -0.45
+      ],
+      "ellipse_half_axes": [
+        0.4,
+        0.4
+      ],
+      "body_rotation_degrees": 0,
+      "eye_z": 1.6,
+      "camera_clear": true,
+      "both_eyes_occluded_count": 0,
+      "total_path_points": 21,
+      "first_failed_index": 0,
+      "failed_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ],
+      "both_eyes_all_blocked": false
+    },
+    {
+      "scenario": "old cylinder shifted Lin 0.10m east",
+      "lin_center": [
+        0.44999999999999996,
+        -0.45
+      ],
+      "ellipse_half_axes": [
+        0.4,
+        0.4
+      ],
+      "body_rotation_degrees": 0,
+      "eye_z": 1.6,
+      "camera_clear": true,
+      "both_eyes_occluded_count": 21,
+      "total_path_points": 21,
+      "first_failed_index": null,
+      "failed_indices": [],
+      "both_eyes_all_blocked": true
+    },
+    {
+      "scenario": "old cylinder tall Zhou eyes 1.75m",
+      "lin_center": [
+        0.35,
+        -0.45
+      ],
+      "ellipse_half_axes": [
+        0.4,
+        0.4
+      ],
+      "body_rotation_degrees": 0,
+      "eye_z": 1.75,
+      "camera_clear": true,
+      "both_eyes_occluded_count": 21,
+      "total_path_points": 21,
+      "first_failed_index": null,
+      "failed_indices": [],
+      "both_eyes_all_blocked": true
+    },
+    {
+      "scenario": "old cylinder short Zhou eyes 1.45m",
+      "lin_center": [
+        0.35,
+        -0.45
+      ],
+      "ellipse_half_axes": [
+        0.4,
+        0.4
+      ],
+      "body_rotation_degrees": 0,
+      "eye_z": 1.45,
+      "camera_clear": true,
+      "both_eyes_occluded_count": 21,
+      "total_path_points": 21,
+      "first_failed_index": null,
+      "failed_indices": [],
+      "both_eyes_all_blocked": true
+    }
+  ],
+  "optics": {
+    "shot02_40mm_cameraB_aim_key": {
+      "depth_m": 2.579,
+      "target_angle_from_axis_deg": 0.0,
+      "full_horizontal_fov_deg": 48.46,
+      "full_vertical_fov_deg": 28.41
+    },
+    "shot02_40mm_cameraB_aim_lin_face": {
+      "depth_m": 2.167,
+      "target_angle_from_axis_deg": 32.81,
+      "full_horizontal_fov_deg": 48.46,
+      "full_vertical_fov_deg": 28.41
+    },
+    "shot03_85mm_cameraB_aim_key": {
+      "depth_m": 2.579,
+      "target_angle_from_axis_deg": 0.0,
+      "full_horizontal_fov_deg": 23.91,
+      "full_vertical_fov_deg": 13.59
+    },
+    "note": "Target-angle radial test does not ensure 16:9 frame x/y placement, occluding hands, or correct MS/ECU size. Lens center directed at K is not a sufficient Shot02 framing plan."
+  }
+}
