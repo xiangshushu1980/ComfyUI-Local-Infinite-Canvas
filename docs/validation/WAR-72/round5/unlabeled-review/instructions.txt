@@ -1,0 +1,5 @@
+WAR-72 Round5 unaided viewing packet (prepare for a future independent viewer; NOT yet evaluated).
+Do not show mapping.txt to viewers. Each pair belongs to one fixed camera.
+Display *_before.png at 960x540, then *_after.png at the SAME native size, without zoom, arrows, or labels.
+Record: (1) Did you notice a key? (2) Where was it? (3) Did you understand it had been hidden under papers?
+Record time-to-answer and whether the viewer already knew the target. This packet is NOT a completed human study.

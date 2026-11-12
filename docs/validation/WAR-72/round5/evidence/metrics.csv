@@ -1,0 +1,13 @@
+candidate,frame,lens_mm,key_width_px,key_height_px,clear_key_9,key_center_ray_blocked,lin_face_in,hand_in,zhou_face_in,key_bbox_in
+F0,1,40.0,26.76,9.34,0,True,True,True,False,True
+F0,10,40.0,26.76,9.34,6,False,True,True,False,True
+F0,20,40.0,26.76,9.34,6,False,True,True,True,True
+F1,1,40.0,40.09,14.65,0,True,True,True,False,True
+F1,10,40.0,40.09,14.65,9,False,True,True,False,True
+F1,20,40.0,40.09,14.65,9,False,True,True,False,True
+F2,1,40.0,55.67,17.81,0,True,False,True,False,True
+F2,10,40.0,55.67,17.81,9,False,False,True,False,True
+F2,20,40.0,55.67,17.81,9,False,False,True,False,True
+F3,1,85.0,147.31,68.92,0,True,False,True,False,True
+F3,10,85.0,147.31,68.92,5,True,False,True,False,True
+F3,20,85.0,147.31,68.92,9,False,False,True,False,True

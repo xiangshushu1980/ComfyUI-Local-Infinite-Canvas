@@ -1,0 +1,3 @@
+A=F2 40mm desk priority
+B=F0 inherited 40mm MS
+C=F1 40mm closer action

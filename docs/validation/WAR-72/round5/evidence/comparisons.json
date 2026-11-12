@@ -1,0 +1,1363 @@
+{
+  "date": "2026-11-12",
+  "task": "WAR-72 round5 Shot02 cinematic information coverage",
+  "source_scene": "\\\\wsl.localhost\\udev\\home\\sean\\projects\\canvas-lab\\docs\\validation\\WAR-72\\round4\\candidate-b\\WAR72_physical_B.blend",
+  "source_sha256": "23fc26a252390e73ac50efd16001248ceec362bd0d590f16dbbe8a16385a0373",
+  "frozen_shotplan": "WAR-65/d-assisted-v1-step7-raw.md; Shot02 40mm MS fixed, 6s; NOT modified",
+  "scene_unchanged": true,
+  "engine": "CYCLES",
+  "cycles_device": "CPU",
+  "frame_resolution": [
+    960,
+    540
+  ],
+  "samples": 7,
+  "candidates": [
+    {
+      "id": "F0",
+      "label": "Frozen-style derived 40mm MS inherited fourth-round framing",
+      "story_function": "single 40mm MS, actor+table+approaching Zhou",
+      "position": [
+        -2.5,
+        -2.4,
+        1.7
+      ],
+      "quaternion": [
+        0.684373,
+        0.613161,
+        -0.263279,
+        -0.293856
+      ],
+      "lens_mm": 40.0,
+      "sensor_width_mm": 36.0,
+      "sensor_fit": "HORIZONTAL"
+    },
+    {
+      "id": "F1",
+      "label": "Closer 40mm action-and-reveal single shot",
+      "story_function": "more prop size but may crop face or Zhou",
+      "position": [
+        -1.6,
+        -1.6,
+        1.55
+      ],
+      "quaternion": [
+        0.726892,
+        0.602769,
+        -0.210063,
+        -0.25332
+      ],
+      "lens_mm": 40.0,
+      "sensor_width_mm": 36.0,
+      "sensor_fit": "HORIZONTAL"
+    },
+    {
+      "id": "F2",
+      "label": "40mm prop-priority tighter desk framing",
+      "story_function": "key/hand readability at expense of character relation",
+      "position": [
+        -1.15,
+        -1.1,
+        1.34
+      ],
+      "quaternion": [
+        0.784068,
+        0.570981,
+        -0.143253,
+        -0.196714
+      ],
+      "lens_mm": 40.0,
+      "sensor_width_mm": 36.0,
+      "sensor_fit": "HORIZONTAL"
+    },
+    {
+      "id": "F3",
+      "label": "85mm key ECU spatial insert reference; adds shot",
+      "story_function": "stronger key disclosure but would add another shot/cut",
+      "position": [
+        -0.95,
+        -0.65,
+        1.5
+      ],
+      "quaternion": [
+        0.833965,
+        0.495993,
+        -0.123628,
+        -0.207869
+      ],
+      "lens_mm": 85.0,
+      "sensor_width_mm": 36.0,
+      "sensor_fit": "HORIZONTAL"
+    }
+  ],
+  "measurements": [
+    {
+      "id": "F0",
+      "frame": 1,
+      "K_center_norm": [
+        0.3437,
+        0.2066,
+        3.676
+      ],
+      "K_bbox": {
+        "x_min": 0.33282,
+        "x_max": 0.36069,
+        "y_min": 0.19981,
+        "y_max": 0.21711,
+        "width_px": 26.76,
+        "height_px": 9.34,
+        "in_bounds": true
+      },
+      "K_patch_rays": [
+        {
+          "blocked": true,
+          "name": "STACK_03",
+          "fraction": 0.96931
+        },
+        {
+          "blocked": true,
+          "name": "STACK_03",
+          "fraction": 0.96931
+        },
+        {
+          "blocked": true,
+          "name": "STACK_03",
+          "fraction": 0.96931
+        },
+        {
+          "blocked": true,
+          "name": "PAPER_MOVING",
+          "fraction": 0.9873
+        },
+        {
+          "blocked": true,
+          "name": "PAPER_MOVING",
+          "fraction": 0.9873
+        },
+        {
+          "blocked": true,
+          "name": "PAPER_MOVING",
+          "fraction": 0.9873
+        },
+        {
+          "blocked": true,
+          "name": "PAPER_MOVING",
+          "fraction": 0.9873
+        },
+        {
+          "blocked": true,
+          "name": "PAPER_MOVING",
+          "fraction": 0.9873
+        },
+        {
+          "blocked": true,
+          "name": "PAPER_MOVING",
+          "fraction": 0.9873
+        }
+      ],
+      "K_patch_clear": 0,
+      "K_center_ray": {
+        "blocked": true,
+        "name": "PAPER_MOVING",
+        "fraction": 0.9873
+      },
+      "LinFace_uv": [
+        0.4822,
+        0.5921,
+        3.6446
+      ],
+      "LinTorso_uv": [
+        0.5742,
+        0.3885,
+        3.6242
+      ],
+      "LinHand_uv": [
+        0.3399,
+        0.2315,
+        3.6597
+      ],
+      "ZhouHead_uv": [
+        1.1304,
+        0.7075,
+        3.9951
+      ],
+      "Paper_uv": [
+        0.3401,
+        0.2098,
+        3.6642
+      ],
+      "LinFace_in_frame": true,
+      "LinHand_in_frame": true,
+      "ZhouHead_in_frame": false,
+      "K_in_frame": true,
+      "actor_axis_cross_start_end": [
+        -6.328,
+        -2.1424
+      ],
+      "crosses_actor_axis": false
+    },
+    {
+      "id": "F0",
+      "frame": 10,
+      "K_center_norm": [
+        0.3437,
+        0.2066,
+        3.676
+      ],
+      "K_bbox": {
+        "x_min": 0.33282,
+        "x_max": 0.36069,
+        "y_min": 0.19981,
+        "y_max": 0.21711,
+        "width_px": 26.76,
+        "height_px": 9.34,
+        "in_bounds": true
+      },
+      "K_patch_rays": [
+        {
+          "blocked": true,
+          "name": "STACK_03",
+          "fraction": 0.96931
+        },
+        {
+          "blocked": true,
+          "name": "STACK_03",
+          "fraction": 0.96931
+        },
+        {
+          "blocked": true,
+          "name": "STACK_03",
+          "fraction": 0.96931
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        }
+      ],
+      "K_patch_clear": 6,
+      "K_center_ray": {
+        "blocked": false,
+        "name": null,
+        "fraction": 1.0
+      },
+      "LinFace_uv": [
+        0.4822,
+        0.5921,
+        3.6446
+      ],
+      "LinTorso_uv": [
+        0.5742,
+        0.3885,
+        3.6242
+      ],
+      "LinHand_uv": [
+        0.2969,
+        0.2535,
+        3.5287
+      ],
+      "ZhouHead_uv": [
+        1.0783,
+        0.7075,
+        3.976
+      ],
+      "Paper_uv": [
+        0.2953,
+        0.2263,
+        3.5287
+      ],
+      "LinFace_in_frame": true,
+      "LinHand_in_frame": true,
+      "ZhouHead_in_frame": false,
+      "K_in_frame": true,
+      "actor_axis_cross_start_end": [
+        -6.328,
+        -2.1424
+      ],
+      "crosses_actor_axis": false
+    },
+    {
+      "id": "F0",
+      "frame": 20,
+      "K_center_norm": [
+        0.3437,
+        0.2066,
+        3.676
+      ],
+      "K_bbox": {
+        "x_min": 0.33282,
+        "x_max": 0.36069,
+        "y_min": 0.19981,
+        "y_max": 0.21711,
+        "width_px": 26.76,
+        "height_px": 9.34,
+        "in_bounds": true
+      },
+      "K_patch_rays": [
+        {
+          "blocked": true,
+          "name": "STACK_03",
+          "fraction": 0.96931
+        },
+        {
+          "blocked": true,
+          "name": "STACK_03",
+          "fraction": 0.96931
+        },
+        {
+          "blocked": true,
+          "name": "STACK_03",
+          "fraction": 0.96931
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        }
+      ],
+      "K_patch_clear": 6,
+      "K_center_ray": {
+        "blocked": false,
+        "name": null,
+        "fraction": 1.0
+      },
+      "LinFace_uv": [
+        0.4822,
+        0.5921,
+        3.6446
+      ],
+      "LinTorso_uv": [
+        0.5742,
+        0.3885,
+        3.6242
+      ],
+      "LinHand_uv": [
+        0.2725,
+        0.217,
+        3.4663
+      ],
+      "ZhouHead_uv": [
+        0.9563,
+        0.7074,
+        3.932
+      ],
+      "Paper_uv": [
+        0.2727,
+        0.1955,
+        3.4705
+      ],
+      "LinFace_in_frame": true,
+      "LinHand_in_frame": true,
+      "ZhouHead_in_frame": true,
+      "K_in_frame": true,
+      "actor_axis_cross_start_end": [
+        -6.328,
+        -2.1424
+      ],
+      "crosses_actor_axis": false
+    },
+    {
+      "id": "F1",
+      "frame": 1,
+      "K_center_norm": [
+        0.4057,
+        0.2454,
+        2.5499
+      ],
+      "K_bbox": {
+        "x_min": 0.38964,
+        "x_max": 0.43139,
+        "y_min": 0.23469,
+        "y_max": 0.26181,
+        "width_px": 40.09,
+        "height_px": 14.65,
+        "in_bounds": true
+      },
+      "K_patch_rays": [
+        {
+          "blocked": true,
+          "name": "PAPER_MOVING",
+          "fraction": 0.98491
+        },
+        {
+          "blocked": true,
+          "name": "PAPER_MOVING",
+          "fraction": 0.98491
+        },
+        {
+          "blocked": true,
+          "name": "PAPER_MOVING",
+          "fraction": 0.98491
+        },
+        {
+          "blocked": true,
+          "name": "PAPER_MOVING",
+          "fraction": 0.98491
+        },
+        {
+          "blocked": true,
+          "name": "PAPER_MOVING",
+          "fraction": 0.98491
+        },
+        {
+          "blocked": true,
+          "name": "PAPER_MOVING",
+          "fraction": 0.98491
+        },
+        {
+          "blocked": true,
+          "name": "PAPER_MOVING",
+          "fraction": 0.98491
+        },
+        {
+          "blocked": true,
+          "name": "PAPER_MOVING",
+          "fraction": 0.98491
+        },
+        {
+          "blocked": true,
+          "name": "PAPER_MOVING",
+          "fraction": 0.98491
+        }
+      ],
+      "K_patch_clear": 0,
+      "K_center_ray": {
+        "blocked": true,
+        "name": "PAPER_MOVING",
+        "fraction": 0.98491
+      },
+      "LinFace_uv": [
+        0.613,
+        0.805,
+        2.4004
+      ],
+      "LinTorso_uv": [
+        0.7501,
+        0.4901,
+        2.368
+      ],
+      "LinHand_uv": [
+        0.3998,
+        0.2805,
+        2.5315
+      ],
+      "ZhouHead_uv": [
+        1.6996,
+        0.9806,
+        2.4072
+      ],
+      "Paper_uv": [
+        0.4001,
+        0.2498,
+        2.5391
+      ],
+      "LinFace_in_frame": true,
+      "LinHand_in_frame": true,
+      "ZhouHead_in_frame": false,
+      "K_in_frame": true,
+      "actor_axis_cross_start_end": [
+        -4.146,
+        -1.3824
+      ],
+      "crosses_actor_axis": false
+    },
+    {
+      "id": "F1",
+      "frame": 10,
+      "K_center_norm": [
+        0.4057,
+        0.2454,
+        2.5499
+      ],
+      "K_bbox": {
+        "x_min": 0.38964,
+        "x_max": 0.43139,
+        "y_min": 0.23469,
+        "y_max": 0.26181,
+        "width_px": 40.09,
+        "height_px": 14.65,
+        "in_bounds": true
+      },
+      "K_patch_rays": [
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        }
+      ],
+      "K_patch_clear": 9,
+      "K_center_ray": {
+        "blocked": false,
+        "name": null,
+        "fraction": 1.0
+      },
+      "LinFace_uv": [
+        0.613,
+        0.805,
+        2.4004
+      ],
+      "LinTorso_uv": [
+        0.7501,
+        0.4901,
+        2.368
+      ],
+      "LinHand_uv": [
+        0.3333,
+        0.3109,
+        2.414
+      ],
+      "ZhouHead_uv": [
+        1.6043,
+        0.9802,
+        2.4156
+      ],
+      "Paper_uv": [
+        0.3309,
+        0.2718,
+        2.4184
+      ],
+      "LinFace_in_frame": true,
+      "LinHand_in_frame": true,
+      "ZhouHead_in_frame": false,
+      "K_in_frame": true,
+      "actor_axis_cross_start_end": [
+        -4.146,
+        -1.3824
+      ],
+      "crosses_actor_axis": false
+    },
+    {
+      "id": "F1",
+      "frame": 20,
+      "K_center_norm": [
+        0.4057,
+        0.2454,
+        2.5499
+      ],
+      "K_bbox": {
+        "x_min": 0.38964,
+        "x_max": 0.43139,
+        "y_min": 0.23469,
+        "y_max": 0.26181,
+        "width_px": 40.09,
+        "height_px": 14.65,
+        "in_bounds": true
+      },
+      "K_patch_rays": [
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        }
+      ],
+      "K_patch_clear": 9,
+      "K_center_ray": {
+        "blocked": false,
+        "name": null,
+        "fraction": 1.0
+      },
+      "LinFace_uv": [
+        0.613,
+        0.805,
+        2.4004
+      ],
+      "LinTorso_uv": [
+        0.7501,
+        0.4901,
+        2.368
+      ],
+      "LinHand_uv": [
+        0.2953,
+        0.2577,
+        2.3656
+      ],
+      "ZhouHead_uv": [
+        1.3872,
+        0.9793,
+        2.4351
+      ],
+      "Paper_uv": [
+        0.2959,
+        0.2269,
+        2.3727
+      ],
+      "LinFace_in_frame": true,
+      "LinHand_in_frame": true,
+      "ZhouHead_in_frame": false,
+      "K_in_frame": true,
+      "actor_axis_cross_start_end": [
+        -4.146,
+        -1.3824
+      ],
+      "crosses_actor_axis": false
+    },
+    {
+      "id": "F2",
+      "frame": 1,
+      "K_center_norm": [
+        0.5364,
+        0.4927,
+        1.8844
+      ],
+      "K_bbox": {
+        "x_min": 0.51452,
+        "x_max": 0.57251,
+        "y_min": 0.47905,
+        "y_max": 0.51203,
+        "width_px": 55.67,
+        "height_px": 17.81,
+        "in_bounds": true
+      },
+      "K_patch_rays": [
+        {
+          "blocked": true,
+          "name": "PAPER_MOVING",
+          "fraction": 0.97949
+        },
+        {
+          "blocked": true,
+          "name": "PAPER_MOVING",
+          "fraction": 0.97949
+        },
+        {
+          "blocked": true,
+          "name": "PAPER_MOVING",
+          "fraction": 0.97949
+        },
+        {
+          "blocked": true,
+          "name": "PAPER_MOVING",
+          "fraction": 0.97949
+        },
+        {
+          "blocked": true,
+          "name": "PAPER_MOVING",
+          "fraction": 0.97949
+        },
+        {
+          "blocked": true,
+          "name": "PAPER_MOVING",
+          "fraction": 0.97949
+        },
+        {
+          "blocked": true,
+          "name": "PAPER_MOVING",
+          "fraction": 0.97949
+        },
+        {
+          "blocked": true,
+          "name": "PAPER_MOVING",
+          "fraction": 0.97949
+        },
+        {
+          "blocked": true,
+          "name": "PAPER_MOVING",
+          "fraction": 0.97949
+        }
+      ],
+      "K_patch_clear": 0,
+      "K_center_ray": {
+        "blocked": true,
+        "name": "PAPER_MOVING",
+        "fraction": 0.97949
+      },
+      "LinFace_uv": [
+        0.8622,
+        1.3088,
+        1.5705
+      ],
+      "LinTorso_uv": [
+        1.0616,
+        0.8133,
+        1.5389
+      ],
+      "LinHand_uv": [
+        0.5289,
+        0.5408,
+        1.8623
+      ],
+      "ZhouHead_uv": [
+        3.2402,
+        1.7504,
+        1.1504
+      ],
+      "Paper_uv": [
+        0.5287,
+        0.4994,
+        1.8749
+      ],
+      "LinFace_in_frame": false,
+      "LinHand_in_frame": true,
+      "ZhouHead_in_frame": false,
+      "K_in_frame": true,
+      "actor_axis_cross_start_end": [
+        -2.897,
+        -0.9344
+      ],
+      "crosses_actor_axis": false
+    },
+    {
+      "id": "F2",
+      "frame": 10,
+      "K_center_norm": [
+        0.5364,
+        0.4927,
+        1.8844
+      ],
+      "K_bbox": {
+        "x_min": 0.51452,
+        "x_max": 0.57251,
+        "y_min": 0.47905,
+        "y_max": 0.51203,
+        "width_px": 55.67,
+        "height_px": 17.81,
+        "in_bounds": true
+      },
+      "K_patch_rays": [
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        }
+      ],
+      "K_patch_clear": 9,
+      "K_center_ray": {
+        "blocked": false,
+        "name": null,
+        "fraction": 1.0
+      },
+      "LinFace_uv": [
+        0.8622,
+        1.3088,
+        1.5705
+      ],
+      "LinTorso_uv": [
+        1.0616,
+        0.8133,
+        1.5389
+      ],
+      "LinHand_uv": [
+        0.4356,
+        0.5911,
+        1.7637
+      ],
+      "ZhouHead_uv": [
+        2.9643,
+        1.729,
+        1.1921
+      ],
+      "Paper_uv": [
+        0.432,
+        0.5382,
+        1.7752
+      ],
+      "LinFace_in_frame": false,
+      "LinHand_in_frame": true,
+      "ZhouHead_in_frame": false,
+      "K_in_frame": true,
+      "actor_axis_cross_start_end": [
+        -2.897,
+        -0.9344
+      ],
+      "crosses_actor_axis": false
+    },
+    {
+      "id": "F2",
+      "frame": 20,
+      "K_center_norm": [
+        0.5364,
+        0.4927,
+        1.8844
+      ],
+      "K_bbox": {
+        "x_min": 0.51452,
+        "x_max": 0.57251,
+        "y_min": 0.47905,
+        "y_max": 0.51203,
+        "width_px": 55.67,
+        "height_px": 17.81,
+        "in_bounds": true
+      },
+      "K_patch_rays": [
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        }
+      ],
+      "K_patch_clear": 9,
+      "K_center_ray": {
+        "blocked": false,
+        "name": null,
+        "fraction": 1.0
+      },
+      "LinFace_uv": [
+        0.8622,
+        1.3088,
+        1.5705
+      ],
+      "LinTorso_uv": [
+        1.0616,
+        0.8133,
+        1.5389
+      ],
+      "LinHand_uv": [
+        0.3815,
+        0.5239,
+        1.7365
+      ],
+      "ZhouHead_uv": [
+        2.3964,
+        1.6849,
+        1.288
+      ],
+      "Paper_uv": [
+        0.3823,
+        0.4823,
+        1.7483
+      ],
+      "LinFace_in_frame": false,
+      "LinHand_in_frame": true,
+      "ZhouHead_in_frame": false,
+      "K_in_frame": true,
+      "actor_axis_cross_start_end": [
+        -2.897,
+        -0.9344
+      ],
+      "crosses_actor_axis": false
+    },
+    {
+      "id": "F3",
+      "frame": 1,
+      "K_center_norm": [
+        0.6605,
+        0.4046,
+        1.4978
+      ],
+      "K_bbox": {
+        "x_min": 0.60223,
+        "x_max": 0.75568,
+        "y_min": 0.35401,
+        "y_max": 0.48163,
+        "width_px": 147.31,
+        "height_px": 68.92,
+        "in_bounds": true
+      },
+      "K_patch_rays": [
+        {
+          "blocked": true,
+          "name": "PAPER_MOVING",
+          "fraction": 0.98389
+        },
+        {
+          "blocked": true,
+          "name": "PAPER_MOVING",
+          "fraction": 0.98389
+        },
+        {
+          "blocked": true,
+          "name": "PAPER_MOVING",
+          "fraction": 0.98389
+        },
+        {
+          "blocked": true,
+          "name": "PAPER_MOVING",
+          "fraction": 0.98389
+        },
+        {
+          "blocked": true,
+          "name": "LIN_L_FOREARM",
+          "fraction": 0.95252
+        },
+        {
+          "blocked": true,
+          "name": "LIN_L_FOREARM",
+          "fraction": 0.93602
+        },
+        {
+          "blocked": true,
+          "name": "PAPER_MOVING",
+          "fraction": 0.98389
+        },
+        {
+          "blocked": true,
+          "name": "PAPER_MOVING",
+          "fraction": 0.98389
+        },
+        {
+          "blocked": true,
+          "name": "LIN_L_FOREARM",
+          "fraction": 0.92891
+        }
+      ],
+      "K_patch_clear": 0,
+      "K_center_ray": {
+        "blocked": true,
+        "name": "PAPER_MOVING",
+        "fraction": 0.98389
+      },
+      "LinFace_uv": [
+        1.7196,
+        2.6465,
+        1.0681
+      ],
+      "LinTorso_uv": [
+        2.2383,
+        1.0592,
+        1.11
+      ],
+      "LinHand_uv": [
+        0.6425,
+        0.5187,
+        1.4678
+      ],
+      "ZhouHead_uv": [
+        11.2233,
+        4.1386,
+        0.6332
+      ],
+      "Paper_uv": [
+        0.6406,
+        0.4168,
+        1.4873
+      ],
+      "LinFace_in_frame": false,
+      "LinHand_in_frame": true,
+      "ZhouHead_in_frame": false,
+      "K_in_frame": true,
+      "actor_axis_cross_start_end": [
+        -1.982,
+        -0.5804
+      ],
+      "crosses_actor_axis": false
+    },
+    {
+      "id": "F3",
+      "frame": 10,
+      "K_center_norm": [
+        0.6605,
+        0.4046,
+        1.4978
+      ],
+      "K_bbox": {
+        "x_min": 0.60223,
+        "x_max": 0.75568,
+        "y_min": 0.35401,
+        "y_max": 0.48163,
+        "width_px": 147.31,
+        "height_px": 68.92,
+        "in_bounds": true
+      },
+      "K_patch_rays": [
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        },
+        {
+          "blocked": true,
+          "name": "PAPER_MOVING",
+          "fraction": 0.9
+        },
+        {
+          "blocked": true,
+          "name": "PAPER_MOVING",
+          "fraction": 0.89819
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        },
+        {
+          "blocked": true,
+          "name": "PAPER_MOVING",
+          "fraction": 0.9
+        },
+        {
+          "blocked": true,
+          "name": "PAPER_MOVING",
+          "fraction": 0.89819
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        }
+      ],
+      "K_patch_clear": 5,
+      "K_center_ray": {
+        "blocked": true,
+        "name": "PAPER_MOVING",
+        "fraction": 0.9
+      },
+      "LinFace_uv": [
+        1.7196,
+        2.6465,
+        1.0681
+      ],
+      "LinTorso_uv": [
+        2.2383,
+        1.0592,
+        1.11
+      ],
+      "LinHand_uv": [
+        0.3921,
+        0.5945,
+        1.3634
+      ],
+      "ZhouHead_uv": [
+        9.9232,
+        4.0599,
+        0.6722
+      ],
+      "Paper_uv": [
+        0.3824,
+        0.4595,
+        1.3833
+      ],
+      "LinFace_in_frame": false,
+      "LinHand_in_frame": true,
+      "ZhouHead_in_frame": false,
+      "K_in_frame": true,
+      "actor_axis_cross_start_end": [
+        -1.982,
+        -0.5804
+      ],
+      "crosses_actor_axis": false
+    },
+    {
+      "id": "F3",
+      "frame": 20,
+      "K_center_norm": [
+        0.6605,
+        0.4046,
+        1.4978
+      ],
+      "K_bbox": {
+        "x_min": 0.60223,
+        "x_max": 0.75568,
+        "y_min": 0.35401,
+        "y_max": 0.48163,
+        "width_px": 147.31,
+        "height_px": 68.92,
+        "in_bounds": true
+      },
+      "K_patch_rays": [
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        },
+        {
+          "blocked": false,
+          "name": null,
+          "fraction": 1.0
+        }
+      ],
+      "K_patch_clear": 9,
+      "K_center_ray": {
+        "blocked": false,
+        "name": null,
+        "fraction": 1.0
+      },
+      "LinFace_uv": [
+        1.7196,
+        2.6465,
+        1.0681
+      ],
+      "LinTorso_uv": [
+        2.2383,
+        1.0592,
+        1.11
+      ],
+      "LinHand_uv": [
+        0.2453,
+        0.3956,
+        1.348
+      ],
+      "ZhouHead_uv": [
+        7.4334,
+        3.9092,
+        0.7619
+      ],
+      "Paper_uv": [
+        0.2487,
+        0.2931,
+        1.3664
+      ],
+      "LinFace_in_frame": false,
+      "LinHand_in_frame": true,
+      "ZhouHead_in_frame": false,
+      "K_in_frame": true,
+      "actor_axis_cross_start_end": [
+        -1.982,
+        -0.5804
+      ],
+      "crosses_actor_axis": false
+    }
+  ],
+  "interpretation_limits": [
+    "This is static low-poly geometry with known forearm/desk intersection in source.",
+    "Projected key pixels and clear rays are NOT human recognition measurements.",
+    "Single frame cannot prove timing or performance in the six-second beat.",
+    "F3 is a diagnostic extra-shot hypothesis, not part of the frozen eight-shot plan.",
+    "S1/S2 are derived alternative camera placements, not modifications to original Skill/Shot Plan.",
+    "Two camera projections can share axis side and still cut awkwardly due to scale or direction."
+  ]
+}
