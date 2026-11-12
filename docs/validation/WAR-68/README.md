@@ -1,6 +1,6 @@
 # WAR-68 · 导演决策链深度研究计划（最终 Skill 设计前置）
 
-> 2026-11-12。**WAR-69 静态规则与 C 冻结证据追溯已完成；WAR-70 交互机制实验和 WAR-71 跨剧本复核尚未开始。** Eric 项目根目录 `/home/sean/projects/canvas-lab`。此文件是研究计划的唯一详细正文；[WAR-69 研究报告](story-and-intent-trace.md) 保存首项成果；Linear [WAR-68](https://linear.app/xiangshushu/issue/WAR-68) 用于状态与资料入口。
+> 2026-11-12。**WAR-69/70/71 均已完成文本阶段研究；用户认可 C/D/E 的跨样本设计前证据，WAR-68 研究收口。** 后续的 D 场景几何与视线验证另立 [WAR-72](https://linear.app/xiangshushu/issue/WAR-72)，不改变本研究范围。 Eric 项目根目录 `/home/sean/projects/canvas-lab`。此文件是研究计划的唯一详细正文；[WAR-69 研究报告](story-and-intent-trace.md) 保存首项成果；Linear [WAR-68](https://linear.app/xiangshushu/issue/WAR-68) 用于状态与资料入口。
 
 ## 目标与工作原则
 
@@ -62,7 +62,20 @@
 - 阶段性文本研究可以在每个子任务内推进；媒体/GPU/H3、Animatic、Canvas/ComfyUI 生产变化、付费调用与生产 Skill/Schema 实现需要额外明确授权。
 - 不串联三个 Skill、不先写最终 Skill，不为了使用知识而设计新的强制步骤。
 - 每步由用户审阅关键导演判断；若用户只确认一部分，下游不应把未确认部分标成已确定。
-- 子任务研究报告按以下唯一位置维护，执行时再写其正式结论：`docs/validation/WAR-68/story-and-intent-trace.md`、`c-interactive-trace.md`、`cross-script-and-predesign-gate.md`。不复制大量研究正文到 Linear。
+- 子任务详细研究报告已按以下唯一位置归档：`docs/validation/WAR-68/story-and-intent-trace.md`、`c-interactive-trace.md`、`cross-script-and-predesign-gate.md`。不复制大量研究正文到 Linear。
+
+## 研究收口与后续衔接（2026-11-12）
+
+用户已审阅并授权收口研究任务；三个子任务各自验收并保留唯一权威全文：
+- [WAR-69](story-and-intent-trace.md)：原规则、剧本理解与导演意图追溯；仅能归因文本层。
+- [WAR-70](c-interactive-trace.md)：C 的一次交互式上游变更、Book/Shot 传播差异与时间闭环缺口。
+- [WAR-71](cross-script-and-predesign-gate.md)：D 动作/空间/时标反例＋E Shot04 同步揭示；`保留／简化／暂缓／不采纳` 的设计前候选证据、适用边界及未测风险。
+
+**研究结论：** 阶段状态与知情顺序能够在冻结产物中追踪，但「识别风险/提出候选」不等于几何、剪辑、动作或实际观众体验已通过；不同剧本/输入条件不构成严谨模型因果比较。本研究无新 GPU、真实视频或 3D 验证，**不代表已批准最终 Skill 架构或实现**。
+
+**独立后续**：[WAR-72](https://linear.app/xiangshushu/issue/WAR-72) 仅检查 D 的 B2–B3 钥匙遮挡、摄影视线、周移动路径，详细启动方案见 `../WAR-72/README.md`；它不是 WAR-68 的未完成验收项。
+
+**其它方法的补测取舍：** Toonflow WAR-61 和 ViMax WAR-66 均按各自已批准的文本/源码范围 Done；若开始自有 Skill 设计前仍需针对性的互动证据，优先仅做一次 Toonflow 的「调整观众情绪/导演意图→Storyboard 局部变化」小样本，ViMax Camera Tree 不必做全流程复跑，待具体视觉参考继承场景才检验。此处仅为下一阶段建议，未创建/启动相应测试。
 
 ## 资料索引
 
