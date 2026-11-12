@@ -1,0 +1,147 @@
+{
+  "source_repository": "https://github.com/HBAI-Ltd/Toonflow-app",
+  "source_commit": "6086cdffceb704a632eca143dd16cd461a78cdac",
+  "source_subdirectory": "packages/skills/v118workflow/",
+  "captured_at_utc": "2026-11-12T06:58:36.801611+00:00",
+  "kind": "read-only historical upstream reference; not installed executable skill",
+  "files": [
+    {
+      "path": "SKILL.md",
+      "bytes": 11517,
+      "sha256": "9d4a2cb89d1403187e883762b272d035b953894573f937b2e57d250b33b91928",
+      "source_url": "https://raw.githubusercontent.com/HBAI-Ltd/Toonflow-app/6086cdffceb704a632eca143dd16cd461a78cdac/packages/skills/v118workflow/SKILL.md"
+    },
+    {
+      "path": "references/adaptationStrategy.md",
+      "bytes": 4137,
+      "sha256": "2d5f91d91a78cd535dda5789c73deb1c1d20dbb83de553c02045d08ce934cda2",
+      "source_url": "https://raw.githubusercontent.com/HBAI-Ltd/Toonflow-app/6086cdffceb704a632eca143dd16cd461a78cdac/packages/skills/v118workflow/references/adaptationStrategy.md"
+    },
+    {
+      "path": "references/baseAssets.md",
+      "bytes": 4436,
+      "sha256": "17c0278067f97223fb6f517b65505ab2dc1f0b377ed509212b1558036d273477",
+      "source_url": "https://raw.githubusercontent.com/HBAI-Ltd/Toonflow-app/6086cdffceb704a632eca143dd16cd461a78cdac/packages/skills/v118workflow/references/baseAssets.md"
+    },
+    {
+      "path": "references/canvasOperations.md",
+      "bytes": 8511,
+      "sha256": "f7542191210499366f51287d5dec6d333932ec0c3feccb00d306885d011ba8c8",
+      "source_url": "https://raw.githubusercontent.com/HBAI-Ltd/Toonflow-app/6086cdffceb704a632eca143dd16cd461a78cdac/packages/skills/v118workflow/references/canvasOperations.md"
+    },
+    {
+      "path": "references/deriveAssets.md",
+      "bytes": 5867,
+      "sha256": "b0b8665fa3384ae11bbc3e581af611948021388fe6213eba94cc8ea128206fab",
+      "source_url": "https://raw.githubusercontent.com/HBAI-Ltd/Toonflow-app/6086cdffceb704a632eca143dd16cd461a78cdac/packages/skills/v118workflow/references/deriveAssets.md"
+    },
+    {
+      "path": "references/directorPlan.md",
+      "bytes": 4022,
+      "sha256": "a6fe68c1bb53d58f69cb3b5a398a414430b559c6a246ef53109f44ee0480e369",
+      "source_url": "https://raw.githubusercontent.com/HBAI-Ltd/Toonflow-app/6086cdffceb704a632eca143dd16cd461a78cdac/packages/skills/v118workflow/references/directorPlan.md"
+    },
+    {
+      "path": "references/episodeScript.md",
+      "bytes": 4664,
+      "sha256": "b1b9f566bc4818aafd9d2bf3c05f11a3f527220472b4f4301469d58879b87bc7",
+      "source_url": "https://raw.githubusercontent.com/HBAI-Ltd/Toonflow-app/6086cdffceb704a632eca143dd16cd461a78cdac/packages/skills/v118workflow/references/episodeScript.md"
+    },
+    {
+      "path": "references/generateAssets.md",
+      "bytes": 5448,
+      "sha256": "7a348f0493fe93c46851099a2f427035fa238edb40ac9f15c17b402809d4eaa5",
+      "source_url": "https://raw.githubusercontent.com/HBAI-Ltd/Toonflow-app/6086cdffceb704a632eca143dd16cd461a78cdac/packages/skills/v118workflow/references/generateAssets.md"
+    },
+    {
+      "path": "references/knowledge/assetDesign.md",
+      "bytes": 21880,
+      "sha256": "26834cb9d9893fe9e21fa724e0a6df37e87d2754534e9b53ec474f1ca5735a76",
+      "source_url": "https://raw.githubusercontent.com/HBAI-Ltd/Toonflow-app/6086cdffceb704a632eca143dd16cd461a78cdac/packages/skills/v118workflow/references/knowledge/assetDesign.md"
+    },
+    {
+      "path": "references/knowledge/imagePromptCraft.md",
+      "bytes": 10949,
+      "sha256": "5ba1b644f2b6bd4e155e0389035d599ff1e726afdf1ba8fd4d9aa7818a06d85a",
+      "source_url": "https://raw.githubusercontent.com/HBAI-Ltd/Toonflow-app/6086cdffceb704a632eca143dd16cd461a78cdac/packages/skills/v118workflow/references/knowledge/imagePromptCraft.md"
+    },
+    {
+      "path": "references/knowledge/narrativeGenres.md",
+      "bytes": 29163,
+      "sha256": "aa844ada5d04a7bf6dbd8575f3f96f1f2e0fcbad3d41a6d759716553de331a83",
+      "source_url": "https://raw.githubusercontent.com/HBAI-Ltd/Toonflow-app/6086cdffceb704a632eca143dd16cd461a78cdac/packages/skills/v118workflow/references/knowledge/narrativeGenres.md"
+    },
+    {
+      "path": "references/knowledge/scriptCraft.md",
+      "bytes": 18273,
+      "sha256": "e538088f8a1213f7f9b62127a1ff92bbb5d4adace93e251b8be512fe9236b103",
+      "source_url": "https://raw.githubusercontent.com/HBAI-Ltd/Toonflow-app/6086cdffceb704a632eca143dd16cd461a78cdac/packages/skills/v118workflow/references/knowledge/scriptCraft.md"
+    },
+    {
+      "path": "references/knowledge/shotCraft.md",
+      "bytes": 16117,
+      "sha256": "3567ca1ecb0e53522d7514ddb6240a488d28eb0794d7a2ee986aeebe6ec2bf3d",
+      "source_url": "https://raw.githubusercontent.com/HBAI-Ltd/Toonflow-app/6086cdffceb704a632eca143dd16cd461a78cdac/packages/skills/v118workflow/references/knowledge/shotCraft.md"
+    },
+    {
+      "path": "references/knowledge/videoPromptCraft.md",
+      "bytes": 15025,
+      "sha256": "4afee97c078bbee14f7813eabdea2bbe2db7e7f80b21d15f9bc504724949b2c4",
+      "source_url": "https://raw.githubusercontent.com/HBAI-Ltd/Toonflow-app/6086cdffceb704a632eca143dd16cd461a78cdac/packages/skills/v118workflow/references/knowledge/videoPromptCraft.md"
+    },
+    {
+      "path": "references/knowledge/visualStyles.md",
+      "bytes": 25416,
+      "sha256": "50888f54bbd0b62ed72a9d757de0663c9853290ce8bb53d55f24ce34912853da",
+      "source_url": "https://raw.githubusercontent.com/HBAI-Ltd/Toonflow-app/6086cdffceb704a632eca143dd16cd461a78cdac/packages/skills/v118workflow/references/knowledge/visualStyles.md"
+    },
+    {
+      "path": "references/projectSetup.md",
+      "bytes": 4969,
+      "sha256": "424933753355a291edfa0d10a081b2c7d34901947cf3e823eb0ce22cc030ffc2",
+      "source_url": "https://raw.githubusercontent.com/HBAI-Ltd/Toonflow-app/6086cdffceb704a632eca143dd16cd461a78cdac/packages/skills/v118workflow/references/projectSetup.md"
+    },
+    {
+      "path": "references/sourceEvents.md",
+      "bytes": 4900,
+      "sha256": "ed45c33a4be84d1c9b54bbe1e16848d1175c0197b0b82c3b0f7a80807f2cc767",
+      "source_url": "https://raw.githubusercontent.com/HBAI-Ltd/Toonflow-app/6086cdffceb704a632eca143dd16cd461a78cdac/packages/skills/v118workflow/references/sourceEvents.md"
+    },
+    {
+      "path": "references/sourceMap.md",
+      "bytes": 16958,
+      "sha256": "1f0ca376f243d2bd6051909ff4a786ff16f93f9918c9706f3fed833d13b818a8",
+      "source_url": "https://raw.githubusercontent.com/HBAI-Ltd/Toonflow-app/6086cdffceb704a632eca143dd16cd461a78cdac/packages/skills/v118workflow/references/sourceMap.md"
+    },
+    {
+      "path": "references/storySkeleton.md",
+      "bytes": 4530,
+      "sha256": "2f5b988a1ac7afe172df37cdf6c7b74c20816cbaf4e3af2d570411a47713056d",
+      "source_url": "https://raw.githubusercontent.com/HBAI-Ltd/Toonflow-app/6086cdffceb704a632eca143dd16cd461a78cdac/packages/skills/v118workflow/references/storySkeleton.md"
+    },
+    {
+      "path": "references/storyboardImages.md",
+      "bytes": 4413,
+      "sha256": "e75e1acaa5c2d0918f034f2aa7fc16d826c19c85c867e4f824f076343fff8697",
+      "source_url": "https://raw.githubusercontent.com/HBAI-Ltd/Toonflow-app/6086cdffceb704a632eca143dd16cd461a78cdac/packages/skills/v118workflow/references/storyboardImages.md"
+    },
+    {
+      "path": "references/storyboardPanel.md",
+      "bytes": 5431,
+      "sha256": "ed63c701ea7b10b8bb9db25b75aa4ae91ae65332f5541012369533ea91f3b4ec",
+      "source_url": "https://raw.githubusercontent.com/HBAI-Ltd/Toonflow-app/6086cdffceb704a632eca143dd16cd461a78cdac/packages/skills/v118workflow/references/storyboardPanel.md"
+    },
+    {
+      "path": "references/storyboardTable.md",
+      "bytes": 5952,
+      "sha256": "7c6abfb0e9baad360f33589286a5384c58dff0e0a1e79a1c34269b926b6552b5",
+      "source_url": "https://raw.githubusercontent.com/HBAI-Ltd/Toonflow-app/6086cdffceb704a632eca143dd16cd461a78cdac/packages/skills/v118workflow/references/storyboardTable.md"
+    },
+    {
+      "path": "references/videoProduction.md",
+      "bytes": 6205,
+      "sha256": "464612cb92017900a4f0c644654de901bea6d96621cd340d79e67a51cdbe9f4b",
+      "source_url": "https://raw.githubusercontent.com/HBAI-Ltd/Toonflow-app/6086cdffceb704a632eca143dd16cd461a78cdac/packages/skills/v118workflow/references/videoProduction.md"
+    }
+  ]
+}
