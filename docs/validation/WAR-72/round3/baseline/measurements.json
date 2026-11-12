@@ -1,0 +1,1177 @@
+{
+  "variant": "baseline",
+  "engine": "Blender Cycles CPU only",
+  "blender_version": "5.2.3 LTS",
+  "source_frozen_context": "WAR-65 D assisted v1 Step3/6/7; WAR-72 first+second round",
+  "all_scene_dimensions_are_derived_assumptions": true,
+  "coordinates": {
+    "K": [
+      -0.25,
+      0.44999998807907104,
+      0.7919999957084656
+    ],
+    "LIN": [
+      0.42,
+      -0.28
+    ],
+    "ZHOU_START": [
+      2.0,
+      -1.2999999523162842,
+      0.0
+    ],
+    "ZHOU_END": [
+      0.8500000238418579,
+      -0.3499999940395355,
+      0.0
+    ],
+    "CAM2": [
+      -1.600000023841858,
+      -1.600000023841858,
+      1.5499999523162842
+    ],
+    "CAM3": [
+      -0.949999988079071,
+      -0.6499999761581421,
+      1.5
+    ],
+    "CAM2_AIM": [
+      -0.05000000074505806,
+      -0.03999999910593033,
+      1.25
+    ]
+  },
+  "path_21": [
+    {
+      "index": 0,
+      "t": 0.0,
+      "zhou_xy": [
+        2.0,
+        -1.3
+      ],
+      "left": {
+        "blocked": true,
+        "blocker": "LIN_TORSO",
+        "fraction": 0.55502
+      },
+      "right": {
+        "blocked": true,
+        "blocker": "LIN_TORSO",
+        "fraction": 0.56085
+      },
+      "both_blocked": true
+    },
+    {
+      "index": 1,
+      "t": 0.05,
+      "zhou_xy": [
+        1.9425,
+        -1.2525
+      ],
+      "left": {
+        "blocked": true,
+        "blocker": "LIN_TORSO",
+        "fraction": 0.54218
+      },
+      "right": {
+        "blocked": true,
+        "blocker": "LIN_TORSO",
+        "fraction": 0.54867
+      },
+      "both_blocked": true
+    },
+    {
+      "index": 2,
+      "t": 0.1,
+      "zhou_xy": [
+        1.885,
+        -1.205
+      ],
+      "left": {
+        "blocked": true,
+        "blocker": "LIN_TORSO",
+        "fraction": 0.52858
+      },
+      "right": {
+        "blocked": true,
+        "blocker": "LIN_TORSO",
+        "fraction": 0.53579
+      },
+      "both_blocked": true
+    },
+    {
+      "index": 3,
+      "t": 0.15,
+      "zhou_xy": [
+        1.8275,
+        -1.1575
+      ],
+      "left": {
+        "blocked": true,
+        "blocker": "LIN_TORSO",
+        "fraction": 0.51415
+      },
+      "right": {
+        "blocked": true,
+        "blocker": "LIN_TORSO",
+        "fraction": 0.52216
+      },
+      "both_blocked": true
+    },
+    {
+      "index": 4,
+      "t": 0.2,
+      "zhou_xy": [
+        1.77,
+        -1.11
+      ],
+      "left": {
+        "blocked": true,
+        "blocker": "LIN_TORSO",
+        "fraction": 0.4988
+      },
+      "right": {
+        "blocked": true,
+        "blocker": "LIN_TORSO",
+        "fraction": 0.50771
+      },
+      "both_blocked": true
+    },
+    {
+      "index": 5,
+      "t": 0.25,
+      "zhou_xy": [
+        1.7125,
+        -1.0625
+      ],
+      "left": {
+        "blocked": true,
+        "blocker": "LIN_TORSO",
+        "fraction": 0.48245
+      },
+      "right": {
+        "blocked": true,
+        "blocker": "LIN_TORSO",
+        "fraction": 0.49235
+      },
+      "both_blocked": true
+    },
+    {
+      "index": 6,
+      "t": 0.3,
+      "zhou_xy": [
+        1.655,
+        -1.015
+      ],
+      "left": {
+        "blocked": true,
+        "blocker": "LIN_TORSO",
+        "fraction": 0.465
+      },
+      "right": {
+        "blocked": true,
+        "blocker": "LIN_TORSO",
+        "fraction": 0.476
+      },
+      "both_blocked": true
+    },
+    {
+      "index": 7,
+      "t": 0.35,
+      "zhou_xy": [
+        1.5975,
+        -0.9675
+      ],
+      "left": {
+        "blocked": true,
+        "blocker": "LIN_TORSO",
+        "fraction": 0.44633
+      },
+      "right": {
+        "blocked": true,
+        "blocker": "LIN_TORSO",
+        "fraction": 0.45857
+      },
+      "both_blocked": true
+    },
+    {
+      "index": 8,
+      "t": 0.4,
+      "zhou_xy": [
+        1.54,
+        -0.92
+      ],
+      "left": {
+        "blocked": true,
+        "blocker": "LIN_TORSO",
+        "fraction": 0.42631
+      },
+      "right": {
+        "blocked": true,
+        "blocker": "LIN_TORSO",
+        "fraction": 0.43993
+      },
+      "both_blocked": true
+    },
+    {
+      "index": 9,
+      "t": 0.45,
+      "zhou_xy": [
+        1.4825,
+        -0.8725
+      ],
+      "left": {
+        "blocked": true,
+        "blocker": "LIN_TORSO",
+        "fraction": 0.40507
+      },
+      "right": {
+        "blocked": true,
+        "blocker": "LIN_TORSO",
+        "fraction": 0.41997
+      },
+      "both_blocked": true
+    },
+    {
+      "index": 10,
+      "t": 0.5,
+      "zhou_xy": [
+        1.425,
+        -0.825
+      ],
+      "left": {
+        "blocked": true,
+        "blocker": "LIN_TORSO",
+        "fraction": 0.38375
+      },
+      "right": {
+        "blocked": true,
+        "blocker": "LIN_TORSO",
+        "fraction": 0.39983
+      },
+      "both_blocked": true
+    },
+    {
+      "index": 11,
+      "t": 0.55,
+      "zhou_xy": [
+        1.3675,
+        -0.7775
+      ],
+      "left": {
+        "blocked": true,
+        "blocker": "LIN_TORSO",
+        "fraction": 0.36085
+      },
+      "right": {
+        "blocked": true,
+        "blocker": "LIN_TORSO",
+        "fraction": 0.37992
+      },
+      "both_blocked": true
+    },
+    {
+      "index": 12,
+      "t": 0.6,
+      "zhou_xy": [
+        1.31,
+        -0.73
+      ],
+      "left": {
+        "blocked": true,
+        "blocker": "LIN_TORSO",
+        "fraction": 0.33618
+      },
+      "right": {
+        "blocked": true,
+        "blocker": "LIN_TORSO",
+        "fraction": 0.35865
+      },
+      "both_blocked": true
+    },
+    {
+      "index": 13,
+      "t": 0.65,
+      "zhou_xy": [
+        1.2525,
+        -0.6825
+      ],
+      "left": {
+        "blocked": true,
+        "blocker": "LIN_TORSO",
+        "fraction": 0.30953
+      },
+      "right": {
+        "blocked": true,
+        "blocker": "LIN_TORSO",
+        "fraction": 0.33586
+      },
+      "both_blocked": true
+    },
+    {
+      "index": 14,
+      "t": 0.7,
+      "zhou_xy": [
+        1.195,
+        -0.635
+      ],
+      "left": {
+        "blocked": true,
+        "blocker": "LIN_TORSO",
+        "fraction": 0.28065
+      },
+      "right": {
+        "blocked": true,
+        "blocker": "LIN_TORSO",
+        "fraction": 0.31139
+      },
+      "both_blocked": true
+    },
+    {
+      "index": 15,
+      "t": 0.75,
+      "zhou_xy": [
+        1.1375,
+        -0.5875
+      ],
+      "left": {
+        "blocked": true,
+        "blocker": "LIN_TORSO",
+        "fraction": 0.24924
+      },
+      "right": {
+        "blocked": true,
+        "blocker": "LIN_R_UPPER",
+        "fraction": 0.27221
+      },
+      "both_blocked": true
+    },
+    {
+      "index": 16,
+      "t": 0.8,
+      "zhou_xy": [
+        1.08,
+        -0.54
+      ],
+      "left": {
+        "blocked": true,
+        "blocker": "LIN_R_UPPER",
+        "fraction": 0.21302
+      },
+      "right": {
+        "blocked": true,
+        "blocker": "LIN_R_UPPER",
+        "fraction": 0.23194
+      },
+      "both_blocked": true
+    },
+    {
+      "index": 17,
+      "t": 0.85,
+      "zhou_xy": [
+        1.0225,
+        -0.4925
+      ],
+      "left": {
+        "blocked": true,
+        "blocker": "LIN_SHOULDERS",
+        "fraction": 0.14768
+      },
+      "right": {
+        "blocked": true,
+        "blocker": "LIN_R_UPPER",
+        "fraction": 0.19047
+      },
+      "both_blocked": true
+    },
+    {
+      "index": 18,
+      "t": 0.9,
+      "zhou_xy": [
+        0.965,
+        -0.445
+      ],
+      "left": {
+        "blocked": true,
+        "blocker": "LIN_SHOULDERS",
+        "fraction": 0.09393
+      },
+      "right": {
+        "blocked": true,
+        "blocker": "LIN_SHOULDERS",
+        "fraction": 0.12502
+      },
+      "both_blocked": true
+    },
+    {
+      "index": 19,
+      "t": 0.95,
+      "zhou_xy": [
+        0.9075,
+        -0.3975
+      ],
+      "left": {
+        "blocked": true,
+        "blocker": "LIN_SHOULDERS",
+        "fraction": 0.05134
+      },
+      "right": {
+        "blocked": true,
+        "blocker": "LIN_SHOULDERS",
+        "fraction": 0.07992
+      },
+      "both_blocked": true
+    },
+    {
+      "index": 20,
+      "t": 1.0,
+      "zhou_xy": [
+        0.85,
+        -0.35
+      ],
+      "left": {
+        "blocked": true,
+        "blocker": "LIN_SHOULDERS",
+        "fraction": 0.01384
+      },
+      "right": {
+        "blocked": true,
+        "blocker": "LIN_SHOULDERS",
+        "fraction": 0.04582
+      },
+      "both_blocked": true
+    }
+  ],
+  "path_21_summary": {
+    "count": 21,
+    "both_blocked": 21,
+    "failed_indices": []
+  },
+  "path_81_summary": {
+    "count": 81,
+    "both_blocked": 81,
+    "failed_indices": []
+  },
+  "sensitivity": {
+    "short_1m50": {
+      "count": 21,
+      "both_blocked": 21,
+      "failed_indices": []
+    },
+    "tall_1m70": {
+      "count": 21,
+      "both_blocked": 21,
+      "failed_indices": []
+    },
+    "head_left_12deg": {
+      "count": 21,
+      "both_blocked": 19,
+      "failed_indices": [
+        19,
+        20
+      ]
+    },
+    "head_right_12deg": {
+      "count": 21,
+      "both_blocked": 21,
+      "failed_indices": []
+    }
+  },
+  "potential_torso_collision": [
+    {
+      "i": 0,
+      "normalized_center_separation": 18.5016,
+      "potential_torso_overlap": false
+    },
+    {
+      "i": 1,
+      "normalized_center_separation": 17.0284,
+      "potential_torso_overlap": false
+    },
+    {
+      "i": 2,
+      "normalized_center_separation": 15.6172,
+      "potential_torso_overlap": false
+    },
+    {
+      "i": 3,
+      "normalized_center_separation": 14.2682,
+      "potential_torso_overlap": false
+    },
+    {
+      "i": 4,
+      "normalized_center_separation": 12.9812,
+      "potential_torso_overlap": false
+    },
+    {
+      "i": 5,
+      "normalized_center_separation": 11.7563,
+      "potential_torso_overlap": false
+    },
+    {
+      "i": 6,
+      "normalized_center_separation": 10.5935,
+      "potential_torso_overlap": false
+    },
+    {
+      "i": 7,
+      "normalized_center_separation": 9.4928,
+      "potential_torso_overlap": false
+    },
+    {
+      "i": 8,
+      "normalized_center_separation": 8.4542,
+      "potential_torso_overlap": false
+    },
+    {
+      "i": 9,
+      "normalized_center_separation": 7.4776,
+      "potential_torso_overlap": false
+    },
+    {
+      "i": 10,
+      "normalized_center_separation": 6.5632,
+      "potential_torso_overlap": false
+    },
+    {
+      "i": 11,
+      "normalized_center_separation": 5.7108,
+      "potential_torso_overlap": false
+    },
+    {
+      "i": 12,
+      "normalized_center_separation": 4.9205,
+      "potential_torso_overlap": false
+    },
+    {
+      "i": 13,
+      "normalized_center_separation": 4.1923,
+      "potential_torso_overlap": false
+    },
+    {
+      "i": 14,
+      "normalized_center_separation": 3.5262,
+      "potential_torso_overlap": false
+    },
+    {
+      "i": 15,
+      "normalized_center_separation": 2.9221,
+      "potential_torso_overlap": false
+    },
+    {
+      "i": 16,
+      "normalized_center_separation": 2.3802,
+      "potential_torso_overlap": false
+    },
+    {
+      "i": 17,
+      "normalized_center_separation": 1.9003,
+      "potential_torso_overlap": false
+    },
+    {
+      "i": 18,
+      "normalized_center_separation": 1.4825,
+      "potential_torso_overlap": false
+    },
+    {
+      "i": 19,
+      "normalized_center_separation": 1.1268,
+      "potential_torso_overlap": false
+    },
+    {
+      "i": 20,
+      "normalized_center_separation": 0.8332,
+      "potential_torso_overlap": true
+    }
+  ],
+  "arm_reach": {
+    "1": {
+      "left_shoulder_to_hand_m": 1.0304,
+      "over_0p75m": true
+    },
+    "8": {
+      "left_shoulder_to_hand_m": 1.0752,
+      "over_0p75m": true
+    },
+    "20": {
+      "left_shoulder_to_hand_m": 1.1608,
+      "over_0p75m": true
+    },
+    "30": {
+      "left_shoulder_to_hand_m": 1.0179,
+      "over_0p75m": true
+    },
+    "34": {
+      "left_shoulder_to_hand_m": 1.0179,
+      "over_0p75m": true
+    },
+    "40": {
+      "left_shoulder_to_hand_m": 1.1608,
+      "over_0p75m": true
+    }
+  },
+  "camera_checks": {
+    "SHOT02_40MM_f01": {
+      "camera": [
+        -1.600000023841858,
+        -1.600000023841858,
+        1.5499999523162842
+      ],
+      "aim": [
+        -0.05000000074505806,
+        -0.03999999910593033,
+        1.25
+      ],
+      "lens_mm": 40.0,
+      "projection": {
+        "key_center": {
+          "uv_depth": [
+            0.2822,
+            0.1616,
+            2.4861
+          ],
+          "inside_frame": true
+        },
+        "key_east_end": {
+          "uv_depth": [
+            0.3118,
+            0.175,
+            2.542
+          ],
+          "inside_frame": true
+        },
+        "lin_face": {
+          "uv_depth": [
+            0.709,
+            0.9124,
+            2.3717
+          ],
+          "inside_frame": true
+        },
+        "lin_hands": {
+          "uv_depth": [
+            0.2756,
+            0.2195,
+            2.4651
+          ],
+          "inside_frame": true
+        },
+        "folder_center": {
+          "uv_depth": [
+            0.105,
+            0.0463,
+            1.9326
+          ],
+          "inside_frame": true
+        },
+        "stack_center": {
+          "uv_depth": [
+            0.1644,
+            0.1342,
+            2.294
+          ],
+          "inside_frame": true
+        },
+        "zhou_face": {
+          "uv_depth": [
+            1.4481,
+            0.8653,
+            2.7042
+          ],
+          "inside_frame": false
+        }
+      },
+      "ray_to_key": {
+        "blocked": true,
+        "blocker": "PAPER_MOVING",
+        "fraction": 0.97098
+      },
+      "key_span_px": 32.8
+    },
+    "SHOT02_40MM_f10": {
+      "camera": [
+        -1.600000023841858,
+        -1.600000023841858,
+        1.5499999523162842
+      ],
+      "aim": [
+        -0.05000000074505806,
+        -0.03999999910593033,
+        1.25
+      ],
+      "lens_mm": 40.0,
+      "projection": {
+        "key_center": {
+          "uv_depth": [
+            0.2822,
+            0.1616,
+            2.4861
+          ],
+          "inside_frame": true
+        },
+        "key_east_end": {
+          "uv_depth": [
+            0.3118,
+            0.175,
+            2.542
+          ],
+          "inside_frame": true
+        },
+        "lin_face": {
+          "uv_depth": [
+            0.709,
+            0.9124,
+            2.3717
+          ],
+          "inside_frame": true
+        },
+        "lin_hands": {
+          "uv_depth": [
+            0.2029,
+            0.2219,
+            2.3354
+          ],
+          "inside_frame": true
+        },
+        "folder_center": {
+          "uv_depth": [
+            0.105,
+            0.0463,
+            1.9326
+          ],
+          "inside_frame": true
+        },
+        "stack_center": {
+          "uv_depth": [
+            0.1644,
+            0.1342,
+            2.294
+          ],
+          "inside_frame": true
+        },
+        "zhou_face": {
+          "uv_depth": [
+            1.3536,
+            0.8661,
+            2.6817
+          ],
+          "inside_frame": false
+        }
+      },
+      "ray_to_key": {
+        "blocked": false,
+        "blocker": null,
+        "fraction": 1.0
+      },
+      "key_span_px": 32.8
+    },
+    "SHOT02_40MM_f20": {
+      "camera": [
+        -1.600000023841858,
+        -1.600000023841858,
+        1.5499999523162842
+      ],
+      "aim": [
+        -0.05000000074505806,
+        -0.03999999910593033,
+        1.25
+      ],
+      "lens_mm": 40.0,
+      "projection": {
+        "key_center": {
+          "uv_depth": [
+            0.2822,
+            0.1616,
+            2.4861
+          ],
+          "inside_frame": true
+        },
+        "key_east_end": {
+          "uv_depth": [
+            0.3118,
+            0.175,
+            2.542
+          ],
+          "inside_frame": true
+        },
+        "lin_face": {
+          "uv_depth": [
+            0.709,
+            0.9124,
+            2.3717
+          ],
+          "inside_frame": true
+        },
+        "lin_hands": {
+          "uv_depth": [
+            0.1654,
+            0.1917,
+            2.2773
+          ],
+          "inside_frame": true
+        },
+        "folder_center": {
+          "uv_depth": [
+            0.105,
+            0.0463,
+            1.9326
+          ],
+          "inside_frame": true
+        },
+        "stack_center": {
+          "uv_depth": [
+            0.1644,
+            0.1342,
+            2.294
+          ],
+          "inside_frame": true
+        },
+        "zhou_face": {
+          "uv_depth": [
+            1.1298,
+            0.868,
+            2.6297
+          ],
+          "inside_frame": false
+        }
+      },
+      "ray_to_key": {
+        "blocked": false,
+        "blocker": null,
+        "fraction": 1.0
+      },
+      "key_span_px": 32.8
+    },
+    "SHOT03_85MM_f20": {
+      "camera": [
+        -0.949999988079071,
+        -0.6499999761581421,
+        1.5
+      ],
+      "aim": [
+        -0.36000001430511475,
+        0.46000000834465027,
+        0.8169999718666077
+      ],
+      "lens_mm": 85.0,
+      "projection": {
+        "key_center": {
+          "uv_depth": [
+            0.6624,
+            0.4956,
+            1.4802
+          ],
+          "inside_frame": true
+        },
+        "key_east_end": {
+          "uv_depth": [
+            0.7691,
+            0.5455,
+            1.5132
+          ],
+          "inside_frame": true
+        },
+        "lin_face": {
+          "uv_depth": [
+            3.4138,
+            4.0796,
+            0.8091
+          ],
+          "inside_frame": false
+        },
+        "lin_hands": {
+          "uv_depth": [
+            0.2395,
+            0.5695,
+            1.3179
+          ],
+          "inside_frame": true
+        },
+        "folder_center": {
+          "uv_depth": [
+            -0.0647,
+            -0.2085,
+            1.0404
+          ],
+          "inside_frame": false
+        },
+        "stack_center": {
+          "uv_depth": [
+            0.2393,
+            0.3878,
+            1.3596
+          ],
+          "inside_frame": true
+        },
+        "zhou_face": {
+          "uv_depth": [
+            6.7956,
+            3.8872,
+            0.7771
+          ],
+          "inside_frame": false
+        }
+      },
+      "ray_to_key": {
+        "blocked": false,
+        "blocker": null,
+        "fraction": 1.0
+      },
+      "key_span_px": 118.32
+    },
+    "SHOT03_85MM_f34": {
+      "camera": [
+        -0.949999988079071,
+        -0.6499999761581421,
+        1.5
+      ],
+      "aim": [
+        -0.36000001430511475,
+        0.46000000834465027,
+        0.8169999718666077
+      ],
+      "lens_mm": 85.0,
+      "projection": {
+        "key_center": {
+          "uv_depth": [
+            0.6624,
+            0.4956,
+            1.4802
+          ],
+          "inside_frame": true
+        },
+        "key_east_end": {
+          "uv_depth": [
+            0.7691,
+            0.5455,
+            1.5132
+          ],
+          "inside_frame": true
+        },
+        "lin_face": {
+          "uv_depth": [
+            3.4138,
+            4.0796,
+            0.8091
+          ],
+          "inside_frame": false
+        },
+        "lin_hands": {
+          "uv_depth": [
+            0.2687,
+            1.2424,
+            1.149
+          ],
+          "inside_frame": false
+        },
+        "folder_center": {
+          "uv_depth": [
+            0.3348,
+            0.6348,
+            1.3135
+          ],
+          "inside_frame": true
+        },
+        "stack_center": {
+          "uv_depth": [
+            0.2393,
+            0.3878,
+            1.3596
+          ],
+          "inside_frame": true
+        },
+        "zhou_face": {
+          "uv_depth": [
+            4.4729,
+            3.7549,
+            0.8826
+          ],
+          "inside_frame": false
+        }
+      },
+      "ray_to_key": {
+        "blocked": true,
+        "blocker": "BLUE_FOLDER",
+        "fraction": 0.83636
+      },
+      "key_span_px": 118.32
+    },
+    "SHOT03_85MM_f40": {
+      "camera": [
+        -0.949999988079071,
+        -0.6499999761581421,
+        1.5
+      ],
+      "aim": [
+        -0.36000001430511475,
+        0.46000000834465027,
+        0.8169999718666077
+      ],
+      "lens_mm": 85.0,
+      "projection": {
+        "key_center": {
+          "uv_depth": [
+            0.6624,
+            0.4956,
+            1.4802
+          ],
+          "inside_frame": true
+        },
+        "key_east_end": {
+          "uv_depth": [
+            0.7691,
+            0.5455,
+            1.5132
+          ],
+          "inside_frame": true
+        },
+        "lin_face": {
+          "uv_depth": [
+            3.4138,
+            4.0796,
+            0.8091
+          ],
+          "inside_frame": false
+        },
+        "lin_hands": {
+          "uv_depth": [
+            0.2395,
+            0.5695,
+            1.3179
+          ],
+          "inside_frame": true
+        },
+        "folder_center": {
+          "uv_depth": [
+            0.4853,
+            0.5324,
+            1.4193
+          ],
+          "inside_frame": true
+        },
+        "stack_center": {
+          "uv_depth": [
+            0.2393,
+            0.3878,
+            1.3596
+          ],
+          "inside_frame": true
+        },
+        "zhou_face": {
+          "uv_depth": [
+            4.2298,
+            3.7411,
+            0.8953
+          ],
+          "inside_frame": false
+        }
+      },
+      "ray_to_key": {
+        "blocked": true,
+        "blocker": "BLUE_FOLDER",
+        "fraction": 0.93362
+      },
+      "key_span_px": 118.32
+    }
+  },
+  "prop_states": {
+    "1": {
+      "paper_cover_center": [
+        -0.265,
+        0.45,
+        0.811
+      ],
+      "folder_center": [
+        -0.78,
+        0.2,
+        0.849
+      ],
+      "folder_bottom_z": 0.842,
+      "key_top_z": 0.8,
+      "key_transforms_unchanged": true
+    },
+    "8": {
+      "paper_cover_center": [
+        -0.4,
+        0.45,
+        0.856
+      ],
+      "folder_center": [
+        -0.78,
+        0.2,
+        0.849
+      ],
+      "folder_bottom_z": 0.842,
+      "key_top_z": 0.8,
+      "key_transforms_unchanged": true
+    },
+    "20": {
+      "paper_cover_center": [
+        -0.53,
+        0.45,
+        0.838
+      ],
+      "folder_center": [
+        -0.78,
+        0.2,
+        0.849
+      ],
+      "folder_bottom_z": 0.842,
+      "key_top_z": 0.8,
+      "key_transforms_unchanged": true
+    },
+    "30": {
+      "paper_cover_center": [
+        -0.53,
+        0.45,
+        0.838
+      ],
+      "folder_center": [
+        -0.67,
+        0.3,
+        1.07
+      ],
+      "folder_bottom_z": 1.063,
+      "key_top_z": 0.8,
+      "key_transforms_unchanged": true
+    },
+    "34": {
+      "paper_cover_center": [
+        -0.53,
+        0.45,
+        0.838
+      ],
+      "folder_center": [
+        -0.48,
+        0.43,
+        0.91
+      ],
+      "folder_bottom_z": 0.903,
+      "key_top_z": 0.8,
+      "key_transforms_unchanged": true
+    },
+    "40": {
+      "paper_cover_center": [
+        -0.53,
+        0.45,
+        0.838
+      ],
+      "folder_center": [
+        -0.37,
+        0.46,
+        0.832
+      ],
+      "folder_bottom_z": 0.825,
+      "key_top_z": 0.8,
+      "key_transforms_unchanged": true
+    }
+  },
+  "key_remained_unchanged": true,
+  "caveats": [
+    "Eye positions move with walking heading, no actual perception/attention proof",
+    "Torso is ellipsoid; shoulder/arm positions are illustrative and may be unphysical",
+    "21 discrete points do not prove continuous occlusion",
+    "2D proximity overlap is a screening proxy",
+    "Rendered pixel size and unobstructed ray do not prove audience comprehension",
+    "Frames of moving props do not prove physical dynamics or gravity"
+  ]
+}
