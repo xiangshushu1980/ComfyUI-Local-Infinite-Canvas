@@ -1,6 +1,6 @@
 # WAR-68 · 导演决策链深度研究计划（最终 Skill 设计前置）
 
-> 2026-11-12。**任务已经创建，机制实验尚未开始。** Eric 项目根目录 `/home/sean/projects/canvas-lab`。此文件是研究计划的唯一详细正文；Linear [WAR-68](https://linear.app/xiangshushu/issue/WAR-68) 用于状态与资料入口。
+> 2026-11-12。**WAR-69 静态规则与 C 冻结证据追溯已完成；WAR-70 交互机制实验和 WAR-71 跨剧本复核尚未开始。** Eric 项目根目录 `/home/sean/projects/canvas-lab`。此文件是研究计划的唯一详细正文；[WAR-69 研究报告](story-and-intent-trace.md) 保存首项成果；Linear [WAR-68](https://linear.app/xiangshushu/issue/WAR-68) 用于状态与资料入口。
 
 ## 目标与工作原则
 
