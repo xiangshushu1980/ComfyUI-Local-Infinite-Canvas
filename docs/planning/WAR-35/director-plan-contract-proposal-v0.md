@@ -1093,3 +1093,58 @@ python3 docs/planning/WAR-35/verify-raw-ijson.py
 ```
 
 Git 审计：本段与 Python gate、验证脚本、报告单独提交，下一次 RC 版本标识与 Golden 独立形成后一提交，以保留冻结前每一步的变更轨迹。
+
+## 27. v0 正式版本候选、Golden 与最终冻结审阅入口（2026-11-14）
+
+### 27.1 版本选择与隔离原则
+
+**推荐拟冻结版本号为 `director-plan/0.1.0`（首个 v0 系列公共契约），尚未正式批准冻结。** 为避免覆盖 review 阶段的全部原始证据，本轮新生成 **RC1**：
+
+- `director-plan.schema.v0-rc1.json`：`$id=urn:canvas-lab:director-plan:0.1.0-rc1`；`contractVersion.const=director-plan/0.1.0`；明确标注 **RELEASE CANDIDATE 1 / NOT FROZEN**；
+- `no-action-beat.example.v0-rc1.json`、`cross-shot-once.example.v0-rc1.json`：保留原独立剧本例子的全部 Plan 值、来源与结构，只变更 `contractVersion`；
+- `build-v0-rc.py`：从**已 Git 留痕的 review Schema/示例**可重复生成 RC1；除了根 `$id`、title/description、`contractVersion.const`，RC1 Schema 不得出现其他语义差异；
+- `verify-v0-rc.py`：从**原始 UTF-8 字节**通过 §26 入口，再通过 RC Schema、RFC8785 Python + 独立 JS canonical bytes 校验、P-JCS-1 SHA 及 D-JCS-1 cross-version 指纹测试；结果 `v0-rc1-golden.report.json`，当前 **23/23**。
+
+不得把旧 `review-v0` 的 `contractVersion=director-plan/0.0-review`、Schema ID 或合成 JCS Golden 改写为最终版的值。两版本互不错误兼容；`0.1.0` 本身暂不授权生产实现或执行。
+
+### 27.2 Candidate P-JCS-1 Golden（已机械重算）
+
+P-JCS-1 版本保持 `war35-plan-jcs8785-sha256/1`，对象严格为 `{contractVersion,plan}`；`sourceSnapshots/sourceLocators/reviewLedger/revisionControl` 不进入 Plan SHA。
+
+| RC1 示例 | canonical bytes | SHA-256 |
+| --- | ---: | --- |
+| `no-action-beat.example.v0-rc1.json` | 794 | `c3a7e1b938fb16aedb0f3e28c6693223c80d3cab4c9a450adfe896778b33ef0e` |
+| `cross-shot-once.example.v0-rc1.json` | 2679 | `8b163c5db47ef392da2181b3801fef051eb63a0012f773021d434c036df261ac` |
+
+以上是候选 Golden，不是最终已签字的冻结 Golden。RC1 与 review 的 Plan 内容相同但版本不同，Golden 必然不同；RC1 中仅改变 locator 或 Review 不改变 Plan SHA，修改 revision/Plan 内容会改变 SHA；来源 text SHA 一致。D-JCS-1 payload 也包含 `contractVersion`，**RC1 和 review 相同 Intent 对象的依赖 SHA 必然不同**，已在 23 项中得到显式正反验证；不能跨版本无条件继承旧 Review pass。
+
+### 27.3 Ready / Not ready 最终分层判断
+
+**当前判断：Ready for final independent design-freeze review；Not yet frozen / Not production ready。**
+
+| 冻结门槛 | 研究结果 | 状态 |
+| --- | --- | --- |
+| D-JCS-1 完整依赖、unresolved fail closed | §23，14/14 研究测试 | 设计问题已处理 |
+| Media Check 执行目标/证据绑定 | §24，20/20 | 设计问题已处理 |
+| Decision 不可升级、风险版本与 approvedPlan | §25，37/37 | 设计问题已处理 |
+| P-JCS-1 原始 I-JSON 入站门槛 | §26，34/34；RFC8785/7493 区分通用与 WAR-35 保守整数 profile | 设计问题已处理 |
+| v0 Schema/示例/Golden 跨语言复算 | §27，RC1 23/23；既有 Python/Node JCS 21 例 | RC1 就绪，待最终审阅 |
+| WAR-52 publicPhase/projectionHashRule | design-0.2 基线保留；独立 Cross-layer 追踪 | 不阻塞**公共层**独立设计冻结；不能宣称 H3 跨层无损 Ready |
+| 生产级 raw gate、source/media resolver、真实历史封存与审批器 | 未实施 | 不属于本次公共 Schema **设计冻结**前提，但明确禁止以此声明运行时授权 |
+
+**仍需用户最终明确的两项冻结决定**：（a）接受 v0.1.0 作为正式首发版本和 Schema ID `urn:canvas-lab:director-plan:0.1.0`；（b）接受 §25 的保守 v0 carry-forward（只自动复用无风险无条件批准 Intent A，条件批准走重新 reviewed）。若批准，在最终冻结提交中把 RC Schema 的 `$id`/title/description 更新为正式版文件，运行全部验证、保留不可变 Golden、审计 Git commit 后再将 WAR-35 状态更新为已冻结/待实现的正确任务状态。**本轮不提前执行这些发布动作。**
+
+### 27.4 复现命令和 Git 阶段提交
+
+```bash
+cd /home/sean/projects/canvas-lab
+python3 docs/planning/WAR-35/build-v0-rc.py
+python3 docs/planning/WAR-35/verify-v0-rc.py
+python3 docs/planning/WAR-35/verify-raw-ijson.py
+python3 docs/planning/WAR-35/verify-decision-gates.py
+python3 docs/planning/WAR-35/verify-media-check.py
+python3 docs/planning/WAR-35/verify-d-jcs1-schema.py
+/home/sean/.local/share/canvas-lab-jcs/venv/bin/python docs/planning/WAR-35/verify-d-jcs1.py
+```
+
+**Git 分步**：此前 §23 D-JCS `f8a288b`、§24 Media `20b6029`、§25 Decision `754105b`、§26 raw I-JSON `f904099` 已单独提交。RC1 Schema/fixtures/generator/verifier/Golden/本节采用第五个独立 commit，只推送现有 `war-35-schema-freeze-review-20261114` 分支。正式冻结须在用户确认后以第六个、可独立审计的 commit 完成，不重写以上历史。
