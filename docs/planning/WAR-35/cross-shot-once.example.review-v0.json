@@ -1,0 +1,218 @@
+{
+  "contractVersion": "director-plan/0.0-review",
+  "plan": {
+    "planId": "P-FOX",
+    "sceneId": "SC-RIVER",
+    "revisionId": "R2",
+    "storyBasis": {
+      "sources": [
+        {
+          "sourceId": "source:S-FOX",
+          "mediaKind": "text",
+          "contentSha256": "f131a42803ac13a3ca2ed53bee30980812162ec9c2672bba52293e83bf6eb44b"
+        }
+      ],
+      "facts": [
+        {
+          "id": "F-ONCE",
+          "statement": "狐狸只跳过小溪一次并在对岸落地",
+          "sourceRefs": [
+            "source:S-FOX"
+          ]
+        }
+      ],
+      "subjects": [
+        {
+          "id": "FOX",
+          "label": "狐狸",
+          "kind": "other"
+        },
+        {
+          "id": "CREEK",
+          "label": "小溪",
+          "kind": "place"
+        }
+      ]
+    },
+    "intents": [
+      {
+        "id": "I-CROSS",
+        "basisRefs": [
+          "fact:F-ONCE"
+        ],
+        "creativeGoal": "清楚表现一次完整跳跃和落地",
+        "rationale": "以连续动作证明空间因果"
+      }
+    ],
+    "beats": [
+      {
+        "id": "B-JUMP",
+        "dramaticChange": "狐狸从蓄力到成功落地",
+        "intentRefs": [
+          "intent:I-CROSS"
+        ],
+        "actionRefs": [
+          "action:A-JUMP"
+        ],
+        "deltaRefs": [
+          "delta:D-LAND"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "A-JUMP",
+        "description": "狐狸从近岸跳到对岸",
+        "temporalKind": "once",
+        "participantRefs": [
+          "subject:FOX"
+        ],
+        "completion": {
+          "condition": "狐狸已经落在对岸",
+          "deltaRef": "delta:D-LAND"
+        },
+        "phases": [
+          {
+            "key": "prepare"
+          },
+          {
+            "key": "takeoff"
+          },
+          {
+            "key": "airborne"
+          },
+          {
+            "key": "land"
+          }
+        ]
+      }
+    ],
+    "state": {
+      "baseline": [
+        {
+          "key": "world:fox.jump.completed",
+          "value": {
+            "kind": "known",
+            "value": false
+          },
+          "sourceRefs": [
+            "fact:F-ONCE"
+          ]
+        }
+      ],
+      "deltas": [
+        {
+          "id": "D-LAND",
+          "key": "world:fox.jump.completed",
+          "before": {
+            "kind": "known",
+            "value": false
+          },
+          "after": {
+            "kind": "known",
+            "value": true
+          },
+          "triggerRef": "action:A-JUMP",
+          "provenanceRefs": [
+            "fact:F-ONCE"
+          ]
+        }
+      ]
+    },
+    "blockings": [
+      {
+        "id": "BL-JUMP",
+        "scopeRefs": [
+          "beat:B-JUMP",
+          "action:A-JUMP"
+        ],
+        "staging": "狐狸从近岸蓄力，经小溪上方腾空，最终站稳于对岸，采用相对方位，不强制三维坐标。"
+      }
+    ],
+    "shots": [
+      {
+        "id": "S01",
+        "beatRefs": [
+          "beat:B-JUMP"
+        ],
+        "blockingRefs": [
+          "blocking:BL-JUMP"
+        ],
+        "primaryPurpose": "交代跳跃的准备与起跳",
+        "visualDesign": {
+          "description": "同一运动方向，主体与近岸关系清楚",
+          "subjectRefs": [
+            "subject:FOX",
+            "subject:CREEK"
+          ]
+        },
+        "evidenceCriteria": [
+          {
+            "id": "E01",
+            "statement": "明显看见狐狸从近岸起跳"
+          }
+        ],
+        "actionCoverage": [
+          {
+            "actionRef": "action:A-JUMP",
+            "phaseSpan": {
+              "from": "prepare",
+              "through": "airborne"
+            }
+          }
+        ],
+        "timing": {
+          "estimatedSeconds": 4
+        }
+      },
+      {
+        "id": "S02",
+        "beatRefs": [
+          "beat:B-JUMP"
+        ],
+        "blockingRefs": [
+          "blocking:BL-JUMP"
+        ],
+        "primaryPurpose": "证明狐狸完成落地，且没有第二次起跳",
+        "visualDesign": {
+          "description": "沿运动方向看到狐狸在远岸落地",
+          "subjectRefs": [
+            "subject:FOX",
+            "subject:CREEK"
+          ]
+        },
+        "evidenceCriteria": [
+          {
+            "id": "E02",
+            "statement": "同一次动作以站稳远岸结束"
+          }
+        ],
+        "actionCoverage": [
+          {
+            "actionRef": "action:A-JUMP",
+            "phaseSpan": {
+              "from": "airborne",
+              "through": "land"
+            },
+            "completionDeltaRef": "delta:D-LAND"
+          }
+        ],
+        "boundary": {
+          "exitDeltaRefs": [
+            "delta:D-LAND"
+          ]
+        },
+        "timing": {
+          "estimatedSeconds": 4
+        }
+      }
+    ]
+  },
+  "sourceSnapshots": [
+    {
+      "sourceId": "source:S-FOX",
+      "contentSha256": "f131a42803ac13a3ca2ed53bee30980812162ec9c2672bba52293e83bf6eb44b",
+      "text": "狐狸在岸边蓄力，跳过小溪，落在对岸。跳跃只发生一次。"
+    }
+  ]
+}
