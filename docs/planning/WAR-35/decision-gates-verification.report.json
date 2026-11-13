@@ -1,0 +1,158 @@
+{
+  "task": "WAR-35",
+  "scope": "Blocking 3 Decision / approvedPlan design-only semantic test",
+  "passed": 37,
+  "total": 37,
+  "cases": [
+    {
+      "case": "D-P01-valid-A-carry-and-approved-B",
+      "passed": true
+    },
+    {
+      "case": "D-P02-reviewed-conditional-B-with-risk",
+      "passed": true
+    },
+    {
+      "case": "D-P03-reviewed-new-risk-version-explicit",
+      "passed": true
+    },
+    {
+      "case": "D-N01-rejected-to-approved",
+      "passed": true
+    },
+    {
+      "case": "D-N02-changes-requested-to-approved",
+      "passed": true
+    },
+    {
+      "case": "D-N03-conditional-to-approved-upgrade",
+      "passed": true
+    },
+    {
+      "case": "D-N04-conditional-to-conditional-not-automatic",
+      "passed": true
+    },
+    {
+      "case": "D-N05-accepted-risk-silently-dropped",
+      "passed": true
+    },
+    {
+      "case": "D-N06-source-approved-but-risk-bearing",
+      "passed": true
+    },
+    {
+      "case": "D-N07-approvedPlan-points-to-rejected-B",
+      "passed": true
+    },
+    {
+      "case": "D-N08-approvedPlan-points-to-A",
+      "passed": true
+    },
+    {
+      "case": "D-N09-approvedPlan-target-mismatch",
+      "passed": true
+    },
+    {
+      "case": "D-N10-approvedPlan-falsified-content-hash",
+      "passed": true
+    },
+    {
+      "case": "D-N11-new-check-uses-old-target",
+      "passed": true
+    },
+    {
+      "case": "D-N12-new-check-fingerprint-changed",
+      "passed": true
+    },
+    {
+      "case": "D-N13-source-history-missing",
+      "passed": true
+    },
+    {
+      "case": "D-N14-source-check-mutated",
+      "passed": true
+    },
+    {
+      "case": "D-N15-inheritance-record-missing",
+      "passed": true
+    },
+    {
+      "case": "D-N16-duplicate-current-check-ids",
+      "passed": true
+    },
+    {
+      "case": "D-N17-B-decision-check-wrong-target",
+      "passed": true
+    },
+    {
+      "case": "D-N18-B-unknown-risk",
+      "passed": true
+    },
+    {
+      "case": "D-N19-B-risk-version-substituted",
+      "passed": true
+    },
+    {
+      "case": "D-N20-B-risk-target-different-revision",
+      "passed": true
+    },
+    {
+      "case": "D-N21-B-open-hard-conflict",
+      "passed": true
+    },
+    {
+      "case": "D-N22-risk-same-version-in-place-rewrite",
+      "passed": true
+    },
+    {
+      "case": "D-N23-duplicate-risk-version-pair",
+      "passed": true
+    },
+    {
+      "case": "D-N24-B-gate-backed-by-A-only-check",
+      "passed": true
+    },
+    {
+      "case": "D-N25-source-check-fail-even-if-sealed",
+      "passed": true
+    },
+    {
+      "case": "D-N26-source-check-stale-even-if-sealed",
+      "passed": true
+    },
+    {
+      "case": "D-N27-new-check-unknown",
+      "passed": true
+    },
+    {
+      "case": "D-N28-same-revision-not-carry",
+      "passed": true
+    },
+    {
+      "case": "D-N29-conditional-without-explicit-risk",
+      "passed": true
+    },
+    {
+      "case": "D-N30-conditional-without-rationale",
+      "passed": true
+    },
+    {
+      "case": "D-N31-two-accepted-versions-of-same-risk",
+      "passed": true
+    },
+    {
+      "case": "original-full-package-shape",
+      "passed": true
+    },
+    {
+      "case": "schema-no-conditional-carry",
+      "passed": true
+    },
+    {
+      "case": "schema-no-risk-bearing-carry",
+      "passed": true
+    }
+  ],
+  "historyAssumption": "Immutable prior revisions/checks/decisions with independently verified SHA; cannot establish trust from unverified claims",
+  "productionValidatorImplemented": false
+}

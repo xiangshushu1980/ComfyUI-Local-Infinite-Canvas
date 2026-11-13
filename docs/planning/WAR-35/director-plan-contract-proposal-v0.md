@@ -986,3 +986,65 @@ python3 docs/planning/WAR-35/verify-d-jcs1-schema.py
 ### 24.5 Git 与审计留痕
 
 按用户要求，Blocking 2 与之前 D-JCS-1 分开 Git 提交；仅暂存 WAR-35 本轮 Schema、研究计算器、媒体测试报告、验证脚本及本研究正文。当前 Eric `main` 比远端 `origin/main` 已超前大量既存提交，因此远端同步优先推送专用 WAR-35 分支，**不擅自直接更新 origin/main**。提交后回读 SHA 与 Linear 入口；若推送失败则明确区分本地 commit 和远端状态。
+
+## 25. Blocking 3｜Decision carry-forward 与 approvedPlan 不可升级规则（2026-11-14）
+
+### 25.1 最小决策：不增加审批树
+
+本轮按用户要求继续 WAR-35 公共 Schema v0 冻结前修正。继承结果只使用既有 `Check`、`inheritance`、`Decision`、`Risk`、`revisionControl.approvedPlan` 五类记录，不加 Event Registry、Check 版本树、单镜审批树或 H3 依赖。**以下规则收口为 v0 推荐设计及合成验证证据，待最终公共 Schema 冻结时由用户确认。**
+
+已确认的上游前提：D-JCS-1 完整依赖重算 (§23)，Media Check 绑定完整媒体执行证据 (§24)；**Check 继承不等于 Decision 继承，Intent A 批准不等于 Shot B 批准，Plan 批准不等于 H3 视频执行授权。**
+
+### 25.2 Verified carry-forward 的精确、保守 v0 适用域
+
+只允许由上一 revision 的无条件、无已接受风险、`gate=intentA`、`verdict=approved` 有效 Decision，产生下一 revision 的 `decisionBasis=verified_carry_forward`、同一 gate、同样 `approved`、无 acceptedRisks 的**新 Decision**。历史 source Decision 和 Check 绝不修改；历史记录不可复算或来源缺失即 fail-closed。
+
+- `fromDecisionId` 解析为不可变历史源 Decision；源记录可审计，不能只相信待继承者自报的 ID。新旧 `planId` 相同、revision/Plan target 必须不同，且两版 PlanTarget hash 都经 P-JCS-1 复算。循环/重复 ID、来源缺失或 source gate 不同均拒绝。
+- 源 Decision 必须为有效 `approved`，且 `acceptedRisks` 为空；`rejected`、`changes_requested`、`conditionally_approved` 或任何 risk-bearing source **不得自动 carry-forward**。条件批准是否仍适用涉及缺少独立结构化条件证明的风险，本版需要新 `decisionBasis=reviewed` 的人工/明确授权决策，而不是自动继承。此保守约束比“只要不升级即可搬运”更严格，用额外一次审阅换取不建条件证明模型。
+- 新 Decision 必须有新 revision 的 Check IDs，不能直接复用历史 Check IDs。源 Decision 的每一个 Check 必须有**且仅有一个**有效的 `fromCheckId → intoCheckId`，没有遗漏或额外 Check；两端必须是 `pass/valid`、同 `checkSpec`、`checkSpecVersion`、`method`、同完整依赖范围及 D-JCS-1 profile/fingerprint，且均由相应 Plan 版本真实来源重新计算。任何 stale、unknown、fail、缺 source 或 fingerprint 不符均拒绝。
+- 新旧 Check 的 D-JCS 指纹相同不代表原 Decision 本身自动续期。只有以上来源批准和检查映射同时满足，才允许新建 `verified_carry_forward` Decision；旧证据保留不变。
+- v0 不自动 carry-forward 媒体批准或任何 Shot B/exception Decision。若原 source Decision 是 `conditionally_approved` 或 acceptedRisks 不空，需要建立新 `reviewed` Decision，保留旧版本和风险供审阅，不把它们改写成 `approved`。
+
+### 25.3 approvedPlan 指针、版本化风险与审核闭环
+
+`revisionControl.approvedPlan = {decisionId, gate:"shotB", target}` 仅是**可验证指针**，不是一次批准事件。语义 validator 须同时证明：
+
+1. `decisionId` 精确解析到有效 Decision，`gate=shotB`、`decisionBasis=reviewed`、`verdict=approved|conditionally_approved`；被拒绝 / changes_requested / Intent A / exception 均不可当作整 Plan 批准。
+2. `approvedPlan.target = Decision.target = 当前 Package 真实 PlanTarget`；当前 PlanTarget 的 `planContentSha256` 需按 P-JCS-1 重算。不允许仅匹配 revisionId 或引用历史批准。
+3. Decision 的 **全部** `checkIds` 必须在当前 revision 上解析唯一、非 stale、内容和依赖可复算的有效 Check；还必须通过受版本约束的 `checkSpec → gate` 归属检查，不能用只验证 Intent A 的 Check 冒充 Shot B 已完成。若规格来源不可验证则拒绝有效批准。
+4. 若 `verdict=conditionally_approved`，必须带非空 `rationale` 与非空 `acceptedRisks`。每一项是 `(riskId,riskVersionId)` 的不可变快照，并绑定**当前目标版本**；同一 riskId 的多个版本不能同时作为同一个 Decision 的已接受风险。缺失、错绑、同版本内容被改写、hard_conflict 仍 open、条件作用域不明确或适用性不可证时，审批有效性为 unresolved，不可宣称通过。
+5. 已获批准的风险版本不得原位改写；有变化时记录新 riskVersion、复检影响并以新的 `reviewed` Decision 明确采纳，不得在 carry-forward 中静默删除或替换旧 `acceptedRisks`。
+6. 风险记录和历史 Check/Decision 可能引用不同版本 Plan。必须保留原始记录及其可独立验证的不可变历史依据；本任务的合成脚本用历史 JCS seals 模拟该条件，**不代表生产存储已具备不可变性**。无法取得可信历史则拒绝承接，但不破坏当前 Plan 草稿。
+
+**精确职责界限**：Schema 约束可验证字段形状、`verified_carry_forward` 对 `intentA + approved + 无风险` 的条件、`conditionally_approved` 的风险/理由必填及 `checkIds/acceptedRisks` 数组去重；**跨对象引用、历史不变性、风险当前适用性与检查所属 gate**必须由语义 validator 检查，单纯 JSON Schema 合法绝不等于 Decision 有效。未来生产 CheckSpec 需要不可变且可验证的 gate 归属；合成测试仅使用明确列出的两项批准规格，未实现完整规则目录。
+
+### 25.4 精确 Schema 修改与验证证据
+
+`director-plan.schema.review-v0.json` 的 `$defs.decision` 保留现有字段：
+
+- `checkIds`、`acceptedRisks` 增 `uniqueItems:true`。
+- 对 `decisionBasis=verified_carry_forward`，原有 `fromDecisionId` 必需和 `gate=intentA` 不变，新增 `verdict=approved`、`acceptedRisks.maxItems=0`。
+- 对 `verdict=conditionally_approved`，`rationale` 与 `acceptedRisks` 必需且 `acceptedRisks.minItems=1`。不加新对象模型。
+- 更新 `inheritance`、`decision`、`approvedPlan` 的 description，明确必须验证的跨对象语义。原始合成示例没有被改写。
+
+研究性可复算验证：
+
+- `verify-decision-gates.py`：合成的 R2 → R3（新增 Shot、不变 Intent）为正例；真实 P-JCS-1 与 D-JCS-1 从本项目示例重算，模拟可信历史封存的不可变记录。**37/37** 语义/结构正反例通过。
+- `decision-gates-verification.report.json`：记录测试 ID、成功数量以及适用范围，重点包含 rejected→approved、conditional→approved、conditional 直接 carry、风险丢失/替换、源 Check fail/stale、缺历史、wrong Check/target/gate、approvedPlan→rejected B/Intent A、历史风险版本同 ID 原位改写、当前 B 条件批准有效风险、单一 riskId 版本歧义。
+- 回归 `verify-d-jcs1.py` 14/14，`verify-d-jcs1-schema.py` 9/9，`verify-media-check.py` 20/20。均不生成/检查媒体，没有修改原始 Skill、WAR-52、Canvas 或生产代码。
+
+复测命令：
+
+```bash
+cd /home/sean/projects/canvas-lab
+python3 docs/planning/WAR-35/verify-decision-gates.py
+python3 docs/planning/WAR-35/verify-media-check.py
+python3 docs/planning/WAR-35/verify-d-jcs1-schema.py
+/home/sean/.local/share/canvas-lab-jcs/venv/bin/python docs/planning/WAR-35/verify-d-jcs1.py
+```
+
+**仍需声明的局限**：历史 JCS seal 只在合成脚本模拟；真实不可变历史存储、实际用户审批与 CheckSpec-gate 注册、媒体 resolver 均未实施。该测试可用于**公共 Schema 设计冻结**的语义规格证据，但不能冒充生产权限检查。WAR-35 整体还需 P-JCS-1 raw I-JSON 入口负例，以及正式 `contractVersion`、Schema ID 和 Golden digest 的最终处理。
+
+### 25.5 Git 分步记录
+
+本轮仅暂存 WAR-35：修改 review Schema、增加 `verify-decision-gates.py` 和验证报告、更新本研究正文；保留 §23 D-JCS-1 Git `f8a288b`、§24 Media Check Git `20b6029` 为前序提交。按用户要求创建单独第三步 commit，并只推送 `origin/war-35-schema-freeze-review-20261114`，绝不把其他未提交文件或远端 main 混入提交。

@@ -1193,7 +1193,9 @@
           "items": {
             "$ref": "#/$defs/localId"
           },
-          "minItems": 1
+          "minItems": 1,
+          "uniqueItems": true,
+          "description": "All Check IDs resolve to the target revision and must be valid for this gate; carry-forward requires exact one-to-one inherited mappings to the source decision checks."
         },
         "acceptedRisks": {
           "type": "array",
@@ -1212,7 +1214,9 @@
               "riskId",
               "riskVersionId"
             ]
-          }
+          },
+          "uniqueItems": true,
+          "description": "Immutable (riskId,riskVersionId) pairs. Conditional approval and risk acceptance cannot be silently dropped or promoted by carry-forward. Resolve immutable historical risk version and current applicability."
         },
         "executionTarget": {
           "$ref": "#/$defs/executionTarget"
@@ -1224,7 +1228,8 @@
           ]
         },
         "fromDecisionId": {
-          "$ref": "#/$defs/localId"
+          "$ref": "#/$defs/localId",
+          "description": "Resolve immutable predecessor Decision; for verified_carry_forward it MUST have same gate, approved verdict, same planId and different prior revision. Never use a self-referential or missing source."
         }
       },
       "required": [
@@ -1254,6 +1259,12 @@
             "properties": {
               "gate": {
                 "const": "intentA"
+              },
+              "verdict": {
+                "const": "approved"
+              },
+              "acceptedRisks": {
+                "maxItems": 0
               }
             }
           }
@@ -1276,9 +1287,32 @@
               ]
             }
           }
+        },
+        {
+          "if": {
+            "properties": {
+              "verdict": {
+                "const": "conditionally_approved"
+              }
+            },
+            "required": [
+              "verdict"
+            ]
+          },
+          "then": {
+            "required": [
+              "rationale",
+              "acceptedRisks"
+            ],
+            "properties": {
+              "acceptedRisks": {
+                "minItems": 1
+              }
+            }
+          }
         }
       ],
-      "description": "Decision is revision/gate-specific and references new-revision Check IDs. Carry-forward is only for unchanged Intent A scope; no automatic Shot B or execution approval."
+      "description": "Decision is revision/gate-specific. v0 verified_carry_forward is limited to risk-free, unconditionally approved Intent A with a verified unchanged Check mapping and immutable source history. Conditional/risk-bearing decisions require a new reviewed decision; semantic validator checks source verdict, check provenance, risk version and scope. Conditional approval requires an explicit rationale and at least one immutable acceptedRisk version; do not represent untracked conditions as approval."
     },
     "inheritance": {
       "type": "object",
@@ -1313,7 +1347,7 @@
         "dependencyHashRule",
         "intoCheckId"
       ],
-      "description": "Explicit carryover of check evidence only, not a new B gate or execution approval."
+      "description": "Explicit Check evidence reuse only: source and destination Check must be valid pass, immutable, same exact D-JCS-1 profile/fingerprint/check spec/scope with fresh recomputation and new target. Does not carry Decision or Media authorizations."
     },
     "reviewLedger": {
       "type": "object",
@@ -1407,7 +1441,7 @@
             "gate",
             "target"
           ],
-          "description": "Effective Plan approval only. An Intent A decision is not full-plan approval."
+          "description": "Semantic validator MUST resolve decisionId to the same target and gate shotB with effective approved/conditionally_approved verdict. Invalid/stale checks or missing risk evidence prevent approval. Intent A does not authorize the whole Plan or H3."
         }
       }
     },
