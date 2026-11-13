@@ -1,0 +1,656 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "WAR-52 timed H3 projection draft 0.1",
+  "description": "Design artifact only. Shape validation does not imply semantic validity, approval, adapter support, or authorization to execute.",
+  "type": "object",
+  "properties": {
+    "contract_version": {
+      "const": "draft-0.1"
+    },
+    "projection_revision": {
+      "type": "string",
+      "minLength": 1
+    },
+    "plan_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "plan_revision": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scene_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "unit_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scene_start": {
+      "type": "number",
+      "minimum": 0
+    },
+    "fps": {
+      "type": "object",
+      "properties": {
+        "num": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "den": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "num",
+        "den"
+      ],
+      "additionalProperties": false
+    },
+    "frame_count": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "scene_anchor_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "character_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "prop_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "continuity_axes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "minLength": 1
+          },
+          "constraint_ref": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "key",
+          "constraint_ref"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "action_scopes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/actionScope"
+      }
+    },
+    "action_phases": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/phase"
+      }
+    },
+    "shot_responsibilities": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/shot"
+      },
+      "minItems": 1
+    },
+    "join_constraints": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/join"
+      }
+    },
+    "dialogue_cues": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/cue"
+      }
+    },
+    "guide_points": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/guide"
+      }
+    },
+    "reference_bindings": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/reference"
+      }
+    },
+    "asset_bindings": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/asset"
+      }
+    },
+    "unresolved": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "required": [
+    "contract_version",
+    "projection_revision",
+    "plan_ref",
+    "plan_revision",
+    "scene_ref",
+    "unit_ref",
+    "scene_start",
+    "fps",
+    "frame_count",
+    "scene_anchor_refs",
+    "character_refs",
+    "prop_refs",
+    "continuity_axes",
+    "action_scopes",
+    "action_phases",
+    "shot_responsibilities",
+    "join_constraints",
+    "dialogue_cues",
+    "unresolved"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "span": {
+      "type": "object",
+      "properties": {
+        "start": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "end": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "start",
+        "end"
+      ],
+      "additionalProperties": false
+    },
+    "boundary": {
+      "type": "object",
+      "properties": {
+        "state_delta_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required_keys": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "required": [
+        "state_delta_refs",
+        "required_keys"
+      ],
+      "additionalProperties": false
+    },
+    "coverage": {
+      "type": "object",
+      "properties": {
+        "action_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "phase_key": {
+          "type": "string",
+          "minLength": 1
+        },
+        "span": {
+          "$ref": "#/$defs/span"
+        }
+      },
+      "required": [
+        "action_ref",
+        "phase_key",
+        "span"
+      ],
+      "additionalProperties": false
+    },
+    "phase": {
+      "type": "object",
+      "properties": {
+        "action_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "phase_key": {
+          "type": "string",
+          "minLength": 1
+        },
+        "span": {
+          "$ref": "#/$defs/span"
+        },
+        "completion_at": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "completion_delta_ref": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "action_ref",
+        "phase_key",
+        "span"
+      ],
+      "additionalProperties": false,
+      "dependentRequired": {
+        "completion_at": [
+          "completion_delta_ref"
+        ],
+        "completion_delta_ref": [
+          "completion_at"
+        ]
+      }
+    },
+    "actionScope": {
+      "type": "object",
+      "properties": {
+        "action_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "delivery": {
+          "enum": [
+            "complete",
+            "partial"
+          ]
+        },
+        "entry": {
+          "enum": [
+            "starts_here",
+            "already_active"
+          ]
+        },
+        "entry_checkpoint_ref": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "action_ref",
+        "delivery",
+        "entry"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "entry": {
+                "const": "already_active"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "entry_checkpoint_ref"
+            ]
+          }
+        }
+      ]
+    },
+    "shot": {
+      "type": "object",
+      "properties": {
+        "shot_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "span": {
+          "$ref": "#/$defs/span"
+        },
+        "responsibility": {
+          "type": "string",
+          "minLength": 1
+        },
+        "secondary_responsibilities": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "camera": {
+          "type": "object",
+          "properties": {
+            "framing": {
+              "type": "string",
+              "minLength": 1
+            },
+            "axis_side": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [],
+          "additionalProperties": false
+        },
+        "covers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/coverage"
+          }
+        },
+        "entry": {
+          "$ref": "#/$defs/boundary"
+        },
+        "exit": {
+          "$ref": "#/$defs/boundary"
+        },
+        "visible_evidence": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "shot_ref",
+        "span",
+        "responsibility",
+        "camera",
+        "covers",
+        "entry",
+        "exit",
+        "visible_evidence"
+      ],
+      "additionalProperties": false
+    },
+    "join": {
+      "type": "object",
+      "properties": {
+        "from_shot_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "to_shot_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "at_frame": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "visual_transition": {
+          "enum": [
+            "continuous",
+            "cut"
+          ]
+        },
+        "state_relation": {
+          "enum": [
+            "inherit",
+            "explicit_delta"
+          ]
+        },
+        "delta_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "continuity_keys": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "allowed_camera_changes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "required": [
+        "from_shot_ref",
+        "to_shot_ref",
+        "at_frame",
+        "visual_transition",
+        "state_relation",
+        "delta_refs",
+        "continuity_keys",
+        "allowed_camera_changes"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "state_relation": {
+                "const": "explicit_delta"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "delta_refs": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "presentation": {
+      "type": "object",
+      "properties": {
+        "span": {
+          "$ref": "#/$defs/span"
+        },
+        "visibility": {
+          "enum": [
+            "onscreen",
+            "offscreen"
+          ]
+        }
+      },
+      "required": [
+        "span",
+        "visibility"
+      ],
+      "additionalProperties": false
+    },
+    "cue": {
+      "type": "object",
+      "properties": {
+        "cue_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "action_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "speaker_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "span": {
+          "$ref": "#/$defs/span"
+        },
+        "presentation": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/presentation"
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "cue_ref",
+        "speaker_ref",
+        "text",
+        "span",
+        "presentation"
+      ],
+      "additionalProperties": false
+    },
+    "asset": {
+      "type": "object",
+      "properties": {
+        "asset_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "content_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "kind": {
+          "enum": [
+            "image",
+            "video",
+            "audio"
+          ]
+        },
+        "locator": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "asset_ref",
+        "content_sha256",
+        "kind"
+      ],
+      "additionalProperties": false
+    },
+    "reference": {
+      "type": "object",
+      "properties": {
+        "asset_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "picture_index": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "asset_ref",
+        "picture_index"
+      ],
+      "additionalProperties": false
+    },
+    "guide": {
+      "type": "object",
+      "properties": {
+        "frame_idx": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "asset_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "media_kind": {
+          "enum": [
+            "image",
+            "video",
+            "audio"
+          ]
+        },
+        "target_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1
+        },
+        "text_reference": {
+          "oneOf": [
+            {
+              "const": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "picture_index": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              },
+              "required": [
+                "picture_index"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        },
+        "qa": {
+          "enum": [
+            "pending",
+            "pass",
+            "conflict"
+          ]
+        },
+        "capability_evidence_ref": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "frame_idx",
+        "asset_ref",
+        "media_kind",
+        "target_refs",
+        "text_reference",
+        "qa"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

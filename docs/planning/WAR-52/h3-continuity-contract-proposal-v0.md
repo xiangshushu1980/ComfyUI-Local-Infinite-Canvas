@@ -1,6 +1,6 @@
 # WAR-52｜单次 H3 内部连续性契约候选 v0
 
-2026-11-13。状态：**第二轮对齐提案，待用户字段评审；没有冻结正式 Schema，也没有实施或运行模型。**
+2026-11-13。状态：**第三轮：五项语义已由用户确认，已产出 draft-0.1 JSON Schema；字段格式仍为设计草案，未接入应用或运行模型。** 第 12 节是当前契约入口，之前轮次的待审阅措辞按第 12 节确认范围解释。
 
 本轮按 WAR-52 开始执行指令开展设计。唯一详细正文为本文件；Linear 保存状态和入口。工作基于 Canvas Lab `0523ef0e924530b5a27b1b85653a85faeaf36893`，但 WAR-35 方案和若干实验依据是当前未提交文件，不能视作该 commit 已包含。未修改应用、原始 Skill、Gateway、工作流或其他任务文件。
 
@@ -74,6 +74,8 @@ Guide 默认为空。只有用户对特定时点的姿态/构图有要求，且�
 对白保留 speakerRef、原句和时间；H3 `<d>` 等语法由既有官方规则/薄编译层负责，不在本任务重写 Prompt Writer。文本规划只能发现 speaker/时序/重复文本标记冲突；是否说对、声音是否串人、口型同步、语速是否可完成需完整播放和听审。
 
 ## 6. TypeScript 形状草案（非最终 Schema，无运行时接入）
+
+以下是首轮讨论用历史形状（含 camelCase 命名），不与最新 Schema 并列维护。第三轮机器可读字段以 [draft-0.1 JSON Schema](h3-projection.schema.draft.json) 为唯一格式草案；后续若生成 TS，应从该 Schema 派生。
 
 ```ts
 type Ref = string; // 由固定 Plan revision 的 resolver 解析；不指定生产 ID 格式
@@ -231,4 +233,66 @@ Action 的 completion condition 由源 Plan 持有，WAR-52 将它定位到 unit
 
 本轮一次性 Python 断言复核通过：两 JSON 可解析、跨切点 phase/cue 连续、D-LAND 与唯一 jump completion 同帧、投影修订独立于源 Plan、无 Guide 路径、media result 保持 unknown；正文相对文件链接均可解析，`git diff --check` 通过。另补充四个纸面边界案例：partial 合法、不完整目标冲突、隐式正常 delta、缺省略依据；这些纸面推演未由运行时校验器执行。没有新增生产代码或自动化测试套件。
 
-待用户审阅的三个具体建议：**Join 双维表达；完成标记按完整/部分覆盖区分；Guide 可选但出现时不得静默忽略错误。** 同时建议接受“主要职责可带次要任务”和“源 Shot 可先用估计时间”的兼容修正。用户批准后才将这些语义视作冻结依据；字段命名、部分覆盖字段和 WAR-35 待决 Action 规则仍需共同形成 Schema。保持 WAR-52 In Progress，不以这一轮单方面宣布联审通过。
+本轮提出的三个具体建议：**Join 双维表达；完成标记按完整/部分覆盖区分；Guide 可选但出现时不得静默忽略错误。** 加上“主要职责可带次要任务”“源 Shot 可先用估计时间”，这五项已于第三轮由用户确认，见第 12 节。字段命名、部分覆盖字段和 WAR-35 待决 Action 规则仍需共同形成 Schema。保持 WAR-52 In Progress，不单方面宣布跨层联审通过。
+
+## 12. 第三轮｜已确认语义与 draft-0.1 Schema
+
+用户明确回复“采用上述建议，继续”，确认第 11.5 节的五项语义：Join 双维、完成标记按完整/部分覆盖区分、Guide 可选但无效时不得静默忽略、主要职责可带次要任务、源 Shot 可以先使用估计时间。本轮据此细化格式，不重复请求这些决定。未因此批准 WAR-35 其他待决项、应用实施、GPU 或未知 Guide 能力。
+
+### 12.1 产物与适用层次
+
+- [h3-projection.schema.draft.json](h3-projection.schema.draft.json)：JSON Schema Draft 2020-12，`contract_version = draft-0.1`，**已定时的审阅投影**格式草案。不对尚未精确时点的上游 DirectorPlan 施加此格式。
+- 两份既有 `.example.json` 更新为 envelope：`source_fixture` 是合成上游输入，`projection` 才是 Schema 的校验对象，`media_review` 保持 unknown。不能把合成 fixture 当作真实批准 Plan 或资产仓库。旧样例保留在前两轮 Git commit 中。
+- 格式不存第二套审批记录；最终 Plan/projection 审批与证据仍交横切 Review。没有实现 resolver、生产 semantic validator、Prompt compiler、运行时门禁或视频提交。
+
+### 12.2 必需、可选和条件必需字段
+
+| 区域 | 此草案必需 | 可选或条件必需 |
+| --- | --- | --- |
+| 版本与来源 | contract_version、projection_revision、plan_ref、plan_revision、scene_ref、unit_ref | source 内容/指纹最终复用 WAR-35 的绑定；本轮不伪造 source 审批 |
+| 时间 | scene_start ≥ 0、正有理 fps、frame_count > 0 | 所有整数帧区间、取整与总长关系另做 semantic check |
+| 场景与主体 | 非空 scene_anchor_refs；character_refs、prop_refs、continuity_axes 数组 | 无人物/道具可空；不造全局角色库 |
+| 动作 | action_scopes、action_phases 数组 | 无动作时可空；scope 的 entry=already_active 必须有 entry_checkpoint_ref |
+| 阶段完成 | phase 的 action_ref、phase_key、span | completion_at 与 completion_delta_ref 成对出现；跨 phase 的唯一性和 complete 必须完成由 semantic check 负责 |
+| 镜头 | shot_responsibilities 至少一项；shot_ref、span、responsibility、camera、covers、entry、exit、visible_evidence | secondary_responsibilities 可省；camera 内精确参数不必填；无关键继承键可空列表 |
+| Join | join_constraints 数组；邻镜 refs、at_frame、visual_transition、state_relation、delta_refs、continuity_keys、allowed_camera_changes | 一镜无 Join；explicit_delta 要求非空 delta_refs；引用合法性不能靠枚举保证 |
+| 对白 | dialogue_cues 数组；cue_ref、speaker_ref、text、span、presentation | cue.action_ref 可选，已有源说话 Action 时应绑定；未核对绑定保持 unresolved |
+| Guide | guide_points 可省，省略与空数组都表示没有 Guide | 每项必须 frame_idx、asset_ref、media_kind、target_refs、text_reference、qa；capability_evidence_ref 可在审阅时缺省，执行前必须核实 |
+| Reference / 资产 | reference_bindings、asset_bindings 可省 | 出现时绑定 asset_ref、内容 SHA-256 和种类；Picture 索引从 1 起；locator 可省，交宿主 resolver 解析 |
+| 开放项 | unresolved 数组，可空 | 非空允许保留候选，不宣称执行就绪；空也不自动证明外部源、素材和 adapter 已核实 |
+
+采用 snake_case 与 JSON 示例一致，`preserve_keys` 改为 `continuity_keys`，明确沿状态链连续而不是快照值必须相等。所有结构对象拒绝未知字段；因此 Guide 的 strength/weight/start_percent/end_percent 不会被作为合法参数悄悄透传。扩展能力应在后续有版本依据时增加，而非开放任意 provider JSON。
+
+### 12.3 Schema 之外的语义规则目录
+
+这些是检查规格，不是“JSON Schema 已执行”的声称：
+
+| 编号 | 必须检查的关系 | 失败/未知的处理 |
+| --- | --- | --- |
+| S01 | Plan/scene/subject/action/shot/delta 引用、修订与来源可解析；ID 在对应作用域唯一 | 缺引用 unknown/unresolved；硬性错绑 fail |
+| S02 | [start,end) 满足 start < end，所有区间/Guide 在 [0,N)；Shot 完整连续分割 [0,N) | 超界、重叠或空隙 fail |
+| S03 | Join 与实际相邻 Shot 对应，at_frame 等于双方边界 | 错位或遗漏 fail；不自动插切点 |
+| S04 | scope/phase/coverage 使用同一 action_ref；required phase 顺序、前置和覆盖满足源约束 | 少必要阶段、悬空引用、重启 once Action 均 fail |
+| S05 | 每 action 至多一个 completion；delivery=complete 必须一个，partial 无标记可合法 | 不为填绿自动添加完成；承诺完整却未完成则 fail |
+| S06 | completion_delta_ref 指向同一 Action 的完成变化，时点与完成条件一致 | 不能引用任意无关 delta 冒充完成；外部完成条件缺失时 unknown |
+| S07 | already_active 的进入 checkpoint 与源版本、阶段偏移相容 | 缺证据 unknown；不默认为重新 prepare |
+| S08 | baseline + deltas 按时序应用一次，before 与当前状态一致；边界采用 state_at(b) | 冲突 fail；Join delta_refs 只引用，不重复 apply |
+| S09 | explicit_delta 的省略/跳时确有源授权；continuity_keys 可按状态链推导 | 枚举不能单独允许瞬移；轴线图像仍需媒体核验 |
+| S10 | 同一 cue 的展示分段完整覆盖其 span；speaker/text 不因切点复制；说话 Action 如存在则复用 | 结构缺口/已知文本冲突 fail；实际声音和口型 unknown |
+| S11 | Reference 的 Picture 槽唯一且解析到 image 资产与内容指纹；Guide 同时作文本 ref 时一致 | 无绑定、错槽、内容漂移阻止编译；纯 Guide 不等于编码器 Reference |
+| S12 | Guide 的素材语义、target、时点、实际 adapter 能力/evidence 均有效，qa=pass | pending 保留候选；冲突/能力未知阻止提交，不静默丢 Guide |
+| S13 | Plan revision + projection_revision + 输入指纹匹配 Review；未知媒体不写 pass | 时点/素材变化标 applicability=stale，检查结果与版本适用性分开 |
+
+S05 中 partial 的含义是本 unit 不承诺完整动作交付；它可以覆盖动作结束但漏掉开始，因此 partial 有完成标记也不自动矛盾。already_active 的源 checkpoint 和阶段偏移须由 S07 核对，不能只凭字段存在判断合法。动作跨 unit 的唯一完成由 Plan 级 resolver 检查，本任务仍不实现跨视频续接。
+
+**检查状态修正**：按 WAR-35 第 17 节新增候选，result（pass/fail/unknown/not-checked）与 applicability（valid/stale）应分开；前文将 stale 并列在结果中仅为首轮简写。WAR-35 Review 的具体对象结构仍未确认，本 Schema 不先行创建第二套 Review。
+
+### 12.4 草案迁移、测试与剩余门槛
+
+本轮只迁移可编辑合成示例：增加 projection envelope、action_scopes 和 completion_delta_ref，把旧 preserve_keys 改名 continuity_keys，并补走近完成的示意 StateDelta。真实/历史冻结 GPU 输入未修改。不存在已部署生产数据迁移；旧格式应通过显式适配生成候选，未知信息保留 unresolved，禁止静默丢弃。回退可恢复前一 commit 的示例与设计稿；不影响服务或用户资产。
+
+测试使用已存在的 Python jsonschema 4.26.0。Schema 自身通过 Draft 2020-12 meta-validation，两份示例的 projection 格式通过；13 个格式反例均被拒绝（缺版本、未知字段、无效帧率/帧数、非整数帧、错误 Join、显式变化无引用、完成标记缺源、进行中动作缺 checkpoint、无镜头、Guide strength 透传、Picture 0、非法内容 hash）。省略可选数组、pending Guide 的审阅形状及 partial 无 completion 的单项规则均通过。
+
+独立一次性跨字段断言检查了两个合成 fixture 的镜头分割、覆盖、完成 delta、状态链、Join 时点和 cue 分段；8 个**格式合法但语义有错**的变体均被拒绝（重复 completion、complete 缺 completion、完成时点与 delta 不同、Shot 缺口、Join 错时、phase 悬空、cue 重复、cue 分段缺口）。此断言只是本轮设计验证，不证明完整 S01–S13 已实现；外部源 resolver、checkpoint 几何/阶段偏移、真实 Guide 能力/素材及媒体未检查，也未交付生产运行时门禁或新增测试套件。
+
+五项语义已确认，不再列为待决定。后续交付门槛是 WAR-35 正式公共 refs/StateDelta/Review 字段的交叉收口、WAR-33 Guide/复用能力依据，以及本格式草案联审；未完成前不声称正式跨层 Schema 冻结或将 WAR-52 标 Done。接入应用和真实生成分别由后续实施/实验授权决定。
