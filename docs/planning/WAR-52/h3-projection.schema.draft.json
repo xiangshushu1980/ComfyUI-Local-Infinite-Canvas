@@ -1,11 +1,11 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "WAR-52 timed H3 projection draft 0.1",
+  "title": "WAR-52 timed H3 projection design baseline 0.2",
   "description": "Design artifact only. Shape validation does not imply semantic validity, approval, adapter support, or authorization to execute.",
   "type": "object",
   "properties": {
     "contract_version": {
-      "const": "draft-0.1"
+      "const": "design-0.2"
     },
     "projection_revision": {
       "type": "string",
@@ -151,6 +151,10 @@
         "type": "string",
         "minLength": 1
       }
+    },
+    "plan_content_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
     }
   },
   "required": [
@@ -172,7 +176,8 @@
     "shot_responsibilities",
     "join_constraints",
     "dialogue_cues",
-    "unresolved"
+    "unresolved",
+    "plan_content_sha256"
   ],
   "additionalProperties": false,
   "$defs": {

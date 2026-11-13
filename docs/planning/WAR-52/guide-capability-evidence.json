@@ -1,0 +1,79 @@
+{
+  "scope": "Static source evidence only; no service object_info, execution or GPU verification.",
+  "comfyui_head": "2c75dc1b379a59e0880619d029607af5169a62ef",
+  "source_path": "/home/sean/projects/ComfyUI/comfy_extras/nodes_minimax_h3.py",
+  "source_sha256": "75514fe9093c589da231938287ef0ceeb2dcf31179143a1de9a269fb2f7bb626",
+  "source_worktree_clean": true,
+  "nodes": [
+    {
+      "node": "MiniMaxH3AddGuide",
+      "line": 177,
+      "execute_inputs": [
+        "positive",
+        "latent",
+        "frame_idx",
+        "vae",
+        "audio_vae",
+        "image",
+        "audio"
+      ]
+    },
+    {
+      "node": "MiniMaxH3ReferenceToVideo",
+      "line": 254,
+      "execute_inputs": [
+        "clip",
+        "prompt",
+        "width",
+        "height",
+        "length",
+        "ref_image_size",
+        "vae",
+        "audio_vae",
+        "ref_images",
+        "ref_videos",
+        "ref_video_audios",
+        "ref_audios"
+      ]
+    },
+    {
+      "node": "MiniMaxH3FunControlNetApply",
+      "line": 590,
+      "execute_inputs": [
+        "model",
+        "model_patch",
+        "vae",
+        "strength",
+        "start_percent",
+        "end_percent",
+        "control_video",
+        "mask",
+        "source_video"
+      ]
+    }
+  ],
+  "add_guide": {
+    "image": "IMAGE input; video is a frame batch in image",
+    "audio": "AUDIO input",
+    "video_vae_required_when_image": true,
+    "audio_vae_required_when_audio": true,
+    "negative_frame_idx_in_node": true,
+    "public_contract_uses_nonnegative_frames": true,
+    "multi_frame_crop": "<5 uses first image; otherwise crop down to 17k+5; adapter must report effective length",
+    "audio_overflow": "cropped to remaining latent audio duration; adapter must report truncation",
+    "conditioning_key": "minimax_keyframes",
+    "chainable_static": true,
+    "strength_weight_schedule_inputs": false,
+    "prompt_reference_visibility": "AddGuide does not populate ReferenceToVideo ref_images"
+  },
+  "gateway_configs_checked": [
+    "comfyui-gateway/workflows/registry.json",
+    "comfyui-gateway/workflows/h3-ref2va-drama.json",
+    "comfyui-gateway/workflows/h3-ref2va-drama-vdn.json"
+  ],
+  "gateway_config_addguide_binding_found": false,
+  "notes": [
+    "FunControlNetApply strength/start_percent/end_percent are a different node; no inference that all H3 control methods lack these features.",
+    "Native source support is not proof of current loaded service schema or Canvas/Gateway execution capability."
+  ]
+}

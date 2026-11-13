@@ -9,7 +9,44 @@
     "props": [
       "CUP"
     ],
-    "actions": [],
+    "actions": [
+      {
+        "action_ref": "A-SAY-D1",
+        "actor_ref": "A",
+        "once": true,
+        "required_phases": [
+          "utterance"
+        ],
+        "completion_condition": {
+          "state_key": "D1.completed",
+          "equals": true
+        }
+      },
+      {
+        "action_ref": "A-SAY-D2",
+        "actor_ref": "B",
+        "once": true,
+        "required_phases": [
+          "utterance"
+        ],
+        "completion_condition": {
+          "state_key": "D2.completed",
+          "equals": true
+        }
+      },
+      {
+        "action_ref": "A-SAY-D3",
+        "actor_ref": "A",
+        "once": true,
+        "required_phases": [
+          "utterance"
+        ],
+        "completion_condition": {
+          "state_key": "D3.completed",
+          "equals": true
+        }
+      }
+    ],
     "shot_refs": [
       "S1",
       "S2",
@@ -24,12 +61,49 @@
       "cup.holder": "A",
       "cup.hand": "right",
       "A.position": "west-chair",
-      "B.position": "east-chair"
+      "B.position": "east-chair",
+      "D1.completed": false,
+      "D2.completed": false,
+      "D3.completed": false
     },
-    "state_deltas": []
+    "state_deltas": [
+      {
+        "delta_ref": "DELTA-D1",
+        "action_ref": "A-SAY-D1",
+        "at_frame": 63,
+        "changes": {
+          "D1.completed": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "delta_ref": "DELTA-D2",
+        "action_ref": "A-SAY-D2",
+        "at_frame": 117,
+        "changes": {
+          "D2.completed": {
+            "before": false,
+            "after": true
+          }
+        }
+      },
+      {
+        "delta_ref": "DELTA-D3",
+        "action_ref": "A-SAY-D3",
+        "at_frame": 169,
+        "changes": {
+          "D3.completed": {
+            "before": false,
+            "after": true
+          }
+        }
+      }
+    ]
   },
   "projection": {
-    "contract_version": "draft-0.1",
+    "contract_version": "design-0.2",
     "plan_ref": "PLAN-DIALOGUE",
     "plan_revision": "illustrative-r1",
     "scene_ref": "SCENE-DIALOGUE",
@@ -60,7 +134,38 @@
         "constraint_ref": "C-HAND"
       }
     ],
-    "action_phases": [],
+    "action_phases": [
+      {
+        "action_ref": "A-SAY-D1",
+        "phase_key": "utterance",
+        "span": {
+          "start": 12,
+          "end": 64
+        },
+        "completion_at": 63,
+        "completion_delta_ref": "DELTA-D1"
+      },
+      {
+        "action_ref": "A-SAY-D2",
+        "phase_key": "utterance",
+        "span": {
+          "start": 68,
+          "end": 118
+        },
+        "completion_at": 117,
+        "completion_delta_ref": "DELTA-D2"
+      },
+      {
+        "action_ref": "A-SAY-D3",
+        "phase_key": "utterance",
+        "span": {
+          "start": 132,
+          "end": 170
+        },
+        "completion_at": 169,
+        "completion_delta_ref": "DELTA-D3"
+      }
+    ],
     "shot_responsibilities": [
       {
         "shot_ref": "S1",
@@ -73,7 +178,16 @@
           "framing": "A medium close-up",
           "axis_side": "south"
         },
-        "covers": [],
+        "covers": [
+          {
+            "action_ref": "A-SAY-D1",
+            "phase_key": "utterance",
+            "span": {
+              "start": 12,
+              "end": 56
+            }
+          }
+        ],
         "entry": {
           "state_delta_refs": [],
           "required_keys": [
@@ -107,7 +221,24 @@
           "framing": "B reverse medium close-up",
           "axis_side": "south"
         },
-        "covers": [],
+        "covers": [
+          {
+            "action_ref": "A-SAY-D1",
+            "phase_key": "utterance",
+            "span": {
+              "start": 56,
+              "end": 64
+            }
+          },
+          {
+            "action_ref": "A-SAY-D2",
+            "phase_key": "utterance",
+            "span": {
+              "start": 68,
+              "end": 118
+            }
+          }
+        ],
         "entry": {
           "state_delta_refs": [],
           "required_keys": [
@@ -118,7 +249,10 @@
           ]
         },
         "exit": {
-          "state_delta_refs": [],
+          "state_delta_refs": [
+            "DELTA-D1",
+            "DELTA-D2"
+          ],
           "required_keys": [
             "cup.holder",
             "cup.hand",
@@ -141,9 +275,21 @@
           "framing": "A medium close-up",
           "axis_side": "south"
         },
-        "covers": [],
+        "covers": [
+          {
+            "action_ref": "A-SAY-D3",
+            "phase_key": "utterance",
+            "span": {
+              "start": 132,
+              "end": 170
+            }
+          }
+        ],
         "entry": {
-          "state_delta_refs": [],
+          "state_delta_refs": [
+            "DELTA-D1",
+            "DELTA-D2"
+          ],
           "required_keys": [
             "cup.holder",
             "cup.hand",
@@ -152,7 +298,11 @@
           ]
         },
         "exit": {
-          "state_delta_refs": [],
+          "state_delta_refs": [
+            "DELTA-D1",
+            "DELTA-D2",
+            "DELTA-D3"
+          ],
           "required_keys": [
             "cup.holder",
             "cup.hand",
@@ -227,7 +377,8 @@
             },
             "visibility": "offscreen"
           }
-        ]
+        ],
+        "action_ref": "A-SAY-D1"
       },
       {
         "cue_ref": "D2",
@@ -245,7 +396,8 @@
             },
             "visibility": "onscreen"
           }
-        ]
+        ],
+        "action_ref": "A-SAY-D2"
       },
       {
         "cue_ref": "D3",
@@ -263,19 +415,43 @@
             },
             "visibility": "onscreen"
           }
-        ]
+        ],
+        "action_ref": "A-SAY-D3"
       }
     ],
     "guide_points": [],
     "reference_bindings": [],
-    "projection_revision": "candidate-r3",
-    "action_scopes": [],
-    "unresolved": [
-      "Dialogue cue to shared speaking Action mapping remains subject to WAR-35 field review; no production Plan binding."
-    ]
+    "projection_revision": "candidate-r4",
+    "action_scopes": [
+      {
+        "action_ref": "A-SAY-D1",
+        "delivery": "complete",
+        "entry": "starts_here"
+      },
+      {
+        "action_ref": "A-SAY-D2",
+        "delivery": "complete",
+        "entry": "starts_here"
+      },
+      {
+        "action_ref": "A-SAY-D3",
+        "delivery": "complete",
+        "entry": "starts_here"
+      }
+    ],
+    "unresolved": [],
+    "plan_content_sha256": "cfe9b876a86c35ab0ef4116d3712d7ba1763d45e8246f9f080fd530d6928e7a2"
   },
   "media_review": {
     "result": "unknown",
     "reason": "Design-only. No generated or reviewed media for this revision."
+  },
+  "review_target": {
+    "plan_ref": "PLAN-DIALOGUE",
+    "plan_revision": "illustrative-r1",
+    "plan_content_sha256": "cfe9b876a86c35ab0ef4116d3712d7ba1763d45e8246f9f080fd530d6928e7a2",
+    "unit_ref": "UNIT-DIALOGUE",
+    "projection_revision": "candidate-r4",
+    "projection_content_sha256": "1c3e1c508eac7f3a0deddb06e75d6f04789aaae84d483dbff9f5018046cb3ee0"
   }
 }

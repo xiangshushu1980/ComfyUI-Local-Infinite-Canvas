@@ -1,6 +1,6 @@
 # WAR-52｜单次 H3 内部连续性契约候选 v0
 
-2026-11-13。状态：**第三轮：五项语义已由用户确认，已产出 draft-0.1 JSON Schema；字段格式仍为设计草案，未接入应用或运行模型。** 第 12 节是当前契约入口，之前轮次的待审阅措辞按第 12 节确认范围解释。
+2026-11-13。状态：**第四轮：WAR-52 设计交付与交叉收口完成，设计基线 design-0.2；未接入应用或运行模型。** 第 13 节是当前收口入口；第 12 节的五项语义已由用户确认，前轮草案与等待措辞均按第 13 节交付边界解释。完整 DirectorPlan 跨层 Schema 仍由 WAR-35 交付。
 
 本轮按 WAR-52 开始执行指令开展设计。唯一详细正文为本文件；Linear 保存状态和入口。工作基于 Canvas Lab `0523ef0e924530b5a27b1b85653a85faeaf36893`，但 WAR-35 方案和若干实验依据是当前未提交文件，不能视作该 commit 已包含。未修改应用、原始 Skill、Gateway、工作流或其他任务文件。
 
@@ -296,3 +296,59 @@ S05 中 partial 的含义是本 unit 不承诺完整动作交付；它可以覆�
 独立一次性跨字段断言检查了两个合成 fixture 的镜头分割、覆盖、完成 delta、状态链、Join 时点和 cue 分段；8 个**格式合法但语义有错**的变体均被拒绝（重复 completion、complete 缺 completion、完成时点与 delta 不同、Shot 缺口、Join 错时、phase 悬空、cue 重复、cue 分段缺口）。此断言只是本轮设计验证，不证明完整 S01–S13 已实现；外部源 resolver、checkpoint 几何/阶段偏移、真实 Guide 能力/素材及媒体未检查，也未交付生产运行时门禁或新增测试套件。
 
 五项语义已确认，不再列为待决定。后续交付门槛是 WAR-35 正式公共 refs/StateDelta/Review 字段的交叉收口、WAR-33 Guide/复用能力依据，以及本格式草案联审；未完成前不声称正式跨层 Schema 冻结或将 WAR-52 标 Done。接入应用和真实生成分别由后续实施/实验授权决定。
+
+## 13. 第四轮｜交叉收口与 design-0.2 设计基线
+
+用户要求“进行交叉收口”。本轮对齐已确认语义、核对依赖证据并完成 WAR-52 的**设计稿验收**。前轮把 WAR-35 完整 Schema 冻结当成本任务 Done 前置，超出了 WAR-52 原验收“Schema/TS 设计稿”的要求，现修正：本任务设计产物可交付给 WAR-35，不能反过来等待整个 WAR-35 完成；不得形成循环等待。此收口不批准 WAR-35 其他未决设计、不宣布生产契约已接入。
+
+### 13.1 对齐输入与权威分工
+
+本轮核对 WAR-35 Linear 最新正文、无新增评论、本地第 14–17 节；输入 SHA-256 `756b16141da89bbfde8e9c030bf519a0cc8e5a29c5702b19dd970b04c8c6f114`。其 Review 三项原则已获用户确认；Beat/Action 两项、Blocking 三项及其余 Shot 取舍仍为该任务待决。本轮不改 WAR-35 本地文件。
+
+| 交叉对象 | 收口规则 | 后续归属 |
+| --- | --- | --- |
+| 公共引用 | 复用 plan_ref / plan_revision / scene_ref / action_ref / shot_ref，新增 plan_content_sha256 绑定实际源内容 | WAR-35 确定完整 Plan 序列化；WAR-52 不指定其所有字段 |
+| Action 与对白 | 同一说话行为可用源 action_ref，由 cue 引用；跨镜的 cue/phase 是覆盖，不是第二次行为 | 两份合成示例已提供完整源 registry、scope、phase、delta 和覆盖走查 |
+| StateDelta | completion_delta_ref 指向同一 Action 的变化；完成时点满足源 completion_condition；边界引用该状态链 | 投影只定位时帧，不定义独立 completed 真值 |
+| Shot / Blocking | 主要职责可有次要任务；空间假设和人物知情不从机位推断；精确帧只限制定时投影 | WAR-35 的导演规划仍允许相对时长/观察条件 |
+| Review | target 包含 Plan/投影版本及各自内容指纹；method / result / applicability / decision 分开 | 复用 WAR-35 横切 Review，不在投影里建立批准树 |
+| Guide | 可空；本机源码能力和当前 Gateway 接线分开，未知或无效条件不静默忽略 | WAR-33 的扩展复用研究、WAR-38 等实施任务继续维护各自范围 |
+
+WAR-35 是否设置 Event Registry、是否允许无 Action 的 Beat，不影响本投影引用同一源 Action/StateDelta 的接口；这些问题保持其原状态，本任务不替它们作决定。
+
+### 13.2 Source / Review 绑定与示例补齐
+
+[Schema 设计基线](h3-projection.schema.draft.json) 版本改为 `design-0.2`，增加必需的 `plan_content_sha256`；不是在旧 draft-0.1 名下静默改变格式。文件保留 `.draft.json` 命名，表明它是设计任务的机器可读交付，完整跨层格式冻结另归 WAR-35。
+
+两个示例的 `review_target` 是**派生的目标引用示意**，没有新增批准决定或虚构检查结果。最小目标元组为：plan_ref、plan_revision、plan_content_sha256、unit_ref、projection_revision、projection_content_sha256。投影指纹放在投影外，避免自包含哈希；source_fixture 与 projection 内容变化会使旧 target 失效。真实 Review 字段命名由 WAR-35 统一，示例不成为第二套 Review 数据库。
+
+本轮合成 JSON 的哈希约定是 UTF-8、按键排序、紧凑 JSON（ensure_ascii=False、无 NaN）；这是本轮 fixture 的可复算规则，不宣称已定义生产通用 canonical JSON。生产可对冻结源文件原始字节计算 SHA-256，或采用明确版本的规范化规则；不得混用不同规则后将同一内容误判为相同指纹。
+
+狐狸 registry 明示 approach/jump 的完成条件。对话 registry 新增合成的三个说话 Action，cue 引用相同 ID；第一句的 utterance phase 与 cue 一起跨 frame 56，completion delta 只出现一次。这样可在同一套共享引用/状态机制下验证对白，不再以“对话无 Action 绑定”悬置设计示例。所有素材仍是合成设计输入，不是真实批准 Plan，也不是 GPU 实验原文。
+
+### 13.3 WAR-33 能力核对与边界
+
+本轮只读核对本机 ComfyUI 源码，HEAD `2c75dc1b379a59e0880619d029607af5169a62ef`；目标文件无工作树修改。完整定位、源码 SHA、节点参数与限制保存在 [guide-capability-evidence.json](guide-capability-evidence.json)。这不是实时 `/object_info`、服务健康或生成验证。
+
+- `MiniMaxH3AddGuide` 使用 image（静图或帧批）/audio/非负或负 frame_idx，将 keyframe 追加到 CONDITIONING；图像需要 VAE、音频需要 audio VAE。视频 Guide 的有效长度会被节点裁剪，音频也可能裁到剩余时长，未来适配器必须披露实际裁剪，不能保持原计划时长却不提示。
+- 原生 AddGuide 无 strength/weight/start_percent/end_percent。相同源码中的 `MiniMaxH3FunControlNetApply` **有** strength/start_percent/end_percent，它是另一个模型补丁节点；不能把它的参数混入 AddGuide，也不能泛化为“H3 完全不支持时间范围控制”。
+- `MiniMaxH3ReferenceToVideo` 的 ref_images 路径构造文本 Reference 项；AddGuide 不填该路径。Picture manifest 与 Guide 双输入职责分离保持成立。
+- 当前仓库 registry 和两份 h3-ref2va-drama JSON 中未发现 AddGuide/guide_points/frame_idx 接线。只说明这些已检查配置未接入，不声称整个 Gateway 不可能支持，也不改动工作流。
+
+WAR-33 的此部分静态能力信息已足够支持本任务设计。其许可证/复用选择、Hybrid 跨 seed、人工审片等未完成研究仍归 WAR-33，不作为本任务设计稿的无限期阻塞。模型强约束效果仍需 WAR-53 等真实实验验证。
+
+### 13.4 验收与任务关系收口
+
+| WAR-52 原验收 | 设计交付 |
+| --- | --- |
+| JSON + Schema/TS 设计稿、不变量/错误样例 | design-0.2 Schema；第 3–6、12–13 节；S01–S13 规格 |
+| 8s 狐狸、A→B→A，两例与至少五类 failure/repair | 两个示例 envelope；第 8 节九类 failure/repair；原 GPU 证据未覆盖 |
+| WAR-35 兼容、非重复实现、迁移/回滚与审核建议 | 第 9、11–13 节；语义、版本、来源与 Review 目标映射 |
+
+本轮完成后将 WAR-52 标为 Done（**设计交付完成**）。将 WAR-33→WAR-52、WAR-52→WAR-35/WAR-54 的已满足设计等待关系改为相关关系，保留资料导航；不改变 WAR-33/35/54 自身状态及它们其他依赖。WAR-35 可以直接采用本设计结果继续公共 Schema；WAR-54 可以使用不变量与 failure/repair 继续 QC 设计。后续若出现具体新阻塞，应在对应任务注明解除条件，不以全任务相互等待替代接口边界。
+
+未交付边界：完整 DirectorPlan Schema、应用/Canvas/Gateway 接入、生产 resolver/校验器、真实 Guide 服务能力和效果、视频生成/全片听审。它们不能从 WAR-52 Done 推断为完成。
+
+本轮验证：Draft 2020-12 meta-schema 和两个示例通过；独立断言核对 source/projection/Review 目标指纹、共享 Action/cue 身份、完成条件与 StateDelta、镜头分割/跨切点覆盖及状态链。8 个交叉绑定/完成条件错误变体被拒绝（同 revision 换源、换投影未更新 target、旧 target revision、缺 hash、错 hash、cue 绑错说话 Action、完成条件冲突、完成引用其他 Action 的 delta）；未知 Guide strength 也被 Schema 拒绝。源码证据文件指纹与本机文件匹配，`git diff --check` 通过。仍为一次性离线断言，没有交付生产校验器，未运行 H3。
+
+最终提交绑定此设计基线，前轮版本可由 Git 恢复。本任务未推送远端，未修改用户资产或共享服务。

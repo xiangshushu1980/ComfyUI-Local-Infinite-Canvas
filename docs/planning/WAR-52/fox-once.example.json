@@ -13,7 +13,11 @@
         "once": true,
         "required_phases": [
           "approach"
-        ]
+        ],
+        "completion_condition": {
+          "state_key": "approach.completed",
+          "equals": true
+        }
       },
       {
         "action_ref": "A-JUMP",
@@ -27,7 +31,11 @@
         ],
         "requires_completed": [
           "A-APPROACH"
-        ]
+        ],
+        "completion_condition": {
+          "state_key": "jump.completed",
+          "equals": true
+        }
       }
     ],
     "shot_refs": [
@@ -87,7 +95,7 @@
     ]
   },
   "projection": {
-    "contract_version": "draft-0.1",
+    "contract_version": "design-0.2",
     "plan_ref": "PLAN-FOX",
     "plan_revision": "illustrative-r1",
     "scene_ref": "SCENE-FOX",
@@ -423,7 +431,7 @@
     "dialogue_cues": [],
     "guide_points": [],
     "reference_bindings": [],
-    "projection_revision": "candidate-r3",
+    "projection_revision": "candidate-r4",
     "action_scopes": [
       {
         "action_ref": "A-APPROACH",
@@ -436,10 +444,19 @@
         "entry": "starts_here"
       }
     ],
-    "unresolved": []
+    "unresolved": [],
+    "plan_content_sha256": "251e1894b70cb94dc859d8abc495bba2c2547358c7d3e17ae17184bffe22f0e2"
   },
   "media_review": {
     "result": "unknown",
     "reason": "Design-only. No generated or reviewed media for this revision."
+  },
+  "review_target": {
+    "plan_ref": "PLAN-FOX",
+    "plan_revision": "illustrative-r1",
+    "plan_content_sha256": "251e1894b70cb94dc859d8abc495bba2c2547358c7d3e17ae17184bffe22f0e2",
+    "unit_ref": "UNIT-FOX",
+    "projection_revision": "candidate-r4",
+    "projection_content_sha256": "1aac646eb09b6a4db37ad71efca890b80387c09ff96111c81443cf3160973e4a"
   }
 }
