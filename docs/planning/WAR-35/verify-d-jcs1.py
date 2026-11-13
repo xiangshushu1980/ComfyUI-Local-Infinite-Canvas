@@ -74,7 +74,29 @@ def payload(pkg,spec):
         obj=resolve(plan,ref)
         if ref.startswith("source:"): verify_source(pkg,obj)
         val,extra=normalized(obj); objects[ref]=val; pending.update(extra-set(objects))
-    return {"profile":RULE,"contractVersion":pkg["contractVersion"],"planIdentity":{"planId":plan["planId"],"sceneId":plan["sceneId"]},"checkSpec":{"text":spec["checkSpec"],"version":spec["checkSpecVersion"],"method":spec["method"]},"scope":scope,"resolvedObjects":[{"ref":k,"value":objects[k]} for k in sorted(objects)],"collections":sorted(cols,key=lambda x:x["path"])}
+    result={"profile":RULE,"contractVersion":pkg["contractVersion"],"planIdentity":{"planId":plan["planId"],"sceneId":plan["sceneId"]},"checkSpec":{"text":spec["checkSpec"],"version":spec["checkSpecVersion"],"method":spec["method"]},"scope":scope,"resolvedObjects":[{"ref":k,"value":objects[k]} for k in sorted(objects)],"collections":sorted(cols,key=lambda x:x["path"])}
+    if spec["method"]=="media":
+        target=spec.get("executionTarget")
+        evidence=spec.get("evidenceBindings")
+        required={"unitRef","projectionRevision","projectionContentSha256","projectionHashRule"}
+        if not isinstance(target,dict) or set(target)!=required:
+            raise Unresolved("missing/invalid immutable executionTarget")
+        if not isinstance(evidence,list) or not evidence:
+            raise Unresolved("missing media evidence")
+        if any(not isinstance(x,dict) or not {"evidenceRef","contentSha256"}.issubset(x) or
+               set(x)-{"evidenceRef","contentSha256","conditionSha256"} for x in evidence):
+            raise Unresolved("invalid media evidence binding")
+        if any(not isinstance(x["evidenceRef"],str) or not x["evidenceRef"] or
+               not isinstance(x["contentSha256"],str) or len(x["contentSha256"])!=64 for x in evidence):
+            raise Unresolved("invalid media SHA")
+        refs=[x["evidenceRef"] for x in evidence]
+        if len(set(refs))!=len(refs):
+            raise Unresolved("duplicate media evidenceRef")
+        # Research calculator binds declared digests; actual media bytes MUST
+        # be verified by resolver before recording a real media pass.
+        result["mediaBindings"]={"executionTarget":target,
+                                 "evidenceBindings":sorted(evidence,key=lambda x:x["evidenceRef"])}
+    return result
 def digest(pkg,spec):
     try: return hashlib.sha256(rfc8785.dumps(payload(pkg,spec))).hexdigest()
     except Unresolved: return None

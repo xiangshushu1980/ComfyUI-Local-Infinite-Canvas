@@ -1,0 +1,31 @@
+{
+  "task": "WAR-35",
+  "scope": "Blocking 2 Media Check design-only synthetic regression",
+  "total": 20,
+  "passed": 20,
+  "cases": [
+    "M-P01-media-pass-complete-binding",
+    "M-P02-media-fail-complete-binding",
+    "M-N01-pass-missing-executionTarget",
+    "M-N02-pass-missing-evidenceBindings",
+    "M-N03-pass-empty-evidenceBindings",
+    "M-N04-fail-missing-executionTarget",
+    "M-N05-fail-missing-evidenceBindings",
+    "M-N06-binding-missing-media-digest",
+    "M-N07-binding-duplicate-exact",
+    "M-N08-pass-missing-dependency-digest",
+    "M-P03-nonmedia-pass-no-media-bindings",
+    "M-P04-unknown-media-no-bindings",
+    "M-P05-media-dependency-resolves",
+    "M-P06-evidence-order-independent",
+    "M-N09-media-content-changed-cannot-inherit",
+    "M-N10-projection-content-changed-cannot-inherit",
+    "M-N11-generation-condition-changed-cannot-inherit",
+    "M-N12-missing-execution-target-no-digest",
+    "M-N13-no-media-evidence-no-digest",
+    "M-N14-duplicate-ref-conflict-no-digest"
+  ],
+  "mediaBytesVerified": false,
+  "conditionSHAProfileVerified": false,
+  "firstSyntheticDigest": "7cf08c988729341adc0c78f9ed83681cc92efb4bfe3e668beba80cf80ead2b20"
+}

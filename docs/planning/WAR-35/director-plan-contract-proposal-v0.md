@@ -898,3 +898,91 @@ python3 docs/planning/WAR-35/verify-d-jcs1-schema.py
 **重要限度**：本轮验证是同一 Eric 机器的研究脚本测试；尚未证明独立实现者跨语言复算 D-JCS-1、外部来源 resolver、媒体 executionTarget/evidenceBindings、Decision 单调性或 raw I-JSON 前置验收。上述三类后续公共 Blocking 应依序独立收口。WAR-52 design-0.2、Skill、生产代码和 GPU 均未修改。
 
 **Git 记录**：本轮只暂存并提交 `docs/planning/WAR-35/` 文件；当前仓库其他未提交改动保留原状。正式 WAR-35 v0 冻结时应再次切换 `contractVersion` 并重算最终 Golden。
+
+## 24. Blocking 2｜Media Check 执行目标与证据不可变绑定（2026-11-14）
+
+### 24.1 设计确认与最小范围
+
+基于 2026-11-14 独立冻结复核 Blocking 2，继续 WAR-35 公共 Schema v0 冻结前修正。本轮不改造共享 Action/StateDelta、Plan 核心、WAR-52 design-0.2、Skill 或生产代码，也不运行真实媒体/GPU。
+
+**规范结论**：对 `method=media` 且 `result=pass|fail` 的 Check，`executionTarget` 和非空 `evidenceBindings` 均必须存在。Check 必须仍具有已完整解析 D-JCS-1 的 `dependencyFingerprintSha256`；当依赖、执行目标或媒体证据未解析完整时，只允许 `unknown|not_checked`，不得以旧媒体 pass 继承充数。对 `method=text|geometry_proxy|human` 不强行引入媒体/H3 执行依赖。
+
+### 24.2 Schema 精确修改
+
+仅调整 `director-plan.schema.review-v0.json` 的 `$defs.check`：
+
+1. 在现有 `allOf` 中增加条件：`if method=media AND result in [pass,fail]`，则 `required=[executionTarget,evidenceBindings]`。不替换 D-JCS-1 的现有 `pass/fail → dependencyFingerprintSha256` 门槛。
+2. `evidenceBindings.minItems=1`，`uniqueItems=true`；每项沿用 `evidenceRef + contentSha256` 必需、`conditionSha256` 可选，不增设注册表。
+3. `executionTarget` 沿用既有的四个必填字段 `unitRef`、`projectionRevision`、`projectionContentSha256`、`projectionHashRule`。该目标是不可变的执行投影标识，不能仅以公共 Plan SHA 代替。
+4. 文档 description 明确：evidenceBindings 是**实际接受检查的媒体内容 digest**，不能仅给文本报告的 digest；字节完整性、来源可信度、媒体内容与 executionTarget 的对应性由语义 resolver 验证。Schema 只负责形状。
+
+`evidenceRefs` 若作为其他佐证索引，不能替代 `evidenceBindings` 的实际被检媒体绑定；至少一条媒体 digest 与具体执行目标的对应关系必须得到验证。若媒体结果实际依赖生成条件，`conditionSha256` 必须绑定真实条件的规范内容 SHA；是否具备该依赖须由媒体 Check 的 profile/语义验证判定，而非默认为任意省略都安全。
+
+### 24.3 D-JCS-1 对媒体的唯一 payload 扩展
+
+**本节为 §23.1 canonical payload 的 method=media 专项补充，其他 method 的 payload 原样保持。** 只有 `method=media` 时，canonicalDependencyPayload 顶层增加**恰好一个** `mediaBindings`：
+
+```json
+{
+  "mediaBindings": {
+    "executionTarget": {
+      "unitRef": "UNIT-01",
+      "projectionRevision": "PR1",
+      "projectionContentSha256": "<sha256>",
+      "projectionHashRule": "<immutable hash profile>"
+    },
+    "evidenceBindings": [
+      {
+        "evidenceRef": "media:FRAME-01",
+        "contentSha256": "<sha256>",
+        "conditionSha256": "<sha256 when applicable>"
+      }
+    ]
+  }
+}
+```
+
+它与 §23.1 的 `profile/contractVersion/planIdentity/checkSpec/scope/resolvedObjects/collections` 同级组合，随后对**完整 payload**执行 JCS UTF-8 SHA-256；不单独计算另一个媒体指纹。已存在的 `checkSpec.method` 仍为 `media`。
+
+规范化和依赖规则：
+
+- `executionTarget` 是独立的不可变对象，四项值全部参与 hash；WAR-52 投影旧 fixture hash 不冒充已发布的公共投影 profile。
+- `evidenceBindings` 视作无序绑定集合，按 `evidenceRef` 升序排序；**同一 `evidenceRef` 重复（即使 SHA 不同）属于 unresolved/非法**，不得静默覆盖。
+- 每项 `contentSha256` 和存在时的 `conditionSha256` 原样进入 payload。缺少必要媒体 digest 或执行目标 → **不产生完整 D-JCS-1 指纹**。必要条件被声明但无对应可验证条件 hash 时，不可标 media pass/fail。
+- `conditionSha256` 不是新生成条件 schema；它只绑定已用条件的内容 SHA。生成条件是否相关、媒体 bytes 与 SHA 是否匹配、投影是否对应、证据是否有效，仍为**语义验证器职责**。
+- `check.target.revisionId/planContentSha256` 仍不进入 D-JCS payload，允许真正同证据跨 Plan revision 复核；但执行目标与媒体 SHA 一旦变化，新旧 D-JCS 必须不同。不能用旧 `pass` 或 `verified_carry_forward` 冒充新媒体通过。
+- `method=media` 且结果 `unknown|not_checked` 可以不携带媒体 bindings；此时不具备媒体继承资格，不应制造占位指纹。
+
+### 24.4 冻结正反例与复现
+
+本轮合成研究验证文件：
+
+- `verify-media-check.py`：JSON Schema 结构门槛 + D-JCS-1 研究计算器；
+- `media-check-verification.report.json`：20/20 通过，显式 `mediaBytesVerified=false`；
+- `verify-d-jcs1.py`：仅增加 `method=media` 的条件性 `mediaBindings` canonical payload 计算，非 media payload 不变。
+
+覆盖：
+
+| 类别 | 核心正反例 |
+| --- | --- |
+| 结构正例 | media pass/fail 有完整 executionTarget + 非空 evidenceBindings；普通 text pass 不要求媒体绑定 |
+| 结构负例 | media pass/fail 缺目标、缺绑定、空 evidence、缺 evidence SHA、重复绑定、pass 缺 D-JCS 指纹 |
+| unresolved | media unknown 无证据仍可作为未完成 Check；不能当 pass |
+| 指纹正例 | 调换 evidenceBindings 的集合顺序，D-JCS SHA 不变 |
+| 指纹负例 | 同 Plan 下媒体内容 SHA 改变、投影内容 SHA 改变、生成条件 SHA 改变，D-JCS 均改变 |
+| 指纹拒绝 | 缺 executionTarget、缺 evidence、同一 evidenceRef 冲突重复 → 不生成完整指纹 |
+
+回归：`verify-d-jcs1.py` 原 14/14 与 `verify-d-jcs1-schema.py` 原 9/9 再次通过。复测命令：
+
+```bash
+cd /home/sean/projects/canvas-lab
+python3 docs/planning/WAR-35/verify-media-check.py
+python3 docs/planning/WAR-35/verify-d-jcs1-schema.py
+/home/sean/.local/share/canvas-lab-jcs/venv/bin/python docs/planning/WAR-35/verify-d-jcs1.py
+```
+
+**验证边界**：全部使用合成媒体 SHA，没有生成、读取或验证真实媒体字节，也没有证明外部 evidence resolver 的可用性。结构 Schema 通过不等于媒体 pass 获批准，更不等于视频执行授权。公共 Schema v0 尚未冻结；下一项为 Blocking 3 Decision carry-forward / approvedPlan 单调性，随后 raw I-JSON。需正式版本发布时再重算最终 Golden，WAR-52 phase/hash 跨层映射仍独立。
+
+### 24.5 Git 与审计留痕
+
+按用户要求，Blocking 2 与之前 D-JCS-1 分开 Git 提交；仅暂存 WAR-35 本轮 Schema、研究计算器、媒体测试报告、验证脚本及本研究正文。当前 Eric `main` 比远端 `origin/main` 已超前大量既存提交，因此远端同步优先推送专用 WAR-35 分支，**不擅自直接更新 origin/main**。提交后回读 SHA 与 Linear 入口；若推送失败则明确区分本地 commit 和远端状态。

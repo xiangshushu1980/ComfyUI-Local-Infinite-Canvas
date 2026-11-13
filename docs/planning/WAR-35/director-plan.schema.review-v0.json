@@ -1016,11 +1016,16 @@
             "required": [
               "evidenceRef",
               "contentSha256"
-            ]
-          }
+            ],
+            "description": "Actual examined media evidence binding. Evidence object content SHA must be checked against bytes by the resolver; changing content invalidates inheritance."
+          },
+          "minItems": 1,
+          "description": "For media pass/fail, non-empty immutable bindings of actual inspected media content SHA, not merely reports or evidenceRef IDs. Semantically verify each media digest against bytes. conditionSha256 is required by semantic profile when inspection depends on generated conditions.",
+          "uniqueItems": true
         },
         "executionTarget": {
-          "$ref": "#/$defs/executionTarget"
+          "$ref": "#/$defs/executionTarget",
+          "description": "Required for method=media with pass/fail; immutable projection target (unitRef/revision/content SHA/hashRule), even when a Plan fingerprint is unchanged."
         }
       },
       "required": [
@@ -1074,9 +1079,34 @@
               }
             }
           }
+        },
+        {
+          "if": {
+            "properties": {
+              "method": {
+                "const": "media"
+              },
+              "result": {
+                "enum": [
+                  "pass",
+                  "fail"
+                ]
+              }
+            },
+            "required": [
+              "method",
+              "result"
+            ]
+          },
+          "then": {
+            "required": [
+              "executionTarget",
+              "evidenceBindings"
+            ]
+          }
         }
       ],
-      "description": "D-JCS-1: full typed-ref closure; unresolved source/ref/path means no dependencyFingerprintSha256, result unknown/not_checked, and no inheritance. See WAR-35 proposal §23."
+      "description": "D-JCS-1: full typed-ref closure; unresolved source/ref/path gives no digest and cannot inherit. Media pass/fail additionally require an immutable executionTarget and >=1 inspected media evidence binding; media bindings enter dependency hash. See WAR-35 proposal sections 23-24."
     },
     "risk": {
       "type": "object",
