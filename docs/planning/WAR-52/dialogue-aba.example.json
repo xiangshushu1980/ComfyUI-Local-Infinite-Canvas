@@ -1,0 +1,274 @@
+{
+  "design_status": "candidate-not-approved",
+  "contract_version": "proposal-0",
+  "plan_ref": "PLAN-DIALOGUE",
+  "plan_revision": "illustrative-r1",
+  "scene_ref": "SCENE-DIALOGUE",
+  "unit_ref": "UNIT-DIALOGUE",
+  "scene_start": 0,
+  "fps": {
+    "num": 24,
+    "den": 1
+  },
+  "frame_count": 192,
+  "source_fixture": {
+    "note": "Illustrative upstream Plan fragment, not an actual approved Plan or production registry.",
+    "subjects": [
+      "A",
+      "B"
+    ],
+    "props": [
+      "CUP"
+    ],
+    "actions": [],
+    "shot_refs": [
+      "S1",
+      "S2",
+      "S3"
+    ],
+    "constraints": {
+      "C-SCENE": "A west, B east at one table; camera stays south of A-B axis; warm window light fixed.",
+      "C-EYELINE": "A looks toward B to screen-right; B looks toward A to screen-left. World directions do not change.",
+      "C-HAND": "One cup, held by A in the right hand throughout. No transfer event."
+    },
+    "baseline": {
+      "cup.holder": "A",
+      "cup.hand": "right",
+      "A.position": "west-chair",
+      "B.position": "east-chair"
+    },
+    "state_deltas": []
+  },
+  "scene_anchor_refs": [
+    "C-SCENE"
+  ],
+  "character_refs": [
+    "A",
+    "B"
+  ],
+  "prop_refs": [
+    "CUP"
+  ],
+  "continuity_axes": [
+    {
+      "key": "eyeline",
+      "constraint_ref": "C-EYELINE"
+    },
+    {
+      "key": "cup-hand",
+      "constraint_ref": "C-HAND"
+    }
+  ],
+  "action_phases": [],
+  "shot_responsibilities": [
+    {
+      "shot_ref": "S1",
+      "span": {
+        "start": 0,
+        "end": 56
+      },
+      "responsibility": "A asks while holding cup in right hand",
+      "camera": {
+        "framing": "A medium close-up",
+        "axis_side": "south"
+      },
+      "covers": [],
+      "entry": {
+        "state_delta_refs": [],
+        "required_keys": [
+          "cup.holder",
+          "cup.hand",
+          "A.position",
+          "B.position"
+        ]
+      },
+      "exit": {
+        "state_delta_refs": [],
+        "required_keys": [
+          "cup.holder",
+          "cup.hand",
+          "A.position",
+          "B.position"
+        ]
+      },
+      "visible_evidence": [
+        "A speaks; right hand and cup visible"
+      ]
+    },
+    {
+      "shot_ref": "S2",
+      "span": {
+        "start": 56,
+        "end": 125
+      },
+      "responsibility": "B first listens to the end of A speech, then answers",
+      "camera": {
+        "framing": "B reverse medium close-up",
+        "axis_side": "south"
+      },
+      "covers": [],
+      "entry": {
+        "state_delta_refs": [],
+        "required_keys": [
+          "cup.holder",
+          "cup.hand",
+          "A.position",
+          "B.position"
+        ]
+      },
+      "exit": {
+        "state_delta_refs": [],
+        "required_keys": [
+          "cup.holder",
+          "cup.hand",
+          "A.position",
+          "B.position"
+        ]
+      },
+      "visible_evidence": [
+        "B listens with mouth closed until 64; then B speaks from 68; gaze toward A"
+      ]
+    },
+    {
+      "shot_ref": "S3",
+      "span": {
+        "start": 125,
+        "end": 192
+      },
+      "responsibility": "A receives answer and replies without moving cup to other hand",
+      "camera": {
+        "framing": "A medium close-up",
+        "axis_side": "south"
+      },
+      "covers": [],
+      "entry": {
+        "state_delta_refs": [],
+        "required_keys": [
+          "cup.holder",
+          "cup.hand",
+          "A.position",
+          "B.position"
+        ]
+      },
+      "exit": {
+        "state_delta_refs": [],
+        "required_keys": [
+          "cup.holder",
+          "cup.hand",
+          "A.position",
+          "B.position"
+        ]
+      },
+      "visible_evidence": [
+        "A resumes speaking from 132; same cup in same right hand"
+      ]
+    }
+  ],
+  "join_constraints": [
+    {
+      "from_shot_ref": "S1",
+      "to_shot_ref": "S2",
+      "at_frame": 56,
+      "visual_transition": "cut",
+      "state_relation": "inherit",
+      "delta_refs": [],
+      "preserve_keys": [
+        "cup.holder",
+        "cup.hand",
+        "A.position",
+        "B.position"
+      ],
+      "allowed_camera_changes": [
+        "framing",
+        "position-within-south-side"
+      ]
+    },
+    {
+      "from_shot_ref": "S2",
+      "to_shot_ref": "S3",
+      "at_frame": 125,
+      "visual_transition": "cut",
+      "state_relation": "inherit",
+      "delta_refs": [],
+      "preserve_keys": [
+        "cup.holder",
+        "cup.hand",
+        "A.position",
+        "B.position"
+      ],
+      "allowed_camera_changes": [
+        "framing",
+        "position-within-south-side"
+      ]
+    }
+  ],
+  "dialogue_cues": [
+    {
+      "cue_ref": "D1",
+      "speaker_ref": "A",
+      "text": "钥匙还在你那里吗？",
+      "span": {
+        "start": 12,
+        "end": 64
+      },
+      "presentation": [
+        {
+          "span": {
+            "start": 12,
+            "end": 56
+          },
+          "visibility": "onscreen"
+        },
+        {
+          "span": {
+            "start": 56,
+            "end": 64
+          },
+          "visibility": "offscreen"
+        }
+      ]
+    },
+    {
+      "cue_ref": "D2",
+      "speaker_ref": "B",
+      "text": "在，我一直留着。",
+      "span": {
+        "start": 68,
+        "end": 118
+      },
+      "presentation": [
+        {
+          "span": {
+            "start": 68,
+            "end": 118
+          },
+          "visibility": "onscreen"
+        }
+      ]
+    },
+    {
+      "cue_ref": "D3",
+      "speaker_ref": "A",
+      "text": "那就好。",
+      "span": {
+        "start": 132,
+        "end": 170
+      },
+      "presentation": [
+        {
+          "span": {
+            "start": 132,
+            "end": 170
+          },
+          "visibility": "onscreen"
+        }
+      ]
+    }
+  ],
+  "guide_points": [],
+  "reference_bindings": [],
+  "media_review": {
+    "result": "unknown",
+    "reason": "Design-only. No generated or reviewed media for this revision."
+  }
+}

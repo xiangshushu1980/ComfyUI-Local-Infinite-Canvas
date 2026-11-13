@@ -1,0 +1,406 @@
+{
+  "design_status": "candidate-not-approved",
+  "contract_version": "proposal-0",
+  "plan_ref": "PLAN-FOX",
+  "plan_revision": "illustrative-r1",
+  "scene_ref": "SCENE-FOX",
+  "unit_ref": "UNIT-FOX",
+  "scene_start": 0,
+  "fps": {
+    "num": 24,
+    "den": 1
+  },
+  "frame_count": 192,
+  "source_fixture": {
+    "note": "Illustrative upstream Plan fragment, not an actual approved Plan or production registry.",
+    "subjects": [
+      "FOX"
+    ],
+    "props": [],
+    "actions": [
+      {
+        "action_ref": "A-APPROACH",
+        "actor_ref": "FOX",
+        "once": true,
+        "required_phases": [
+          "approach"
+        ]
+      },
+      {
+        "action_ref": "A-JUMP",
+        "actor_ref": "FOX",
+        "once": true,
+        "required_phases": [
+          "prepare",
+          "takeoff",
+          "airborne",
+          "land"
+        ],
+        "requires_completed": [
+          "A-APPROACH"
+        ]
+      }
+    ],
+    "shot_refs": [
+      "S1",
+      "S2",
+      "S3",
+      "S4"
+    ],
+    "constraints": {
+      "C-SCENE": "One creek, near bank west, far bank east; dawn light fixed; camera south of travel axis.",
+      "C-DIRECTION": "World travel west to east. Screen travel left to right for this camera side."
+    },
+    "baseline": {
+      "fox.identity": "same orange fox with left-ear notch",
+      "fox.bank": "near",
+      "jump.completed": false
+    },
+    "state_deltas": [
+      {
+        "delta_ref": "D-AIR",
+        "action_ref": "A-JUMP",
+        "at_frame": 88,
+        "changes": {
+          "fox.bank": {
+            "before": "near",
+            "after": "over-creek"
+          }
+        }
+      },
+      {
+        "delta_ref": "D-LAND",
+        "action_ref": "A-JUMP",
+        "at_frame": 160,
+        "changes": {
+          "fox.bank": {
+            "before": "over-creek",
+            "after": "far"
+          },
+          "jump.completed": {
+            "before": false,
+            "after": true
+          }
+        }
+      }
+    ]
+  },
+  "scene_anchor_refs": [
+    "C-SCENE"
+  ],
+  "character_refs": [
+    "FOX"
+  ],
+  "prop_refs": [],
+  "continuity_axes": [
+    {
+      "key": "travel-direction",
+      "constraint_ref": "C-DIRECTION"
+    }
+  ],
+  "action_phases": [
+    {
+      "action_ref": "A-APPROACH",
+      "phase_key": "approach",
+      "span": {
+        "start": 0,
+        "end": 24
+      },
+      "completion_at": 23
+    },
+    {
+      "action_ref": "A-JUMP",
+      "phase_key": "prepare",
+      "span": {
+        "start": 24,
+        "end": 64
+      }
+    },
+    {
+      "action_ref": "A-JUMP",
+      "phase_key": "takeoff",
+      "span": {
+        "start": 64,
+        "end": 88
+      }
+    },
+    {
+      "action_ref": "A-JUMP",
+      "phase_key": "airborne",
+      "span": {
+        "start": 88,
+        "end": 144
+      }
+    },
+    {
+      "action_ref": "A-JUMP",
+      "phase_key": "land",
+      "span": {
+        "start": 144,
+        "end": 168
+      },
+      "completion_at": 160
+    }
+  ],
+  "shot_responsibilities": [
+    {
+      "shot_ref": "S1",
+      "span": {
+        "start": 0,
+        "end": 44
+      },
+      "responsibility": "Establish approach and begin gathering weight on near-bank rock",
+      "camera": {
+        "framing": "side medium-wide tracking",
+        "axis_side": "south"
+      },
+      "covers": [
+        {
+          "action_ref": "A-APPROACH",
+          "phase_key": "approach",
+          "span": {
+            "start": 0,
+            "end": 24
+          }
+        },
+        {
+          "action_ref": "A-JUMP",
+          "phase_key": "prepare",
+          "span": {
+            "start": 24,
+            "end": 44
+          }
+        }
+      ],
+      "entry": {
+        "state_delta_refs": [],
+        "required_keys": [
+          "fox.identity",
+          "fox.bank",
+          "jump.completed"
+        ]
+      },
+      "exit": {
+        "state_delta_refs": [],
+        "required_keys": [
+          "fox.identity",
+          "fox.bank",
+          "jump.completed"
+        ]
+      },
+      "visible_evidence": [
+        "Near-bank rock and far-bank destination legible"
+      ]
+    },
+    {
+      "shot_ref": "S2",
+      "span": {
+        "start": 44,
+        "end": 88
+      },
+      "responsibility": "Show preparation followed by exactly one takeoff",
+      "camera": {
+        "framing": "low paw close-up",
+        "axis_side": "south"
+      },
+      "covers": [
+        {
+          "action_ref": "A-JUMP",
+          "phase_key": "prepare",
+          "span": {
+            "start": 44,
+            "end": 64
+          }
+        },
+        {
+          "action_ref": "A-JUMP",
+          "phase_key": "takeoff",
+          "span": {
+            "start": 64,
+            "end": 88
+          }
+        }
+      ],
+      "entry": {
+        "state_delta_refs": [],
+        "required_keys": [
+          "fox.identity",
+          "fox.bank",
+          "jump.completed"
+        ]
+      },
+      "exit": {
+        "state_delta_refs": [
+          "D-AIR"
+        ],
+        "required_keys": [
+          "fox.identity",
+          "fox.bank",
+          "jump.completed"
+        ]
+      },
+      "visible_evidence": [
+        "Paws plant, body compresses, paws leave rock once"
+      ]
+    },
+    {
+      "shot_ref": "S3",
+      "span": {
+        "start": 88,
+        "end": 132
+      },
+      "responsibility": "Make the single crossing visibly legible",
+      "camera": {
+        "framing": "side tracking wide",
+        "axis_side": "south"
+      },
+      "covers": [
+        {
+          "action_ref": "A-JUMP",
+          "phase_key": "airborne",
+          "span": {
+            "start": 88,
+            "end": 132
+          }
+        }
+      ],
+      "entry": {
+        "state_delta_refs": [
+          "D-AIR"
+        ],
+        "required_keys": [
+          "fox.identity",
+          "fox.bank",
+          "jump.completed"
+        ]
+      },
+      "exit": {
+        "state_delta_refs": [
+          "D-AIR"
+        ],
+        "required_keys": [
+          "fox.identity",
+          "fox.bank",
+          "jump.completed"
+        ]
+      },
+      "visible_evidence": [
+        "Fox visibly airborne over creek, without a second takeoff"
+      ]
+    },
+    {
+      "shot_ref": "S4",
+      "span": {
+        "start": 132,
+        "end": 192
+      },
+      "responsibility": "Continue the same airborne trajectory, land once and settle on far bank",
+      "camera": {
+        "framing": "far-bank medium from same axis side",
+        "axis_side": "south"
+      },
+      "covers": [
+        {
+          "action_ref": "A-JUMP",
+          "phase_key": "airborne",
+          "span": {
+            "start": 132,
+            "end": 144
+          }
+        },
+        {
+          "action_ref": "A-JUMP",
+          "phase_key": "land",
+          "span": {
+            "start": 144,
+            "end": 168
+          }
+        }
+      ],
+      "entry": {
+        "state_delta_refs": [
+          "D-AIR"
+        ],
+        "required_keys": [
+          "fox.identity",
+          "fox.bank",
+          "jump.completed"
+        ]
+      },
+      "exit": {
+        "state_delta_refs": [
+          "D-AIR",
+          "D-LAND"
+        ],
+        "required_keys": [
+          "fox.identity",
+          "fox.bank",
+          "jump.completed"
+        ]
+      },
+      "visible_evidence": [
+        "Frame 132 begins while still airborne; by 160 grounded on far bank; no return to near bank"
+      ]
+    }
+  ],
+  "join_constraints": [
+    {
+      "from_shot_ref": "S1",
+      "to_shot_ref": "S2",
+      "at_frame": 44,
+      "visual_transition": "cut",
+      "state_relation": "inherit",
+      "delta_refs": [],
+      "preserve_keys": [
+        "fox.identity",
+        "fox.bank",
+        "jump.completed"
+      ],
+      "allowed_camera_changes": [
+        "framing",
+        "position-within-south-side"
+      ]
+    },
+    {
+      "from_shot_ref": "S2",
+      "to_shot_ref": "S3",
+      "at_frame": 88,
+      "visual_transition": "cut",
+      "state_relation": "inherit",
+      "delta_refs": [],
+      "preserve_keys": [
+        "fox.identity",
+        "fox.bank",
+        "jump.completed"
+      ],
+      "allowed_camera_changes": [
+        "framing",
+        "position-within-south-side"
+      ]
+    },
+    {
+      "from_shot_ref": "S3",
+      "to_shot_ref": "S4",
+      "at_frame": 132,
+      "visual_transition": "cut",
+      "state_relation": "inherit",
+      "delta_refs": [],
+      "preserve_keys": [
+        "fox.identity",
+        "fox.bank",
+        "jump.completed"
+      ],
+      "allowed_camera_changes": [
+        "framing",
+        "position-within-south-side"
+      ]
+    }
+  ],
+  "dialogue_cues": [],
+  "guide_points": [],
+  "reference_bindings": [],
+  "media_review": {
+    "result": "unknown",
+    "reason": "Design-only. No generated or reviewed media for this revision."
+  }
+}
