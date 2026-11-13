@@ -270,5 +270,6 @@
   "media_review": {
     "result": "unknown",
     "reason": "Design-only. No generated or reviewed media for this revision."
-  }
+  },
+  "projection_revision": "candidate-r2"
 }

@@ -1,6 +1,6 @@
 # WAR-52｜单次 H3 内部连续性契约候选 v0
 
-2026-11-13。状态：**设计提案，待 WAR-35 交叉评审；没有冻结正式 Schema，也没有实施或运行模型。**
+2026-11-13。状态：**第二轮对齐提案，待用户字段评审；没有冻结正式 Schema，也没有实施或运行模型。**
 
 本轮按 WAR-52 开始执行指令开展设计。唯一详细正文为本文件；Linear 保存状态和入口。工作基于 Canvas Lab `0523ef0e924530b5a27b1b85653a85faeaf36893`，但 WAR-35 方案和若干实验依据是当前未提交文件，不能视作该 commit 已包含。未修改应用、原始 Skill、Gateway、工作流或其他任务文件。
 
@@ -10,7 +10,7 @@
 
 必读对齐依据：
 
-- [WAR-35 当前设计](../WAR-35/director-plan-contract-proposal-v0.md)，第 1–6、9–14 节：独立 DirectorPlan、共享 Action/Shot ID、baseline + deltas + boundary checks、Plan revision、分级审阅。第 14 节的“不独立建 Event Registry”“无 Action 的 Beat”仍是候选，本提案不替它们作决定。
+- [WAR-35 当前设计](../WAR-35/director-plan-contract-proposal-v0.md)，第 1–6、9–16 节：独立 DirectorPlan、共享 Action/Shot ID、baseline + deltas + boundary checks、Plan revision、分级审阅。第二轮核对文件 SHA-256 `0eb0a692ef4171b4c5d2e9d8e903634f44bda4d04415327ad5f2b7931fbf151f`（未提交快照）。第 14–16 节 Beat/Action、Blocking、Shot 字段仍是候选，本提案不替它们作决定。
 - [WAR-33 复用 ADR 初稿](../XIA-33-skill-reuse-adr-draft.md)：只作为历史候选，不将旧续接建议作为现行范围。
 - [现有候选 Prompt 方法](../../validation/XIA-53-independent-guides/prompt-method-candidate-v1.md)：每镜唯一职责、Guide 与文本 Reference 分工、人工 QC 边界；这是历史方法提案，不是本轮媒体结果。
 - [官方 Multiframe 实验记录](../../validation/XIA-53-official-multiframe/README.md)与同目录 `official-multiframe-api.proposed.json`：本轮回读冻结 API 图，确认三个 AddGuide 节点只表达帧锚点，且图片 2–4 未同时进入 `ref_images`。不由该图推断当前服务已支持所有参数。
@@ -29,7 +29,7 @@ DirectorPlan 拥有 scene / subject / action / shot / stateDelta 的语义身份
 | characters / props | 使用源主体 refs；角色、道具或身份资产绑定可选 | 不另建人物数据库；无资产也能做纯文本规划 |
 | continuity_axes | 需要检查的状态键、轴线、屏幕方向/眼线与依据 refs | 世界方向、屏幕方向、角色知情、观众可读性分开 |
 | action_phases | actionRef、phaseKey、顺序、unit 帧区间、预期完成标记 | Action 定义与实际完成证据留在源 Plan / Review |
-| shot_responsibilities | shotRef、unit 帧区间、唯一叙事职责、摄影投影、phase refs、边界 refs、可见证据判据 | 同一动作被两个 Shot 引用不代表发生两次 |
+| shot_responsibilities | shotRef、unit 帧区间、主要叙事职责、摄影投影、phase refs、边界 refs、可见证据判据 | 可承担多个任务；同一动作被两个 Shot 引用不代表发生两次 |
 | guide_points | frame_idx、外部资产绑定、语义目标、参考接线和预检结果 | 不默认启用，不内嵌图片/音频，不编造强度接口 |
 | dialogue_cues | 稳定 cueRef、speakerRef、精确文本、unit 时间、画内/画外 | 一句跨切点只是一条 cue，不按 Shot 重复存台词 |
 | join_constraints | 邻镜、边界帧、应继承状态、允许的摄影变化 | 不是上一个视频的 latent/video continuation |
@@ -42,9 +42,9 @@ DirectorPlan 拥有 scene / subject / action / shot / stateDelta 的语义身份
 - unit 用有理数 fps（num/den）与 `frame_count`，帧从 0 起。覆盖区间统一半开 `[start,end)`；最后 end 可以等于 frame_count，Guide 点必须 `< frame_count`。
 - sceneStart 用场景相对秒数；`sceneTime = sceneStart + frame * den / num`。场景时间与 unit 帧数不混写，编译时记录取整误差；改变 fps/frame_count 会使所有派生时点和 Review 过期。
 - 阶段是**预期动作执行**，Shot 是覆盖。一个阶段可跨切点；用相同 phaseRef 的不同子区间覆盖，不产生第二次动作。phase ID 仅在 actionRef 内部有意义。
-- 一次性动作有一个预期 completion marker；标记落在完成阶段区间内部。示例在落地已稳定的帧标完成，不把“镜头结束”自动当动作完成。
+- 一次性动作在同一规划版本中**至多一个**预期 completion marker。只有此 unit 承诺完整完成动作时才要求一个，标记落在完成阶段区间内部；未完成或仅覆盖中间阶段不能伪造标记。示例在落地已稳定的帧标完成，不把“镜头结束”自动当动作完成。不同 unit 的投影也不能再次登记同一动作的完成，跨 unit 查重留给 Plan 级检查，本任务不实现视频续接。
 - 允许阶段仅部分可见，但必须显式标记 coverage 和未显示的因果风险；不自动补一个“已完成”。本轮狐狸例要求所有必要阶段可见。
-- 多个独立动作可时间重叠；有前置/先后约束的阶段必须满足约束。不能用全场景全局单调阶段号禁止所有并行动作。
+- 多个独立动作可时间重叠；有前置/先后约束的阶段必须满足约束。不能用全场景全局单调阶段号禁止所有并行动作。单位边界前已开始的动作需要源 checkpoint 和 phase offset；缺失时标 unresolved，不自动重开 prepare。当前 JSON 只演示完整动作。
 - baseline + 单份 deltas 推导期望状态，边界只引用所需 checkpoint/key；缓存是派生值，不逐镜复制全量角色状态。source 未决或缺失时返回 unknown/unresolved。
 
 ## 4. Join 的候选表示与边界检查
@@ -79,7 +79,7 @@ Guide 默认为空。只有用户对特定时点的姿态/构图有要求，且�
 type Ref = string; // 由固定 Plan revision 的 resolver 解析；不指定生产 ID 格式
 type Span = { start: number; end: number }; // integer, half-open; cross-field check
 type Phase = { actionRef: Ref; phaseKey: string; span: Span;
-  completionAt?: number }; // 单次 Action 仅一个；预期，不是观察结果
+  completionAt?: number }; // 单次 Action 至多一个；本 unit 承诺完成时才必需
 type Coverage = { actionRef: Ref; phaseKey: string; span: Span };
 type Boundary = { stateDeltaRefs: Ref[]; requiredKeys: string[] };
 type ShotProjection = { shotRef: Ref; span: Span; responsibility: string;
@@ -92,7 +92,8 @@ type Join = { fromShotRef: Ref; toShotRef: Ref; atFrame: number;
 type DialogueCue = { cueRef: Ref; speakerRef: Ref; text: string; span: Span;
   presentation: { span: Span; visibility: 'onscreen' | 'offscreen' }[] };
 type H3ProjectionCandidate = {
-  contractVersion: 'proposal-0'; planRef: Ref; planRevision: string;
+  contractVersion: 'proposal-0'; projectionRevision: string;
+  planRef: Ref; planRevision: string;
   sceneRef: Ref; unitRef: Ref; sceneStart: number;
   fps: { num: number; den: number }; frameCount: number;
   sceneAnchorRefs: Ref[]; characterRefs: Ref[]; propRefs: Ref[];
@@ -118,7 +119,7 @@ type H3ProjectionCandidate = {
 | --- | --- | --- |
 | 引用/版本 | 所有语义引用指向所绑定 Plan revision，缺失/stale 阻止无条件批准 | 模型是否保持同一人/物 |
 | 时间覆盖 | Shot 完整分割 [0,N)，阶段/台词/Guide 在界内，邻镜边界一致 | 实际切点、混剪/溶解、动作自然度 |
-| 一次完成 | 单次 actionRef 一枚 completion marker，阶段顺序和先决状态合法，Shot 覆盖不重复执行 | 实际是否真的跳一次、漏跳或重跳 |
+| 一次完成 | 单次 actionRef 至多一枚 completion marker；完整交付动作必须一枚，阶段顺序和先决状态合法 | 实际是否真的跳一次、漏跳或重跳 |
 | 边界连续 | baseline+deltas 无冲突、所需状态已知、显式变化有来源 | 姿态、持物手、空间、轴线视觉连续 |
 | 台词与知识 | cue speaker/text 不被切点复制，source 硬知情约束未改变 | 台词正确、声音/口型、观众是否理解 |
 | Reference/Guide | 图片标签与 manifest 对应，Guide 目标无已知语义冲突 | 锚点符合度、Guide 是否削弱切点 |
@@ -161,7 +162,73 @@ type H3ProjectionCandidate = {
 下一步供 WAR-35 联审的具体取舍：
 
 1. 接受 visual transition 与 state relation 分离，还是保留单一 Join 枚举但额外约束？推荐分离，避免把 cut 当状态重置。
-2. 确认 completion marker 属于预期事件，在跨 Shot 覆盖中只引用一次；实际完成另归 Review。
+2. 确认 completion marker 属于预期事件，单次动作至多一次；本 unit 承诺完整完成时才必须存在。实际完成另归 Review。
 3. 确认 Guide 非必填、文本 Reference manifest 独立、未验证参数不进入公共 Schema。
 
 以上是可审阅候选，不是用户已批准决定。WAR-52 保持 In Progress，WAR-33/35 依赖不解除；正式 Schema、运行时校验器、Canvas/Gateway 接入与 GPU 验证均未交付。
+
+## 11. 第二轮｜与 WAR-35 的字段交叉评审
+
+本轮依据用户“开始下一步”继续设计对齐，不将这句执行指令解释为批准所有候选字段。未写 WAR-35 文件。核对其第 15–16 节新增的 Blocking / Shot 方案后，修正主要职责与部分动作完成边界；第 6 节 TS 和 JSON 仍是候选形状，以下补充为下一版 Schema 的输入，不是生产约束。
+
+### 11.1 交叉结论与字段级建议
+
+“必需”在下表中仅为建议，区分**可审阅候选**和**可交给 H3 编译的投影**。允许草案缺信息，但必须带 unresolved，不能伪装可执行。
+
+| 信息 | 可审阅候选 | 执行投影前建议要求 | 权威归属与变化影响 |
+| --- | --- | --- | --- |
+| plan / scene / action / shot refs | 场景与来源可定位；缺对象显式列出 | 引用全部解析到固定 Plan revision | WAR-35；对象失联或版本变化令依赖检查 stale |
+| projection revision | 保存候选自己的修订，区别于 schemaVersion / Plan revision | 精确绑定被批准的投影修订及内容指纹 | WAR-52；改切点也会改变投影，不能继续引用旧媒体 Review |
+| unit 时间映射 | 可标预计帧率、片长/区间待定 | 正有理 fps、frame_count、sceneStart 与明确取整规则 | WAR-52；源 Shot 允许估计时长，不反向要求导演先写精确帧 |
+| shot responsibility | 主要任务必须清楚，可列次要任务 | 投影保持上游 narrativePurpose 和关键 evidence criteria | WAR-35 的 Shot；不把“唯一动作实例”误写为“每镜只能有一个任务” |
+| 摄影与空间 | 可用相对拓扑、观察条件、未证假设 | 所选模式实际要求的摄影/轴线约束足够明确 | Blocking 提供空间条件，Shot 决定摄影；不强迫所有镜头写 XYZ/焦距 |
+| action phases | 仅细化需要跨镜或检查的关键动作 | 参与投影的阶段顺序、覆盖、必要前置可检查 | 复用 actionRef；静态情绪镜头不硬造 Action，是否无 Action 的 Beat 仍由 WAR-35 决定 |
+| 完成状态 | 显示 complete-in-unit / partial / unresolved 的语义 | complete-in-unit 必须一枚，partial 至多一枚且不得伪称完整交付 | 完成条件/StateDelta 属于 Plan；投影的 completionAt 只是该事件的执行时点 |
+| 边界状态 | 引用必要状态键/检查点，未知显式列出 | 硬性继承键已知且不冲突；视觉未知可进入风险评审 | 同一 baseline + deltas；不用每镜快照覆盖源事实 |
+| Join | 有邻镜、表达意图与需保持状态 | 固定 atFrame、视觉方式、状态关系和变化依据 | WAR-52；切镜不能另建 Action，也不能洗掉持物/知情约束 |
+| dialogue cues | speaker + 精确原句可定位；时点可待定 | cue 时间/画内外覆盖无缺口，speaker/text 解析有效 | 若源已有说话 Action，cue 引用该 actionRef；不新建平行语义身份。无源 ID 时保留未绑定候选 |
+| Reference binding | 无图也可规划；需图时允许 pending | 使用 Picture 的每个槽有可解析外部资产和内容指纹 | 独立 Reference manifest；资产 ID 本身不能证明内容没变 |
+| Guide | 可完全不提供；提供时标 QA/能力未知 | 仅所选模式支持、素材语义通过、时间合法的 Guide 才能编译 | 薄适配；不把候选 assetRef 当已存在素材或授权生成 |
+| Review / 批准 | 保留 check result、方法、范围和风险 | 绑定 Plan revision + projection revision；硬冲突未解不得无条件批准 | 延用 WAR-35 横切 Review，不在投影再建一套审核系统 |
+
+两个 JSON 增加 `projection_revision` 区分执行时点调整与源 Plan 修订。新增信息不代表 Schema 已冻结；`source_fixture` 始终是合成的上游片段，没有伪造批准记录。对话例未绑定真实说话 Action，其 cueRef 是投影内的 cue 身份，不表示已有完整 Plan 的所有 Action 引用已验收。
+
+### 11.2 Join 的三种走查与精确语义
+
+| 例子 | 视觉 / 状态关系候选 | 应检查的条件 |
+| --- | --- | --- |
+| 狐狸 frame 132 从追拍切远岸机位 | cut / inherit | 同一 airborne 阶段跨边界；没有第二 takeoff/completion；世界轨迹继续 |
+| 对话 frame 56 切 B，但 A 仍说到 frame 64 | cut / inherit | D1 不复制；A 画外声音继续，B 此时听；杯子仍由 A 右手持有 |
+| 上游明确允许省略部分动作，切后已到远岸 | cut / explicit_delta | 引用源 Plan 允许的变化、时间省略与覆盖风险；没有依据时 fail，不能用枚举授权瞬移 |
+
+`inherit` 表示**按已有状态链自然推进**，并非所有值恒定。边界处恰好有正常动作 delta（例如 frame 88 起跳结束）仍可 inherit。`explicit_delta` 表示边界存在需额外解释的省略/变化，必须引用源依据；这些变化仍从单份 state delta 流应用一次，不能先按时间流应用、再因 Join 引用重复应用。
+
+边界 checkpoint 统一建议用 `state_at(b)`：先应用逻辑时点不晚于 b 的 delta，再评价该边界条件。JSON 左镜 exit 与右镜 entry 因而可共同引用此 checkpoint。它不等于左镜最后一张画面 b-1 的观察值，也不要求跨切点姿态像素相同。若以后需要明确 before/after，必须分别标 side，不能混用两个约定。
+
+`preserve_keys` 应解释为“沿状态链保持连续的键”，不是“强制相邻快照值相等”；更清楚的字段名建议为 `continuity_keys`，本轮不静默改动既有 JSON 命名。静态文本的 south 等机位侧标记只能检查声明是否一致，不能证明实际画面未跨轴。
+
+### 11.3 一次完成与单份状态权威
+
+Action 的 completion condition 由源 Plan 持有，WAR-52 将它定位到 unit 时帧。若 Plan 已用 StateDelta 表达 `jump.completed: false → true`，completion marker 应引用同一 delta/事件；不能另维护一个可独立改写的 completed 真值。狐狸例的 marker 160 与 D-LAND 的 frame 160 是同一预期完成的两种投影视角。
+
+| 情况 | 标记与边界 | 处理 |
+| --- | --- | --- |
+| 完整一次跳跃 | 本 unit 一枚 marker，落地条件成立 | 计划可检查；实际完成仍 unknown |
+| unit 只覆盖已在进行的腾空 | 使用上游进入状态与阶段偏移，不补 prepare | 无足够源 checkpoint 则 unresolved；不将无 marker 判成漏动作 |
+| 结尾仍在腾空 | 不写 landed/completed，不冒充完整交付 | 仅在上游允许 partial 目标时成立；与完整落地目标冲突则 fail |
+| 两次独立跳跃 | 上游需两个 actionRef | 不能靠把 once 改成 false 掩盖单次 Action 的重复完成 |
+
+### 11.4 Guide 可选的决策路径
+
+1. 未要求特定锚点、无证据说明必须加 Guide：保持空数组，继续纯文本或已有 Reference 的规划。
+2. 需要时点构图：提出候选 Guide，记录 target shot/phase、mediaKind、资产用途和 semantic QA；素材未准备标 pending，规划风险可审阅。
+3. 真正编译前：核对所选 adapter 版本能力、实际素材、帧点、编码器 Reference manifest；不支持或冲突则返回明确问题，不丢字段继续提交。
+4. 只希望稳定身份：先核对 Reference 的用途，不能自动加姿态 Guide。Guide 同时进文本 Reference 时，两个绑定都引用同一内容指纹。
+
+本轮没有查询实时 ComfyUI，也没有验证音频/短片 Guide 参数；因此能力矩阵不能标成全支持。未提供 Guide 与提供了无效 Guide 是两种不同情况，不能把后者自动降级成无 Guide 后静默生成。
+
+### 11.5 第二轮检查与评审出口
+
+本轮一次性 Python 断言复核通过：两 JSON 可解析、跨切点 phase/cue 连续、D-LAND 与唯一 jump completion 同帧、投影修订独立于源 Plan、无 Guide 路径、media result 保持 unknown；正文相对文件链接均可解析，`git diff --check` 通过。另补充四个纸面边界案例：partial 合法、不完整目标冲突、隐式正常 delta、缺省略依据；这些纸面推演未由运行时校验器执行。没有新增生产代码或自动化测试套件。
+
+待用户审阅的三个具体建议：**Join 双维表达；完成标记按完整/部分覆盖区分；Guide 可选但出现时不得静默忽略错误。** 同时建议接受“主要职责可带次要任务”和“源 Shot 可先用估计时间”的兼容修正。用户批准后才将这些语义视作冻结依据；字段命名、部分覆盖字段和 WAR-35 待决 Action 规则仍需共同形成 Schema。保持 WAR-52 In Progress，不以这一轮单方面宣布联审通过。
