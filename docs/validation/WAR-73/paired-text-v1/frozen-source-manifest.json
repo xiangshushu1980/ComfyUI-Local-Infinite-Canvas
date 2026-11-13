@@ -1,0 +1,17 @@
+{
+  "script": {
+    "path": "/home/sean/projects/canvas-lab/docs/validation/WAR-61/evidence/raw-package/toonflow-20261107/xia-61-script-C/script-C.txt",
+    "sha256": "ba56afb91c117d06ced4089456f5e713435e99cfbf287fd3ee5a5b88ee50153d"
+  },
+  "director_plan": {
+    "path": "/home/sean/projects/canvas-lab/docs/validation/WAR-61/evidence/raw-package/toonflow-20261107/xia-61-script-C/director-output.txt",
+    "sha256": "6174646f605b39bcc48b3853a13daf039ecf66a68e4056ec5e0ad2d0d640366e"
+  },
+  "rules": {
+    "references/storyboardTable.md": "7c6abfb0e9baad360f33589286a5384c58dff0e0a1e79a1c34269b926b6552b5",
+    "references/knowledge/shotCraft.md": "3567ca1ecb0e53522d7514ddb6240a488d28eb0794d7a2ee986aeebe6ec2bf3d"
+  },
+  "upstream_commit": "6086cdffceb704a632eca143dd16cd461a78cdac",
+  "execution_kind": "isolated Codex CLI text replay, not Toonflow App or Canvas",
+  "historical_C_storyboard_is_NOT_paired_baseline": true
+}

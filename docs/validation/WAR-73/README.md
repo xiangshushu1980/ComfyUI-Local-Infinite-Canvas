@@ -1,6 +1,6 @@
 # WAR-73｜Toonflow 导演意图单点修改 → Storyboard 局部响应（审阅版）
 
-状态：**方案待用户审阅；仅创建任务和方案，未授权任何新实验**（2026-11-13）。任务：[WAR-73](https://linear.app/xiangshushu/issue/WAR-73)，父任务：[WAR-59](https://linear.app/xiangshushu/issue/WAR-59)。本文件是本任务唯一详细方案正文，存于 Eric `/home/sean/projects/canvas-lab/docs/validation/WAR-73/README.md`。
+状态：**用户已批准并完成最小 A/B 文本回放，正在等待用户审阅结果（2026-11-13）**。实际回放结果及未证项见 [REVIEW.md](REVIEW.md)，原始证据见 [paired-text-v1/](paired-text-v1/)。任务：[WAR-73](https://linear.app/xiangshushu/issue/WAR-73)，父任务：[WAR-59](https://linear.app/xiangshushu/issue/WAR-59)。本文件是本任务唯一详细方案正文，存于 Eric `/home/sean/projects/canvas-lab/docs/validation/WAR-73/README.md`。
 
 ## 1. 研究问题与最小成果
 
@@ -47,6 +47,6 @@
 
 ## 6. 当前停点与边界
 
-**停在方案审阅。** 目前只做已授权的查重、创建任务、只读查看 Toonflow 源规则和历史 Director Plan、编写本方案。**没有新 LLM 调用、Storyboards、Blender、ComfyUI、H3、Canvas Agent、GPU 或生产代码改动。** 下一行动仅在用户明确同意实验后进行，不以本 Issue 的创建视为授权。
+**当前停在实验结果人工审阅。** 用户已确认仅修改一行导演关注重点，并授权两次隔离文本 Storyboard 回放；均已成功完成，详细差异与冻结记录见 `REVIEW.md`。原 Skill、历史证据和生产代码不变；没有运行 Blender、ComfyUI、H3、Canvas Agent、GPU 或媒体生成。下一行动由用户判断 A/B 的实际导演响应、时长取舍及是否收口，不自动执行重复采样或进入自研设计。
 
 关联：`docs/validation/WAR-61/README.md`（旧 Toonflow 冻结材料），`docs/validation/WAR-68/story-and-intent-trace.md`（两种方法源码差异），`docs/validation/WAR-59/three-method-synthesis-20261111.md`（三方法综合结论）。WAR-72 已 Done，不重开 Blender。

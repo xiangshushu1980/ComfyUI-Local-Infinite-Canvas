@@ -1,0 +1,30 @@
+{
+  "exit_code": 0,
+  "timed_out": false,
+  "command": [
+    "codex",
+    "exec",
+    "-m",
+    "gpt-6.1-terra",
+    "-c",
+    "model_reasoning_effort=\"medium\"",
+    "--ephemeral",
+    "--ignore-user-config",
+    "--ignore-rules",
+    "--sandbox",
+    "read-only",
+    "--skip-git-repo-check",
+    "-C",
+    "/home/sean/projects/canvas-lab/docs/validation/WAR-73/paired-text-v1/B",
+    "--json",
+    "-o",
+    "/home/sean/projects/canvas-lab/docs/validation/WAR-73/paired-text-v1/B/response.txt",
+    "-"
+  ],
+  "started_utc": "2026-11-13T08:37:10.591673+00:00",
+  "finished_utc": "2026-11-13T08:38:14.440866+00:00",
+  "response_exists": true,
+  "request_sha256": "35a2f186e56bb534b0f4854e18026ef6209ba2a4b40689b6aa90b756e4fb8e93",
+  "response_sha256": "84d0c43bef13ea4a0626792ad40b97cac180e35d5dfe5c734b94b6e1384aba08",
+  "response_bytes": 7493
+}
