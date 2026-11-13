@@ -1048,3 +1048,48 @@ python3 docs/planning/WAR-35/verify-d-jcs1-schema.py
 ### 25.5 Git 分步记录
 
 本轮仅暂存 WAR-35：修改 review Schema、增加 `verify-decision-gates.py` 和验证报告、更新本研究正文；保留 §23 D-JCS-1 Git `f8a288b`、§24 Media Check Git `20b6029` 为前序提交。按用户要求创建单独第三步 commit，并只推送 `origin/war-35-schema-freeze-review-20261114`，绝不把其他未提交文件或远端 main 混入提交。
+
+## 26. P-JCS-1 冻结准备｜raw I-JSON 入口必须先于普通 JSON parse（2026-11-14）
+
+### 26.1 发现与规则
+
+独立复核确认的 P-JCS-1 缺口不是 RFC 8785 canonicalizer 不可用，而是普通 JSON parser 在交给 JCS 之前，可能**不可逆地抹去原始输入问题**。典型危险包括：重复字段覆盖、超过 JavaScript 精确整数范围后舍入、孤立 UTF-16 surrogate、JSON 指数溢出为 Infinity。RFC 8785 要求 I-JSON 输入；RFC 7493 将 UTF-8、Unicode 有效性及对象名无重复列为入口约束。这里实现的是**WAR-35 研究性入口校验参考**，非生产 parser 替换。
+
+预处理次序固定：
+
+```
+RAW UTF-8 bytes
+→ lossless-sensitive I-JSON gate (reject before ordinary parser discards evidence)
+→ DirectorPackage Draft 2020-12 JSON Schema
+→ P-JCS-1 payload = {contractVersion,plan}
+→ RFC 8785 canonical UTF-8 bytes
+→ SHA-256
+```
+
+程序化构造的 Plan 不包含 raw byte history，不能通过“验证曾经没有重复 JSON key”这种声明替代对输入路径的安全保障；生产实现需在每个真实输入边界用等价入口，或只接受已经获得可信校验的结构化对象。
+
+### 26.2 具体入口 profile（保守于通用 JCS）
+
+新增 `raw_ijson_gate.py`，只用于研究测试：接受**原始 bytes**，使用严格 UTF-8 decoder；拒绝 BOM、不合法 JSON 常量、重复的**解码后**属性名称（包括 `"a"` vs `"\\u0061"`）、嵌套重复；拒绝字符串或键的孤立 surrogate 和 Unicode noncharacter（允许有效 `\\ud83d\\ude00` 代理对）；拒绝 IEEE-754 非有限结果与正数下溢为零。字符串内容保持原样，**不进行 Unicode 规范化**，并保留对象数组的语义顺序。
+
+为了确保 DirectorPlan 中的精确整数身份不在解析时损失，WAR-35 对**整数 token 与数学上为整数的 decimal/exponent token** 都采用更保守的本地接收约束：精确值的绝对值必须 `<= 2^53-1`，否则必须由业务层显式用字符串表示。包括 `9007199254740993` 与 `9007199254740993.0` 必拒绝。该约束**严格于通用 RFC 8785 对某些大浮点数的合法规范化**；此项是为了避免数据契约的精确数值 ID 被舍入，不主张整个通用 JCS 标准拒绝所有大数量级的浮点值。普通非整数浮点（如 0.1）仍按 IEEE-754 binary64 处理，不承诺保留超过 double 精度的任意十进制尾数；需要更高精度的业务值应采用字符串/显式领域类型。
+
+**必须拒绝的入口负例**：raw 重复 root/nested/Unicode-escaped key、不安全整数及 float/exponent 整数写法、`1e400`、`1e-400`、`NaN`/`Infinity`、孤立 surrogate 或 noncharacter、损坏 UTF-8、BOM、非法 JSON。
+
+**必须接受的正例**：`±9007199254740991`、`0.1`、`-0.0`、`5e-324`、合法配对 surrogate、不同 Unicode normalization 形式的**不同**对象键，以及已有 WAR-35 两份真实合成 DirectorPackage。
+
+### 26.3 已执行的验证与冻结边界
+
+- `verify-raw-ijson.py`：34/34 独立正反例通过，先按 `raw_ijson_gate.parse_raw_ijson(raw_bytes)` 校验再送 Schema。
+- 两份完整现有 DirectorPackage 在原始 UTF-8 入站时通过 Schema；P-JCS-1 根据解码后的 `{contractVersion,plan}` 在 Python rfc8785 与独立 Node canonicalizer 得到**完全一致**字节。每份示例被故意重复插入顶层 `contractVersion` 后，入口在计算指纹之前拒绝。Golden 记录于 `raw-ijson-verification.report.json` 的 reviewPlanDigests，不冒充最终 v0 Golden。
+- 此阶段不改动 `director-plan.schema.review-v0.json`、原合成示例或生产依赖，不运行媒体。正式 v0 的 `contractVersion` 必须另起独立 RC 示例重新计算 P-JCS-1 Golden，不能复用 review SHA。
+- 最终设计冻结不依赖把 Python gate 部署到 Canvas，但需要规定未来生产输入路径具有等效、前置、不可绕过的 I-JSON 校验。没有这个生产实现，不宣称运行时输入已经安全。
+
+可复测：
+
+```bash
+cd /home/sean/projects/canvas-lab
+python3 docs/planning/WAR-35/verify-raw-ijson.py
+```
+
+Git 审计：本段与 Python gate、验证脚本、报告单独提交，下一次 RC 版本标识与 Golden 独立形成后一提交，以保留冻结前每一步的变更轨迹。

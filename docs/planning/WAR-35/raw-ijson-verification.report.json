@@ -1,0 +1,185 @@
+{
+  "task": "WAR-35",
+  "scope": "P-JCS-1 raw UTF-8 I-JSON pre-parse, research only",
+  "cases": [
+    {
+      "case": "duplicate-root-key",
+      "accepted": false,
+      "passed": true
+    },
+    {
+      "case": "duplicate-nested-key",
+      "accepted": false,
+      "passed": true
+    },
+    {
+      "case": "duplicate-decoded-escaped-key",
+      "accepted": false,
+      "passed": true
+    },
+    {
+      "case": "duplicate-unicode-key",
+      "accepted": false,
+      "passed": true
+    },
+    {
+      "case": "unsafe-positive-integer",
+      "accepted": false,
+      "passed": true
+    },
+    {
+      "case": "unsafe-negative-integer",
+      "accepted": false,
+      "passed": true
+    },
+    {
+      "case": "unsafe-integer-as-float",
+      "accepted": false,
+      "passed": true
+    },
+    {
+      "case": "unsafe-integer-as-exponent",
+      "accepted": false,
+      "passed": true
+    },
+    {
+      "case": "overflow-binary64",
+      "accepted": false,
+      "passed": true
+    },
+    {
+      "case": "underflow-to-zero",
+      "accepted": false,
+      "passed": true
+    },
+    {
+      "case": "unpaired-high-surrogate",
+      "accepted": false,
+      "passed": true
+    },
+    {
+      "case": "unpaired-low-surrogate",
+      "accepted": false,
+      "passed": true
+    },
+    {
+      "case": "unpaired-surrogate-as-key",
+      "accepted": false,
+      "passed": true
+    },
+    {
+      "case": "noncharacter-in-string",
+      "accepted": false,
+      "passed": true
+    },
+    {
+      "case": "noncharacter-as-key",
+      "accepted": false,
+      "passed": true
+    },
+    {
+      "case": "NaN-not-JSON",
+      "accepted": false,
+      "passed": true
+    },
+    {
+      "case": "Infinity-not-JSON",
+      "accepted": false,
+      "passed": true
+    },
+    {
+      "case": "malformed-JSON",
+      "accepted": false,
+      "passed": true
+    },
+    {
+      "case": "bad-utf8",
+      "accepted": false,
+      "passed": true
+    },
+    {
+      "case": "utf8-BOM",
+      "accepted": false,
+      "passed": true
+    },
+    {
+      "case": "max-safe-positive",
+      "accepted": true,
+      "passed": true
+    },
+    {
+      "case": "max-safe-negative",
+      "accepted": true,
+      "passed": true
+    },
+    {
+      "case": "normal-decimal",
+      "accepted": true,
+      "passed": true
+    },
+    {
+      "case": "negative-zero",
+      "accepted": true,
+      "passed": true
+    },
+    {
+      "case": "subnormal-finite",
+      "accepted": true,
+      "passed": true
+    },
+    {
+      "case": "legal-surrogate-pair",
+      "accepted": true,
+      "passed": true
+    },
+    {
+      "case": "different-normalization-stays-different",
+      "accepted": true,
+      "passed": true
+    },
+    {
+      "case": "reordered-keys-valid",
+      "accepted": true,
+      "passed": true
+    },
+    {
+      "case": "real-package-no-action-beat.example.review-v0.json",
+      "accepted": true,
+      "passed": true
+    },
+    {
+      "case": "independent-JCS-no-action-beat.example.review-v0.json",
+      "accepted": true,
+      "passed": true
+    },
+    {
+      "case": "tampered-package-duplicate-no-action-beat.example.review-v0.json",
+      "accepted": false,
+      "passed": true
+    },
+    {
+      "case": "real-package-cross-shot-once.example.review-v0.json",
+      "accepted": true,
+      "passed": true
+    },
+    {
+      "case": "independent-JCS-cross-shot-once.example.review-v0.json",
+      "accepted": true,
+      "passed": true
+    },
+    {
+      "case": "tampered-package-duplicate-cross-shot-once.example.review-v0.json",
+      "accepted": false,
+      "passed": true
+    }
+  ],
+  "passed": 34,
+  "total": 34,
+  "reviewPlanDigests": {
+    "no-action-beat.example.review-v0.json": "c15b2272d787862a1366f24391982c25df906375ebf141e17427df2d633e3322",
+    "cross-shot-once.example.review-v0.json": "0bb91a8f207effbe17756217e92bf9f5311243339b1a0064a6f19554f7c35dbc"
+  },
+  "runtimeIntegrated": false,
+  "rawIntegerProfile": "WAR-35 strict: exact integer-valued tokens must be within ±(2^53−1); larger exact integers as JSON strings",
+  "jcsLibrary": "rfc8785==0.1.4; cross-checked with independent JS canonicalization"
+}
