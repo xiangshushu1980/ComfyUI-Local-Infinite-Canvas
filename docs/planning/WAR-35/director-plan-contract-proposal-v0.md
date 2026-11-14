@@ -1156,3 +1156,11 @@ python3 docs/planning/WAR-35/verify-d-jcs1-schema.py
 ### 28.1 来源依赖补修与 RC2
 
 cb7e8fd 的阶段 A 独立复核发现空 Fact 来源仍可承接。当前候选为 RC2、D-JCS-1 /3，阶段 A 等待重新独立复核。现行来源证明策略、红绿对照与复跑入口见 [RC2 来源证明](fact-source-proof-rc2-20261114.md)。
+
+### 28.2 CheckSpec 方法/目标约束收口与 RC3（GPT-6 Chat 通过 DCR 在 Eric 实施）
+
+Astra 第二轮阶段 A 独立验收 `phase-a-rc2-independent-acceptance-20261114.md` 指出：RC2 的 `CHECK_SPECS` 只注册文本与 `sourcePolicy`，却允许 media-v1 虚报 text 绕过受检媒体绑定，也允许 fact-local/1 指向 Subject 而得到可比较的 D-JCS 指纹。两个反例没有取得整个 Gate 批准，但局部 Check 不应产生这种虚假的可继承摘要。
+
+本轮以已有八个登记版本为完整范围，采用 `(text,sourcePolicy,allowedMethods,targetKinds)` 的可信登记内容，在解析完整 typed target、目标字段、方法匹配且证明必需来源后才产出指纹。未新增 Check 字段，不改变整体 Gate 审批覆盖的待审设计。兼容边界升级至 **D-JCS-1 /4**，canonical payload 的 checkSpec 附加已登记的 `allowedMethods/targetKinds`，单独生成 **RC3** Schema ID 和两份 D Golden；保留 RC1/RC2 原件及 P-JCS-1 Golden。
+
+同案测试：`edcbd82` 为 **50/63**，RC3 为 **63/63**，另十一项 RC3 隔离/Golden 验证后 **74/74**；旧六组 137/137、Fact 来源证明 24/24 和阶段 A 10/10 回归通过。完整方法/目标矩阵、精确 SHA、可复现脚本、限制与待审事项见 [RC3 CheckSpec 阶段 A 证据](checkspec-contract-rc3-20261114.md)。**这是实现候选，尚待 Astra 独立验收；阶段 A、WAR-35 均不标为 Done，未开始阶段 B，也不意味着真实媒体或生产审批已验证。**

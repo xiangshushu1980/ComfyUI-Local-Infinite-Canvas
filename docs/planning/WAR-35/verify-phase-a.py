@@ -18,8 +18,8 @@ def definitions(name, end):
 
 gates = definitions("verify-decision-gates.py", "tests=[]")
 digest = gates["dep_sha"]
-fixture = json.loads((ROOT / "cross-shot-once.example.v0-rc2.json").read_text())
-validator = Draft202012Validator(json.loads((ROOT / "director-plan.schema.v0-rc2.json").read_text()))
+fixture = json.loads((ROOT / "cross-shot-once.example.v0-rc3.json").read_text())
+validator = Draft202012Validator(json.loads((ROOT / "director-plan.schema.v0-rc3.json").read_text()))
 
 
 class PhaseA(unittest.TestCase):

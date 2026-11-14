@@ -1,0 +1,17 @@
+{
+  "task": "WAR-35",
+  "scope": "D-JCS-1 review draft structural regression",
+  "total": 9,
+  "passed": 9,
+  "cases": [
+    "fixture-no-action-beat.example.review-v0.json",
+    "fixture-cross-shot-once.example.review-v0.json",
+    "unknown-no-fingerprint",
+    "not_checked-no-fingerprint",
+    "pass-no-fingerprint",
+    "fail-no-fingerprint",
+    "pass-with-fingerprint",
+    "empty-extra-dependencies",
+    "duplicate-extra-dependencies"
+  ]
+}

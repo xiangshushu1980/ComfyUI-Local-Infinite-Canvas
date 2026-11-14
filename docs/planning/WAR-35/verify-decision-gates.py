@@ -6,7 +6,7 @@ from jsonschema import Draft202012Validator
 ROOT=Path(__file__).resolve().parent
 sys.path.insert(0,"/home/sean/.local/share/canvas-lab-jcs/venv/lib/python3.12/site-packages")
 import rfc8785
-schema=json.loads((ROOT/"director-plan.schema.review-v0.json").read_text())
+schema=json.loads((ROOT/"director-plan.schema.review-rc3.json").read_text())
 Draft202012Validator.check_schema(schema)
 decl=Draft202012Validator(schema)
 d_defs=schema["$defs"]
@@ -36,7 +36,7 @@ def make_check(cid,pkg,sp):
             "targetRefs":sp["targetRefs"],"dependencyRefs":sp["dependencyRefs"],
             "collectionPaths":sp["collectionPaths"],
             "checkSpec":sp["checkSpec"],"checkSpecVersion":sp["checkSpecVersion"],
-            "method":sp["method"],"dependencyHashRule":"war35-dep-jcs8785-sha256/3",
+            "method":sp["method"],"dependencyHashRule":"war35-dep-jcs8785-sha256/4",
             "dependencyFingerprintSha256":dep_sha(pkg,sp),"result":"pass","applicability":"valid"}
 c1,c2=make_check("C-A1",older,spec),make_check("C-A2",newer,spec)
 b_spec=dict(spec,targetRefs=["shot:S-ADDED"],checkSpec="Shot B: output evidence criteria",checkSpecVersion="shotB/1")
@@ -49,7 +49,7 @@ new_d={"id":"D-A2","gate":"intentA","target":t2,"verdict":"approved",
 b_d={"id":"D-B2","gate":"shotB","target":t2,"verdict":"approved",
       "checkIds":["C-B"],"decisionBasis":"reviewed","rationale":"Shot B reviewed"}
 inherit={"fromCheckId":"C-A1","intoCheckId":"C-A2","intoTarget":t2,
-         "dependencyHashRule":"war35-dep-jcs8785-sha256/3",
+         "dependencyHashRule":"war35-dep-jcs8785-sha256/4",
          "dependencyFingerprintSha256":c1["dependencyFingerprintSha256"],
          "basis":"unchanged_dependencies"}
 risk={"id":"R-1","riskVersionId":"V1","target":t2,"targetRefs":["shot:S-ADDED"],
@@ -131,7 +131,7 @@ def valid_case(case,check_current=False):
                 if item["fromCheckId"] not in prev_ids: return False
                 if item["dependencyHashRule"]!=prior["dependencyHashRule"] or item["dependencyHashRule"]!=current_c["dependencyHashRule"]: return False
                 if item["dependencyFingerprintSha256"]!=prior["dependencyFingerprintSha256"] or item["dependencyFingerprintSha256"]!=current_c["dependencyFingerprintSha256"]: return False
-                # Equal recomputed /3 fingerprints already compare normalized scopes and specs.
+                # Equal recomputed /4 fingerprints already compare normalized scopes and specs.
                 predecessors.add(item["fromCheckId"])
             return predecessors==prev_ids
         if not decide("D-A2",set()): return False
@@ -289,5 +289,5 @@ report={"task":"WAR-35","scope":"Blocking 3 Decision / approvedPlan design-only 
         "passed":len(tests),"total":len(tests),"cases":tests,
         "historyAssumption":"Immutable prior revisions/checks/decisions with independently verified SHA; cannot establish trust from unverified claims",
         "productionValidatorImplemented":False}
-(ROOT/"decision-gates-verification.report.json").write_text(json.dumps(report,ensure_ascii=False,indent=2)+"\n")
+(ROOT/"decision-gates-rc3-verification.report.json").write_text(json.dumps(report,ensure_ascii=False,indent=2)+"\n")
 print("TOTAL",len(tests),"PASS")

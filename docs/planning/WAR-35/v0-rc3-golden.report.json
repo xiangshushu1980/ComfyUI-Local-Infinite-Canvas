@@ -1,0 +1,122 @@
+{
+  "task": "WAR-35",
+  "status": "v0.1.0 release candidate 2; candidate Golden, NOT final freeze",
+  "schema": "director-plan.schema.v0-rc3.json",
+  "schemaId": "urn:canvas-lab:director-plan:0.1.0-rc3",
+  "contractVersion": "director-plan/0.1.0",
+  "planHashRule": "war35-plan-jcs8785-sha256/1",
+  "dependencyHashRule": "war35-dep-jcs8785-sha256/4",
+  "hashPayload": "{contractVersion,plan}",
+  "golden": {
+    "no-action-beat.example.v0-rc3.json": {
+      "sha256": "c3a7e1b938fb16aedb0f3e28c6693223c80d3cab4c9a450adfe896778b33ef0e",
+      "canonicalBytes": 794,
+      "reviewDraftSha256": "c15b2272d787862a1366f24391982c25df906375ebf141e17427df2d633e3322",
+      "candidateIntentDependencySha256": "7043382336e1aad8fb6ac4b0e234cbb00dcef6ecb73bb8145178cd14e7c29d5a"
+    },
+    "cross-shot-once.example.v0-rc3.json": {
+      "sha256": "8b163c5db47ef392da2181b3801fef051eb63a0012f773021d434c036df261ac",
+      "canonicalBytes": 2679,
+      "reviewDraftSha256": "0bb91a8f207effbe17756217e92bf9f5311243339b1a0064a6f19554f7c35dbc",
+      "candidateIntentDependencySha256": "69d960d6f2d6ac8350c17d59540deb4d570b86937dd7f127fc51fc305f8606f4"
+    }
+  },
+  "cases": [
+    {
+      "case": "RC-schema-identical-except-version-and-metadata",
+      "passed": true
+    },
+    {
+      "case": "RC-raw-and-schema-no-action-beat.example.v0-rc3.json",
+      "passed": true
+    },
+    {
+      "case": "review-version-rejected-no-action-beat.example.review-v0.json",
+      "passed": true
+    },
+    {
+      "case": "new-version-rejected-by-old-schema-no-action-beat.example.v0-rc3.json",
+      "passed": true
+    },
+    {
+      "case": "fixture-identical-except-version-no-action-beat.example.v0-rc3.json",
+      "passed": true
+    },
+    {
+      "case": "cross-language-RC-JCS-no-action-beat.example.v0-rc3.json",
+      "passed": true
+    },
+    {
+      "case": "changed-version-changes-golden-no-action-beat.example.v0-rc3.json",
+      "passed": true
+    },
+    {
+      "case": "locator-change-independent-no-action-beat.example.v0-rc3.json",
+      "passed": true
+    },
+    {
+      "case": "review-change-independent-no-action-beat.example.v0-rc3.json",
+      "passed": true
+    },
+    {
+      "case": "revision-change-changes-golden-no-action-beat.example.v0-rc3.json",
+      "passed": true
+    },
+    {
+      "case": "snapshot-sha-consistent-no-action-beat.example.v0-rc3.json",
+      "passed": true
+    },
+    {
+      "case": "contractVersion-changes-D-JCS-1-no-action-beat.example.v0-rc3.json",
+      "passed": true
+    },
+    {
+      "case": "RC-raw-and-schema-cross-shot-once.example.v0-rc3.json",
+      "passed": true
+    },
+    {
+      "case": "review-version-rejected-cross-shot-once.example.review-v0.json",
+      "passed": true
+    },
+    {
+      "case": "new-version-rejected-by-old-schema-cross-shot-once.example.v0-rc3.json",
+      "passed": true
+    },
+    {
+      "case": "fixture-identical-except-version-cross-shot-once.example.v0-rc3.json",
+      "passed": true
+    },
+    {
+      "case": "cross-language-RC-JCS-cross-shot-once.example.v0-rc3.json",
+      "passed": true
+    },
+    {
+      "case": "changed-version-changes-golden-cross-shot-once.example.v0-rc3.json",
+      "passed": true
+    },
+    {
+      "case": "locator-change-independent-cross-shot-once.example.v0-rc3.json",
+      "passed": true
+    },
+    {
+      "case": "review-change-independent-cross-shot-once.example.v0-rc3.json",
+      "passed": true
+    },
+    {
+      "case": "revision-change-changes-golden-cross-shot-once.example.v0-rc3.json",
+      "passed": true
+    },
+    {
+      "case": "snapshot-sha-consistent-cross-shot-once.example.v0-rc3.json",
+      "passed": true
+    },
+    {
+      "case": "contractVersion-changes-D-JCS-1-cross-shot-once.example.v0-rc3.json",
+      "passed": true
+    }
+  ],
+  "passed": 23,
+  "total": 23,
+  "finalFrozen": false,
+  "productionHashAndSemanticValidatorImplemented": false
+}

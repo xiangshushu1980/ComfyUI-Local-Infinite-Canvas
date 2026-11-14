@@ -4,7 +4,7 @@ import copy, hashlib, json, re
 from pathlib import Path
 import rfc8785
 ROOT=Path(__file__).resolve().parent
-RULE="war35-dep-jcs8785-sha256/3"
+RULE="war35-dep-jcs8785-sha256/4"
 # Plan-relative schema locations. None denotes an array item (never an object key).
 REF_FIELDS = {
     ("storyBasis", "constraints", None): ("sourceRefs",),
@@ -89,15 +89,32 @@ def collection(plan,path):
     return value, location
 # Trusted research CheckSpec definitions. Match text only for exact identity.
 # The versioned policy determines which provenance edges are required.
+# Every registered CheckSpec has a closed method and target-kind contract.
+# These are research contracts, not a semantic reviewer or media authenticity proof.
+# Adding/changing an entry's policy/methods/kinds requires a D-JCS profile bump.
+def contract(text, policy, methods, kinds):
+    return {"text":text,"sourcePolicy":policy,
+            "allowedMethods":tuple(methods),"targetKinds":tuple(kinds)}
+
 CHECK_SPECS = {
-    "fact-script/1": ("Target Facts agree with the supplied script text", "target-fact-sources/1"),
-    "intentA/2": ("Intent A: narrative goal consistency", "intent-basis-fact-sources/1"),
-    "A/2": ("Intent A respects story evidence", "intent-basis-fact-sources/1"),
-    "intentA/v1": ("v0 Intent A dependency test", "intent-basis-fact-sources/1"),
-    "fact-local/1": ("Fact statement is nonempty", "closure-only/1"),
-    "closure/1": ("Plan dependency closure", "closure-only/1"),
-    "shotB/1": ("Shot B: output evidence criteria", "closure-only/1"),
-    "media-v1": ("Actual output has visible landing", "closure-only/1"),
+    "fact-script/1":contract("Target Facts agree with the supplied script text",
+                             "target-fact-sources/1",("text",),("fact",)),
+    "intentA/2":contract("Intent A: narrative goal consistency",
+                         "intent-basis-fact-sources/1",("text",),("intent",)),
+    "A/2":contract("Intent A respects story evidence",
+                   "intent-basis-fact-sources/1",("text",),("intent",)),
+    "intentA/v1":contract("v0 Intent A dependency test",
+                         "intent-basis-fact-sources/1",("text",),("intent",)),
+    "fact-local/1":contract("Fact statement is nonempty",
+                            "closure-only/1",("text",),("fact",)),
+    "closure/1":contract("Plan dependency closure",
+                         "closure-only/1",("text",),
+                         ("plan","source","fact","constraint","subject","intent",
+                          "beat","action","delta","blocking","shot")),
+    "shotB/1":contract("Shot B: output evidence criteria",
+                       "closure-only/1",("text",),("shot",)),
+    "media-v1":contract("Actual output has visible landing",
+                        "closure-only/1",("media",),("intent","shot")),
 }
 
 
@@ -116,18 +133,29 @@ def require_source_path(plan, ref):
 
 
 def source_policy(plan, spec, targets):
-    definition = CHECK_SPECS.get(spec["checkSpecVersion"])
-    if definition is None or definition[0] != spec["checkSpec"]:
-        raise Unresolved("unregistered CheckSpec")
-    policy = definition[1]
-    if policy == "closure-only/1":
-        return policy
-    prefix = "fact:" if policy == "target-fact-sources/1" else "intent:"
-    if not targets or any(not ref.startswith(prefix) for ref in targets):
-        raise Unresolved("wrong target for source proof")
+    definition = CHECK_SPECS.get(spec.get("checkSpecVersion"))
+    if definition is None or definition["text"] != spec.get("checkSpec"):
+        raise Unresolved("unregistered or mismatched CheckSpec")
+    if spec.get("method") not in definition["allowedMethods"]:
+        raise Unresolved("CheckSpec method mismatch")
+    if not targets:
+        raise Unresolved("CheckSpec requires explicit targetRefs")
     for ref in targets:
-        require_source_path(plan, ref)
-    return policy
+        if not isinstance(ref,str) or ":" not in ref:
+            raise Unresolved("invalid typed target")
+        kind=ref.split(":",1)[0]
+        if kind not in definition["targetKinds"]:
+            raise Unresolved("CheckSpec target kind mismatch")
+        obj, _ = resolve(plan,ref)
+        if spec["checkSpecVersion"]=="fact-local/1":
+            if not isinstance(obj.get("statement"),str) or not obj["statement"]:
+                raise Unresolved("nonempty Fact statement required")
+    policy = definition["sourcePolicy"]
+    if policy != "closure-only/1":
+        for ref in targets:
+            require_source_path(plan, ref)
+    # The accepted method/kind metadata are themselves bound in the /4 payload.
+    return definition
 
 
 def payload(pkg,spec):
@@ -140,7 +168,7 @@ def payload(pkg,spec):
         raise Unresolved("external observation content and scope cannot be verified")
     plan=pkg["plan"]
     scope={k:sorted(set(spec.get(k,[]))) for k in ("targetRefs","dependencyRefs","collectionPaths")}
-    policy = source_policy(plan, spec, scope["targetRefs"])
+    definition = source_policy(plan, spec, scope["targetRefs"])
     pending=set(scope["targetRefs"]+scope["dependencyRefs"]); objects={}; cols=[]
     for path in scope["collectionPaths"]:
         value, location = collection(plan, path)
@@ -151,7 +179,7 @@ def payload(pkg,spec):
         obj, location = resolve(plan,ref)
         if ref.startswith("source:"): verify_source(pkg,obj)
         objects[ref] = normalized(obj, location, pending)
-    result={"profile":RULE,"contractVersion":pkg["contractVersion"],"planIdentity":{"planId":plan["planId"],"sceneId":plan["sceneId"]},"checkSpec":{"sourcePolicy":policy,"text":spec["checkSpec"],"version":spec["checkSpecVersion"],"method":spec["method"]},"scope":scope,"resolvedObjects":[{"ref":k,"value":objects[k]} for k in sorted(objects)],"collections":sorted(cols,key=lambda x:x["path"])}
+    result={"profile":RULE,"contractVersion":pkg["contractVersion"],"planIdentity":{"planId":plan["planId"],"sceneId":plan["sceneId"]},"checkSpec":{"sourcePolicy":definition["sourcePolicy"],"allowedMethods":sorted(definition["allowedMethods"]),"targetKinds":sorted(definition["targetKinds"]),"text":spec["checkSpec"],"version":spec["checkSpecVersion"],"method":spec["method"]},"scope":scope,"resolvedObjects":[{"ref":k,"value":objects[k]} for k in sorted(objects)],"collections":sorted(cols,key=lambda x:x["path"])}
     if spec["method"]=="media":
         target=spec.get("executionTarget")
         evidence=spec.get("evidenceBindings")
@@ -214,5 +242,5 @@ reverse=copy.deepcopy(fox); reverse["plan"]["shots"].reverse()
 expect("D-N04-collection-order",digest(reverse,allshots)!=digest(fox,allshots))
 expect("other-fixture",digest(doubt,dict(spec,targetRefs=["intent:I-DOUBT"])) is not None)
 report={"task":"WAR-35","profile":RULE,"scope":"design-only; inline source resolver, no production media","baselineDigest":baseline,"cases":results,"passed":len(results),"externalResolverTested":False}
-(ROOT/"d-jcs1-rc2-verification.report.json").write_text(json.dumps(report,ensure_ascii=False,indent=2)+"\n")
+(ROOT/"d-jcs1-rc3-verification.report.json").write_text(json.dumps(report,ensure_ascii=False,indent=2)+"\n")
 print("TOTAL",len(results),"PASS")

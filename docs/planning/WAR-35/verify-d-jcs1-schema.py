@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 from jsonschema import Draft202012Validator
 root=Path(__file__).resolve().parent
-schema=json.loads((root/"director-plan.schema.review-v0.json").read_text())
+schema=json.loads((root/"director-plan.schema.review-rc3.json").read_text())
 Draft202012Validator.check_schema(schema)
 checks=[]
 def verify(label, value, expected):
@@ -15,7 +15,7 @@ for name in ("no-action-beat.example.review-v0.json","cross-shot-once.example.re
     obj=json.loads((root/name).read_text())
     verify("fixture-"+name,Draft202012Validator(schema).is_valid(obj),True)
 check=Draft202012Validator({"$defs":schema["$defs"],"$ref":"#/$defs/check"})
-base={"id":"C-1","target":{"planId":"P-FOX","revisionId":"R2","planContentSha256":"0"*64,"hashRule":"war35-plan-jcs8785-sha256/1"},"targetRefs":["intent:I-CROSS"],"dependencyRefs":[],"checkSpec":"test","checkSpecVersion":"A/1","method":"text","result":"unknown","applicability":"valid","dependencyHashRule":"war35-dep-jcs8785-sha256/3"}
+base={"id":"C-1","target":{"planId":"P-FOX","revisionId":"R2","planContentSha256":"0"*64,"hashRule":"war35-plan-jcs8785-sha256/1"},"targetRefs":["intent:I-CROSS"],"dependencyRefs":[],"checkSpec":"test","checkSpecVersion":"A/1","method":"text","result":"unknown","applicability":"valid","dependencyHashRule":"war35-dep-jcs8785-sha256/4"}
 fixtures=[
  ("unknown-no-fingerprint",base,True),
  ("not_checked-no-fingerprint",dict(base,result="not_checked"),True),
@@ -27,5 +27,5 @@ fixtures=[
 ]
 for name,case,expected in fixtures: verify(name,check.is_valid(case),expected)
 out={"task":"WAR-35","scope":"D-JCS-1 review draft structural regression","total":len(checks),"passed":len(checks),"cases":checks}
-(root/"d-jcs1-schema-verification.report.json").write_text(json.dumps(out,ensure_ascii=False,indent=2)+"\n")
+(root/"d-jcs1-rc3-schema-verification.report.json").write_text(json.dumps(out,ensure_ascii=False,indent=2)+"\n")
 print("TOTAL",len(checks),"PASS")

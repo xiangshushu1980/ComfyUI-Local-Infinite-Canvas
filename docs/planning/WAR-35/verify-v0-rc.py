@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""WAR-35 v0.1.0-RC2 P-JCS-1 Golden and structural regression, design only."""
+"""WAR-35 v0.1.0-RC3 P-JCS-1 Golden and structural regression, design only."""
 import copy, hashlib, json, subprocess, sys
 from pathlib import Path
 from jsonschema import Draft202012Validator
@@ -9,18 +9,18 @@ sys.path.insert(0,"/home/sean/.local/share/canvas-lab-jcs/venv/lib/python3.12/si
 from raw_ijson_gate import parse_raw_ijson
 import rfc8785
 
-SCHEMA="director-plan.schema.v0-rc2.json"
-REVIEW_SCHEMA="director-plan.schema.review-v0.json"
+SCHEMA="director-plan.schema.v0-rc3.json"
+REVIEW_SCHEMA="director-plan.schema.review-rc3.json"
 VERSION="director-plan/0.1.0"
 ORIGINAL_VERSION="director-plan/0.0-review"
-FIXTURES=[("no-action-beat.example.review-v0.json","no-action-beat.example.v0-rc2.json"),
-          ("cross-shot-once.example.review-v0.json","cross-shot-once.example.v0-rc2.json")]
+FIXTURES=[("no-action-beat.example.review-v0.json","no-action-beat.example.v0-rc3.json"),
+          ("cross-shot-once.example.review-v0.json","cross-shot-once.example.v0-rc3.json")]
 schema=json.loads((ROOT/SCHEMA).read_text(encoding="utf-8"))
 old_schema=json.loads((ROOT/REVIEW_SCHEMA).read_text(encoding="utf-8"))
 Draft202012Validator.check_schema(schema)
 validator=Draft202012Validator(schema)
 assert schema["properties"]["contractVersion"]["const"]==VERSION
-assert schema["$id"]=="urn:canvas-lab:director-plan:0.1.0-rc2"
+assert schema["$id"]=="urn:canvas-lab:director-plan:0.1.0-rc3"
 # Only metadata and contractVersion const differ; no accidental semantic Schema drift.
 orig=copy.deepcopy(old_schema)
 new=copy.deepcopy(schema)
@@ -93,5 +93,5 @@ report={
   "cases":results,"passed":len(results),"total":len(results),
   "finalFrozen":False,"productionHashAndSemanticValidatorImplemented":False,
 }
-(ROOT/"v0-rc2-golden.report.json").write_text(json.dumps(report,ensure_ascii=False,indent=2)+"\n")
+(ROOT/"v0-rc3-golden.report.json").write_text(json.dumps(report,ensure_ascii=False,indent=2)+"\n")
 print("TOTAL",len(results),"PASS")
