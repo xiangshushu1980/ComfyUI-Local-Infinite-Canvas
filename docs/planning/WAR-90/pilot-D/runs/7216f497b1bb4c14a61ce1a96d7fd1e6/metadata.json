@@ -1,0 +1,18 @@
+{
+  "id": "7216f497b1bb4c14a61ce1a96d7fd1e6",
+  "started_at": "2026-11-14T15:24:32.003695+00:00",
+  "stage": "intent",
+  "mode": "resume",
+  "scope": "",
+  "targets": [],
+  "model": "gpt-6-astra",
+  "reasoning_effort": "medium",
+  "input_sha256": "21e58d8516430ed8352d6ea25306e72e5af474dd91f321dc88ef8057f131ba74",
+  "generator": "codex-cli",
+  "status": "quarantined",
+  "error": "Codex exited 1; inspect saved stderr/events",
+  "finished_at": "2026-11-14T15:24:36.650631+00:00",
+  "input.txt_sha256": "21e58d8516430ed8352d6ea25306e72e5af474dd91f321dc88ef8057f131ba74",
+  "events.jsonl_sha256": "f439901ec6815d5ea942d6c37c99c4ed58434d5ecb676d2f916a1cf3407449e9",
+  "stderr.txt_sha256": "9dd042c8af93193a118e158ee7419ecb5cf1ee19f4525182bf9e2f3921c7a115"
+}

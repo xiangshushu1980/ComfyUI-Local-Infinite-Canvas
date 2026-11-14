@@ -1,0 +1,53 @@
+{
+  "format": "war90-pilot-only-v0",
+  "initialized_at": "2026-11-14T15:22:36.547665+00:00",
+  "inputs": {
+    "source.txt": {
+      "origin": "/home/sean/projects/canvas-lab/docs/validation/WAR-61/evidence/raw-package/toonflow-20261107/xia-61-script-D/script-D.txt",
+      "sha256": "65b8a2f83cefc2281879fb254d3ee25dfd68d72e7cd0d811a2afbade5c1e165d"
+    },
+    "skill/SKILL.md": {
+      "origin": "/home/sean/projects/canvas-lab/docs/planning/WAR-89/director-skill-v0-candidate/SKILL.md",
+      "sha256": "3eee7d6f3c3032fc43e97b86a9606f8ae77943fa377aa2f56e2770c2b76e8676"
+    },
+    "skill/stages/intent.md": {
+      "origin": "/home/sean/projects/canvas-lab/docs/planning/WAR-89/director-skill-v0-candidate/stages/intent.md",
+      "sha256": "ac07ecb95cbd511888911a0f85aa08f5fee2824cbf8e23749ef0d6ffec065a38"
+    },
+    "skill/stages/beat.md": {
+      "origin": "/home/sean/projects/canvas-lab/docs/planning/WAR-89/director-skill-v0-candidate/stages/beat.md",
+      "sha256": "6e81d45db1d0249cf33a200135f0ab790a49b65d92c7d036b0e253ac978121a1"
+    },
+    "skill/stages/blocking.md": {
+      "origin": "/home/sean/projects/canvas-lab/docs/planning/WAR-89/director-skill-v0-candidate/stages/blocking.md",
+      "sha256": "2663d5acc282d636400539aecc643871c26c12867c5d480d9c02793ad45c5563"
+    },
+    "skill/stages/shot-plan.md": {
+      "origin": "/home/sean/projects/canvas-lab/docs/planning/WAR-89/director-skill-v0-candidate/stages/shot-plan.md",
+      "sha256": "fa0c7d4cc39fdf6b5df9c8a0e3e9b0ee6eafa921142b5a5f07efcdc8cf989476"
+    },
+    "skill/references/knowledge-index.md": {
+      "origin": "/home/sean/projects/canvas-lab/docs/planning/WAR-89/director-skill-v0-candidate/references/knowledge-index.md",
+      "sha256": "4d8edcb664659d78f897aa7baa8c1f275a57b5ff128ab433c95745b32a5e2519"
+    },
+    "skill/references/review-method.md": {
+      "origin": "/home/sean/projects/canvas-lab/docs/planning/WAR-89/director-skill-v0-candidate/references/review-method.md",
+      "sha256": "72b23f163fe1fdea6a547d5b47f39392ba0b9b63b814a7a285db4a7df0e88e8e"
+    }
+  },
+  "stage": "intent",
+  "phase": "ready",
+  "active": null,
+  "pilot_A": null,
+  "pilot_B": null,
+  "reviews": [],
+  "runs": [],
+  "thread_id": null,
+  "pending_shots": [],
+  "unknown": [
+    "media",
+    "geometry",
+    "audience"
+  ],
+  "formal_WAR35_approval": false
+}
