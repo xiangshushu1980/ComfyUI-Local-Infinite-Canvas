@@ -1,0 +1,6 @@
+WAR-89 独立候选 v0：用户已采纳 ChatGPT 上轮审阅建议 F1/F2。本轮你是 Eric 上的 Codex Luna (Low) **狭义修订作者**，ChatGPT 独立审阅。项目根 /home/sean/projects/canvas-lab。先读取 /home/sean/.pi/agent/skills/linear-task-collab/SKILL.md（本轮此前已被 ChatGPT 读过），按需读 /home/sean/projects/canvas-lab/docs/planning/WAR-89/director-skill-v0-chatgpt-review-20261114.md、七文件候选相应段落、D 纸面走查。先 git status/branch；当前 WAR-35 分支、混有他人未提交变更，**只允许修改 docs/planning/WAR-89/**，不改 WAR-35/52、原始 Skill、冻结脚本/研究证据或其他目录。不要安装 Skill、跑任何 C/D/E 模型试验或媒体，不更新 Linear，不执行 Git commit/stage/reset/checkout。
+
+在不改变剧情和七文件体系前提下，解决两个明确问题：
+F1：Shot02 客观钥匙插镜也可能被误认成 **林的 POV**，不仅是周的 POV。修改候选 stages/shot-plan.md 通用专业检查（简练、可泛化、不把 D 固定事实塞进 Skill），修改 D 纸面走查的 Shot01 入镜方案、关系/客观替代对比、Shot02 镜头进入及 Shot03 接回、Resume 检查，使“林头低/查找→钥匙特写”不成为符合林视轴的匹配眼线；从演员手的客观连续动作、可见世界空间和人物注视去别处来解除强 POV 暗示；仍保留观众先发现、林第一次未注意、周只看遮盖推断、蓝夹再遮、林二次发现、周右手交接。不要把“客观”字样当作证据，不强制新增镜头；仍承认实际观众归因未知。
+F2：stages/blocking.md 末段“人眼和摄影机共享视线就必然看见”要细分世界物理可见、角色朝向、注意/知情、观众实际理解；明确物理遮挡硬要求冲突 versus 可能扫过未注意不能机械认定角色已知。小范围修改。
+必要时在 D paper 最末新增修订说明，记录相对 `ee1d283` 原候选的变动与仍需实测的风险，不改原剧本或旧审阅报告。除此不扩写长 Prompt、不添加 hard-coded 时长/摄影参数、不改 7 文件结构。执行静态 diff/readback 与局部交接一致性检查，保留修改文件 sha256，在最后简短返回修改内容、路径、未证风险、Git 状态。只能本轮上述两个修订，别运行真实 LLM C/D/E 对照。
