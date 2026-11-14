@@ -15,7 +15,7 @@ for name in ("no-action-beat.example.review-v0.json","cross-shot-once.example.re
     obj=json.loads((root/name).read_text())
     verify("fixture-"+name,Draft202012Validator(schema).is_valid(obj),True)
 check=Draft202012Validator({"$defs":schema["$defs"],"$ref":"#/$defs/check"})
-base={"id":"C-1","target":{"planId":"P-FOX","revisionId":"R2","planContentSha256":"0"*64,"hashRule":"war35-plan-jcs8785-sha256/1"},"targetRefs":["intent:I-CROSS"],"dependencyRefs":[],"checkSpec":"test","checkSpecVersion":"A/1","method":"text","result":"unknown","applicability":"valid","dependencyHashRule":"war35-dep-jcs8785-sha256/1"}
+base={"id":"C-1","target":{"planId":"P-FOX","revisionId":"R2","planContentSha256":"0"*64,"hashRule":"war35-plan-jcs8785-sha256/1"},"targetRefs":["intent:I-CROSS"],"dependencyRefs":[],"checkSpec":"test","checkSpecVersion":"A/1","method":"text","result":"unknown","applicability":"valid","dependencyHashRule":"war35-dep-jcs8785-sha256/2"}
 fixtures=[
  ("unknown-no-fingerprint",base,True),
  ("not_checked-no-fingerprint",dict(base,result="not_checked"),True),

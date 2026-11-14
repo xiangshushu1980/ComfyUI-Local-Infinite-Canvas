@@ -985,7 +985,7 @@
           "minLength": 1
         },
         "dependencyHashRule": {
-          "const": "war35-dep-jcs8785-sha256/1"
+          "const": "war35-dep-jcs8785-sha256/2"
         },
         "collectionPaths": {
           "type": "array",
@@ -994,7 +994,7 @@
             "pattern": "^/"
           },
           "uniqueItems": true,
-          "description": "Optional plan-relative RFC 6901 JSON pointers to full collection values, including membership and original semantic order; transitive typed refs are resolved too."
+          "description": "Optional plan-relative RFC 6901 JSON pointers to full collection values, including membership and order except at declared typed-ref set locations. Follow typed edges and verify embedded sources."
         },
         "evidenceBindings": {
           "type": "array",
@@ -1106,7 +1106,7 @@
           }
         }
       ],
-      "description": "D-JCS-1: full typed-ref closure; unresolved source/ref/path gives no digest and cannot inherit. Media pass/fail additionally require an immutable executionTarget and >=1 inspected media evidence binding; media bindings enter dependency hash. See WAR-35 proposal sections 23-24."
+      "description": "D-JCS-1: full typed-ref closure; unresolved source/ref/path gives no digest and cannot inherit. Media pass/fail additionally require an immutable executionTarget and >=1 inspected media evidence binding; media bindings enter dependency hash. Profile /2 preserves opaque StateValue JSON. Human/proxy and non-media checks relying on external observations cannot inherit without verified content and scope; the research resolver returns unresolved. See WAR-35 Phase A."
     },
     "risk": {
       "type": "object",
@@ -1333,7 +1333,7 @@
           "const": "unchanged_dependencies"
         },
         "dependencyHashRule": {
-          "const": "war35-dep-jcs8785-sha256/1"
+          "const": "war35-dep-jcs8785-sha256/2"
         },
         "intoCheckId": {
           "$ref": "#/$defs/localId"

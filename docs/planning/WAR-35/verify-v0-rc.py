@@ -87,6 +87,7 @@ report={
   "schemaId":schema["$id"],
   "contractVersion":VERSION,
   "planHashRule":"war35-plan-jcs8785-sha256/1",
+  "dependencyHashRule":module["RULE"],
   "hashPayload":"{contractVersion,plan}",
   "golden":digests,
   "cases":results,"passed":len(results),"total":len(results),

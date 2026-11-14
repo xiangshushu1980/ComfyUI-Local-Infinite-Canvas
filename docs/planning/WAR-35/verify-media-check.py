@@ -12,7 +12,7 @@ check=Draft202012Validator({"$defs":schema["$defs"],"$ref":"#/$defs/check"})
 target={"unitRef":"UNIT-01","projectionRevision":"PR1","projectionContentSha256":"a"*64,"projectionHashRule":"war52-projection-test/1"}
 evidence=[{"evidenceRef":"media:FRAME-01","contentSha256":"b"*64,"conditionSha256":"c"*64},
           {"evidenceRef":"media:FRAME-02","contentSha256":"d"*64,"conditionSha256":"c"*64}]
-base={"id":"C-MEDIA","target":{"planId":"P-FOX","revisionId":"R2","planContentSha256":"0"*64,"hashRule":"war35-plan-jcs8785-sha256/1"},"targetRefs":["intent:I-CROSS"],"dependencyRefs":[],"checkSpec":"Actual output has visible landing","checkSpecVersion":"media-v1","method":"media","result":"pass","applicability":"valid","dependencyHashRule":"war35-dep-jcs8785-sha256/1","dependencyFingerprintSha256":"e"*64,"executionTarget":target,"evidenceBindings":evidence}
+base={"id":"C-MEDIA","target":{"planId":"P-FOX","revisionId":"R2","planContentSha256":"0"*64,"hashRule":"war35-plan-jcs8785-sha256/1"},"targetRefs":["intent:I-CROSS"],"dependencyRefs":[],"checkSpec":"Actual output has visible landing","checkSpecVersion":"media-v1","method":"media","result":"pass","applicability":"valid","dependencyHashRule":"war35-dep-jcs8785-sha256/2","dependencyFingerprintSha256":"e"*64,"executionTarget":target,"evidenceBindings":evidence}
 passed=[]
 def test(name,actual,expected=True):
     if actual!=expected: raise AssertionError(f"{name}: expected {expected}, got {actual}")

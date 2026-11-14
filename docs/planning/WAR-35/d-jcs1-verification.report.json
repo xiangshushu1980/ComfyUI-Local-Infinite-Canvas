@@ -1,8 +1,8 @@
 {
   "task": "WAR-35",
-  "profile": "war35-dep-jcs8785-sha256/1",
+  "profile": "war35-dep-jcs8785-sha256/2",
   "scope": "design-only; inline source resolver, no production media",
-  "baselineDigest": "c3d051880c50bc5a269a9fa8e057cf62a81b5006e2d27cef5fd1e136c1e7246f",
+  "baselineDigest": "d7d12f0777ad0878cc92bcb56884a06f8367b626b9259c90edaeb9679d1248bb",
   "cases": [
     "baseline-resolved",
     "D-P01-scope-set-order",

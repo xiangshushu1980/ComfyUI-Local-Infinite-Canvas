@@ -36,7 +36,7 @@ def make_check(cid,pkg,sp):
             "targetRefs":sp["targetRefs"],"dependencyRefs":sp["dependencyRefs"],
             "collectionPaths":sp["collectionPaths"],
             "checkSpec":sp["checkSpec"],"checkSpecVersion":sp["checkSpecVersion"],
-            "method":sp["method"],"dependencyHashRule":"war35-dep-jcs8785-sha256/1",
+            "method":sp["method"],"dependencyHashRule":"war35-dep-jcs8785-sha256/2",
             "dependencyFingerprintSha256":dep_sha(pkg,sp),"result":"pass","applicability":"valid"}
 c1,c2=make_check("C-A1",older,spec),make_check("C-A2",newer,spec)
 b_spec=dict(spec,targetRefs=["shot:S-ADDED"],checkSpec="Shot B: output evidence criteria",checkSpecVersion="shotB/1")
@@ -49,7 +49,7 @@ new_d={"id":"D-A2","gate":"intentA","target":t2,"verdict":"approved",
 b_d={"id":"D-B2","gate":"shotB","target":t2,"verdict":"approved",
       "checkIds":["C-B"],"decisionBasis":"reviewed","rationale":"Shot B reviewed"}
 inherit={"fromCheckId":"C-A1","intoCheckId":"C-A2","intoTarget":t2,
-         "dependencyHashRule":"war35-dep-jcs8785-sha256/1",
+         "dependencyHashRule":"war35-dep-jcs8785-sha256/2",
          "dependencyFingerprintSha256":c1["dependencyFingerprintSha256"],
          "basis":"unchanged_dependencies"}
 risk={"id":"R-1","riskVersionId":"V1","target":t2,"targetRefs":["shot:S-ADDED"],
@@ -88,9 +88,9 @@ def valid_case(case,check_current=False):
             if c["result"]!="pass" or c["applicability"]!="valid": return False
             pkg=pkgs.get(json.dumps(c["target"],sort_keys=True))
             if pkg is None: return False
-            scope={k:c[k] for k in ("targetRefs","dependencyRefs","collectionPaths","checkSpec","checkSpecVersion","method")}
             if c["method"]=="media": return False  # no media auto carry in v0 A
-            return dep_sha(pkg,scope)==c["dependencyFingerprintSha256"]
+            fingerprint = dep_sha(pkg, c)
+            return fingerprint is not None and fingerprint == c["dependencyFingerprintSha256"]
         def risk_valid(dec):
             pairs=dec.get("acceptedRisks",[])
             if len({p["riskId"] for p in pairs})!=len(pairs): return False  # one accepted version per risk identity
@@ -131,7 +131,7 @@ def valid_case(case,check_current=False):
                 if item["fromCheckId"] not in prev_ids: return False
                 if item["dependencyHashRule"]!=prior["dependencyHashRule"] or item["dependencyHashRule"]!=current_c["dependencyHashRule"]: return False
                 if item["dependencyFingerprintSha256"]!=prior["dependencyFingerprintSha256"] or item["dependencyFingerprintSha256"]!=current_c["dependencyFingerprintSha256"]: return False
-                if any(prior[k]!=current_c[k] for k in ("targetRefs","dependencyRefs","collectionPaths","checkSpec","checkSpecVersion","method")): return False
+                # Equal recomputed /2 fingerprints already compare normalized scopes and specs.
                 predecessors.add(item["fromCheckId"])
             return predecessors==prev_ids
         if not decide("D-A2",set()): return False

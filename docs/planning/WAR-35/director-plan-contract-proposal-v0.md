@@ -1148,3 +1148,7 @@ python3 docs/planning/WAR-35/verify-d-jcs1-schema.py
 ```
 
 **Git 分步**：此前 §23 D-JCS `f8a288b`、§24 Media `20b6029`、§25 Decision `754105b`、§26 raw I-JSON `f904099` 已单独提交。RC1 Schema/fixtures/generator/verifier/Golden/本节采用第五个独立 commit，只推送现有 `war-35-schema-freeze-review-20261114` 分支。正式冻结须在用户确认后以第六个、可独立审计的 commit 完成，不重写以上历史。
+
+## 28. RC1 冻结阻塞修复 · 阶段 A（2026-11-14）
+
+当前结论为 Not ready。§23–27 的 /1 验证数字与就绪判断对应 `cbfc75d` 历史候选。Astra 独立复核见 `final-independent-rc1-freeze-review-20261114.md`（`f323e15`）。现行依赖规则、反例逐项修复前后对照、Golden 与阶段 B 入口见 [阶段 A 验证记录](phase-a-dependency-review-20261114.md)。

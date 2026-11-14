@@ -4,34 +4,54 @@ import copy, hashlib, json, re
 from pathlib import Path
 import rfc8785
 ROOT=Path(__file__).resolve().parent
-RULE="war35-dep-jcs8785-sha256/1"
-SETS={"sourceRefs","basisRefs","intentRefs","actionRefs","deltaRefs","afterBeatRefs","participantRefs","objectRefs","afterDeltaRefs","provenanceRefs","scopeRefs","spatialBasisRefs","beatRefs","blockingRefs","subjectRefs","entryDeltaRefs","exitDeltaRefs"}
-SINGLES={"deltaRef","triggerRef","actionRef","completionDeltaRef"}
+RULE="war35-dep-jcs8785-sha256/2"
+# Plan-relative schema locations. None denotes an array item (never an object key).
+REF_FIELDS = {
+    ("storyBasis", "constraints", None): ("sourceRefs",),
+    ("storyBasis", "facts", None): ("sourceRefs",),
+    ("storyBasis", "subjects", None): ("sourceRefs",),
+    ("intents", None): ("basisRefs",),
+    ("beats", None): ("intentRefs", "actionRefs", "deltaRefs", "afterBeatRefs"),
+    ("actions", None): ("participantRefs", "objectRefs"),
+    ("state", "baseline", None): ("sourceRefs",),
+    ("state", "deltas", None): ("afterDeltaRefs", "provenanceRefs"),
+    ("blockings", None): ("scopeRefs", "spatialBasisRefs"),
+    ("shots", None): ("intentRefs", "beatRefs", "blockingRefs"),
+    ("shots", None, "visualDesign"): ("subjectRefs",),
+    ("shots", None, "boundary"): ("entryDeltaRefs", "exitDeltaRefs"),
+}
+REF_SETS = {parent + (name,) for parent, names in REF_FIELDS.items() for name in names}
+REF_SINGLES = {
+    ("actions", None, "completion", "deltaRef"),
+    ("state", "deltas", None, "triggerRef"),
+    ("shots", None, "actionCoverage", None, "actionRef"),
+    ("shots", None, "actionCoverage", None, "completionDeltaRef"),
+}
+SOURCE_ITEM = ("storyBasis", "sources", None)
 REG={"source":("storyBasis","sources","sourceId"),"fact":("storyBasis","facts","id"),"constraint":("storyBasis","constraints","id"),"subject":("storyBasis","subjects","id"),"intent":("intents","id"),"beat":("beats","id"),"action":("actions","id"),"delta":("state","deltas","id"),"blocking":("blockings","id"),"shot":("shots","id")}
 class Unresolved(Exception): pass
 def load(name): return json.loads((ROOT/name).read_text())
-def normalized(v):
-    refs=set()
-    def walk(x):
-        if isinstance(x,list): return [walk(y) for y in x]
-        if not isinstance(x,dict): return x
-        out={}
-        for k,y in x.items():
-            if k in SETS:
-                if not isinstance(y,list) or not all(isinstance(z,str) for z in y): raise Unresolved(k)
-                refs.update(y); out[k]=sorted(set(y))
-            elif k in SINGLES:
-                if not isinstance(y,str): raise Unresolved(k)
-                refs.add(y); out[k]=y
-            else: out[k]=walk(y)
-        return out
-    return walk(v),refs
+def normalized(value, location, refs):
+    if location == SOURCE_ITEM:
+        # Even an embedded binding must resolve uniquely to verified source bytes.
+        refs.add(value["sourceId"])
+    if location in REF_SETS:
+        refs.update(value)
+        return sorted(set(value))
+    if location in REF_SINGLES:
+        refs.add(value)
+    if isinstance(value, list):
+        return [normalized(item, location + (None,), refs) for item in value]
+    if isinstance(value, dict):
+        return {key: normalized(item, location + (key,), refs) for key, item in value.items()}
+    return value
+
 def resolve(plan,ref):
     if not isinstance(ref,str) or ":" not in ref: raise Unresolved("bad ref")
     kind,local=ref.split(":",1)
     if kind=="plan":
         if local!=plan["planId"]: raise Unresolved(ref)
-        return plan
+        return plan, ()
     parts=REG.get(kind)
     if not parts: raise Unresolved(ref)
     if len(parts)==3:
@@ -40,9 +60,10 @@ def resolve(plan,ref):
         a,k=parts; items=plan.get(a,[])
     matches=[v for v in items if v.get(k)==(ref if kind=="source" else local)]
     if len(matches)!=1: raise Unresolved(ref)
-    return matches[0]
+    return matches[0], (*parts[:-1], None)
 def verify_source(pkg,src):
     sha=src.get("contentSha256")
+    if src.get("mediaKind") != "text": raise Unresolved("asset resolver unavailable")
     if not sha: raise Unresolved("missing source hash")
     matches=[s for s in pkg.get("sourceSnapshots",[]) if s.get("sourceId")==src["sourceId"] and s.get("contentSha256")==sha]
     # Research verifier only resolves inline text; external resolver remains unverified.
@@ -50,6 +71,7 @@ def verify_source(pkg,src):
     if hashlib.sha256(matches[0]["text"].encode()).hexdigest()!=sha: raise Unresolved("source mismatch")
 def collection(plan,path):
     if not isinstance(path,str) or not path.startswith("/"): raise Unresolved("pointer")
+    location = ()
     value=plan
     for seg in path.split("/")[1:]:
         if re.search(r"~(?![01])",seg): raise Unresolved("pointer escape")
@@ -57,23 +79,34 @@ def collection(plan,path):
         try:
             if isinstance(value,list):
                 if not seg.isascii() or not seg.isdecimal() or (len(seg)>1 and seg.startswith("0")): raise Unresolved("index")
+                location += (None,)
                 value=value[int(seg)]
-            else: value=value[seg]
+            else:
+                location += (seg,)
+                value=value[seg]
         except (KeyError,IndexError,TypeError): raise Unresolved("pointer missing")
     if not isinstance(value,list): raise Unresolved("not collection")
-    return value
+    return value, location
 def payload(pkg,spec):
+    if spec.get("dependencyHashRule", RULE) != RULE:
+        raise Unresolved("incompatible dependency profile")
+    if spec["method"] != "media" and (
+        spec["method"] in ("human", "geometry_proxy") or
+        spec.get("evidenceRefs") or spec.get("evidenceBindings") or spec.get("executionTarget")
+    ):
+        raise Unresolved("external observation content and scope cannot be verified")
     plan=pkg["plan"]
     scope={k:sorted(set(spec.get(k,[]))) for k in ("targetRefs","dependencyRefs","collectionPaths")}
     pending=set(scope["targetRefs"]+scope["dependencyRefs"]); objects={}; cols=[]
     for path in scope["collectionPaths"]:
-        val,extra=normalized(collection(plan,path)); cols.append({"path":path,"value":val}); pending.update(extra)
+        value, location = collection(plan, path)
+        cols.append({"path": path, "value": normalized(value, location, pending)})
     while pending:
         ref=min(pending); pending.remove(ref)
         if ref in objects: continue
-        obj=resolve(plan,ref)
+        obj, location = resolve(plan,ref)
         if ref.startswith("source:"): verify_source(pkg,obj)
-        val,extra=normalized(obj); objects[ref]=val; pending.update(extra-set(objects))
+        objects[ref] = normalized(obj, location, pending)
     result={"profile":RULE,"contractVersion":pkg["contractVersion"],"planIdentity":{"planId":plan["planId"],"sceneId":plan["sceneId"]},"checkSpec":{"text":spec["checkSpec"],"version":spec["checkSpecVersion"],"method":spec["method"]},"scope":scope,"resolvedObjects":[{"ref":k,"value":objects[k]} for k in sorted(objects)],"collections":sorted(cols,key=lambda x:x["path"])}
     if spec["method"]=="media":
         target=spec.get("executionTarget")

@@ -5,19 +5,20 @@
   "schemaId": "urn:canvas-lab:director-plan:0.1.0-rc1",
   "contractVersion": "director-plan/0.1.0",
   "planHashRule": "war35-plan-jcs8785-sha256/1",
+  "dependencyHashRule": "war35-dep-jcs8785-sha256/2",
   "hashPayload": "{contractVersion,plan}",
   "golden": {
     "no-action-beat.example.v0-rc1.json": {
       "sha256": "c3a7e1b938fb16aedb0f3e28c6693223c80d3cab4c9a450adfe896778b33ef0e",
       "canonicalBytes": 794,
       "reviewDraftSha256": "c15b2272d787862a1366f24391982c25df906375ebf141e17427df2d633e3322",
-      "candidateIntentDependencySha256": "a04aeb2dc8f601b5ae21d22cb23166819e127b5670d2edbf69afb29ff22b6711"
+      "candidateIntentDependencySha256": "24ba48c4cc22877df43abe56f7c8b1f91e354b730edaf07979f0ab63a03e83d1"
     },
     "cross-shot-once.example.v0-rc1.json": {
       "sha256": "8b163c5db47ef392da2181b3801fef051eb63a0012f773021d434c036df261ac",
       "canonicalBytes": 2679,
       "reviewDraftSha256": "0bb91a8f207effbe17756217e92bf9f5311243339b1a0064a6f19554f7c35dbc",
-      "candidateIntentDependencySha256": "5de00b76a687852101095144a4d849c3797a39d71ad45a3f25cb5acc277ce74f"
+      "candidateIntentDependencySha256": "048d0befa6be64eee9305941a8eed9a7ffe8bdcee4add9c03747f8a9635ddba3"
     }
   },
   "cases": [
