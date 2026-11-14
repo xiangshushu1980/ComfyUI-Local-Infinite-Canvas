@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:canvas-lab:director-plan:review-v0",
+  "$id": "urn:canvas-lab:director-plan:review-rc2",
   "title": "Director Skill v0 standalone package (REVIEW DRAFT, NOT FROZEN)",
   "description": "REVIEW DRAFT ONLY. P-JCS-1, D-JCS-1 and WAR-52 phase mapping are design profiles, not a production semantic validator.",
   "type": "object",
@@ -985,7 +985,7 @@
           "minLength": 1
         },
         "dependencyHashRule": {
-          "const": "war35-dep-jcs8785-sha256/2"
+          "const": "war35-dep-jcs8785-sha256/3"
         },
         "collectionPaths": {
           "type": "array",
@@ -1106,7 +1106,7 @@
           }
         }
       ],
-      "description": "D-JCS-1: full typed-ref closure; unresolved source/ref/path gives no digest and cannot inherit. Media pass/fail additionally require an immutable executionTarget and >=1 inspected media evidence binding; media bindings enter dependency hash. Profile /2 preserves opaque StateValue JSON. Human/proxy and non-media checks relying on external observations cannot inherit without verified content and scope; the research resolver returns unresolved. See WAR-35 Phase A."
+      "description": "D-JCS-1: full typed-ref closure; unresolved source/ref/path gives no digest and cannot inherit. Media pass/fail additionally require an immutable executionTarget and >=1 inspected media evidence binding; media bindings enter dependency hash. Profile /3 requires a registered versioned source policy and preserves opaque StateValue JSON. Human/proxy and non-media checks relying on external observations cannot inherit without verified content and scope; the research resolver returns unresolved. See WAR-35 Phase A."
     },
     "risk": {
       "type": "object",
@@ -1333,7 +1333,7 @@
           "const": "unchanged_dependencies"
         },
         "dependencyHashRule": {
-          "const": "war35-dep-jcs8785-sha256/2"
+          "const": "war35-dep-jcs8785-sha256/3"
         },
         "intoCheckId": {
           "$ref": "#/$defs/localId"

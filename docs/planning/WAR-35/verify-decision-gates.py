@@ -30,13 +30,13 @@ def plan_target(pkg):
             "hashRule":"war35-plan-jcs8785-sha256/1"}
 t1,t2=plan_target(older),plan_target(newer)
 spec={"targetRefs":["intent:I-CROSS"],"dependencyRefs":[],"collectionPaths":[],
-      "checkSpec":"Intent A: narrative goal consistency", "checkSpecVersion":"intentA/1", "method":"text"}
+      "checkSpec":"Intent A: narrative goal consistency", "checkSpecVersion":"intentA/2", "method":"text"}
 def make_check(cid,pkg,sp):
     return {"id":cid,"target":plan_target(pkg),
             "targetRefs":sp["targetRefs"],"dependencyRefs":sp["dependencyRefs"],
             "collectionPaths":sp["collectionPaths"],
             "checkSpec":sp["checkSpec"],"checkSpecVersion":sp["checkSpecVersion"],
-            "method":sp["method"],"dependencyHashRule":"war35-dep-jcs8785-sha256/2",
+            "method":sp["method"],"dependencyHashRule":"war35-dep-jcs8785-sha256/3",
             "dependencyFingerprintSha256":dep_sha(pkg,sp),"result":"pass","applicability":"valid"}
 c1,c2=make_check("C-A1",older,spec),make_check("C-A2",newer,spec)
 b_spec=dict(spec,targetRefs=["shot:S-ADDED"],checkSpec="Shot B: output evidence criteria",checkSpecVersion="shotB/1")
@@ -49,7 +49,7 @@ new_d={"id":"D-A2","gate":"intentA","target":t2,"verdict":"approved",
 b_d={"id":"D-B2","gate":"shotB","target":t2,"verdict":"approved",
       "checkIds":["C-B"],"decisionBasis":"reviewed","rationale":"Shot B reviewed"}
 inherit={"fromCheckId":"C-A1","intoCheckId":"C-A2","intoTarget":t2,
-         "dependencyHashRule":"war35-dep-jcs8785-sha256/2",
+         "dependencyHashRule":"war35-dep-jcs8785-sha256/3",
          "dependencyFingerprintSha256":c1["dependencyFingerprintSha256"],
          "basis":"unchanged_dependencies"}
 risk={"id":"R-1","riskVersionId":"V1","target":t2,"targetRefs":["shot:S-ADDED"],
@@ -74,7 +74,7 @@ def valid_case(case,check_current=False):
         risk_keys=[(r["id"],r["riskVersionId"]) for r in case["risks"]]
         if len(set(risk_keys))!=len(risk_keys): return False
         risks={k:v for k,v in zip(risk_keys,case["risks"])}
-        gate_spec={("intentA/1","Intent A: narrative goal consistency"):"intentA",
+        gate_spec={("intentA/2","Intent A: narrative goal consistency"):"intentA",
                    ("shotB/1","Shot B: output evidence criteria"):"shotB"} # synthetic approved-spec fixture
         inheritances=unique_by(case["inheritances"],"intoCheckId")
         pkgs={json.dumps(plan_target(p),sort_keys=True):p for p in case["packages"]}
@@ -131,7 +131,7 @@ def valid_case(case,check_current=False):
                 if item["fromCheckId"] not in prev_ids: return False
                 if item["dependencyHashRule"]!=prior["dependencyHashRule"] or item["dependencyHashRule"]!=current_c["dependencyHashRule"]: return False
                 if item["dependencyFingerprintSha256"]!=prior["dependencyFingerprintSha256"] or item["dependencyFingerprintSha256"]!=current_c["dependencyFingerprintSha256"]: return False
-                # Equal recomputed /2 fingerprints already compare normalized scopes and specs.
+                # Equal recomputed /3 fingerprints already compare normalized scopes and specs.
                 predecessors.add(item["fromCheckId"])
             return predecessors==prev_ids
         if not decide("D-A2",set()): return False

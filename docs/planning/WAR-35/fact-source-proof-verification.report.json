@@ -1,0 +1,304 @@
+{
+  "baseline": "cb7e8fd",
+  "candidate": "RC2",
+  "before": {
+    "profile": "war35-dep-jcs8785-sha256/2",
+    "cases": [
+      {
+        "case": "orphan-unchanged-digest",
+        "observed": "same",
+        "expected": "unresolved",
+        "passed": false
+      },
+      {
+        "case": "orphan-unchanged-Intent-A",
+        "observed": true,
+        "expected": false,
+        "passed": false
+      },
+      {
+        "case": "orphan-changed-digest",
+        "observed": "same",
+        "expected": "unresolved",
+        "passed": false
+      },
+      {
+        "case": "orphan-changed-Intent-A",
+        "observed": true,
+        "expected": false,
+        "passed": false
+      },
+      {
+        "case": "orphan-missing-digest",
+        "observed": "same",
+        "expected": "unresolved",
+        "passed": false
+      },
+      {
+        "case": "orphan-missing-Intent-A",
+        "observed": true,
+        "expected": false,
+        "passed": false
+      },
+      {
+        "case": "linked-unchanged-digest",
+        "observed": "same",
+        "expected": "same",
+        "passed": true
+      },
+      {
+        "case": "linked-unchanged-Intent-A",
+        "observed": true,
+        "expected": true,
+        "passed": true
+      },
+      {
+        "case": "linked-changed-digest",
+        "observed": "different",
+        "expected": "different",
+        "passed": true
+      },
+      {
+        "case": "linked-changed-Intent-A",
+        "observed": false,
+        "expected": false,
+        "passed": true
+      },
+      {
+        "case": "linked-missing-digest",
+        "observed": "unresolved",
+        "expected": "unresolved",
+        "passed": true
+      },
+      {
+        "case": "linked-missing-Intent-A",
+        "observed": false,
+        "expected": false,
+        "passed": true
+      },
+      {
+        "case": "fact:F-ONCE-unrelated-seed",
+        "observed": false,
+        "expected": true,
+        "passed": false
+      },
+      {
+        "case": "intent:I-CROSS-unrelated-seed",
+        "observed": false,
+        "expected": true,
+        "passed": false
+      },
+      {
+        "case": "unrelated-seed-Intent-A",
+        "observed": true,
+        "expected": false,
+        "passed": false
+      },
+      {
+        "case": "local-orphan-no-bytes",
+        "observed": true,
+        "expected": true,
+        "passed": true
+      },
+      {
+        "case": "unregistered-spec",
+        "observed": false,
+        "expected": true,
+        "passed": false
+      },
+      {
+        "case": "mislabeled-spec",
+        "observed": false,
+        "expected": true,
+        "passed": false
+      },
+      {
+        "case": "old-profile-refused",
+        "observed": false,
+        "expected": true,
+        "passed": false
+      },
+      {
+        "case": "other-fact-seed",
+        "observed": false,
+        "expected": true,
+        "passed": false
+      },
+      {
+        "case": "indirect-orphan-Intent-A",
+        "observed": true,
+        "expected": false,
+        "passed": false
+      },
+      {
+        "case": "indirect-linked-Intent-A",
+        "observed": true,
+        "expected": true,
+        "passed": true
+      },
+      {
+        "case": "direct-script-Intent-A",
+        "observed": true,
+        "expected": true,
+        "passed": true
+      },
+      {
+        "case": "local-policy-cannot-authorize-Intent-A",
+        "observed": false,
+        "expected": false,
+        "passed": true
+      }
+    ],
+    "passed": 10
+  },
+  "after": {
+    "profile": "war35-dep-jcs8785-sha256/3",
+    "cases": [
+      {
+        "case": "orphan-unchanged-digest",
+        "observed": "unresolved",
+        "expected": "unresolved",
+        "passed": true
+      },
+      {
+        "case": "orphan-unchanged-Intent-A",
+        "observed": false,
+        "expected": false,
+        "passed": true
+      },
+      {
+        "case": "orphan-changed-digest",
+        "observed": "unresolved",
+        "expected": "unresolved",
+        "passed": true
+      },
+      {
+        "case": "orphan-changed-Intent-A",
+        "observed": false,
+        "expected": false,
+        "passed": true
+      },
+      {
+        "case": "orphan-missing-digest",
+        "observed": "unresolved",
+        "expected": "unresolved",
+        "passed": true
+      },
+      {
+        "case": "orphan-missing-Intent-A",
+        "observed": false,
+        "expected": false,
+        "passed": true
+      },
+      {
+        "case": "linked-unchanged-digest",
+        "observed": "same",
+        "expected": "same",
+        "passed": true
+      },
+      {
+        "case": "linked-unchanged-Intent-A",
+        "observed": true,
+        "expected": true,
+        "passed": true
+      },
+      {
+        "case": "linked-changed-digest",
+        "observed": "different",
+        "expected": "different",
+        "passed": true
+      },
+      {
+        "case": "linked-changed-Intent-A",
+        "observed": false,
+        "expected": false,
+        "passed": true
+      },
+      {
+        "case": "linked-missing-digest",
+        "observed": "unresolved",
+        "expected": "unresolved",
+        "passed": true
+      },
+      {
+        "case": "linked-missing-Intent-A",
+        "observed": false,
+        "expected": false,
+        "passed": true
+      },
+      {
+        "case": "fact:F-ONCE-unrelated-seed",
+        "observed": true,
+        "expected": true,
+        "passed": true
+      },
+      {
+        "case": "intent:I-CROSS-unrelated-seed",
+        "observed": true,
+        "expected": true,
+        "passed": true
+      },
+      {
+        "case": "unrelated-seed-Intent-A",
+        "observed": false,
+        "expected": false,
+        "passed": true
+      },
+      {
+        "case": "local-orphan-no-bytes",
+        "observed": true,
+        "expected": true,
+        "passed": true
+      },
+      {
+        "case": "unregistered-spec",
+        "observed": true,
+        "expected": true,
+        "passed": true
+      },
+      {
+        "case": "mislabeled-spec",
+        "observed": true,
+        "expected": true,
+        "passed": true
+      },
+      {
+        "case": "old-profile-refused",
+        "observed": true,
+        "expected": true,
+        "passed": true
+      },
+      {
+        "case": "other-fact-seed",
+        "observed": true,
+        "expected": true,
+        "passed": true
+      },
+      {
+        "case": "indirect-orphan-Intent-A",
+        "observed": false,
+        "expected": false,
+        "passed": true
+      },
+      {
+        "case": "indirect-linked-Intent-A",
+        "observed": true,
+        "expected": true,
+        "passed": true
+      },
+      {
+        "case": "direct-script-Intent-A",
+        "observed": true,
+        "expected": true,
+        "passed": true
+      },
+      {
+        "case": "local-policy-cannot-authorize-Intent-A",
+        "observed": false,
+        "expected": false,
+        "passed": true
+      }
+    ],
+    "passed": 24
+  }
+}

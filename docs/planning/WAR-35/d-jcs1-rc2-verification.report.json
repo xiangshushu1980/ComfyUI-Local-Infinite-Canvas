@@ -1,0 +1,24 @@
+{
+  "task": "WAR-35",
+  "profile": "war35-dep-jcs8785-sha256/3",
+  "scope": "design-only; inline source resolver, no production media",
+  "baselineDigest": "6e048e441466a40d5718ae7f6bfb4e8f74ff0c24838b83f682d7d282759e5d72",
+  "cases": [
+    "baseline-resolved",
+    "D-P01-scope-set-order",
+    "D-P02-typed-ref-set-normalization",
+    "D-P03-new-shot-no-A-dependency",
+    "D-N01-D-N05-closure-not-allowlist",
+    "D-N02-missing-ref",
+    "D-N02-missing-source-sha",
+    "D-N02-source-unavailable",
+    "D-N02-source-mismatch",
+    "D-N02-collection-path-missing",
+    "D-N03-complete-object-changed",
+    "D-N04-collection-member",
+    "D-N04-collection-order",
+    "other-fixture"
+  ],
+  "passed": 14,
+  "externalResolverTested": false
+}

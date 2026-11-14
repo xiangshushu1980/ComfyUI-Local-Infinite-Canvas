@@ -12,7 +12,7 @@ check=Draft202012Validator({"$defs":schema["$defs"],"$ref":"#/$defs/check"})
 target={"unitRef":"UNIT-01","projectionRevision":"PR1","projectionContentSha256":"a"*64,"projectionHashRule":"war52-projection-test/1"}
 evidence=[{"evidenceRef":"media:FRAME-01","contentSha256":"b"*64,"conditionSha256":"c"*64},
           {"evidenceRef":"media:FRAME-02","contentSha256":"d"*64,"conditionSha256":"c"*64}]
-base={"id":"C-MEDIA","target":{"planId":"P-FOX","revisionId":"R2","planContentSha256":"0"*64,"hashRule":"war35-plan-jcs8785-sha256/1"},"targetRefs":["intent:I-CROSS"],"dependencyRefs":[],"checkSpec":"Actual output has visible landing","checkSpecVersion":"media-v1","method":"media","result":"pass","applicability":"valid","dependencyHashRule":"war35-dep-jcs8785-sha256/2","dependencyFingerprintSha256":"e"*64,"executionTarget":target,"evidenceBindings":evidence}
+base={"id":"C-MEDIA","target":{"planId":"P-FOX","revisionId":"R2","planContentSha256":"0"*64,"hashRule":"war35-plan-jcs8785-sha256/1"},"targetRefs":["intent:I-CROSS"],"dependencyRefs":[],"checkSpec":"Actual output has visible landing","checkSpecVersion":"media-v1","method":"media","result":"pass","applicability":"valid","dependencyHashRule":"war35-dep-jcs8785-sha256/3","dependencyFingerprintSha256":"e"*64,"executionTarget":target,"evidenceBindings":evidence}
 passed=[]
 def test(name,actual,expected=True):
     if actual!=expected: raise AssertionError(f"{name}: expected {expected}, got {actual}")
@@ -56,5 +56,5 @@ changed=copy.deepcopy(spec); changed["evidenceBindings"].append({**evidence[0],"
 test("M-N14-duplicate-ref-conflict-no-digest",digest(fox,changed) is None)
 # Research digests bind declared SHAs; bytes and authentic checks are intentionally not claimed.
 report={"task":"WAR-35","scope":"Blocking 2 Media Check design-only synthetic regression","total":len(passed),"passed":len(passed),"cases":passed,"mediaBytesVerified":False,"conditionSHAProfileVerified":False,"firstSyntheticDigest":first}
-(root/"media-check-verification.report.json").write_text(json.dumps(report,ensure_ascii=False,indent=2)+"\n")
+(root/"media-check-rc2-verification.report.json").write_text(json.dumps(report,ensure_ascii=False,indent=2)+"\n")
 print("TOTAL",len(passed),"PASS")

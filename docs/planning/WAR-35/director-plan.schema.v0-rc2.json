@@ -1,0 +1,1498 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:canvas-lab:director-plan:0.1.0-rc2",
+  "title": "DirectorPlan public Schema v0.1.0 — RELEASE CANDIDATE 2 (NOT FROZEN)",
+  "description": "RELEASE CANDIDATE ONLY, NOT FROZEN. Public standalone DirectorPlan contract with P-JCS-1 and D-JCS-1 profile design evidence. Production raw I-JSON input, cross-object Review semantics, evidence resolution and WAR-52 projection mapping require implementation/independent sign-off; this is not execution authorization.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contractVersion",
+    "plan"
+  ],
+  "properties": {
+    "contractVersion": {
+      "const": "director-plan/0.1.0"
+    },
+    "plan": {
+      "$ref": "#/$defs/plan"
+    },
+    "sourceSnapshots": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/sourceSnapshot"
+      }
+    },
+    "reviewLedger": {
+      "$ref": "#/$defs/reviewLedger"
+    },
+    "revisionControl": {
+      "$ref": "#/$defs/revisionControl"
+    },
+    "sourceLocators": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/sourceLocator"
+      }
+    }
+  },
+  "$defs": {
+    "localId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+    },
+    "anyRef": {
+      "type": "string",
+      "pattern": "^(plan|source|fact|constraint|subject|intent|beat|action|delta|blocking|shot):[A-Za-z0-9][A-Za-z0-9._-]*$"
+    },
+    "hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "stateKey": {
+      "type": "string",
+      "pattern": "^(world|knowledge):[A-Za-z0-9][A-Za-z0-9._:-]*$"
+    },
+    "stateValue": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "known"
+            },
+            "value": {
+              "description": "Any JSON value, including null, when genuinely known."
+            }
+          },
+          "required": [
+            "kind",
+            "value"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "unknown"
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "kind"
+          ]
+        }
+      ]
+    },
+    "sourceBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "sourceId": {
+          "type": "string",
+          "pattern": "^source:[A-Za-z0-9][A-Za-z0-9._-]*$"
+        },
+        "mediaKind": {
+          "enum": [
+            "text",
+            "asset"
+          ]
+        },
+        "contentSha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "sourceRevision": {
+          "type": "string",
+          "minLength": 1
+        },
+        "provenanceNote": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "sourceId",
+        "mediaKind"
+      ],
+      "description": "sourceId is stable; SHA identifies content. Drafts may lack SHA, ready profiles may not."
+    },
+    "sourceSnapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "sourceId": {
+          "type": "string",
+          "pattern": "^source:[A-Za-z0-9][A-Za-z0-9._-]*$"
+        },
+        "contentSha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "text": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "sourceId",
+        "contentSha256",
+        "text"
+      ],
+      "description": "Portable exact captured text; hash of UTF-8 bytes, verified by semantic checker."
+    },
+    "fact": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+        },
+        "statement": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sourceRefs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^source:[A-Za-z0-9][A-Za-z0-9._-]*$"
+          }
+        },
+        "category": {
+          "enum": [
+            "story",
+            "causal",
+            "spatial",
+            "knowledge",
+            "dialogue",
+            "timing"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "statement",
+        "sourceRefs"
+      ]
+    },
+    "subject": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "enum": [
+            "person",
+            "prop",
+            "place",
+            "other"
+          ]
+        },
+        "sourceRefs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^(source|fact):[A-Za-z0-9][A-Za-z0-9._-]*$"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "label"
+      ]
+    },
+    "storyBasis": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "sources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/sourceBinding"
+          },
+          "minItems": 1
+        },
+        "facts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/fact"
+          }
+        },
+        "subjects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/subject"
+          }
+        },
+        "constraints": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+              },
+              "statement": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sourceRefs": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^(source|fact):[A-Za-z0-9][A-Za-z0-9._-]*$"
+                }
+              }
+            },
+            "required": [
+              "id",
+              "statement",
+              "sourceRefs"
+            ]
+          }
+        }
+      },
+      "required": [
+        "sources"
+      ]
+    },
+    "intent": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+        },
+        "basisRefs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^(fact|source|constraint):[A-Za-z0-9][A-Za-z0-9._-]*$"
+          }
+        },
+        "creativeGoal": {
+          "type": "string",
+          "minLength": 1
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1
+        },
+        "releaseStrategy": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id",
+        "basisRefs",
+        "creativeGoal",
+        "rationale"
+      ]
+    },
+    "beat": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+        },
+        "dramaticChange": {
+          "type": "string",
+          "minLength": 1
+        },
+        "intentRefs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^intent:[A-Za-z0-9][A-Za-z0-9._-]*$"
+          }
+        },
+        "actionRefs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^action:[A-Za-z0-9][A-Za-z0-9._-]*$"
+          }
+        },
+        "deltaRefs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^delta:[A-Za-z0-9][A-Za-z0-9._-]*$"
+          }
+        },
+        "afterBeatRefs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^beat:[A-Za-z0-9][A-Za-z0-9._-]*$"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "dramaticChange"
+      ]
+    },
+    "completion": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "condition": {
+          "type": "string",
+          "minLength": 1
+        },
+        "deltaRef": {
+          "type": "string",
+          "pattern": "^delta:[A-Za-z0-9][A-Za-z0-9._-]*$"
+        }
+      },
+      "required": [
+        "condition",
+        "deltaRef"
+      ]
+    },
+    "phase": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "key": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "key"
+      ],
+      "description": "Order is phases array order, identity (actionId,phaseKey)."
+    },
+    "action": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "temporalKind": {
+          "enum": [
+            "once",
+            "ongoing"
+          ]
+        },
+        "participantRefs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^subject:[A-Za-z0-9][A-Za-z0-9._-]*$"
+          }
+        },
+        "objectRefs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^subject:[A-Za-z0-9][A-Za-z0-9._-]*$"
+          }
+        },
+        "preconditions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "completion": {
+          "$ref": "#/$defs/completion"
+        },
+        "phases": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/phase"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "description",
+        "temporalKind"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "temporalKind": {
+                "const": "once"
+              }
+            },
+            "required": [
+              "temporalKind"
+            ]
+          },
+          "then": {
+            "required": [
+              "completion"
+            ]
+          }
+        }
+      ],
+      "description": "A single shared action identity across beats, blockings, shots and projections."
+    },
+    "baselineEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "key": {
+          "$ref": "#/$defs/stateKey"
+        },
+        "value": {
+          "$ref": "#/$defs/stateValue"
+        },
+        "sourceRefs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^(source|fact):[A-Za-z0-9][A-Za-z0-9._-]*$"
+          }
+        }
+      },
+      "required": [
+        "key",
+        "value"
+      ]
+    },
+    "delta": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+        },
+        "key": {
+          "$ref": "#/$defs/stateKey"
+        },
+        "before": {
+          "$ref": "#/$defs/stateValue"
+        },
+        "after": {
+          "$ref": "#/$defs/stateValue"
+        },
+        "triggerRef": {
+          "type": "string",
+          "pattern": "^(action|beat):[A-Za-z0-9][A-Za-z0-9._-]*$"
+        },
+        "afterDeltaRefs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^delta:[A-Za-z0-9][A-Za-z0-9._-]*$"
+          }
+        },
+        "provenanceRefs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^(source|fact):[A-Za-z0-9][A-Za-z0-9._-]*$"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "key",
+        "before",
+        "after",
+        "triggerRef"
+      ],
+      "description": "Applies once, with dependency order checked outside JSON Schema; never a second completion truth."
+    },
+    "state": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "baseline": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/baselineEntry"
+          }
+        },
+        "deltas": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/delta"
+          }
+        }
+      }
+    },
+    "blocking": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+        },
+        "scopeRefs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^(beat|action):[A-Za-z0-9][A-Za-z0-9._-]*$"
+          },
+          "minItems": 1
+        },
+        "staging": {
+          "type": "string",
+          "minLength": 1
+        },
+        "spatialBasisRefs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^(fact|subject|source|constraint):[A-Za-z0-9][A-Za-z0-9._-]*$"
+          }
+        },
+        "observationNeeds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "assumptions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "required": [
+        "id",
+        "scopeRefs",
+        "staging"
+      ]
+    },
+    "phaseSpan": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "from": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+        },
+        "through": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+        }
+      },
+      "required": [
+        "from",
+        "through"
+      ],
+      "description": "Inclusive ordered endpoints in phases of the referenced Action."
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "actionRef": {
+          "type": "string",
+          "pattern": "^action:[A-Za-z0-9][A-Za-z0-9._-]*$"
+        },
+        "phaseSpan": {
+          "$ref": "#/$defs/phaseSpan"
+        },
+        "completionDeltaRef": {
+          "type": "string",
+          "pattern": "^delta:[A-Za-z0-9][A-Za-z0-9._-]*$"
+        }
+      },
+      "required": [
+        "actionRef"
+      ],
+      "description": "Presentation coverage, not event re-execution; absent phaseSpan is valid."
+    },
+    "visualDesign": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "subjectRefs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^subject:[A-Za-z0-9][A-Za-z0-9._-]*$"
+          }
+        },
+        "framing": {
+          "type": "string",
+          "minLength": 1
+        },
+        "cameraAngle": {
+          "type": "string",
+          "minLength": 1
+        },
+        "cameraMove": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "description"
+      ]
+    },
+    "criterion": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+        },
+        "statement": {
+          "type": "string",
+          "minLength": 1
+        },
+        "when": {
+          "type": "string",
+          "minLength": 1
+        },
+        "nonMisreading": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id",
+        "statement"
+      ]
+    },
+    "range": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "min": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "max": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        }
+      },
+      "required": [
+        "min",
+        "max"
+      ]
+    },
+    "timing": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "estimatedSeconds": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "rangeSeconds": {
+          "$ref": "#/$defs/range"
+        },
+        "cutCondition": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "shotBoundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "entryDeltaRefs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^delta:[A-Za-z0-9][A-Za-z0-9._-]*$"
+          }
+        },
+        "exitDeltaRefs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^delta:[A-Za-z0-9][A-Za-z0-9._-]*$"
+          }
+        },
+        "continuityKeys": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/stateKey"
+          }
+        }
+      }
+    },
+    "shot": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+        },
+        "intentRefs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^intent:[A-Za-z0-9][A-Za-z0-9._-]*$"
+          }
+        },
+        "beatRefs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^beat:[A-Za-z0-9][A-Za-z0-9._-]*$"
+          }
+        },
+        "blockingRefs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^blocking:[A-Za-z0-9][A-Za-z0-9._-]*$"
+          }
+        },
+        "primaryPurpose": {
+          "type": "string",
+          "minLength": 1
+        },
+        "secondaryPurposes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "visualDesign": {
+          "$ref": "#/$defs/visualDesign"
+        },
+        "evidenceCriteria": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/criterion"
+          },
+          "minItems": 1
+        },
+        "actionCoverage": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/coverage"
+          }
+        },
+        "timing": {
+          "$ref": "#/$defs/timing"
+        },
+        "boundary": {
+          "$ref": "#/$defs/shotBoundary"
+        }
+      },
+      "required": [
+        "id",
+        "primaryPurpose",
+        "visualDesign",
+        "evidenceCriteria"
+      ],
+      "description": "Sequence order is the shots array order, no fixed beat/shot correspondence."
+    },
+    "plan": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "planId": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+        },
+        "sceneId": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+        },
+        "revisionId": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+        },
+        "storyBasis": {
+          "$ref": "#/$defs/storyBasis"
+        },
+        "intents": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/intent"
+          }
+        },
+        "beats": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/beat"
+          }
+        },
+        "actions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/action"
+          }
+        },
+        "state": {
+          "$ref": "#/$defs/state"
+        },
+        "blockings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/blocking"
+          }
+        },
+        "shots": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/shot"
+          }
+        }
+      },
+      "required": [
+        "planId",
+        "sceneId",
+        "revisionId",
+        "storyBasis"
+      ],
+      "description": "Plan content fingerprint input is the versioned envelope {contractVersion,plan}, canonicalized per RFC 8785 JCS. Root sourceSnapshots, sourceLocators, reviewLedger and revisionControl excluded."
+    },
+    "planTarget": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "planId": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+        },
+        "revisionId": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+        },
+        "planContentSha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "hashRule": {
+          "const": "war35-plan-jcs8785-sha256/1"
+        }
+      },
+      "required": [
+        "planId",
+        "revisionId",
+        "planContentSha256",
+        "hashRule"
+      ]
+    },
+    "check": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+        },
+        "target": {
+          "$ref": "#/$defs/planTarget"
+        },
+        "targetRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/anyRef"
+          },
+          "minItems": 1,
+          "uniqueItems": true,
+          "description": "D-JCS-1 target seeds; always resolve target full objects and their schema-defined typed-reference transitive closure."
+        },
+        "dependencyRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/anyRef"
+          },
+          "uniqueItems": true,
+          "description": "Required array of additional dependency seeds (may be empty); NEVER an allowlist excluding references found in the target closure."
+        },
+        "dependencyFingerprintSha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "Only a SHA-256 of the FULL resolved D-JCS-1 canonical payload; absent on unresolved scope. Do not emit partial/placeholder digest."
+        },
+        "checkSpec": {
+          "type": "string",
+          "minLength": 1
+        },
+        "method": {
+          "enum": [
+            "text",
+            "geometry_proxy",
+            "media",
+            "human"
+          ]
+        },
+        "result": {
+          "enum": [
+            "pass",
+            "fail",
+            "unknown",
+            "not_checked"
+          ]
+        },
+        "applicability": {
+          "enum": [
+            "valid",
+            "stale"
+          ]
+        },
+        "evidenceRefs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "checkSpecVersion": {
+          "type": "string",
+          "minLength": 1
+        },
+        "dependencyHashRule": {
+          "const": "war35-dep-jcs8785-sha256/3"
+        },
+        "collectionPaths": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^/"
+          },
+          "uniqueItems": true,
+          "description": "Optional plan-relative RFC 6901 JSON pointers to full collection values, including membership and order except at declared typed-ref set locations. Follow typed edges and verify embedded sources."
+        },
+        "evidenceBindings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "evidenceRef": {
+                "type": "string",
+                "minLength": 1
+              },
+              "contentSha256": {
+                "$ref": "#/$defs/hash"
+              },
+              "conditionSha256": {
+                "$ref": "#/$defs/hash"
+              }
+            },
+            "required": [
+              "evidenceRef",
+              "contentSha256"
+            ],
+            "description": "Actual examined media evidence binding. Evidence object content SHA must be checked against bytes by the resolver; changing content invalidates inheritance."
+          },
+          "minItems": 1,
+          "description": "For media pass/fail, non-empty immutable bindings of actual inspected media content SHA, not merely reports or evidenceRef IDs. Semantically verify each media digest against bytes. conditionSha256 is required by semantic profile when inspection depends on generated conditions.",
+          "uniqueItems": true
+        },
+        "executionTarget": {
+          "$ref": "#/$defs/executionTarget",
+          "description": "Required for method=media with pass/fail; immutable projection target (unitRef/revision/content SHA/hashRule), even when a Plan fingerprint is unchanged."
+        }
+      },
+      "required": [
+        "id",
+        "target",
+        "targetRefs",
+        "dependencyRefs",
+        "checkSpec",
+        "method",
+        "result",
+        "applicability",
+        "checkSpecVersion",
+        "dependencyHashRule"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "result": {
+                "enum": [
+                  "pass",
+                  "fail"
+                ]
+              }
+            },
+            "required": [
+              "result"
+            ]
+          },
+          "then": {
+            "required": [
+              "dependencyFingerprintSha256"
+            ]
+          }
+        },
+        {
+          "if": {
+            "not": {
+              "required": [
+                "dependencyFingerprintSha256"
+              ]
+            }
+          },
+          "then": {
+            "properties": {
+              "result": {
+                "enum": [
+                  "unknown",
+                  "not_checked"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "method": {
+                "const": "media"
+              },
+              "result": {
+                "enum": [
+                  "pass",
+                  "fail"
+                ]
+              }
+            },
+            "required": [
+              "method",
+              "result"
+            ]
+          },
+          "then": {
+            "required": [
+              "executionTarget",
+              "evidenceBindings"
+            ]
+          }
+        }
+      ],
+      "description": "D-JCS-1: full typed-ref closure; unresolved source/ref/path gives no digest and cannot inherit. Media pass/fail additionally require an immutable executionTarget and >=1 inspected media evidence binding; media bindings enter dependency hash. Profile /3 requires a registered versioned source policy and preserves opaque StateValue JSON. Human/proxy and non-media checks relying on external observations cannot inherit without verified content and scope; the research resolver returns unresolved. See WAR-35 Phase A."
+    },
+    "risk": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+        },
+        "targetRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/anyRef"
+          },
+          "minItems": 1
+        },
+        "kind": {
+          "enum": [
+            "hard_conflict",
+            "assumption",
+            "unknown",
+            "media_failure"
+          ]
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "enum": [
+            "open",
+            "closed"
+          ]
+        },
+        "riskVersionId": {
+          "$ref": "#/$defs/localId"
+        },
+        "target": {
+          "$ref": "#/$defs/planTarget"
+        }
+      },
+      "required": [
+        "id",
+        "targetRefs",
+        "kind",
+        "description",
+        "status",
+        "riskVersionId",
+        "target"
+      ]
+    },
+    "decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+        },
+        "gate": {
+          "enum": [
+            "intentA",
+            "shotB",
+            "exception"
+          ]
+        },
+        "target": {
+          "$ref": "#/$defs/planTarget"
+        },
+        "verdict": {
+          "enum": [
+            "approved",
+            "conditionally_approved",
+            "rejected",
+            "changes_requested"
+          ]
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1
+        },
+        "checkIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/localId"
+          },
+          "minItems": 1,
+          "uniqueItems": true,
+          "description": "All Check IDs resolve to the target revision and must be valid for this gate; carry-forward requires exact one-to-one inherited mappings to the source decision checks."
+        },
+        "acceptedRisks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "riskId": {
+                "$ref": "#/$defs/localId"
+              },
+              "riskVersionId": {
+                "$ref": "#/$defs/localId"
+              }
+            },
+            "required": [
+              "riskId",
+              "riskVersionId"
+            ]
+          },
+          "uniqueItems": true,
+          "description": "Immutable (riskId,riskVersionId) pairs. Conditional approval and risk acceptance cannot be silently dropped or promoted by carry-forward. Resolve immutable historical risk version and current applicability."
+        },
+        "executionTarget": {
+          "$ref": "#/$defs/executionTarget"
+        },
+        "decisionBasis": {
+          "enum": [
+            "reviewed",
+            "verified_carry_forward"
+          ]
+        },
+        "fromDecisionId": {
+          "$ref": "#/$defs/localId",
+          "description": "Resolve immutable predecessor Decision; for verified_carry_forward it MUST have same gate, approved verdict, same planId and different prior revision. Never use a self-referential or missing source."
+        }
+      },
+      "required": [
+        "id",
+        "gate",
+        "target",
+        "verdict",
+        "checkIds",
+        "decisionBasis"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "decisionBasis": {
+                "const": "verified_carry_forward"
+              }
+            },
+            "required": [
+              "decisionBasis"
+            ]
+          },
+          "then": {
+            "required": [
+              "fromDecisionId"
+            ],
+            "properties": {
+              "gate": {
+                "const": "intentA"
+              },
+              "verdict": {
+                "const": "approved"
+              },
+              "acceptedRisks": {
+                "maxItems": 0
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "decisionBasis": {
+                "const": "reviewed"
+              }
+            },
+            "required": [
+              "decisionBasis"
+            ]
+          },
+          "then": {
+            "not": {
+              "required": [
+                "fromDecisionId"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "verdict": {
+                "const": "conditionally_approved"
+              }
+            },
+            "required": [
+              "verdict"
+            ]
+          },
+          "then": {
+            "required": [
+              "rationale",
+              "acceptedRisks"
+            ],
+            "properties": {
+              "acceptedRisks": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ],
+      "description": "Decision is revision/gate-specific. v0 verified_carry_forward is limited to risk-free, unconditionally approved Intent A with a verified unchanged Check mapping and immutable source history. Conditional/risk-bearing decisions require a new reviewed decision; semantic validator checks source verdict, check provenance, risk version and scope. Conditional approval requires an explicit rationale and at least one immutable acceptedRisk version; do not represent untracked conditions as approval."
+    },
+    "inheritance": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "fromCheckId": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+        },
+        "intoTarget": {
+          "$ref": "#/$defs/planTarget"
+        },
+        "dependencyFingerprintSha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "basis": {
+          "const": "unchanged_dependencies"
+        },
+        "dependencyHashRule": {
+          "const": "war35-dep-jcs8785-sha256/3"
+        },
+        "intoCheckId": {
+          "$ref": "#/$defs/localId"
+        }
+      },
+      "required": [
+        "fromCheckId",
+        "intoTarget",
+        "dependencyFingerprintSha256",
+        "basis",
+        "dependencyHashRule",
+        "intoCheckId"
+      ],
+      "description": "Explicit Check evidence reuse only: source and destination Check must be valid pass, immutable, same exact D-JCS-1 profile/fingerprint/check spec/scope with fresh recomputation and new target. Does not carry Decision or Media authorizations."
+    },
+    "reviewLedger": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "checks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/check"
+          }
+        },
+        "risks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/risk"
+          }
+        },
+        "decisions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/decision"
+          }
+        },
+        "inheritances": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/inheritance"
+          }
+        }
+      }
+    },
+    "candidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "revisionId": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+        },
+        "basedOnRevisionId": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+        },
+        "requestedScope": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "actualChangedPaths": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "required": [
+        "revisionId",
+        "basedOnRevisionId",
+        "actualChangedPaths"
+      ]
+    },
+    "revisionControl": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "candidates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/candidate"
+          }
+        },
+        "approvedPlan": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "decisionId": {
+              "$ref": "#/$defs/localId"
+            },
+            "gate": {
+              "const": "shotB"
+            },
+            "target": {
+              "$ref": "#/$defs/planTarget"
+            }
+          },
+          "required": [
+            "decisionId",
+            "gate",
+            "target"
+          ],
+          "description": "Semantic validator MUST resolve decisionId to the same target and gate shotB with effective approved/conditionally_approved verdict. Invalid/stale checks or missing risk evidence prevent approval. Intent A does not authorize the whole Plan or H3."
+        }
+      }
+    },
+    "sourceLocator": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "sourceId": {
+          "$ref": "#/$defs/sourceBinding/properties/sourceId"
+        },
+        "locator": {
+          "type": "string",
+          "minLength": 1
+        },
+        "contentSha256": {
+          "$ref": "#/$defs/hash"
+        }
+      },
+      "required": [
+        "sourceId",
+        "locator"
+      ],
+      "description": "Package-side resolver information, outside Plan content hash. Ready profile verifies source identity and bytes."
+    },
+    "executionTarget": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "unitRef": {
+          "type": "string",
+          "minLength": 1
+        },
+        "projectionRevision": {
+          "type": "string",
+          "minLength": 1
+        },
+        "projectionContentSha256": {
+          "$ref": "#/$defs/hash"
+        },
+        "projectionHashRule": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "unitRef",
+        "projectionRevision",
+        "projectionContentSha256",
+        "projectionHashRule"
+      ],
+      "description": "Independent WAR-52 H3 projection target; not needed for upstream Plan reviews."
+    }
+  }
+}

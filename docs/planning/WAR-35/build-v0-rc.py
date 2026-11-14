@@ -7,12 +7,12 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parent
 OLD_VERSION="director-plan/0.0-review"
 NEXT_VERSION="director-plan/0.1.0"
-RC_ID="urn:canvas-lab:director-plan:0.1.0-rc1"
+RC_ID="urn:canvas-lab:director-plan:0.1.0-rc2"
 REVIEW_SCHEMA="director-plan.schema.review-v0.json"
-RC_SCHEMA="director-plan.schema.v0-rc1.json"
+RC_SCHEMA="director-plan.schema.v0-rc2.json"
 PAIRS=(
-    ("no-action-beat.example.review-v0.json","no-action-beat.example.v0-rc1.json"),
-    ("cross-shot-once.example.review-v0.json","cross-shot-once.example.v0-rc1.json"),
+    ("no-action-beat.example.review-v0.json","no-action-beat.example.v0-rc2.json"),
+    ("cross-shot-once.example.review-v0.json","cross-shot-once.example.v0-rc2.json"),
 )
 
 def write(name,data):
@@ -22,7 +22,7 @@ def run():
     schema=json.loads((ROOT/REVIEW_SCHEMA).read_text(encoding="utf-8"))
     assert schema["properties"]["contractVersion"]["const"]==OLD_VERSION
     schema["$id"]=RC_ID
-    schema["title"]="DirectorPlan public Schema v0.1.0 — RELEASE CANDIDATE 1 (NOT FROZEN)"
+    schema["title"]="DirectorPlan public Schema v0.1.0 — RELEASE CANDIDATE 2 (NOT FROZEN)"
     schema["description"]=(
         "RELEASE CANDIDATE ONLY, NOT FROZEN. Public standalone DirectorPlan contract "
         "with P-JCS-1 and D-JCS-1 profile design evidence. Production raw I-JSON input, "

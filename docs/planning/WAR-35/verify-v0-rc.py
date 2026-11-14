@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""WAR-35 v0.1.0-RC1 P-JCS-1 Golden and structural regression, design only."""
+"""WAR-35 v0.1.0-RC2 P-JCS-1 Golden and structural regression, design only."""
 import copy, hashlib, json, subprocess, sys
 from pathlib import Path
 from jsonschema import Draft202012Validator
@@ -9,18 +9,18 @@ sys.path.insert(0,"/home/sean/.local/share/canvas-lab-jcs/venv/lib/python3.12/si
 from raw_ijson_gate import parse_raw_ijson
 import rfc8785
 
-SCHEMA="director-plan.schema.v0-rc1.json"
+SCHEMA="director-plan.schema.v0-rc2.json"
 REVIEW_SCHEMA="director-plan.schema.review-v0.json"
 VERSION="director-plan/0.1.0"
 ORIGINAL_VERSION="director-plan/0.0-review"
-FIXTURES=[("no-action-beat.example.review-v0.json","no-action-beat.example.v0-rc1.json"),
-          ("cross-shot-once.example.review-v0.json","cross-shot-once.example.v0-rc1.json")]
+FIXTURES=[("no-action-beat.example.review-v0.json","no-action-beat.example.v0-rc2.json"),
+          ("cross-shot-once.example.review-v0.json","cross-shot-once.example.v0-rc2.json")]
 schema=json.loads((ROOT/SCHEMA).read_text(encoding="utf-8"))
 old_schema=json.loads((ROOT/REVIEW_SCHEMA).read_text(encoding="utf-8"))
 Draft202012Validator.check_schema(schema)
 validator=Draft202012Validator(schema)
 assert schema["properties"]["contractVersion"]["const"]==VERSION
-assert schema["$id"]=="urn:canvas-lab:director-plan:0.1.0-rc1"
+assert schema["$id"]=="urn:canvas-lab:director-plan:0.1.0-rc2"
 # Only metadata and contractVersion const differ; no accidental semantic Schema drift.
 orig=copy.deepcopy(old_schema)
 new=copy.deepcopy(schema)
@@ -74,7 +74,7 @@ for old_name,new_name in FIXTURES:
                  str(ROOT/"verify-d-jcs1.py"),"exec"),module)
     intent_id=doc["plan"]["intents"][0]["id"]
     spec={"targetRefs":["intent:"+intent_id],"dependencyRefs":[],"collectionPaths":[],
-          "checkSpec":"v0 Intent A dependency test","checkSpecVersion":"intentA/v0", "method":"text"}
+          "checkSpec":"v0 Intent A dependency test","checkSpecVersion":"intentA/v1", "method":"text"}
     d_rc=module["digest"](doc,spec); d_review=module["digest"](old,spec)
     check("contractVersion-changes-D-JCS-1-"+new_name, bool(d_rc and d_review and d_rc!=d_review))
     digests[new_name]={"sha256":sha,"canonicalBytes":len(raw),"reviewDraftSha256":old_sha,
@@ -82,7 +82,7 @@ for old_name,new_name in FIXTURES:
 # These are proposed final-version profile Golden values; RC files themselves remain NOT FROZEN.
 report={
   "task":"WAR-35",
-  "status":"v0.1.0 release candidate 1; candidate Golden, NOT final freeze",
+  "status":"v0.1.0 release candidate 2; candidate Golden, NOT final freeze",
   "schema":SCHEMA,
   "schemaId":schema["$id"],
   "contractVersion":VERSION,
@@ -93,5 +93,5 @@ report={
   "cases":results,"passed":len(results),"total":len(results),
   "finalFrozen":False,"productionHashAndSemanticValidatorImplemented":False,
 }
-(ROOT/"v0-rc1-golden.report.json").write_text(json.dumps(report,ensure_ascii=False,indent=2)+"\n")
+(ROOT/"v0-rc2-golden.report.json").write_text(json.dumps(report,ensure_ascii=False,indent=2)+"\n")
 print("TOTAL",len(results),"PASS")

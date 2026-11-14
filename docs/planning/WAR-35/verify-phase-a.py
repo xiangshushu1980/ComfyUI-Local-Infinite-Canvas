@@ -1,4 +1,4 @@
-"""RC1 Phase A regressions. Run with Eric's system python3."""
+"""RC2 Phase A regressions. Run with Eric's system python3."""
 import json
 import unittest
 from copy import deepcopy
@@ -18,14 +18,15 @@ def definitions(name, end):
 
 gates = definitions("verify-decision-gates.py", "tests=[]")
 digest = gates["dep_sha"]
-fixture = json.loads((ROOT / "cross-shot-once.example.v0-rc1.json").read_text())
-validator = Draft202012Validator(json.loads((ROOT / "director-plan.schema.v0-rc1.json").read_text()))
+fixture = json.loads((ROOT / "cross-shot-once.example.v0-rc2.json").read_text())
+validator = Draft202012Validator(json.loads((ROOT / "director-plan.schema.v0-rc2.json").read_text()))
 
 
 class PhaseA(unittest.TestCase):
     def fingerprint(self, pkg, path=None, target="subject:CREEK"):
         validator.validate(pkg)
-        spec = dict(gates["spec"], targetRefs=[target], collectionPaths=[path] if path else [])
+        spec = dict(gates["spec"], checkSpec="Plan dependency closure", checkSpecVersion="closure/1",
+                    targetRefs=[target], collectionPaths=[path] if path else [])
         return digest(pkg, spec)
 
     def test_direct_reference_set_closure(self):

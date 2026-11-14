@@ -1152,3 +1152,7 @@ python3 docs/planning/WAR-35/verify-d-jcs1-schema.py
 ## 28. RC1 冻结阻塞修复 · 阶段 A（2026-11-14）
 
 当前结论为 Not ready。§23–27 的 /1 验证数字与就绪判断对应 `cbfc75d` 历史候选。Astra 独立复核见 `final-independent-rc1-freeze-review-20261114.md`（`f323e15`）。现行依赖规则、反例逐项修复前后对照、Golden 与阶段 B 入口见 [阶段 A 验证记录](phase-a-dependency-review-20261114.md)。
+
+### 28.1 来源依赖补修与 RC2
+
+cb7e8fd 的阶段 A 独立复核发现空 Fact 来源仍可承接。当前候选为 RC2、D-JCS-1 /3，阶段 A 等待重新独立复核。现行来源证明策略、红绿对照与复跑入口见 [RC2 来源证明](fact-source-proof-rc2-20261114.md)。
