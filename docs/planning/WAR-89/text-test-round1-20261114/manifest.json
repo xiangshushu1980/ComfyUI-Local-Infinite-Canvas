@@ -1,0 +1,48 @@
+{
+  "generated_at": "2026-11-14T14:37:04.241658+00:00",
+  "repo_head": "1e0792b560c4f35c5fbebd6e03d67332b0230c98",
+  "branch": "war-35-schema-freeze-review-20261114",
+  "codex_version": "codex-cli 0.167.2",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "medium",
+  "arm_descriptions": {
+    "native": "TASK + raw script; general model directing knowledge",
+    "candidate": "same TASK + raw script + self-contained 7-file skill snapshot; on-demand stage refs"
+  },
+  "source_sha256": {
+    "C": "ba56afb91c117d06ced4089456f5e713435e99cfbf287fd3ee5a5b88ee50153d",
+    "D": "65b8a2f83cefc2281879fb254d3ee25dfd68d72e7cd0d811a2afbade5c1e165d",
+    "E": "466d257d3ac684ea20e76eb01f80589270484478cc75b084c1f0640c77d576ec"
+  },
+  "skill_snapshot": {
+    "skill-snapshot/SKILL.md": "3eee7d6f3c3032fc43e97b86a9606f8ae77943fa377aa2f56e2770c2b76e8676",
+    "skill-snapshot/references/knowledge-index.md": "4d8edcb664659d78f897aa7baa8c1f275a57b5ff128ab433c95745b32a5e2519",
+    "skill-snapshot/references/review-method.md": "72b23f163fe1fdea6a547d5b47f39392ba0b9b63b814a7a285db4a7df0e88e8e",
+    "skill-snapshot/stages/beat.md": "6e81d45db1d0249cf33a200135f0ab790a49b65d92c7d036b0e253ac978121a1",
+    "skill-snapshot/stages/blocking.md": "2663d5acc282d636400539aecc643871c26c12867c5d480d9c02793ad45c5563",
+    "skill-snapshot/stages/intent.md": "ac07ecb95cbd511888911a0f85aa08f5fee2824cbf8e23749ef0d6ffec065a38",
+    "skill-snapshot/stages/shot-plan.md": "fa0c7d4cc39fdf6b5df9c8a0e3e9b0ee6eafa921142b5a5f07efcdc8cf989476"
+  },
+  "read_only": true,
+  "fresh_ephemeral_sessions": true,
+  "identical_model_task": true,
+  "evaluation_rubric_visibility": "withheld from generation; held separately at WAR-89",
+  "skill_sha256": {
+    "skill-snapshot/SKILL.md": "3eee7d6f3c3032fc43e97b86a9606f8ae77943fa377aa2f56e2770c2b76e8676",
+    "skill-snapshot/references/knowledge-index.md": "4d8edcb664659d78f897aa7baa8c1f275a57b5ff128ab433c95745b32a5e2519",
+    "skill-snapshot/references/review-method.md": "72b23f163fe1fdea6a547d5b47f39392ba0b9b63b814a7a285db4a7df0e88e8e",
+    "skill-snapshot/stages/beat.md": "6e81d45db1d0249cf33a200135f0ab790a49b65d92c7d036b0e253ac978121a1",
+    "skill-snapshot/stages/blocking.md": "2663d5acc282d636400539aecc643871c26c12867c5d480d9c02793ad45c5563",
+    "skill-snapshot/stages/intent.md": "ac07ecb95cbd511888911a0f85aa08f5fee2824cbf8e23749ef0d6ffec065a38",
+    "skill-snapshot/stages/shot-plan.md": "fa0c7d4cc39fdf6b5df9c8a0e3e9b0ee6eafa921142b5a5f07efcdc8cf989476"
+  },
+  "prompts": {
+    "C-native": "3f8830282ee2767e48d1060104f1019694a8d012410b04c88611821ab7372895",
+    "C-candidate": "f35ce9bccc1e45e999e874e078084f3d09dfc5a9a610a973105840e2fcedf105",
+    "D-native": "3f8830282ee2767e48d1060104f1019694a8d012410b04c88611821ab7372895",
+    "D-candidate": "f35ce9bccc1e45e999e874e078084f3d09dfc5a9a610a973105840e2fcedf105",
+    "E-native": "3f8830282ee2767e48d1060104f1019694a8d012410b04c88611821ab7372895",
+    "E-candidate": "f35ce9bccc1e45e999e874e078084f3d09dfc5a9a610a973105840e2fcedf105"
+  },
+  "task_sha256": "63969f7bdf5fdf37d7062b968f419db187f727bdd65738fd17f372e161e43061"
+}

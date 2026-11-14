@@ -1,0 +1,16 @@
+{
+  "case": "D",
+  "arm": "native",
+  "started_at": "2026-11-14T14:37:04.445908+00:00",
+  "prompt_sha256": "724d85eb9ee5cd2955b29bedf95b37f3385190813cd165eefac01c07529022fa",
+  "source_sha256": "65b8a2f83cefc2281879fb254d3ee25dfd68d72e7cd0d811a2afbade5c1e165d",
+  "result_path": "/home/sean/projects/canvas-lab/docs/planning/WAR-89/text-test-round1-20261114/workspaces/D-native/result.md",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "medium",
+  "returncode": 0,
+  "finished_at": "2026-11-14T14:40:27.772180+00:00",
+  "seconds": 203.3,
+  "result_sha256": "5a85400af35a25aedb2c41fb1e5639a5c12e94ad988f1ae66d2ae38959e40eea",
+  "result_bytes": 12443,
+  "events_sha256": "89c761f289caa0c43110d70d3634dcff10a0dbfbc970558e8655f0bb6a4a4c92"
+}

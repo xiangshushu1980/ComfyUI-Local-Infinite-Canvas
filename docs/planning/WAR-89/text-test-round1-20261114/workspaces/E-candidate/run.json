@@ -1,0 +1,16 @@
+{
+  "case": "E",
+  "arm": "candidate",
+  "started_at": "2026-11-14T14:44:00.921879+00:00",
+  "prompt_sha256": "f75809a05ab416c1ad42c279177726f4c5984e32504ca70169aca34daeccefde",
+  "source_sha256": "466d257d3ac684ea20e76eb01f80589270484478cc75b084c1f0640c77d576ec",
+  "result_path": "/home/sean/projects/canvas-lab/docs/planning/WAR-89/text-test-round1-20261114/workspaces/E-candidate/result.md",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "medium",
+  "returncode": 0,
+  "finished_at": "2026-11-14T14:47:23.802927+00:00",
+  "seconds": 202.9,
+  "result_sha256": "fdf52e62a3ba1f6fe7f5ec9ddfa1e4172460365242f9a9bd0af18a19604eac1b",
+  "result_bytes": 12439,
+  "events_sha256": "bf4a975332af464129755b7da209425e2ba62c1c374d05e91de46e0e9405cf1c"
+}
