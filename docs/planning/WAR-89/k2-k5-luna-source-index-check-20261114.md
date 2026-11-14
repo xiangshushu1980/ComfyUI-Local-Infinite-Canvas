@@ -1,0 +1,8 @@
+以下仅核对指定材料；判断依据限于四份文档中的 K2/K5 与三份独立知识稿。
+
+1. **画外声与角色反应** → TF-15 `knowledge/shotCraft.md §审阅方法`；DS-23 `references/sound-and-dialogue.md`；VM-02 `storyboard_artist.py::system_prompt_template_design_storyboard` → 可继承的判断：明确声源、谁听见及先后；声音可能改变行动解释；角色反应可承载信息 → 不能据此证明：画外声一定被角色听见、反应一定被观众读懂，或实际声画因果成立。
+2. **停句的因果** → TF-04 `knowledge/shotCraft.md §分场与表演依据`、TF-12 `knowledge/shotCraft.md §台词与时长`；DS-23 `references/sound-and-dialogue.md`；K2 案例 C → 可继承的判断：保留停句的原有原因，检查广播等声音是否抢先造成“被打断”的新因果；停句后的反应可用表演呈现 → 不能据此证明：演员停顿或播音时点在实际媒体中表达出预期因果。
+3. **悬念的首次观看与回看** → TF-02 `knowledge/scriptCraft.md §信息差、钩子与反转`；DS-01 `references/cinematic-language.md §Shot functions` → 可继承的判断：分别检查初看是否允许合理误解，以及重看时先前真实线索能否获得新解释；避免用虚假的客观画面误导 → 不能据此证明：观众初看会如何理解、回看是否确实产生新解释，或悬念效果已被观众测试。
+4. **机位／景别与构图选择理由** → TF-05/07/08 `knowledge/shotCraft.md §镜头语法／景别与信息用途／角度、视点与运镜`；DS-D-01—07 `references/cinematic-language.md §Shot functions / Shot sizes / Camera angles / Lens psychology / Focus as direction / Composition / Camera movement`；VM-03/04 `storyboard_artist.py::system_prompt_template_design_storyboard` → 可继承的判断：先说明镜头承担的观众任务和新增信息，再比较景别、视点、构图与运动；没有新增视觉收益时可考虑复用机位 → 不能据此证明：某种机位或摄影参数必然产生特定情绪效果，或目标模型能精确执行该参数。
+5. **参考素材的新视面缺口** → VM-10/11/14 `camera_image_generator.py::system_prompt_template_select_reference_camera`、`is_parent_fully_covers_child` 与 `missing_info`；K5 → 可继承的判断：分开列明剧本已知事实、计划展示内容和现有参考未覆盖的信息（如新正脸、手部或道具角度），将缺项作为补充参考需求 → 不能据此证明：父参考在像素层面真的包含或覆盖子镜所需内容、缺失素材已补齐，或机位树保证空间可行。
+6. **观众知情与素材覆盖的区别** → TF-11 `knowledge/shotCraft.md §审阅方法`；VM-02 `storyboard_artist.py::system_prompt_template_design_storyboard`、VM-11/14 `camera_image_generator.py::system_prompt_template_select_reference_camera` 与 `missing_info` → 可继承的判断：角色是否知情、观众能否辨认画面信息、参考素材是否支持目标视面是不同问题，须分别核对 → 不能据此证明：角色实际看见或听懂、观众实际注意并理解，或参考图经过图像审阅已足以支持所计划的画面。

@@ -1,6 +1,6 @@
 # WAR-89｜导演专业知识继承审计与 Skill 执行规则方案
 
-状态：**Backlog／已登记后续阶段，尚未执行审计或开发**。创建：2026-11-14。Linear：[WAR-89](https://linear.app/xiangshushu/issue/WAR-89)。
+状态：**In Progress／三源知识稿、交叉审计及 Astra 八项复核已保存。用户认可八项修订方向；K1–K7 已完成 GPT-6 主导、Eric Codex 按需 Luna Low 来源核查/Astra Medium 对抗审阅的第一轮分组静态复核。具体执行细则仍待用户采纳；下一步组织最小常驻触发、按问题检索与专业反馈方案。未融合、未开发自研 Skill**。创建：2026-11-14。Linear：[WAR-89](https://linear.app/xiangshushu/issue/WAR-89)。
 
 ## 1. 为什么新增这一阶段
 
@@ -64,4 +64,21 @@
 
 现有研究与源码索引：`docs/validation/WAR-59/director-skill-predesign-synthesis-20261113.md`、`docs/validation/WAR-68/README.md`、`docs/validation/WAR-59/toonflow-upstream-v118workflow/`、`docs/validation/WAR-65/`、`docs/validation/WAR-66/`。实际研究时按问题读取所需文件，不批量加载。WAR-35 独立审阅不因本任务改变验收结论。
 
-本文件是**阶段安排与审计方案**，不是已完成的知识继承清单。
+## 7. 2026-11-14｜分套知识提取执行入口
+
+用户确认顺序为 **Toonflow → DirectorSKILL → ViMax**：先分别抽取、保留差异和来源，三份独立材料完成后才讨论融合与取舍；优先复用 WAR-57/59/61/65/66 已有研究，仅在具体专业方法不足时回读源文件，不重做实验。
+
+- **Toonflow 第一轮独立稿已写入**：`docs/planning/WAR-89/toonflow-directing-knowledge-v0.md`；17 条专业导演方法候选，标注原始出处、适用阶段、旧 Canvas/迁移内容排除、未证/授权缺口、示意例子和下一轮需求。
+- **来源完整性**：`docs/validation/WAR-59/toonflow-upstream-v118workflow/SOURCE-MANIFEST.json` 所列 24/24 SHA-256 已比对一致。此快照是经整合/迁移的 Toonflow 知识封装，不等于未经加工的旧上游原版；License 尚未核实。
+- **DirectorSKILL 独立稿 v0.2 已补齐核心专业细则**：`docs/planning/WAR-89/directorskill-directing-knowledge-v0.md`；Eric 完整 v2.1.0 冻结仓库（Git `c65ae0d`，MIT），核心五份 5/5 SHA 一致。第一轮 31 个主题＋第二轮 §9–11 详细说明镜头功能、景别/焦段、Blocking、视线、切点、声音、照明、风格选择与风险修订的触发条件、替代方案、失败反例，并以 C/D 样本作说明性推演。**不表示 20 个导演风格模块或 F1–F19 逐项操作细则已全量移植**。
+- **ViMax 独立稿已写入**：`docs/planning/WAR-89/vimax-directing-knowledge-v0.md`；依据 Eric 三份 SHA 匹配的 Python Prompt/管线快照及 WAR-66 已完成文本研究，整理 14 条专业表达与参考内容判断候选、FF/Motion/LF 事实/时序复检、Camera Tree 机位参考依赖的职责和缺口。**上游精确 commit、许可证未核；未执行原版 Python Pipeline 或媒体**。
+- **三源交叉审计候选已形成，待用户批准**：`docs/planning/WAR-89/three-source-directing-knowledge-cross-audit-v0.md`（覆盖、重复、冲突、遗漏；7 条最小核心规则；5 项待决取舍；SHA-256 `05e4a8a00de612de7eb80674713dffea55800f1523df59379f67f7c6a0f17d30`）。仍未做：正式知识采纳、v0 Skill 知识加载、生产接口或新 H3/图像/Blender 实验。Toonflow 上游 license、ViMax 上游 commit/license 待核；DirectorSKILL 20 位风格模块按需阅读来源。
+- **Astra 独立复核与修订方向（2026-11-14）**：`docs/planning/WAR-89/three-source-independent-review-astra-v0.md`（本地 Git `fe2b29f`）提出 8 项实质意见；用户已同意按此方向修订，仍保留 K1–K7 与三源按问题分工。
+- **专业决策规则细则 v0（待审，K1–K7 全部完成第一轮分组静态专项）**：`docs/planning/WAR-89/director-knowledge-decision-rules-v0.md`（SHA-256 `38f376cd9e1b097a7c88e02a78695276cb223249f0f8392723d32e139c4a12bb`）。K1/K6/K7 的九组样例在 §7；K2/K5 八组在 §8；K3/K4 八组、授权边界与简短常驻触发候选在 §9。最后一轮明确**仅可偏离可调整风格倾向，不可未经授权解除已确认禁项**；纠正 D 首次未发现与二次发现的时间区别。**具体细则仍待用户采纳，未编入 Skill，未实测成片。**
+- **本轮独立审阅证据**：`docs/planning/WAR-89/k1-k6-k7-astra-independent-static-review-20261114.md`（SHA-256 `7624b05bd9ef7565c4b05bc4aa6ff3c6fe7e2823c862ab6902eae7b43c81806f`），Eric Codex CLI `gpt-6-astra` Medium、只读。四项实质发现，六组静态正反例；GPT-6 补充时间省略/明显不可信的阅读窗口/局部审查边界后写入候选细则。原始证据独立保留，不将文本推演视为模型或媒体测试。
+- **本轮模型证据**：`docs/planning/WAR-89/k2-k5-luna-source-index-check-20261114.md`（SHA-256 `022857e8114e14f58d605c56e192f60ac4b510af109ebf31aab22f16546fe252`，Luna Low，六项出处核对；首条 TF-15 索引有误，已在 §8 标注纠正）；`docs/planning/WAR-89/k2-k5-astra-independent-static-review-20261114.md`（SHA-256 `6c49813681cd70e38b7aa4ac9005d9ff45b371ed67c573b29ffd8e71eea02197`，Astra Medium，只读对抗复核，1 项需修语义缝隙）。全部是静态文档审阅，没有运行 Director Skill/媒体实验。
+- **K3/K4 独立证据（2026-11-14）**：`docs/planning/WAR-89/k3-k4-luna-source-index-check-20261114.md`（SHA-256 `ae5b0ee4aebc4190fdf9472207aa73802b6811460dd47f43d8600917c90e5a37`，Luna Low，六项来源核查）；`docs/planning/WAR-89/k3-k4-astra-independent-static-review-20261114.md`（SHA-256 `1959a10c4b4743769ab234859b8b300aa631c8d81dacf0dde8d75fe222a12b72`，Astra Medium，八组静态正反例，一项局部政策例外措辞修订）。原始意见保留，无新媒体/导演模型实验。
+- **下一步**：用户按需确认 K1–K7 的专业继承取舍；整理「最小常驻问题触发→按情境选择 DS/TF/VM 专业模块→阶段性专业反馈→审阅/验证边界」的**方案草案**与最小评估案例，先讨论再开发。未获批准不写 Skill、运行实验或修改 WAR-35 Schema；WAR-74 原有阶段不变。
+- **状态/交接**：资料正文以 Eric Markdown 为权威，Linear WAR-89 仅登记状态和索引。本次文件尚未在专用 WAR-89 分支提交/推送；当前项目工作树在 WAR-35 分支且含其他在途改动，避免混合任务提交。
+
+本文件原有第 1–6 节为阶段安排与审计方案；第 7 节只记录执行入口，具体提取以所指独立知识稿为准。
