@@ -1,0 +1,160 @@
+{
+  "passed": 32,
+  "total": 32,
+  "checks": {
+    "original_unmodified": {
+      "ok": true,
+      "detail": null
+    },
+    "historical_B_unchanged": {
+      "ok": true,
+      "detail": null
+    },
+    "same_source_skill_hashes": {
+      "ok": true,
+      "detail": null
+    },
+    "pilot_A_authority_preserved": {
+      "ok": true,
+      "detail": null
+    },
+    "user_B_record_still_historical": {
+      "ok": true,
+      "detail": null
+    },
+    "new_B_not_self_approved": {
+      "ok": true,
+      "detail": null
+    },
+    "new_candidate_at_shot": {
+      "ok": true,
+      "detail": null
+    },
+    "source_B_intent_unchanged": {
+      "ok": true,
+      "detail": null
+    },
+    "source_B_beat_unchanged": {
+      "ok": true,
+      "detail": null
+    },
+    "blocking_revised": {
+      "ok": true,
+      "detail": null
+    },
+    "shot_revised": {
+      "ok": true,
+      "detail": null
+    },
+    "shot_order_preserved": {
+      "ok": true,
+      "detail": null
+    },
+    "full_four_shot_sections": {
+      "ok": true,
+      "detail": null
+    },
+    "unchanged_Shot01_byte_exact": {
+      "ok": true,
+      "detail": null
+    },
+    "modified_Shot02": {
+      "ok": true,
+      "detail": null
+    },
+    "modified_Shot03": {
+      "ok": true,
+      "detail": null
+    },
+    "modified_Shot04": {
+      "ok": true,
+      "detail": null
+    },
+    "shot2_actual_repair_semantics": {
+      "ok": true,
+      "detail": null
+    },
+    "shot3_actual_repair_semantics": {
+      "ok": true,
+      "detail": null
+    },
+    "shot4_actual_repair_semantics": {
+      "ok": true,
+      "detail": null
+    },
+    "changed_target_subset": {
+      "ok": true,
+      "detail": null
+    },
+    "no_upstream_hard_conflict": {
+      "ok": true,
+      "detail": null
+    },
+    "whole_blocking_proposal": {
+      "ok": true,
+      "detail": null
+    },
+    "shot_has_all_four": {
+      "ok": true,
+      "detail": null
+    },
+    "pilot_unknown_kept": {
+      "ok": true,
+      "detail": null
+    },
+    "formal_approval_false": {
+      "ok": true,
+      "detail": null
+    },
+    "pending_neighbors_kept": {
+      "ok": true,
+      "detail": [
+        "Shot01",
+        "Shot02",
+        "Shot03",
+        "Shot04"
+      ]
+    },
+    "exactly_two_new_calls": {
+      "ok": true,
+      "detail": [
+        [
+          "blocking",
+          "candidate-saved"
+        ],
+        [
+          "shot",
+          "candidate-saved"
+        ]
+      ]
+    },
+    "both_real_resumes": {
+      "ok": true,
+      "detail": null
+    },
+    "new_inputs_outputs_saved": {
+      "ok": true,
+      "detail": null
+    },
+    "candidate_content_sha": {
+      "ok": true,
+      "detail": null
+    },
+    "no_extra_human_B": {
+      "ok": true,
+      "detail": null
+    }
+  },
+  "original_B_candidate_id": "d23b8bdab90f43ef8ff0098fb8021f78",
+  "new_candidate_id": "b7b4fd156b884907b2431b6b1e0d9960",
+  "new_run_ids": [
+    "ecc8a553cd0543eaa39448b0c922a44e",
+    "b7b4fd156b884907b2431b6b1e0d9960"
+  ],
+  "pending_shots": [
+    "Shot01",
+    "Shot02",
+    "Shot03",
+    "Shot04"
+  ]
+}

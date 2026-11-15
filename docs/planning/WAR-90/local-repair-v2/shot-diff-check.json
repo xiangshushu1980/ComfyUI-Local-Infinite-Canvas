@@ -1,0 +1,20 @@
+{
+  "old_lengths": {
+    "Shot01": 628,
+    "Shot02": 1101,
+    "Shot03": 865,
+    "Shot04": 1818
+  },
+  "new_lengths": {
+    "Shot01": 628,
+    "Shot02": 1588,
+    "Shot03": 1227,
+    "Shot04": 2865
+  },
+  "exact": {
+    "Shot01": true,
+    "Shot02": false,
+    "Shot03": false,
+    "Shot04": false
+  }
+}

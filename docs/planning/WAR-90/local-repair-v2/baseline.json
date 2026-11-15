@@ -1,0 +1,8 @@
+{
+  "original_state_sha256": "020a2bda99e85d34a4f2441055c0c6d8fcd5cc14151fd66750ebc09d81d099ca",
+  "cloned_state_sha256": "020a2bda99e85d34a4f2441055c0c6d8fcd5cc14151fd66750ebc09d81d099ca",
+  "original_B_candidate": "d23b8bdab90f43ef8ff0098fb8021f78",
+  "cloned_workspace": "docs/planning/WAR-90/pilot-D-local-repair-v2",
+  "original_workspace": "docs/planning/WAR-90/pilot-D",
+  "formal_WAR35_approval": false
+}

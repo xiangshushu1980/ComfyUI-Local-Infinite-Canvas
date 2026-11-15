@@ -1,0 +1,41 @@
+{
+  "original_B_candidate_id": "d23b8bdab90f43ef8ff0098fb8021f78",
+  "new_branch_B_accepted": false,
+  "original_workspace_sha256": "020a2bda99e85d34a4f2441055c0c6d8fcd5cc14151fd66750ebc09d81d099ca",
+  "new_candidate_id": "b7b4fd156b884907b2431b6b1e0d9960",
+  "real_calls": [
+    {
+      "id": "ecc8a553cd0543eaa39448b0c922a44e",
+      "stage": "blocking",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "medium",
+      "generator": "codex-cli",
+      "status": "candidate-saved",
+      "input_sha256": "b6ff39a15a22d4ba4ea6dff8a877fd7c3773240b46cc61de8aa55785ab4b07d0",
+      "result_sha256": "98ddf5679d299273649c4c0087d01e7c6a8fa084eb54806030973d892e44ec1a",
+      "thread_id": "01a1de93-ef07-7801-8f54-65d711b27be1",
+      "started_at": "2026-11-15T09:39:58.744681+00:00",
+      "finished_at": "2026-11-15T09:42:19.047775+00:00"
+    },
+    {
+      "id": "b7b4fd156b884907b2431b6b1e0d9960",
+      "stage": "shot",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "medium",
+      "generator": "codex-cli",
+      "status": "candidate-saved",
+      "input_sha256": "51ffe8be7cc56db125b5400315d1df5142d7545363b397c8090d0a7d8e979fca",
+      "result_sha256": "9a05260f475ff5694a1996f4224ad71a6953480a36566fa9d90dbcbc2ed38da1",
+      "thread_id": "01a1de97-cb97-78e3-a479-35b9d0e66520",
+      "started_at": "2026-11-15T09:44:12.096820+00:00",
+      "finished_at": "2026-11-15T09:47:46.167595+00:00"
+    }
+  ],
+  "pending_shots": [
+    "Shot01",
+    "Shot02",
+    "Shot03",
+    "Shot04"
+  ],
+  "formal_WAR35_approval": false
+}

@@ -1,0 +1,4 @@
+continue rc=2; Blocked: Continue/Refresh disabled: persisted trustworthy session reuse is unverified; use explicit Resume
+refresh rc=2; Blocked: Continue/Refresh disabled: persisted trustworthy session reuse is unverified; use explicit Resume
+bad-target rc=2; Blocked: Local targets must belong to the current Shot candidate
+STATE_UNCHANGED sha256=49000e2e76513311832f7c2ba8592d5fb8e4dde389278b37b9e51044f0ebb4b0
