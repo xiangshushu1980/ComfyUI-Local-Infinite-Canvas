@@ -1,0 +1,11 @@
+test_catalog_rejects_stale_b_and_missing_shots (test_feedback_bridge.CanvasFeedbackBridgeTests.test_catalog_rejects_stale_b_and_missing_shots) ... ok
+test_fake_candidate_is_unapproved_and_non_target_is_byte_stable (test_feedback_bridge.CanvasFeedbackBridgeTests.test_fake_candidate_is_unapproved_and_non_target_is_byte_stable) ... ok
+test_feedback_rejects_unbound_wrong_project_and_multi_selection (test_feedback_bridge.CanvasFeedbackBridgeTests.test_feedback_rejects_unbound_wrong_project_and_multi_selection) ... ok
+test_good_catalog_and_feedback (test_feedback_bridge.CanvasFeedbackBridgeTests.test_good_catalog_and_feedback) ... ok
+test_non_target_forgery_is_quarantined (test_feedback_bridge.CanvasFeedbackBridgeTests.test_non_target_forgery_is_quarantined) ... ok
+test_tamper_rejected_and_no_approval_impersonation (test_feedback_bridge.CanvasFeedbackBridgeTests.test_tamper_rejected_and_no_approval_impersonation) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.100s
+
+OK

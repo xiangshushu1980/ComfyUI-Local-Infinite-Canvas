@@ -1,0 +1,18 @@
+{
+  "format": "war90-canvas-feedback-pilot-v0",
+  "status": "revision-request-only",
+  "pilot_only": true,
+  "origin": "synthetic-test",
+  "actor_identity_verified": false,
+  "human_B_decision": false,
+  "canvas_project_id": "Ess254Y9Mucsg7U8uOhTG",
+  "canvas_node_id": "text-1794746027599-2",
+  "target_shot_id": "Shot02",
+  "target_shot_sha256": "92c27994389848915158d107bc6a304e012536f9f878d23049be9d9c3d7ded90",
+  "base_B_id": "b7b4fd156b884907b2431b6b1e0d9960",
+  "base_B_content_sha256": "64c08817a33fcebc2bad86c8c81b29b2297b4eab7de8bc7cb6db998823c6f4c7",
+  "source_sha256": "65b8a2f83cefc2281879fb254d3ee25dfd68d72e7cd0d811a2afbade5c1e165d",
+  "instruction": "【合成流程测试】测试仅用于验证 Canvas 选镜、修订候选、邻镜复检与差异回显，不是用户提出的专业修改要求。",
+  "instruction_sha256": "255abb3cc102d95bdeb6ebd1f65ba46cc775675d160e9b79f7456d14ed3480cc",
+  "requires_director_candidate_revision": true
+}

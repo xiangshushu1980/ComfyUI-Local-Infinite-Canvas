@@ -1,0 +1,13 @@
+{
+  "approved_B_state_sha256": "23e78d5994ed18ea02d59c2c3eb588f36cc41d3b495b81009713ec7570d7e4b7",
+  "fake_candidate_state_sha256": "f0abd4c7ac5c122d767fef7cc41fe115a86adc2f815be55d7b0ed7a92ff4a050",
+  "fake_candidate_id": "525d8738cdc34975954cf8687005eac2",
+  "fake_working_directory": "docs/planning/WAR-90/pilot-D-canvas-feedback-demo-20261115",
+  "not_approved": true,
+  "no_real_model_run": true,
+  "review_still_pending": [
+    "Shot01",
+    "Shot02",
+    "Shot03"
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "run_mode": "real Canvas Agent API + isolated browser + fake Director transport",
+  "project_id": "Ess254Y9Mucsg7U8uOhTG",
+  "approved_B_id": "b7b4fd156b884907b2431b6b1e0d9960",
+  "approved_B_content_sha256": "64c08817a33fcebc2bad86c8c81b29b2297b4eab7de8bc7cb6db998823c6f4c7",
+  "approved_state_before_and_after_sha256": "23e78d5994ed18ea02d59c2c3eb588f36cc41d3b495b81009713ec7570d7e4b7",
+  "selected_shot": "Shot02",
+  "real_canvas_selection_verified": true,
+  "read_back_nodes": 7,
+  "catalog_node_count": 4,
+  "synthetic_feedback_origin": "synthetic-test",
+  "synthetic_feedback_id_verification": false,
+  "new_candidate_id": "525d8738cdc34975954cf8687005eac2",
+  "candidate_generator_provenance": "synthetic-fake-NOT-a-real-Director-run",
+  "candidate_approval": false,
+  "candidate_pending_shots": [
+    "Shot01",
+    "Shot02",
+    "Shot03"
+  ],
+  "changed_shots": [
+    "Shot02"
+  ],
+  "no_real_user_feedback": true,
+  "no_new_director_model_call": true,
+  "no_media_generated": true,
+  "user_production_canvas_touched": false,
+  "private_browser_cleanup": true,
+  "not_full_loop": true
+}
