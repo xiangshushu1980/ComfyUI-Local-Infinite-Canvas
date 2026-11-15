@@ -1,0 +1,13 @@
+{
+  "source_baseline": "original approved B (pre-local-repair) so scopes match archived full-input Astra experiment",
+  "original_B": "d23b8bdab90f43ef8ff0098fb8021f78",
+  "original_sha256": "020a2bda99e85d34a4f2441055c0c6d8fcd5cc14151fd66750ebc09d81d099ca",
+  "approved_new_B_sha256": "23e78d5994ed18ea02d59c2c3eb588f36cc41d3b495b81009713ec7570d7e4b7",
+  "copied_sha256": "020a2bda99e85d34a4f2441055c0c6d8fcd5cc14151fd66750ebc09d81d099ca",
+  "archived_full_model": "gpt-6-astra",
+  "archived_full_reasoning_effort": "medium",
+  "scope_blocking_sha256": "8759994bf7da805855544146182954bc25f4caeb25c40979c294a1946847bea0",
+  "scope_shot_sha256": "d2cea9189d5d9f498e7c1a42f788210835be80c75b061eb5ed3b1c327586d357",
+  "new_B_not_reapproved": true,
+  "same_golden_script": true
+}

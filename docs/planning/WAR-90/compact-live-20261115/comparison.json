@@ -1,0 +1,169 @@
+{
+  "study": "WAR-90 compact live vs archived full one-pair comparison",
+  "note": "Single non-randomized matched-scope historical comparison, not controlled latency or quality equivalence proof.",
+  "original_B_state_sha256": "020a2bda99e85d34a4f2441055c0c6d8fcd5cc14151fd66750ebc09d81d099ca",
+  "approved_new_B_state_sha256": "23e78d5994ed18ea02d59c2c3eb588f36cc41d3b495b81009713ec7570d7e4b7",
+  "compact_local_state_sha256": "0b81c968c9eb9e4f050e274009b2d27abba1740d3aa75654c60d94513f569e55",
+  "real_new_calls": 2,
+  "raw_model_calls_not_fake": true,
+  "branch_phase": "awaiting-human-B",
+  "branch_newB": false,
+  "original_B_preserved": true,
+  "new_approved_B_preserved": true,
+  "working_candidate_id": "75ee79cf3b7240fb961fc63063e1a660",
+  "pending_shots": [
+    "Shot01",
+    "Shot02",
+    "Shot03",
+    "Shot04"
+  ],
+  "comparisons": {
+    "blocking": {
+      "model": "gpt-6-astra",
+      "reasoning_effort": "medium",
+      "same_exact_scope": true,
+      "same_frozen_source_inputs": true,
+      "full_reference_run_id": "ecc8a553cd0543eaa39448b0c922a44e",
+      "compact_fresh_run_id": "32b2e03aca904715964929bd85998939",
+      "full_prompt_bytes": 119045,
+      "compact_prompt_bytes": 72486,
+      "bytes_reduction_pct": 39.11,
+      "full_seconds": 140.303,
+      "compact_seconds": 164.814,
+      "seconds_delta": 24.511,
+      "latency_reduction_pct": -17.47,
+      "full_proposal": {
+        "characters": 4985,
+        "lines": 52
+      },
+      "compact_proposal": {
+        "characters": 5252,
+        "lines": 54
+      },
+      "full_cues": {
+        "six_BLOCKING_segments": true,
+        "late_reposition": true,
+        "sorting_continuation": true,
+        "right_hand_transfer": true,
+        "left_hand_folder": true
+      },
+      "compact_cues": {
+        "six_BLOCKING_segments": true,
+        "late_reposition": true,
+        "sorting_continuation": true,
+        "right_hand_transfer": true,
+        "left_hand_folder": true
+      },
+      "new_output_sha256": "a8d336cd7cdb12a621f95e068b0cdbb34eee90ae70cd8ec05d1df265c4f35e1e",
+      "full_output_sha256": "98ddf5679d299273649c4c0087d01e7c6a8fa084eb54806030973d892e44ec1a",
+      "has_hard_conflict": false,
+      "has_upstream_change": false,
+      "compact_unknown_count": 13,
+      "full_unknown_count": 13
+    },
+    "shot": {
+      "model": "gpt-6-astra",
+      "reasoning_effort": "medium",
+      "same_exact_scope": true,
+      "same_frozen_source_inputs": true,
+      "full_reference_run_id": "b7b4fd156b884907b2431b6b1e0d9960",
+      "compact_fresh_run_id": "75ee79cf3b7240fb961fc63063e1a660",
+      "full_prompt_bytes": 128933,
+      "compact_prompt_bytes": 78021,
+      "bytes_reduction_pct": 39.49,
+      "full_seconds": 214.071,
+      "compact_seconds": 189.979,
+      "seconds_delta": -24.092,
+      "latency_reduction_pct": 11.25,
+      "full_proposal": {
+        "characters": 7144,
+        "lines": 55
+      },
+      "compact_proposal": {
+        "characters": 6645,
+        "lines": 56
+      },
+      "full_cues": {
+        "Shot02_late_reposition": true,
+        "Shot02_cover": true,
+        "Shot02_right_hand_activity": true,
+        "Shot03_question": true,
+        "Shot03_interrupt_motion": true,
+        "Shot03_left_hand_lift": true,
+        "Shot03_Lin_discovers_after_question": true,
+        "Shot03_fourth_line": true,
+        "Shot04_forward_lean": true,
+        "Shot04_single_right_handoff": true,
+        "Shot04_ownership_sequence": true,
+        "Shot04_to_door": true
+      },
+      "compact_cues": {
+        "Shot02_late_reposition": true,
+        "Shot02_cover": true,
+        "Shot02_right_hand_activity": true,
+        "Shot03_question": true,
+        "Shot03_interrupt_motion": true,
+        "Shot03_left_hand_lift": true,
+        "Shot03_Lin_discovers_after_question": true,
+        "Shot03_fourth_line": true,
+        "Shot04_forward_lean": true,
+        "Shot04_single_right_handoff": true,
+        "Shot04_ownership_sequence": true,
+        "Shot04_to_door": true
+      },
+      "new_output_sha256": "f0346193f3ddecb158748cb124840f81b33463ec4af413cc0f82aac2fdea9a2a",
+      "full_output_sha256": "9a05260f475ff5694a1996f4224ad71a6953480a36566fa9d90dbcbc2ed38da1",
+      "has_hard_conflict": false,
+      "has_upstream_change": false,
+      "compact_unknown_count": 12,
+      "full_unknown_count": 14
+    }
+  },
+  "shots": {
+    "Shot01": {
+      "base_length": 628,
+      "full_length": 628,
+      "compact_length": 628,
+      "full_unchanged_base": true,
+      "compact_unchanged_base": true,
+      "full_and_compact_same": true,
+      "full_changed_base": false,
+      "compact_changed_base": false
+    },
+    "Shot02": {
+      "base_length": 1101,
+      "full_length": 1588,
+      "compact_length": 1479,
+      "full_unchanged_base": false,
+      "compact_unchanged_base": false,
+      "full_and_compact_same": false,
+      "full_changed_base": true,
+      "compact_changed_base": true
+    },
+    "Shot03": {
+      "base_length": 865,
+      "full_length": 1227,
+      "compact_length": 1290,
+      "full_unchanged_base": false,
+      "compact_unchanged_base": false,
+      "full_and_compact_same": false,
+      "full_changed_base": true,
+      "compact_changed_base": true
+    },
+    "Shot04": {
+      "base_length": 1818,
+      "full_length": 2865,
+      "compact_length": 2253,
+      "full_unchanged_base": false,
+      "compact_unchanged_base": false,
+      "full_and_compact_same": false,
+      "full_changed_base": true,
+      "compact_changed_base": true
+    }
+  },
+  "not_proven": [
+    "Real model quality equivalence: lexical cues are not semantic tests",
+    "Runtime speed due to prompt: model jitter/time of day/queue can affect two samples",
+    "Four-shot final audience readability, natural continuous animation, media quality"
+  ]
+}
