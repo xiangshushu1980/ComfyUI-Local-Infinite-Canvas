@@ -1,0 +1,5 @@
+*.json -text
+*.log -text
+*.md text eol=lf
+*.py text eol=lf
+*.sha256 text eol=lf

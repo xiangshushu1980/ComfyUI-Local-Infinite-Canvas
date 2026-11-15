@@ -1,0 +1,6 @@
+b0267dd8852ca72007e21c93e3bb95d5c24c476b4ec3c516ffbdb7316008fd73  .gitattributes
+249cb7fdff99cc3b573590a4b2af691fd0e6354222abae802b550d0ad6c91f38  README.md
+4962eb61122cf31451a07261fae3cc127dd6a43788a38068d306ee2a703cb86d  canvas-agent-smoke-result.json
+e8e6fed2f8be63b754ce5de90462dbc79d6ffe7013644f50eecab0986b44dbec  smoke-run.log
+7e59b4a566b7e717cbeedc2fff1edb742edb5330f4918de36acb067804a9a6e2  smoke_canvas_agent.py
+2d239873f8ed9b8783b8603ef3eec4b6d1bf77cff363cede464f5a1604f5d37b  ../../WAR-89/director-skill-v0-knowledge-context-architecture-proposal-20261114.md

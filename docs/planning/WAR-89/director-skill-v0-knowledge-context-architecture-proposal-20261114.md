@@ -392,3 +392,15 @@ v0 **不固定 token、轮次、阶段数、每次阶段切换必开新 Session�
 ### 12.9 本轮建议与下一停点
 
 **用户确认记录（2026-11-14）**：§12 v0 最小语义调用契约已被用户接受为下一步 Director Skill 设计基线；批准的是**语义要求及职责边界**，不是现成 API/Engine、模式自动切换阈值或数据 Schema。已进入主 Skill＋四阶段卡＋知识索引＋横切 Review 的文件组织与专业 Prompt 草案设计；独立设计稿为 docs/planning/WAR-89/director-skill-v0-file-and-prompt-design-20261114.md，仍待用户审阅七文件分工与 Prompt。WAR-89 保持 In Progress；不修改 WAR-35/52、原始 Skill 或生产代码，不运行 H3/Canvas/Blender，也不提交混合工作树。
+
+
+## 13. 2026-11-15 实施优先级修订：v0 Resume-only，先 Canvas 正确性联调
+
+用户已确认 **先完成导演流程/批准/局部修订的正确性闭环，再与 Canvas Agent 整合，性能与会话优化后置**。这**不推翻 §12 的专业阶段/权限语义**，但取代 §11–12 中对 Continue/Refresh 在 v0 同期实现的预期：
+
+- **v0 运行模式统一 Resume**：从已保存的 Source、获批 Intent/工作候选、阶段文本与风险装包；无可靠旧会话时绝不借用不明历史。Continue / Refresh 属于未来可选会话优化，当前仍明确拒绝，**不作为 v0 Canvas 联调验收的阻塞项**。
+- **最小工程保护**：递增 revision + 乐观并发版本对照是未来 Canvas 导演编辑的推荐语义；当前 WAR-90 试验运行壳还没有实现 revision，使用已有候选 UUID、Source/Skill/候选内容 SHA、原子状态保存、审批证据与隔离机制，不能谎称 revision 已落地。正式字段待 WAR-35/52 冻结后对接。
+- **保留所有正确性不变量**：A/B 真实用户审批、不可变候选/有效基线、局部影响和邻镜复检、故事/世界状态与人物知情依赖、硬冲突隔离、媒体/几何/观众未证风险。只读显示的 Director 成果不等于 Canvas 写入或视频生成授权。
+- **已执行下一步**：真实 Eric Canvas Agent API + 隔离 headless 浏览器新画布创建了四镜审阅文本节点并选中 Shot02；反馈版本/目标校验仅使用**模拟输入**，尚未收取真实用户反馈或运行新的导演修订。详情与唯一权威新证据见 `docs/planning/WAR-90/canvas-agent-smoke-20261115/README.md`。
+
+上文 §11–12 Continue/Refresh/Resume 的调用追踪表保留为**历史设计示例**，不表示三种运行模式在当前 v0 均已实现。当前正确性闭环的版本/审批边界由 WAR-90 最新证据和后续 WAR-35 正式数据契约共同确定。
