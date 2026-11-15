@@ -1,0 +1,274 @@
+{
+  "source_sha256": "23fc26a252390e73ac50efd16001248ceec362bd0d590f16dbbe8a16385a0373",
+  "source_frame": 40,
+  "support_correction": {
+    "folder": [
+      [
+        -0.5900000333786011,
+        -0.15000000596046448
+      ],
+      [
+        0.30000001192092896,
+        0.6200000047683716
+      ],
+      [
+        0.7914999723434448,
+        0.8055000305175781
+      ]
+    ],
+    "moved_paper_top_page": [
+      [
+        -0.684999942779541,
+        -0.3749999701976776
+      ],
+      [
+        0.3399999737739563,
+        0.5600000023841858
+      ],
+      [
+        0.7854999899864197,
+        0.7915000319480896
+      ]
+    ],
+    "underlying_stack_top": [
+      [
+        -0.7199999690055847,
+        -0.3399999737739563
+      ],
+      [
+        0.33000001311302185,
+        0.5900000333786011
+      ],
+      [
+        0.7770000100135803,
+        0.7839999794960022
+      ]
+    ],
+    "folder_bottom_minus_moved_paper_top_m": -0.0,
+    "folder_bottom_minus_underlying_stack_top_m": 0.0075,
+    "folder_moved_paper_overlap_xy_m2": 0.0473,
+    "folder_underlying_stack_overlap_xy_m2": 0.065,
+    "interpretation": "The moved paper is the top member of the pile, not the lower STACK_03 sheet; pair folder to actual PAPER_MOVING top at final pose."
+  },
+  "folder_visibility_25_spots_5_path": [
+    {
+      "path_ratio": 0,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "clear_or_folder_visible_of_25": 0,
+          "lin_blocks_of_25": 25,
+          "clear_spot_indices": [],
+          "counts": {
+            "LIN_PANTS": 7,
+            "LIN_TORSO": 18
+          }
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "clear_or_folder_visible_of_25": 0,
+          "lin_blocks_of_25": 25,
+          "clear_spot_indices": [],
+          "counts": {
+            "LIN_PANTS": 4,
+            "LIN_TORSO": 21
+          }
+        }
+      ]
+    },
+    {
+      "path_ratio": 0.25,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "clear_or_folder_visible_of_25": 0,
+          "lin_blocks_of_25": 25,
+          "clear_spot_indices": [],
+          "counts": {
+            "LIN_TORSO": 25
+          }
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "clear_or_folder_visible_of_25": 0,
+          "lin_blocks_of_25": 25,
+          "clear_spot_indices": [],
+          "counts": {
+            "LIN_TORSO": 25
+          }
+        }
+      ]
+    },
+    {
+      "path_ratio": 0.5,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "clear_or_folder_visible_of_25": 0,
+          "lin_blocks_of_25": 25,
+          "clear_spot_indices": [],
+          "counts": {
+            "LIN_TORSO": 25
+          }
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "clear_or_folder_visible_of_25": 0,
+          "lin_blocks_of_25": 25,
+          "clear_spot_indices": [],
+          "counts": {
+            "LIN_TORSO": 25
+          }
+        }
+      ]
+    },
+    {
+      "path_ratio": 0.75,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "clear_or_folder_visible_of_25": 0,
+          "lin_blocks_of_25": 25,
+          "clear_spot_indices": [],
+          "counts": {
+            "LIN_TORSO": 25
+          }
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "clear_or_folder_visible_of_25": 0,
+          "lin_blocks_of_25": 25,
+          "clear_spot_indices": [],
+          "counts": {
+            "LIN_TORSO": 25
+          }
+        }
+      ]
+    },
+    {
+      "path_ratio": 1.0,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "clear_or_folder_visible_of_25": 0,
+          "lin_blocks_of_25": 25,
+          "clear_spot_indices": [],
+          "counts": {
+            "LIN_SHOULDERS": 3,
+            "LIN_TORSO": 22
+          }
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "clear_or_folder_visible_of_25": 0,
+          "lin_blocks_of_25": 25,
+          "clear_spot_indices": [],
+          "counts": {
+            "LIN_SHOULDERS": 5,
+            "LIN_TORSO": 20
+          }
+        }
+      ]
+    }
+  ],
+  "final_covered_location_from_Zhou_both_eyes": {
+    "ZHOU_LEFT_EYE": [
+      {
+        "first_mesh": "LIN_TORSO",
+        "fraction": 0.46175
+      },
+      {
+        "first_mesh": "LIN_TORSO",
+        "fraction": 0.47139
+      },
+      {
+        "first_mesh": "LIN_TORSO",
+        "fraction": 0.40772
+      }
+    ],
+    "ZHOU_RIGHT_EYE": [
+      {
+        "first_mesh": "LIN_TORSO",
+        "fraction": 0.46835
+      },
+      {
+        "first_mesh": "LIN_TORSO",
+        "fraction": 0.47801
+      },
+      {
+        "first_mesh": "LIN_SHOULDERS",
+        "fraction": 0.40767
+      }
+    ]
+  },
+  "legacy_camera_final_cover_transition": [
+    {
+      "frame": 34,
+      "legacy_cam_clear_K_9": 6,
+      "legacy_occluders": {
+        "null": 6,
+        "STACK_03": 3
+      },
+      "folder_bottom_z": 0.903
+    },
+    {
+      "frame": 35,
+      "legacy_cam_clear_K_9": 6,
+      "legacy_occluders": {
+        "null": 6,
+        "STACK_03": 3
+      },
+      "folder_bottom_z": 0.862
+    },
+    {
+      "frame": 36,
+      "legacy_cam_clear_K_9": 6,
+      "legacy_occluders": {
+        "null": 6,
+        "STACK_03": 3
+      },
+      "folder_bottom_z": 0.83218
+    },
+    {
+      "frame": 37,
+      "legacy_cam_clear_K_9": 4,
+      "legacy_occluders": {
+        "BLUE_FOLDER": 3,
+        "null": 4,
+        "STACK_03": 2
+      },
+      "folder_bottom_z": 0.81189
+    },
+    {
+      "frame": 38,
+      "legacy_cam_clear_K_9": 2,
+      "legacy_occluders": {
+        "BLUE_FOLDER": 6,
+        "null": 2,
+        "STACK_03": 1
+      },
+      "folder_bottom_z": 0.79945
+    },
+    {
+      "frame": 39,
+      "legacy_cam_clear_K_9": 0,
+      "legacy_occluders": {
+        "BLUE_FOLDER": 9
+      },
+      "folder_bottom_z": 0.79321
+    },
+    {
+      "frame": 40,
+      "legacy_cam_clear_K_9": 0,
+      "legacy_occluders": {
+        "BLUE_FOLDER": 9
+      },
+      "folder_bottom_z": 0.7915
+    }
+  ],
+  "limits": [
+    "Folder ray first hit includes folder geometry and other meshes, not human gaze or ability to identify contents.",
+    "Pixel visibility and hand/key ownership are not assessed in this follow-up.",
+    "The source is frozen older proxy; new B approved staging may need a new pose, not automatic failure."
+  ]
+}

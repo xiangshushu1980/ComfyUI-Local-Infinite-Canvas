@@ -1,0 +1,121 @@
+{
+  "date": "2026-11-15",
+  "purpose": "Non-destructive supplement for new camera full 1..40 audit and genuine independent evidence reconsideration. Original v1/manifest.json not overwritten.",
+  "entries": [
+    {
+      "path": "docs/validation/WAR-91/README.md",
+      "sha256": "0a9ae91d13a898d64f87f9dae38c2b8aa5822f0b6cc19be9ceffbb5bdd92ab59",
+      "bytes": 10044
+    },
+    {
+      "path": "docs/validation/WAR-91/verify-evidence.py",
+      "sha256": "584eb6780ea6a4079b3be539c267018f66b9fc46cbd204c78757271031bfa533",
+      "bytes": 2835
+    },
+    {
+      "path": "docs/validation/WAR-91/run-v1.py",
+      "sha256": "fd9e20e6e42647a2e6725122ff6ce7cda1efbf34e333bafc710e56d5e789c358",
+      "bytes": 13638
+    },
+    {
+      "path": "docs/validation/WAR-91/followup-audit.py",
+      "sha256": "eca2962498f2283383896ce63234fe06837abaad40d2b099f7ecd4c592310b6c",
+      "bytes": 5377
+    },
+    {
+      "path": "docs/validation/WAR-91/transition-audit.py",
+      "sha256": "3554dc92393a7a4e531b7758b2986cb99354154e066df8ca744fc7d5a670ceb3",
+      "bytes": 1837
+    },
+    {
+      "path": "docs/validation/WAR-91/full-sequence-audit.py",
+      "sha256": "5fd79e052dc09091a237fd7b6d5a0042d0890fe4452ea12357b72352305d408a",
+      "bytes": 1835
+    },
+    {
+      "path": "docs/validation/WAR-91/review-runner.py",
+      "sha256": "76aaf3a4602a4c8aa7d8a3f12cec6d7ce5b3609c3cf6eb8af54d25baf9b1f243",
+      "bytes": 6883
+    },
+    {
+      "path": "docs/validation/WAR-91/reconsider-v1.py",
+      "sha256": "386bd91252b9c1b3e01b3641f5cf0baeccd126c263360d9b64a8cf84b7ae6c02",
+      "bytes": 3905
+    },
+    {
+      "path": "docs/validation/WAR-91/v1/new-camera-transition.json",
+      "sha256": "45030e39c4c6b0a3c9cf3c6b7da266719be5994f24183ea319f5a1cba50a1a12",
+      "bytes": 2395
+    },
+    {
+      "path": "docs/validation/WAR-91/v1/new-camera-full-sequence.json",
+      "sha256": "a0ea29b2336d00027406dedb2788b0ad477127cd20a9c1418d21a803977cfb04",
+      "bytes": 12045
+    },
+    {
+      "path": "docs/validation/WAR-91/v1/transition-run.log",
+      "sha256": "a213164419be5b7afd878da8bdcafb25377edbf4a5a52751bc0d22c0bc19d1cd",
+      "bytes": 1643
+    },
+    {
+      "path": "docs/validation/WAR-91/v1/full-sequence-run.log",
+      "sha256": "92edb050a9dc86aa72c9bfd4390d690130357546231049ea3d47b60eb3216318",
+      "bytes": 8074
+    },
+    {
+      "path": "docs/validation/WAR-91/review-v1/frozen-review-packet.txt",
+      "sha256": "c906bb99bbf7215076e6fb55a63e797e68862e2860f084363ade2d445dc80785",
+      "bytes": 34511
+    },
+    {
+      "path": "docs/validation/WAR-91/review-v1/manifest.json",
+      "sha256": "6515ec54591b86a057fc204bc10a38954913d5ffaa93cf026222829f225c3040",
+      "bytes": 435
+    },
+    {
+      "path": "docs/validation/WAR-91/review-v1/summary.json",
+      "sha256": "c372b16f96a135c4aa3fa5667ac57e5fbbb17c75e8e0dd3f32ce4b73462996de",
+      "bytes": 1087
+    },
+    {
+      "path": "docs/validation/WAR-91/review-v1/main-reconsideration/result.md",
+      "sha256": "1f7cdeec0384539281f31ce69c16cd1577b096955356ef992b9d9194d966f1ad",
+      "bytes": 1379
+    },
+    {
+      "path": "docs/validation/WAR-91/review-v1/main-reviewer/result.md",
+      "sha256": "3d4a7317165a1ad95e6c9ee28bb899516e1708d31a352ce33eb000b19ca273d4",
+      "bytes": 2145
+    },
+    {
+      "path": "docs/validation/WAR-91/review-v1/reviewer-coverage/result.md",
+      "sha256": "056e7b49efb760407f1e4661ab4c55d7172b211fc66f806672886c16818c9841",
+      "bytes": 3153
+    },
+    {
+      "path": "docs/validation/WAR-91/review-v1/reviewer-geometry/result.md",
+      "sha256": "c0e7158cd93c8d67d24517ecae8176c688d26a1f7cff4b2a114d9f657a1242de",
+      "bytes": 2221
+    },
+    {
+      "path": "docs/validation/WAR-91/review-v1/main-reconsideration/run.json",
+      "sha256": "d2e659b14cbece9652413f65bc0c491313b389446923d76f9e93efc8dcbc342d",
+      "bytes": 361
+    },
+    {
+      "path": "docs/validation/WAR-91/review-v1/main-reviewer/run.json",
+      "sha256": "bee22bc1224f24bf95cd9f137949450fcea8ae8cef7509a290dfb064b131f5e8",
+      "bytes": 289
+    },
+    {
+      "path": "docs/validation/WAR-91/review-v1/reviewer-coverage/run.json",
+      "sha256": "a192c8c2b4b42223d3d043372b866cbebabc3f6842a091fa30e57dbeb7890103",
+      "bytes": 290
+    },
+    {
+      "path": "docs/validation/WAR-91/review-v1/reviewer-geometry/run.json",
+      "sha256": "75a20391e372faf7a4214059b53c991e24462af10e9697ad239379e2650cd81e",
+      "bytes": 294
+    }
+  ]
+}

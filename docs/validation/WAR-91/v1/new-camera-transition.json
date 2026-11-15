@@ -1,0 +1,130 @@
+{
+  "input_blend_sha256": "a4c7b48a9dac825c5422c626b17242599eeacbb9115eb640fe8d7f20e34f75a3",
+  "device": "CPU",
+  "frames": [
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40
+  ],
+  "rows": [
+    {
+      "frame": 34,
+      "camera": "WAR91_Action40",
+      "clear_9": 9,
+      "blockers": {
+        "CLEAR": 9
+      }
+    },
+    {
+      "frame": 34,
+      "camera": "WAR91_Desk40",
+      "clear_9": 9,
+      "blockers": {
+        "CLEAR": 9
+      }
+    },
+    {
+      "frame": 35,
+      "camera": "WAR91_Action40",
+      "clear_9": 9,
+      "blockers": {
+        "CLEAR": 9
+      }
+    },
+    {
+      "frame": 35,
+      "camera": "WAR91_Desk40",
+      "clear_9": 9,
+      "blockers": {
+        "CLEAR": 9
+      }
+    },
+    {
+      "frame": 36,
+      "camera": "WAR91_Action40",
+      "clear_9": 9,
+      "blockers": {
+        "CLEAR": 9
+      }
+    },
+    {
+      "frame": 36,
+      "camera": "WAR91_Desk40",
+      "clear_9": 9,
+      "blockers": {
+        "CLEAR": 9
+      }
+    },
+    {
+      "frame": 37,
+      "camera": "WAR91_Action40",
+      "clear_9": 3,
+      "blockers": {
+        "CLEAR": 3,
+        "BLUE_FOLDER": 6
+      }
+    },
+    {
+      "frame": 37,
+      "camera": "WAR91_Desk40",
+      "clear_9": 3,
+      "blockers": {
+        "CLEAR": 3,
+        "BLUE_FOLDER": 6
+      }
+    },
+    {
+      "frame": 38,
+      "camera": "WAR91_Action40",
+      "clear_9": 0,
+      "blockers": {
+        "BLUE_FOLDER": 9
+      }
+    },
+    {
+      "frame": 38,
+      "camera": "WAR91_Desk40",
+      "clear_9": 0,
+      "blockers": {
+        "BLUE_FOLDER": 9
+      }
+    },
+    {
+      "frame": 39,
+      "camera": "WAR91_Action40",
+      "clear_9": 0,
+      "blockers": {
+        "BLUE_FOLDER": 9
+      }
+    },
+    {
+      "frame": 39,
+      "camera": "WAR91_Desk40",
+      "clear_9": 0,
+      "blockers": {
+        "BLUE_FOLDER": 9
+      }
+    },
+    {
+      "frame": 40,
+      "camera": "WAR91_Action40",
+      "clear_9": 0,
+      "blockers": {
+        "BLUE_FOLDER": 9
+      }
+    },
+    {
+      "frame": 40,
+      "camera": "WAR91_Desk40",
+      "clear_9": 0,
+      "blockers": {
+        "BLUE_FOLDER": 9
+      }
+    }
+  ],
+  "limits": "9 fixed key patch points; occlusion is camera ray geometry only, not audience reading; derived WAR-72 source."
+}

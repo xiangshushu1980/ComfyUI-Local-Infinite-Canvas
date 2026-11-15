@@ -1,0 +1,13 @@
+camera,frame,key_width_px,key_height_px,clear_9,blocked_names,lin_face_in,zhou_face_in,hand_in
+ACTION40,1,40.09,14.65,0,{'PAPER_MOVING': 9},True,False,True
+ACTION40,8,40.09,14.65,9,{'CLEAR': 9},True,False,True
+ACTION40,20,40.09,14.65,9,{'CLEAR': 9},True,False,True
+ACTION40,30,40.09,14.65,9,{'CLEAR': 9},True,False,True
+ACTION40,34,40.09,14.65,9,{'CLEAR': 9},True,False,True
+ACTION40,40,40.09,14.65,0,{'BLUE_FOLDER': 9},True,False,True
+DESK40,1,55.67,17.81,0,{'PAPER_MOVING': 9},False,False,True
+DESK40,8,55.67,17.81,9,{'CLEAR': 9},False,False,True
+DESK40,20,55.67,17.81,9,{'CLEAR': 9},False,False,True
+DESK40,30,55.67,17.81,9,{'CLEAR': 9},False,False,True
+DESK40,34,55.67,17.81,9,{'CLEAR': 9},False,False,True
+DESK40,40,55.67,17.81,0,{'BLUE_FOLDER': 9},False,False,True

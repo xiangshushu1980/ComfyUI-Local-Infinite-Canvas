@@ -1,0 +1,110 @@
+{
+  "created_at": "2026-11-15",
+  "environment": "Windows Blender 5.2.3 LTS, Cycles CPU, threads=2, samples=3, 960x540, via WSL interop on Eric",
+  "source_model_readonly": true,
+  "source_and_approved_B_untouched": true,
+  "entries": [
+    {
+      "path": "docs/validation/WAR-91/run-v1.py",
+      "sha256": "fd9e20e6e42647a2e6725122ff6ce7cda1efbf34e333bafc710e56d5e789c358",
+      "bytes": 13638
+    },
+    {
+      "path": "docs/validation/WAR-91/followup-audit.py",
+      "sha256": "eca2962498f2283383896ce63234fe06837abaad40d2b099f7ecd4c592310b6c",
+      "bytes": 5377
+    },
+    {
+      "path": "docs/validation/WAR-91/v1/results.json",
+      "sha256": "216939817632d241121f5650dde3b8d9f77ed345e39a9bcc4a6e079afe65f3c5",
+      "bytes": 84200
+    },
+    {
+      "path": "docs/validation/WAR-91/v1/followup-audit.json",
+      "sha256": "f9d93540cf523ed9452be323cfcb4fb2c85967d956cd349171b615d4f39d0194",
+      "bytes": 6556
+    },
+    {
+      "path": "docs/validation/WAR-91/v1/shot02-metrics.csv",
+      "sha256": "f43a2b3154653ed96b7f1c8d6b57da72e5badfe4674db7c8b3a54f494473a704",
+      "bytes": 784
+    },
+    {
+      "path": "docs/validation/WAR-91/v1/blender-run.log",
+      "sha256": "240cb381d495c20f7deef2ed53a17d3296772e08c29a1393fdceb3216e4abe42",
+      "bytes": 2969
+    },
+    {
+      "path": "docs/validation/WAR-91/v1/followup-run.log",
+      "sha256": "ce64df8f4a8c1d6bdb3ce46f17f0b4568f3cd78b9b71e75e97b6c4be77559cb9",
+      "bytes": 2412
+    },
+    {
+      "path": "docs/validation/WAR-72/round4/candidate-b/WAR72_physical_B.blend",
+      "sha256": "23fc26a252390e73ac50efd16001248ceec362bd0d590f16dbbe8a16385a0373",
+      "bytes": 144995
+    },
+    {
+      "path": "docs/planning/WAR-90/pilot-D/runs/d23b8bdab90f43ef8ff0098fb8021f78/result.txt",
+      "sha256": "57665d7e94b5a004c6d864940fc17f9c86595d58dd94e633f0c20d54e15e9e6e",
+      "bytes": 19852
+    },
+    {
+      "path": "docs/validation/WAR-91/v1/ACTION40_f01.png",
+      "sha256": "b8126f994b8400686b195f705b004a65a96f6ad08e22246fe2fe2dc963bd5a30",
+      "bytes": 597042,
+      "tracked": false
+    },
+    {
+      "path": "docs/validation/WAR-91/v1/ACTION40_f20.png",
+      "sha256": "433c62b77e9ad8e376412beac1b207107844d0d1a71aa2f3bb70152d17030f7b",
+      "bytes": 602332,
+      "tracked": false
+    },
+    {
+      "path": "docs/validation/WAR-91/v1/ACTION40_f34.png",
+      "sha256": "f0321f0766483e75fc8068e9d47cb5e057854e3cd8ca97bad586d3c5dd8cabe8",
+      "bytes": 604823,
+      "tracked": false
+    },
+    {
+      "path": "docs/validation/WAR-91/v1/ACTION40_f40.png",
+      "sha256": "d7b0a6264301c33abb869936dc6dcc08e3f2f87796338642cec4680630383f5f",
+      "bytes": 598222,
+      "tracked": false
+    },
+    {
+      "path": "docs/validation/WAR-91/v1/DESK40_f01.png",
+      "sha256": "a8bd4ec3d74cac6afd02b8c69a7e265f7f6843f8c1532e894a6b380782a75c44",
+      "bytes": 603725,
+      "tracked": false
+    },
+    {
+      "path": "docs/validation/WAR-91/v1/DESK40_f20.png",
+      "sha256": "b0f5d3542fc4504fcd71192d9ba14b6d2f5403252832d784c4e5ad75948a3906",
+      "bytes": 613308,
+      "tracked": false
+    },
+    {
+      "path": "docs/validation/WAR-91/v1/DESK40_f34.png",
+      "sha256": "01ea93ae6637e1dcc0cb61e418523b706323c0c231f70111b7cf11f585bbe360",
+      "bytes": 611528,
+      "tracked": false
+    },
+    {
+      "path": "docs/validation/WAR-91/v1/DESK40_f40.png",
+      "sha256": "66b9df5808dab7015275162f94a8ac451dcc974e1c13c06fbc2fbd5828b8e9b6",
+      "bytes": 602859,
+      "tracked": false
+    },
+    {
+      "path": "docs/validation/WAR-91/v1/WAR91_derived_cameras.blend",
+      "sha256": "a4c7b48a9dac825c5422c626b17242599eeacbb9115eb640fe8d7f20e34f75a3",
+      "bytes": 145108,
+      "tracked": false
+    }
+  ],
+  "limits": [
+    "No actual audience test, real actor performance, continuous hand grip, GPU/H3 or Canvas"
+  ]
+}

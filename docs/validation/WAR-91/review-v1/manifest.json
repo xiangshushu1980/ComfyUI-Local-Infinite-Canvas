@@ -1,0 +1,9 @@
+{
+  "packet_sha256": "c906bb99bbf7215076e6fb55a63e797e68862e2860f084363ade2d445dc80785",
+  "source_sha": "23fc26a252390e73ac50efd16001248ceec362bd0d590f16dbbe8a16385a0373",
+  "run_results_sha": "216939817632d241121f5650dde3b8d9f77ed345e39a9bcc4a6e079afe65f3c5",
+  "followup_results_sha": "f9d93540cf523ed9452be323cfcb4fb2c85967d956cd349171b615d4f39d0194",
+  "review_count": 2,
+  "lead_count": 1,
+  "user_B_approved_still_true": true
+}

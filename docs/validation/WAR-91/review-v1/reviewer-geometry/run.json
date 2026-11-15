@@ -1,0 +1,9 @@
+{
+  "label": "reviewer-geometry",
+  "model": "gpt-6-astra",
+  "effort": "medium",
+  "exit": 0,
+  "duration_sec": 26.2,
+  "prompt_sha256": "74abc4ca891ca94d5b927628cda3ba7be1bc3aababa3c4a96c9a0c7ffb9b97f9",
+  "result_sha256": "c0e7158cd93c8d67d24517ecae8176c688d26a1f7cff4b2a114d9f657a1242de"
+}

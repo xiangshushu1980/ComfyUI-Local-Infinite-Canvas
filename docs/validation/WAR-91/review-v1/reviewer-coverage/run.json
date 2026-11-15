@@ -1,0 +1,9 @@
+{
+  "label": "reviewer-coverage",
+  "model": "gpt-6-luna",
+  "effort": "low",
+  "exit": 0,
+  "duration_sec": 27.7,
+  "prompt_sha256": "c632c55193c2043edd1bc37337217ff7b4c434791dcb6e696cc88a71437a3b10",
+  "result_sha256": "056e7b49efb760407f1e4661ab4c55d7172b211fc66f806672886c16818c9841"
+}

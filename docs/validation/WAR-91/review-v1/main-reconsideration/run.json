@@ -1,0 +1,9 @@
+{
+  "model": "gpt-6-luna",
+  "effort": "medium",
+  "exit": 0,
+  "duration_sec": 17.4,
+  "input_full_sequence_sha256": "a0ea29b2336d00027406dedb2788b0ad477127cd20a9c1418d21a803977cfb04",
+  "prompt_sha256": "dbde60267e6ce1e172c7354c42bca343c598d8f9ad6328f7e2a33c7b22643efe",
+  "result_sha256": "1f7cdeec0384539281f31ce69c16cd1577b096955356ef992b9d9194d966f1ad"
+}

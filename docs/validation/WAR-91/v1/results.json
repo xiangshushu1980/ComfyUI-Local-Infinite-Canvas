@@ -1,0 +1,3642 @@
+{
+  "task": "WAR-91 V1 narrow Blender CPU proxy",
+  "date": "2026-11-15",
+  "source_blend": "\\\\wsl.localhost\\udev\\home\\sean\\projects\\canvas-lab\\docs\\validation\\WAR-72\\round4\\candidate-b\\WAR72_physical_B.blend",
+  "source_sha256": "23fc26a252390e73ac50efd16001248ceec362bd0d590f16dbbe8a16385a0373",
+  "baseline_B_run": "d23b8bdab90f43ef8ff0098fb8021f78",
+  "blender_version": "5.2.3 LTS",
+  "device": "CPU",
+  "engine": "CYCLES",
+  "threads": 2,
+  "samples": 3,
+  "resolution": [
+    960,
+    540
+  ],
+  "old_round4_model_reused_unmodified_on_disk": true,
+  "candidate_cameras": [
+    {
+      "id": "ACTION40",
+      "xyz": [
+        -1.6,
+        -1.6,
+        1.55
+      ],
+      "rotation_euler": [
+        1.38464,
+        -0.0,
+        -0.67067
+      ],
+      "lens_mm": 40.0,
+      "sensor_width_mm": 36.0
+    },
+    {
+      "id": "DESK40",
+      "xyz": [
+        -1.15,
+        -1.1,
+        1.34
+      ],
+      "rotation_euler": [
+        1.25884,
+        -0.0,
+        -0.49163
+      ],
+      "lens_mm": 40.0,
+      "sensor_width_mm": 36.0
+    }
+  ],
+  "frames": [
+    1,
+    8,
+    20,
+    30,
+    34,
+    40
+  ],
+  "K": [
+    -0.25,
+    0.45,
+    0.755
+  ],
+  "key_model_locations_at_finish": {
+    "KEY_FIXED_RING": [
+      -0.265,
+      0.45,
+      0.755
+    ],
+    "KEY_FIXED_STEM": [
+      -0.214,
+      0.45,
+      0.754
+    ],
+    "KEY_FIXED_TOOTH": [
+      -0.184,
+      0.46,
+      0.754
+    ]
+  },
+  "shot02_rows": [
+    {
+      "camera": "ACTION40",
+      "frame": 1,
+      "key_projected": {
+        "width_px": 40.09,
+        "height_px": 14.65,
+        "fully_in_frame": true
+      },
+      "key_sample_clear_9": 0,
+      "key_sample_blocker_counts": {
+        "PAPER_MOVING": 9
+      },
+      "center_ray": {
+        "blocked": true,
+        "blocker": "PAPER_MOVING",
+        "distance_m": 2.54118
+      },
+      "folder_bounds": [
+        [
+          -1.02,
+          -0.58
+        ],
+        [
+          -0.03,
+          0.29
+        ],
+        [
+          0.75,
+          0.764
+        ]
+      ],
+      "moving_paper_bounds": [
+        [
+          -0.42,
+          -0.11
+        ],
+        [
+          0.34,
+          0.56
+        ],
+        [
+          0.761,
+          0.767
+        ]
+      ],
+      "left_hand_location": [
+        -0.265,
+        0.45,
+        0.805
+      ],
+      "right_hand_location": [
+        0.42,
+        0.12,
+        0.79
+      ],
+      "lin_face_in_frame": true,
+      "lin_left_hand_in_frame": true,
+      "zhou_face_in_frame": false,
+      "axis_start_end_sign": [
+        -4.146,
+        -1.3824
+      ]
+    },
+    {
+      "camera": "ACTION40",
+      "frame": 8,
+      "key_projected": {
+        "width_px": 40.09,
+        "height_px": 14.65,
+        "fully_in_frame": true
+      },
+      "key_sample_clear_9": 9,
+      "key_sample_blocker_counts": {
+        "CLEAR": 9
+      },
+      "center_ray": {
+        "blocked": false,
+        "blocker": null,
+        "distance_m": null
+      },
+      "folder_bounds": [
+        [
+          -1.02,
+          -0.58
+        ],
+        [
+          -0.03,
+          0.29
+        ],
+        [
+          0.75,
+          0.764
+        ]
+      ],
+      "moving_paper_bounds": [
+        [
+          -0.555,
+          -0.245
+        ],
+        [
+          0.34,
+          0.56
+        ],
+        [
+          0.828,
+          0.834
+        ]
+      ],
+      "left_hand_location": [
+        -0.4,
+        0.45,
+        0.88
+      ],
+      "right_hand_location": [
+        0.42,
+        0.12,
+        0.79
+      ],
+      "lin_face_in_frame": true,
+      "lin_left_hand_in_frame": true,
+      "zhou_face_in_frame": false,
+      "axis_start_end_sign": [
+        -4.146,
+        -1.3824
+      ]
+    },
+    {
+      "camera": "ACTION40",
+      "frame": 20,
+      "key_projected": {
+        "width_px": 40.09,
+        "height_px": 14.65,
+        "fully_in_frame": true
+      },
+      "key_sample_clear_9": 9,
+      "key_sample_blocker_counts": {
+        "CLEAR": 9
+      },
+      "center_ray": {
+        "blocked": false,
+        "blocker": null,
+        "distance_m": null
+      },
+      "folder_bounds": [
+        [
+          -1.02,
+          -0.58
+        ],
+        [
+          -0.03,
+          0.29
+        ],
+        [
+          0.75,
+          0.764
+        ]
+      ],
+      "moving_paper_bounds": [
+        [
+          -0.685,
+          -0.375
+        ],
+        [
+          0.34,
+          0.56
+        ],
+        [
+          0.7855,
+          0.7915
+        ]
+      ],
+      "left_hand_location": [
+        -0.53,
+        0.45,
+        0.827
+      ],
+      "right_hand_location": [
+        0.42,
+        0.12,
+        0.79
+      ],
+      "lin_face_in_frame": true,
+      "lin_left_hand_in_frame": true,
+      "zhou_face_in_frame": false,
+      "axis_start_end_sign": [
+        -4.146,
+        -1.3824
+      ]
+    },
+    {
+      "camera": "ACTION40",
+      "frame": 30,
+      "key_projected": {
+        "width_px": 40.09,
+        "height_px": 14.65,
+        "fully_in_frame": true
+      },
+      "key_sample_clear_9": 9,
+      "key_sample_blocker_counts": {
+        "CLEAR": 9
+      },
+      "center_ray": {
+        "blocked": false,
+        "blocker": null,
+        "distance_m": null
+      },
+      "folder_bounds": [
+        [
+          -0.89,
+          -0.45
+        ],
+        [
+          0.14,
+          0.46
+        ],
+        [
+          1.063,
+          1.077
+        ]
+      ],
+      "moving_paper_bounds": [
+        [
+          -0.685,
+          -0.375
+        ],
+        [
+          0.34,
+          0.56
+        ],
+        [
+          0.7855,
+          0.7915
+        ]
+      ],
+      "left_hand_location": [
+        -0.67,
+        0.3,
+        1.112
+      ],
+      "right_hand_location": [
+        0.42,
+        0.12,
+        0.79
+      ],
+      "lin_face_in_frame": true,
+      "lin_left_hand_in_frame": true,
+      "zhou_face_in_frame": false,
+      "axis_start_end_sign": [
+        -4.146,
+        -1.3824
+      ]
+    },
+    {
+      "camera": "ACTION40",
+      "frame": 34,
+      "key_projected": {
+        "width_px": 40.09,
+        "height_px": 14.65,
+        "fully_in_frame": true
+      },
+      "key_sample_clear_9": 9,
+      "key_sample_blocker_counts": {
+        "CLEAR": 9
+      },
+      "center_ray": {
+        "blocked": false,
+        "blocker": null,
+        "distance_m": null
+      },
+      "folder_bounds": [
+        [
+          -0.7,
+          -0.26
+        ],
+        [
+          0.27,
+          0.59
+        ],
+        [
+          0.903,
+          0.917
+        ]
+      ],
+      "moving_paper_bounds": [
+        [
+          -0.685,
+          -0.375
+        ],
+        [
+          0.34,
+          0.56
+        ],
+        [
+          0.7855,
+          0.7915
+        ]
+      ],
+      "left_hand_location": [
+        -0.48,
+        0.43,
+        0.952
+      ],
+      "right_hand_location": [
+        0.42,
+        0.12,
+        0.79
+      ],
+      "lin_face_in_frame": true,
+      "lin_left_hand_in_frame": true,
+      "zhou_face_in_frame": false,
+      "axis_start_end_sign": [
+        -4.146,
+        -1.3824
+      ]
+    },
+    {
+      "camera": "ACTION40",
+      "frame": 40,
+      "key_projected": {
+        "width_px": 40.09,
+        "height_px": 14.65,
+        "fully_in_frame": true
+      },
+      "key_sample_clear_9": 0,
+      "key_sample_blocker_counts": {
+        "BLUE_FOLDER": 9
+      },
+      "center_ray": {
+        "blocked": true,
+        "blocker": "BLUE_FOLDER",
+        "distance_m": 2.41623
+      },
+      "folder_bounds": [
+        [
+          -0.59,
+          -0.15
+        ],
+        [
+          0.3,
+          0.62
+        ],
+        [
+          0.7915,
+          0.8055
+        ]
+      ],
+      "moving_paper_bounds": [
+        [
+          -0.685,
+          -0.375
+        ],
+        [
+          0.34,
+          0.56
+        ],
+        [
+          0.7855,
+          0.7915
+        ]
+      ],
+      "left_hand_location": [
+        -0.37,
+        0.46,
+        0.8425
+      ],
+      "right_hand_location": [
+        0.42,
+        0.12,
+        0.79
+      ],
+      "lin_face_in_frame": true,
+      "lin_left_hand_in_frame": true,
+      "zhou_face_in_frame": false,
+      "axis_start_end_sign": [
+        -4.146,
+        -1.3824
+      ]
+    },
+    {
+      "camera": "DESK40",
+      "frame": 1,
+      "key_projected": {
+        "width_px": 55.67,
+        "height_px": 17.81,
+        "fully_in_frame": true
+      },
+      "key_sample_clear_9": 0,
+      "key_sample_blocker_counts": {
+        "PAPER_MOVING": 9
+      },
+      "center_ray": {
+        "blocked": true,
+        "blocker": "PAPER_MOVING",
+        "distance_m": 1.84672
+      },
+      "folder_bounds": [
+        [
+          -1.02,
+          -0.58
+        ],
+        [
+          -0.03,
+          0.29
+        ],
+        [
+          0.75,
+          0.764
+        ]
+      ],
+      "moving_paper_bounds": [
+        [
+          -0.42,
+          -0.11
+        ],
+        [
+          0.34,
+          0.56
+        ],
+        [
+          0.761,
+          0.767
+        ]
+      ],
+      "left_hand_location": [
+        -0.265,
+        0.45,
+        0.805
+      ],
+      "right_hand_location": [
+        0.42,
+        0.12,
+        0.79
+      ],
+      "lin_face_in_frame": false,
+      "lin_left_hand_in_frame": true,
+      "zhou_face_in_frame": false,
+      "axis_start_end_sign": [
+        -2.897,
+        -0.9344
+      ]
+    },
+    {
+      "camera": "DESK40",
+      "frame": 8,
+      "key_projected": {
+        "width_px": 55.67,
+        "height_px": 17.81,
+        "fully_in_frame": true
+      },
+      "key_sample_clear_9": 9,
+      "key_sample_blocker_counts": {
+        "CLEAR": 9
+      },
+      "center_ray": {
+        "blocked": false,
+        "blocker": null,
+        "distance_m": null
+      },
+      "folder_bounds": [
+        [
+          -1.02,
+          -0.58
+        ],
+        [
+          -0.03,
+          0.29
+        ],
+        [
+          0.75,
+          0.764
+        ]
+      ],
+      "moving_paper_bounds": [
+        [
+          -0.555,
+          -0.245
+        ],
+        [
+          0.34,
+          0.56
+        ],
+        [
+          0.828,
+          0.834
+        ]
+      ],
+      "left_hand_location": [
+        -0.4,
+        0.45,
+        0.88
+      ],
+      "right_hand_location": [
+        0.42,
+        0.12,
+        0.79
+      ],
+      "lin_face_in_frame": false,
+      "lin_left_hand_in_frame": true,
+      "zhou_face_in_frame": false,
+      "axis_start_end_sign": [
+        -2.897,
+        -0.9344
+      ]
+    },
+    {
+      "camera": "DESK40",
+      "frame": 20,
+      "key_projected": {
+        "width_px": 55.67,
+        "height_px": 17.81,
+        "fully_in_frame": true
+      },
+      "key_sample_clear_9": 9,
+      "key_sample_blocker_counts": {
+        "CLEAR": 9
+      },
+      "center_ray": {
+        "blocked": false,
+        "blocker": null,
+        "distance_m": null
+      },
+      "folder_bounds": [
+        [
+          -1.02,
+          -0.58
+        ],
+        [
+          -0.03,
+          0.29
+        ],
+        [
+          0.75,
+          0.764
+        ]
+      ],
+      "moving_paper_bounds": [
+        [
+          -0.685,
+          -0.375
+        ],
+        [
+          0.34,
+          0.56
+        ],
+        [
+          0.7855,
+          0.7915
+        ]
+      ],
+      "left_hand_location": [
+        -0.53,
+        0.45,
+        0.827
+      ],
+      "right_hand_location": [
+        0.42,
+        0.12,
+        0.79
+      ],
+      "lin_face_in_frame": false,
+      "lin_left_hand_in_frame": true,
+      "zhou_face_in_frame": false,
+      "axis_start_end_sign": [
+        -2.897,
+        -0.9344
+      ]
+    },
+    {
+      "camera": "DESK40",
+      "frame": 30,
+      "key_projected": {
+        "width_px": 55.67,
+        "height_px": 17.81,
+        "fully_in_frame": true
+      },
+      "key_sample_clear_9": 9,
+      "key_sample_blocker_counts": {
+        "CLEAR": 9
+      },
+      "center_ray": {
+        "blocked": false,
+        "blocker": null,
+        "distance_m": null
+      },
+      "folder_bounds": [
+        [
+          -0.89,
+          -0.45
+        ],
+        [
+          0.14,
+          0.46
+        ],
+        [
+          1.063,
+          1.077
+        ]
+      ],
+      "moving_paper_bounds": [
+        [
+          -0.685,
+          -0.375
+        ],
+        [
+          0.34,
+          0.56
+        ],
+        [
+          0.7855,
+          0.7915
+        ]
+      ],
+      "left_hand_location": [
+        -0.67,
+        0.3,
+        1.112
+      ],
+      "right_hand_location": [
+        0.42,
+        0.12,
+        0.79
+      ],
+      "lin_face_in_frame": false,
+      "lin_left_hand_in_frame": true,
+      "zhou_face_in_frame": false,
+      "axis_start_end_sign": [
+        -2.897,
+        -0.9344
+      ]
+    },
+    {
+      "camera": "DESK40",
+      "frame": 34,
+      "key_projected": {
+        "width_px": 55.67,
+        "height_px": 17.81,
+        "fully_in_frame": true
+      },
+      "key_sample_clear_9": 9,
+      "key_sample_blocker_counts": {
+        "CLEAR": 9
+      },
+      "center_ray": {
+        "blocked": false,
+        "blocker": null,
+        "distance_m": null
+      },
+      "folder_bounds": [
+        [
+          -0.7,
+          -0.26
+        ],
+        [
+          0.27,
+          0.59
+        ],
+        [
+          0.903,
+          0.917
+        ]
+      ],
+      "moving_paper_bounds": [
+        [
+          -0.685,
+          -0.375
+        ],
+        [
+          0.34,
+          0.56
+        ],
+        [
+          0.7855,
+          0.7915
+        ]
+      ],
+      "left_hand_location": [
+        -0.48,
+        0.43,
+        0.952
+      ],
+      "right_hand_location": [
+        0.42,
+        0.12,
+        0.79
+      ],
+      "lin_face_in_frame": false,
+      "lin_left_hand_in_frame": true,
+      "zhou_face_in_frame": false,
+      "axis_start_end_sign": [
+        -2.897,
+        -0.9344
+      ]
+    },
+    {
+      "camera": "DESK40",
+      "frame": 40,
+      "key_projected": {
+        "width_px": 55.67,
+        "height_px": 17.81,
+        "fully_in_frame": true
+      },
+      "key_sample_clear_9": 0,
+      "key_sample_blocker_counts": {
+        "BLUE_FOLDER": 9
+      },
+      "center_ray": {
+        "blocked": true,
+        "blocker": "BLUE_FOLDER",
+        "distance_m": 1.72264
+      },
+      "folder_bounds": [
+        [
+          -0.59,
+          -0.15
+        ],
+        [
+          0.3,
+          0.62
+        ],
+        [
+          0.7915,
+          0.8055
+        ]
+      ],
+      "moving_paper_bounds": [
+        [
+          -0.685,
+          -0.375
+        ],
+        [
+          0.34,
+          0.56
+        ],
+        [
+          0.7855,
+          0.7915
+        ]
+      ],
+      "left_hand_location": [
+        -0.37,
+        0.46,
+        0.8425
+      ],
+      "right_hand_location": [
+        0.42,
+        0.12,
+        0.79
+      ],
+      "lin_face_in_frame": false,
+      "lin_left_hand_in_frame": true,
+      "zhou_face_in_frame": false,
+      "axis_start_end_sign": [
+        -2.897,
+        -0.9344
+      ]
+    }
+  ],
+  "folder_support_contact": {
+    "folder_bounds": [
+      [
+        -0.59,
+        -0.15
+      ],
+      [
+        0.3,
+        0.62
+      ],
+      [
+        0.7915,
+        0.8055
+      ]
+    ],
+    "stack_top_bounds": [
+      [
+        -0.72,
+        -0.34
+      ],
+      [
+        0.33,
+        0.59
+      ],
+      [
+        0.777,
+        0.784
+      ]
+    ],
+    "key_ring_bounds": [
+      [
+        -0.289,
+        -0.241
+      ],
+      [
+        0.42624,
+        0.47376
+      ],
+      [
+        0.75,
+        0.76
+      ]
+    ],
+    "folder_stack_xy_overlap_area_m2": 0.065,
+    "folder_stack_z_gap_m": 0.0075,
+    "folder_key_xy_overlap_area_m2": 0.00525,
+    "folder_bottom_minus_key_top_m": 0.0315,
+    "folder_key_surface_intersections": {
+      "KEY_FIXED_RING": 0,
+      "KEY_FIXED_STEM": 0,
+      "KEY_FIXED_TOOTH": 0
+    },
+    "limits": "AABB+surface overlap only: no rigid-body friction or dynamic gravity proof."
+  },
+  "zhou_path_eye_samples": [
+    {
+      "frame": 20,
+      "sample": 0,
+      "ratio": 0.0,
+      "zhou_root": [
+        2.0,
+        -1.3,
+        0.0
+      ],
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "at": [
+            1.88458,
+            -1.24232,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.81605
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.96113
+          },
+          "key_occluded_by_lin": true
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "at": [
+            1.9265,
+            -1.19395,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.82455
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.93834
+          },
+          "key_occluded_by_lin": true
+        }
+      ],
+      "both_key_blocked_by_lin": true,
+      "both_folder_center_line_clear_of_lin": false,
+      "camera_K_center": {
+        "ACTION40": {
+          "blocked": false,
+          "blocker": null,
+          "distance_m": null
+        },
+        "DESK40": {
+          "blocked": false,
+          "blocker": null,
+          "distance_m": null
+        }
+      }
+    },
+    {
+      "frame": 20,
+      "sample": 1,
+      "ratio": 0.05,
+      "zhou_root": [
+        1.955,
+        -1.261,
+        0.0
+      ],
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "at": [
+            1.83958,
+            -1.20332,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.7614
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.89968
+          },
+          "key_occluded_by_lin": true
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "at": [
+            1.8815,
+            -1.15495,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.77002
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.87803
+          },
+          "key_occluded_by_lin": true
+        }
+      ],
+      "both_key_blocked_by_lin": true,
+      "both_folder_center_line_clear_of_lin": false,
+      "camera_K_center": {
+        "ACTION40": {
+          "blocked": false,
+          "blocker": null,
+          "distance_m": null
+        },
+        "DESK40": {
+          "blocked": false,
+          "blocker": null,
+          "distance_m": null
+        }
+      }
+    },
+    {
+      "frame": 20,
+      "sample": 2,
+      "ratio": 0.1,
+      "zhou_root": [
+        1.91,
+        -1.222,
+        0.0
+      ],
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "at": [
+            1.79458,
+            -1.16432,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.70691
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.83806
+          },
+          "key_occluded_by_lin": true
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "at": [
+            1.8365,
+            -1.11595,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.71566
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.82066
+          },
+          "key_occluded_by_lin": true
+        }
+      ],
+      "both_key_blocked_by_lin": true,
+      "both_folder_center_line_clear_of_lin": false,
+      "camera_K_center": {
+        "ACTION40": {
+          "blocked": false,
+          "blocker": null,
+          "distance_m": null
+        },
+        "DESK40": {
+          "blocked": false,
+          "blocker": null,
+          "distance_m": null
+        }
+      }
+    },
+    {
+      "frame": 20,
+      "sample": 3,
+      "ratio": 0.15,
+      "zhou_root": [
+        1.865,
+        -1.183,
+        0.0
+      ],
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "at": [
+            1.74958,
+            -1.12532,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.65258
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.77622
+          },
+          "key_occluded_by_lin": true
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "at": [
+            1.7915,
+            -1.07695,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.66145
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.76331
+          },
+          "key_occluded_by_lin": true
+        }
+      ],
+      "both_key_blocked_by_lin": true,
+      "both_folder_center_line_clear_of_lin": false,
+      "camera_K_center": {
+        "ACTION40": {
+          "blocked": false,
+          "blocker": null,
+          "distance_m": null
+        },
+        "DESK40": {
+          "blocked": false,
+          "blocker": null,
+          "distance_m": null
+        }
+      }
+    },
+    {
+      "frame": 20,
+      "sample": 4,
+      "ratio": 0.2,
+      "zhou_root": [
+        1.82,
+        -1.144,
+        0.0
+      ],
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "at": [
+            1.70458,
+            -1.08632,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.59841
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.71417
+          },
+          "key_occluded_by_lin": true
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "at": [
+            1.7465,
+            -1.03795,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.60742
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.70596
+          },
+          "key_occluded_by_lin": true
+        }
+      ],
+      "both_key_blocked_by_lin": true,
+      "both_folder_center_line_clear_of_lin": false,
+      "camera_K_center": {
+        "ACTION40": {
+          "blocked": false,
+          "blocker": null,
+          "distance_m": null
+        },
+        "DESK40": {
+          "blocked": false,
+          "blocker": null,
+          "distance_m": null
+        }
+      }
+    },
+    {
+      "frame": 20,
+      "sample": 5,
+      "ratio": 0.25,
+      "zhou_root": [
+        1.775,
+        -1.105,
+        0.0
+      ],
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "at": [
+            1.65958,
+            -1.04732,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.54441
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.65497
+          },
+          "key_occluded_by_lin": true
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "at": [
+            1.7015,
+            -0.99895,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.55356
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.64861
+          },
+          "key_occluded_by_lin": true
+        }
+      ],
+      "both_key_blocked_by_lin": true,
+      "both_folder_center_line_clear_of_lin": false,
+      "camera_K_center": {
+        "ACTION40": {
+          "blocked": false,
+          "blocker": null,
+          "distance_m": null
+        },
+        "DESK40": {
+          "blocked": false,
+          "blocker": null,
+          "distance_m": null
+        }
+      }
+    },
+    {
+      "frame": 20,
+      "sample": 6,
+      "ratio": 0.3,
+      "zhou_root": [
+        1.73,
+        -1.066,
+        0.0
+      ],
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "at": [
+            1.61458,
+            -1.00832,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.4906
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.59796
+          },
+          "key_occluded_by_lin": true
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "at": [
+            1.6565,
+            -0.95995,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.49989
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.59126
+          },
+          "key_occluded_by_lin": true
+        }
+      ],
+      "both_key_blocked_by_lin": true,
+      "both_folder_center_line_clear_of_lin": false,
+      "camera_K_center": {
+        "ACTION40": {
+          "blocked": false,
+          "blocker": null,
+          "distance_m": null
+        },
+        "DESK40": {
+          "blocked": false,
+          "blocker": null,
+          "distance_m": null
+        }
+      }
+    },
+    {
+      "frame": 20,
+      "sample": 7,
+      "ratio": 0.35,
+      "zhou_root": [
+        1.685,
+        -1.027,
+        0.0
+      ],
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "at": [
+            1.56958,
+            -0.96932,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.43697
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.54228
+          },
+          "key_occluded_by_lin": true
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "at": [
+            1.6115,
+            -0.92095,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.44641
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.53389
+          },
+          "key_occluded_by_lin": true
+        }
+      ],
+      "both_key_blocked_by_lin": true,
+      "both_folder_center_line_clear_of_lin": false,
+      "camera_K_center": {
+        "ACTION40": {
+          "blocked": false,
+          "blocker": null,
+          "distance_m": null
+        },
+        "DESK40": {
+          "blocked": false,
+          "blocker": null,
+          "distance_m": null
+        }
+      }
+    },
+    {
+      "frame": 20,
+      "sample": 8,
+      "ratio": 0.4,
+      "zhou_root": [
+        1.64,
+        -0.988,
+        0.0
+      ],
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "at": [
+            1.52458,
+            -0.93032,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.38354
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.48734
+          },
+          "key_occluded_by_lin": true
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "at": [
+            1.5665,
+            -0.88195,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.39313
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.4783
+          },
+          "key_occluded_by_lin": true
+        }
+      ],
+      "both_key_blocked_by_lin": true,
+      "both_folder_center_line_clear_of_lin": false,
+      "camera_K_center": {
+        "ACTION40": {
+          "blocked": false,
+          "blocker": null,
+          "distance_m": null
+        },
+        "DESK40": {
+          "blocked": false,
+          "blocker": null,
+          "distance_m": null
+        }
+      }
+    },
+    {
+      "frame": 20,
+      "sample": 9,
+      "ratio": 0.45,
+      "zhou_root": [
+        1.595,
+        -0.949,
+        0.0
+      ],
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "at": [
+            1.47958,
+            -0.89132,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.33032
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.43249
+          },
+          "key_occluded_by_lin": true
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "at": [
+            1.5215,
+            -0.84295,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.34006
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.42306
+          },
+          "key_occluded_by_lin": true
+        }
+      ],
+      "both_key_blocked_by_lin": true,
+      "both_folder_center_line_clear_of_lin": false,
+      "camera_K_center": {
+        "ACTION40": {
+          "blocked": false,
+          "blocker": null,
+          "distance_m": null
+        },
+        "DESK40": {
+          "blocked": false,
+          "blocker": null,
+          "distance_m": null
+        }
+      }
+    },
+    {
+      "frame": 20,
+      "sample": 10,
+      "ratio": 0.5,
+      "zhou_root": [
+        1.55,
+        -0.91,
+        0.0
+      ],
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "at": [
+            1.43458,
+            -0.85232,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.27731
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.37773
+          },
+          "key_occluded_by_lin": true
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "at": [
+            1.4765,
+            -0.80395,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.28834
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.36788
+          },
+          "key_occluded_by_lin": true
+        }
+      ],
+      "both_key_blocked_by_lin": true,
+      "both_folder_center_line_clear_of_lin": false,
+      "camera_K_center": {
+        "ACTION40": {
+          "blocked": false,
+          "blocker": null,
+          "distance_m": null
+        },
+        "DESK40": {
+          "blocked": false,
+          "blocker": null,
+          "distance_m": null
+        }
+      }
+    },
+    {
+      "frame": 20,
+      "sample": 11,
+      "ratio": 0.55,
+      "zhou_root": [
+        1.505,
+        -0.871,
+        0.0
+      ],
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "at": [
+            1.38958,
+            -0.81332,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.22645
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.32307
+          },
+          "key_occluded_by_lin": true
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "at": [
+            1.4315,
+            -0.76495,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.23769
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.31277
+          },
+          "key_occluded_by_lin": true
+        }
+      ],
+      "both_key_blocked_by_lin": true,
+      "both_folder_center_line_clear_of_lin": false,
+      "camera_K_center": {
+        "ACTION40": {
+          "blocked": false,
+          "blocker": null,
+          "distance_m": null
+        },
+        "DESK40": {
+          "blocked": false,
+          "blocker": null,
+          "distance_m": null
+        }
+      }
+    },
+    {
+      "frame": 20,
+      "sample": 12,
+      "ratio": 0.6,
+      "zhou_root": [
+        1.46,
+        -0.832,
+        0.0
+      ],
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "at": [
+            1.34458,
+            -0.77432,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.17594
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.26851
+          },
+          "key_occluded_by_lin": true
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "at": [
+            1.3865,
+            -0.72595,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.18735
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.25838
+          },
+          "key_occluded_by_lin": true
+        }
+      ],
+      "both_key_blocked_by_lin": true,
+      "both_folder_center_line_clear_of_lin": false,
+      "camera_K_center": {
+        "ACTION40": {
+          "blocked": false,
+          "blocker": null,
+          "distance_m": null
+        },
+        "DESK40": {
+          "blocked": false,
+          "blocker": null,
+          "distance_m": null
+        }
+      }
+    },
+    {
+      "frame": 20,
+      "sample": 13,
+      "ratio": 0.65,
+      "zhou_root": [
+        1.415,
+        -0.793,
+        0.0
+      ],
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "at": [
+            1.29958,
+            -0.73532,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.12576
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.21403
+          },
+          "key_occluded_by_lin": true
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "at": [
+            1.3415,
+            -0.68695,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.13733
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.20647
+          },
+          "key_occluded_by_lin": true
+        }
+      ],
+      "both_key_blocked_by_lin": true,
+      "both_folder_center_line_clear_of_lin": false,
+      "camera_K_center": {
+        "ACTION40": {
+          "blocked": false,
+          "blocker": null,
+          "distance_m": null
+        },
+        "DESK40": {
+          "blocked": false,
+          "blocker": null,
+          "distance_m": null
+        }
+      }
+    },
+    {
+      "frame": 20,
+      "sample": 14,
+      "ratio": 0.7,
+      "zhou_root": [
+        1.37,
+        -0.754,
+        0.0
+      ],
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "at": [
+            1.25458,
+            -0.69632,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.07591
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.15964
+          },
+          "key_occluded_by_lin": true
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "at": [
+            1.2965,
+            -0.64795,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.08765
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.15474
+          },
+          "key_occluded_by_lin": true
+        }
+      ],
+      "both_key_blocked_by_lin": true,
+      "both_folder_center_line_clear_of_lin": false,
+      "camera_K_center": {
+        "ACTION40": {
+          "blocked": false,
+          "blocker": null,
+          "distance_m": null
+        },
+        "DESK40": {
+          "blocked": false,
+          "blocker": null,
+          "distance_m": null
+        }
+      }
+    },
+    {
+      "frame": 20,
+      "sample": 15,
+      "ratio": 0.75,
+      "zhou_root": [
+        1.325,
+        -0.715,
+        0.0
+      ],
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "at": [
+            1.20958,
+            -0.65732,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.02641
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.10532
+          },
+          "key_occluded_by_lin": true
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "at": [
+            1.2515,
+            -0.60895,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.03832
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.10321
+          },
+          "key_occluded_by_lin": true
+        }
+      ],
+      "both_key_blocked_by_lin": true,
+      "both_folder_center_line_clear_of_lin": false,
+      "camera_K_center": {
+        "ACTION40": {
+          "blocked": false,
+          "blocker": null,
+          "distance_m": null
+        },
+        "DESK40": {
+          "blocked": false,
+          "blocker": null,
+          "distance_m": null
+        }
+      }
+    },
+    {
+      "frame": 20,
+      "sample": 16,
+      "ratio": 0.8,
+      "zhou_root": [
+        1.28,
+        -0.676,
+        0.0
+      ],
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "at": [
+            1.16458,
+            -0.61832,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 0.97727
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.05108
+          },
+          "key_occluded_by_lin": true
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "at": [
+            1.2065,
+            -0.56995,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 0.98936
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.05186
+          },
+          "key_occluded_by_lin": true
+        }
+      ],
+      "both_key_blocked_by_lin": true,
+      "both_folder_center_line_clear_of_lin": false,
+      "camera_K_center": {
+        "ACTION40": {
+          "blocked": false,
+          "blocker": null,
+          "distance_m": null
+        },
+        "DESK40": {
+          "blocked": false,
+          "blocker": null,
+          "distance_m": null
+        }
+      }
+    },
+    {
+      "frame": 20,
+      "sample": 17,
+      "ratio": 0.85,
+      "zhou_root": [
+        1.235,
+        -0.637,
+        0.0
+      ],
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "at": [
+            1.11958,
+            -0.57932,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 0.92851
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 0.9993
+          },
+          "key_occluded_by_lin": true
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "at": [
+            1.1615,
+            -0.53095,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 0.94079
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.00071
+          },
+          "key_occluded_by_lin": true
+        }
+      ],
+      "both_key_blocked_by_lin": true,
+      "both_folder_center_line_clear_of_lin": false,
+      "camera_K_center": {
+        "ACTION40": {
+          "blocked": false,
+          "blocker": null,
+          "distance_m": null
+        },
+        "DESK40": {
+          "blocked": false,
+          "blocker": null,
+          "distance_m": null
+        }
+      }
+    },
+    {
+      "frame": 20,
+      "sample": 18,
+      "ratio": 0.9,
+      "zhou_root": [
+        1.19,
+        -0.598,
+        0.0
+      ],
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "at": [
+            1.07458,
+            -0.54032,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 0.88015
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 0.9507
+          },
+          "key_occluded_by_lin": true
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "at": [
+            1.1165,
+            -0.49195,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 0.89262
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 0.95186
+          },
+          "key_occluded_by_lin": true
+        }
+      ],
+      "both_key_blocked_by_lin": true,
+      "both_folder_center_line_clear_of_lin": false,
+      "camera_K_center": {
+        "ACTION40": {
+          "blocked": false,
+          "blocker": null,
+          "distance_m": null
+        },
+        "DESK40": {
+          "blocked": false,
+          "blocker": null,
+          "distance_m": null
+        }
+      }
+    },
+    {
+      "frame": 20,
+      "sample": 19,
+      "ratio": 0.95,
+      "zhou_root": [
+        1.145,
+        -0.559,
+        0.0
+      ],
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "at": [
+            1.02958,
+            -0.50132,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 0.83291
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 0.90319
+          },
+          "key_occluded_by_lin": true
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "at": [
+            1.0715,
+            -0.45295,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 0.84679
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 0.90415
+          },
+          "key_occluded_by_lin": true
+        }
+      ],
+      "both_key_blocked_by_lin": true,
+      "both_folder_center_line_clear_of_lin": false,
+      "camera_K_center": {
+        "ACTION40": {
+          "blocked": false,
+          "blocker": null,
+          "distance_m": null
+        },
+        "DESK40": {
+          "blocked": false,
+          "blocker": null,
+          "distance_m": null
+        }
+      }
+    },
+    {
+      "frame": 20,
+      "sample": 20,
+      "ratio": 1.0,
+      "zhou_root": [
+        1.1,
+        -0.52,
+        0.0
+      ],
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "at": [
+            0.98458,
+            -0.46232,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 0.78837
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 0.85602
+          },
+          "key_occluded_by_lin": true
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "at": [
+            1.0265,
+            -0.41395,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 0.80241
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 0.85675
+          },
+          "key_occluded_by_lin": true
+        }
+      ],
+      "both_key_blocked_by_lin": true,
+      "both_folder_center_line_clear_of_lin": false,
+      "camera_K_center": {
+        "ACTION40": {
+          "blocked": false,
+          "blocker": null,
+          "distance_m": null
+        },
+        "DESK40": {
+          "blocked": false,
+          "blocker": null,
+          "distance_m": null
+        }
+      }
+    },
+    {
+      "frame": 40,
+      "sample": 0,
+      "ratio": 0.0,
+      "zhou_root": [
+        2.0,
+        -1.3,
+        0.0
+      ],
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "at": [
+            1.88458,
+            -1.24232,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.81605
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.82023
+          },
+          "key_occluded_by_lin": true
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "at": [
+            1.9265,
+            -1.19395,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.82455
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.82989
+          },
+          "key_occluded_by_lin": true
+        }
+      ],
+      "both_key_blocked_by_lin": true,
+      "both_folder_center_line_clear_of_lin": false,
+      "camera_K_center": {
+        "ACTION40": {
+          "blocked": true,
+          "blocker": "BLUE_FOLDER",
+          "distance_m": 2.41623
+        },
+        "DESK40": {
+          "blocked": true,
+          "blocker": "BLUE_FOLDER",
+          "distance_m": 1.72264
+        }
+      }
+    },
+    {
+      "frame": 40,
+      "sample": 1,
+      "ratio": 0.05,
+      "zhou_root": [
+        1.955,
+        -1.261,
+        0.0
+      ],
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "at": [
+            1.83958,
+            -1.20332,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.7614
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.76543
+          },
+          "key_occluded_by_lin": true
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "at": [
+            1.8815,
+            -1.15495,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.77002
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.77521
+          },
+          "key_occluded_by_lin": true
+        }
+      ],
+      "both_key_blocked_by_lin": true,
+      "both_folder_center_line_clear_of_lin": false,
+      "camera_K_center": {
+        "ACTION40": {
+          "blocked": true,
+          "blocker": "BLUE_FOLDER",
+          "distance_m": 2.41623
+        },
+        "DESK40": {
+          "blocked": true,
+          "blocker": "BLUE_FOLDER",
+          "distance_m": 1.72264
+        }
+      }
+    },
+    {
+      "frame": 40,
+      "sample": 2,
+      "ratio": 0.1,
+      "zhou_root": [
+        1.91,
+        -1.222,
+        0.0
+      ],
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "at": [
+            1.79458,
+            -1.16432,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.70691
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.71077
+          },
+          "key_occluded_by_lin": true
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "at": [
+            1.8365,
+            -1.11595,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.71566
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.72068
+          },
+          "key_occluded_by_lin": true
+        }
+      ],
+      "both_key_blocked_by_lin": true,
+      "both_folder_center_line_clear_of_lin": false,
+      "camera_K_center": {
+        "ACTION40": {
+          "blocked": true,
+          "blocker": "BLUE_FOLDER",
+          "distance_m": 2.41623
+        },
+        "DESK40": {
+          "blocked": true,
+          "blocker": "BLUE_FOLDER",
+          "distance_m": 1.72264
+        }
+      }
+    },
+    {
+      "frame": 40,
+      "sample": 3,
+      "ratio": 0.15,
+      "zhou_root": [
+        1.865,
+        -1.183,
+        0.0
+      ],
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "at": [
+            1.74958,
+            -1.12532,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.65258
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.65626
+          },
+          "key_occluded_by_lin": true
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "at": [
+            1.7915,
+            -1.07695,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.66145
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.66631
+          },
+          "key_occluded_by_lin": true
+        }
+      ],
+      "both_key_blocked_by_lin": true,
+      "both_folder_center_line_clear_of_lin": false,
+      "camera_K_center": {
+        "ACTION40": {
+          "blocked": true,
+          "blocker": "BLUE_FOLDER",
+          "distance_m": 2.41623
+        },
+        "DESK40": {
+          "blocked": true,
+          "blocker": "BLUE_FOLDER",
+          "distance_m": 1.72264
+        }
+      }
+    },
+    {
+      "frame": 40,
+      "sample": 4,
+      "ratio": 0.2,
+      "zhou_root": [
+        1.82,
+        -1.144,
+        0.0
+      ],
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "at": [
+            1.70458,
+            -1.08632,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.59841
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.6019
+          },
+          "key_occluded_by_lin": true
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "at": [
+            1.7465,
+            -1.03795,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.60742
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.6121
+          },
+          "key_occluded_by_lin": true
+        }
+      ],
+      "both_key_blocked_by_lin": true,
+      "both_folder_center_line_clear_of_lin": false,
+      "camera_K_center": {
+        "ACTION40": {
+          "blocked": true,
+          "blocker": "BLUE_FOLDER",
+          "distance_m": 2.41623
+        },
+        "DESK40": {
+          "blocked": true,
+          "blocker": "BLUE_FOLDER",
+          "distance_m": 1.72264
+        }
+      }
+    },
+    {
+      "frame": 40,
+      "sample": 5,
+      "ratio": 0.25,
+      "zhou_root": [
+        1.775,
+        -1.105,
+        0.0
+      ],
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "at": [
+            1.65958,
+            -1.04732,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.54441
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.54771
+          },
+          "key_occluded_by_lin": true
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "at": [
+            1.7015,
+            -0.99895,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.55356
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.55805
+          },
+          "key_occluded_by_lin": true
+        }
+      ],
+      "both_key_blocked_by_lin": true,
+      "both_folder_center_line_clear_of_lin": false,
+      "camera_K_center": {
+        "ACTION40": {
+          "blocked": true,
+          "blocker": "BLUE_FOLDER",
+          "distance_m": 2.41623
+        },
+        "DESK40": {
+          "blocked": true,
+          "blocker": "BLUE_FOLDER",
+          "distance_m": 1.72264
+        }
+      }
+    },
+    {
+      "frame": 40,
+      "sample": 6,
+      "ratio": 0.3,
+      "zhou_root": [
+        1.73,
+        -1.066,
+        0.0
+      ],
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "at": [
+            1.61458,
+            -1.00832,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.4906
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.49369
+          },
+          "key_occluded_by_lin": true
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "at": [
+            1.6565,
+            -0.95995,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.49989
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.5048
+          },
+          "key_occluded_by_lin": true
+        }
+      ],
+      "both_key_blocked_by_lin": true,
+      "both_folder_center_line_clear_of_lin": false,
+      "camera_K_center": {
+        "ACTION40": {
+          "blocked": true,
+          "blocker": "BLUE_FOLDER",
+          "distance_m": 2.41623
+        },
+        "DESK40": {
+          "blocked": true,
+          "blocker": "BLUE_FOLDER",
+          "distance_m": 1.72264
+        }
+      }
+    },
+    {
+      "frame": 40,
+      "sample": 7,
+      "ratio": 0.35,
+      "zhou_root": [
+        1.685,
+        -1.027,
+        0.0
+      ],
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "at": [
+            1.56958,
+            -0.96932,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.43697
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.44092
+          },
+          "key_occluded_by_lin": true
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "at": [
+            1.6115,
+            -0.92095,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.44641
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.4528
+          },
+          "key_occluded_by_lin": true
+        }
+      ],
+      "both_key_blocked_by_lin": true,
+      "both_folder_center_line_clear_of_lin": false,
+      "camera_K_center": {
+        "ACTION40": {
+          "blocked": true,
+          "blocker": "BLUE_FOLDER",
+          "distance_m": 2.41623
+        },
+        "DESK40": {
+          "blocked": true,
+          "blocker": "BLUE_FOLDER",
+          "distance_m": 1.72264
+        }
+      }
+    },
+    {
+      "frame": 40,
+      "sample": 8,
+      "ratio": 0.4,
+      "zhou_root": [
+        1.64,
+        -0.988,
+        0.0
+      ],
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "at": [
+            1.52458,
+            -0.93032,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.38354
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.389
+          },
+          "key_occluded_by_lin": true
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "at": [
+            1.5665,
+            -0.88195,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.39313
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.40104
+          },
+          "key_occluded_by_lin": true
+        }
+      ],
+      "both_key_blocked_by_lin": true,
+      "both_folder_center_line_clear_of_lin": false,
+      "camera_K_center": {
+        "ACTION40": {
+          "blocked": true,
+          "blocker": "BLUE_FOLDER",
+          "distance_m": 2.41623
+        },
+        "DESK40": {
+          "blocked": true,
+          "blocker": "BLUE_FOLDER",
+          "distance_m": 1.72264
+        }
+      }
+    },
+    {
+      "frame": 40,
+      "sample": 9,
+      "ratio": 0.45,
+      "zhou_root": [
+        1.595,
+        -0.949,
+        0.0
+      ],
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "at": [
+            1.47958,
+            -0.89132,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.33032
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.33734
+          },
+          "key_occluded_by_lin": true
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "at": [
+            1.5215,
+            -0.84295,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.34006
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.34953
+          },
+          "key_occluded_by_lin": true
+        }
+      ],
+      "both_key_blocked_by_lin": true,
+      "both_folder_center_line_clear_of_lin": false,
+      "camera_K_center": {
+        "ACTION40": {
+          "blocked": true,
+          "blocker": "BLUE_FOLDER",
+          "distance_m": 2.41623
+        },
+        "DESK40": {
+          "blocked": true,
+          "blocker": "BLUE_FOLDER",
+          "distance_m": 1.72264
+        }
+      }
+    },
+    {
+      "frame": 40,
+      "sample": 10,
+      "ratio": 0.5,
+      "zhou_root": [
+        1.55,
+        -0.91,
+        0.0
+      ],
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "at": [
+            1.43458,
+            -0.85232,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.27731
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.28595
+          },
+          "key_occluded_by_lin": true
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "at": [
+            1.4765,
+            -0.80395,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.28834
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.29829
+          },
+          "key_occluded_by_lin": true
+        }
+      ],
+      "both_key_blocked_by_lin": true,
+      "both_folder_center_line_clear_of_lin": false,
+      "camera_K_center": {
+        "ACTION40": {
+          "blocked": true,
+          "blocker": "BLUE_FOLDER",
+          "distance_m": 2.41623
+        },
+        "DESK40": {
+          "blocked": true,
+          "blocker": "BLUE_FOLDER",
+          "distance_m": 1.72264
+        }
+      }
+    },
+    {
+      "frame": 40,
+      "sample": 11,
+      "ratio": 0.55,
+      "zhou_root": [
+        1.505,
+        -0.871,
+        0.0
+      ],
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "at": [
+            1.38958,
+            -0.81332,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.22645
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.23482
+          },
+          "key_occluded_by_lin": true
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "at": [
+            1.4315,
+            -0.76495,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.23769
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.24733
+          },
+          "key_occluded_by_lin": true
+        }
+      ],
+      "both_key_blocked_by_lin": true,
+      "both_folder_center_line_clear_of_lin": false,
+      "camera_K_center": {
+        "ACTION40": {
+          "blocked": true,
+          "blocker": "BLUE_FOLDER",
+          "distance_m": 2.41623
+        },
+        "DESK40": {
+          "blocked": true,
+          "blocker": "BLUE_FOLDER",
+          "distance_m": 1.72264
+        }
+      }
+    },
+    {
+      "frame": 40,
+      "sample": 12,
+      "ratio": 0.6,
+      "zhou_root": [
+        1.46,
+        -0.832,
+        0.0
+      ],
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "at": [
+            1.34458,
+            -0.77432,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.17594
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.18399
+          },
+          "key_occluded_by_lin": true
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "at": [
+            1.3865,
+            -0.72595,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.18735
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.19667
+          },
+          "key_occluded_by_lin": true
+        }
+      ],
+      "both_key_blocked_by_lin": true,
+      "both_folder_center_line_clear_of_lin": false,
+      "camera_K_center": {
+        "ACTION40": {
+          "blocked": true,
+          "blocker": "BLUE_FOLDER",
+          "distance_m": 2.41623
+        },
+        "DESK40": {
+          "blocked": true,
+          "blocker": "BLUE_FOLDER",
+          "distance_m": 1.72264
+        }
+      }
+    },
+    {
+      "frame": 40,
+      "sample": 13,
+      "ratio": 0.65,
+      "zhou_root": [
+        1.415,
+        -0.793,
+        0.0
+      ],
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "at": [
+            1.29958,
+            -0.73532,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.12576
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.13346
+          },
+          "key_occluded_by_lin": true
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "at": [
+            1.3415,
+            -0.68695,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.13733
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.1463
+          },
+          "key_occluded_by_lin": true
+        }
+      ],
+      "both_key_blocked_by_lin": true,
+      "both_folder_center_line_clear_of_lin": false,
+      "camera_K_center": {
+        "ACTION40": {
+          "blocked": true,
+          "blocker": "BLUE_FOLDER",
+          "distance_m": 2.41623
+        },
+        "DESK40": {
+          "blocked": true,
+          "blocker": "BLUE_FOLDER",
+          "distance_m": 1.72264
+        }
+      }
+    },
+    {
+      "frame": 40,
+      "sample": 14,
+      "ratio": 0.7,
+      "zhou_root": [
+        1.37,
+        -0.754,
+        0.0
+      ],
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "at": [
+            1.25458,
+            -0.69632,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.07591
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.08324
+          },
+          "key_occluded_by_lin": true
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "at": [
+            1.2965,
+            -0.64795,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.08765
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.09625
+          },
+          "key_occluded_by_lin": true
+        }
+      ],
+      "both_key_blocked_by_lin": true,
+      "both_folder_center_line_clear_of_lin": false,
+      "camera_K_center": {
+        "ACTION40": {
+          "blocked": true,
+          "blocker": "BLUE_FOLDER",
+          "distance_m": 2.41623
+        },
+        "DESK40": {
+          "blocked": true,
+          "blocker": "BLUE_FOLDER",
+          "distance_m": 1.72264
+        }
+      }
+    },
+    {
+      "frame": 40,
+      "sample": 15,
+      "ratio": 0.75,
+      "zhou_root": [
+        1.325,
+        -0.715,
+        0.0
+      ],
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "at": [
+            1.20958,
+            -0.65732,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.02641
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.03335
+          },
+          "key_occluded_by_lin": true
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "at": [
+            1.2515,
+            -0.60895,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.03832
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 1.04654
+          },
+          "key_occluded_by_lin": true
+        }
+      ],
+      "both_key_blocked_by_lin": true,
+      "both_folder_center_line_clear_of_lin": false,
+      "camera_K_center": {
+        "ACTION40": {
+          "blocked": true,
+          "blocker": "BLUE_FOLDER",
+          "distance_m": 2.41623
+        },
+        "DESK40": {
+          "blocked": true,
+          "blocker": "BLUE_FOLDER",
+          "distance_m": 1.72264
+        }
+      }
+    },
+    {
+      "frame": 40,
+      "sample": 16,
+      "ratio": 0.8,
+      "zhou_root": [
+        1.28,
+        -0.676,
+        0.0
+      ],
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "at": [
+            1.16458,
+            -0.61832,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 0.97727
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 0.9838
+          },
+          "key_occluded_by_lin": true
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "at": [
+            1.2065,
+            -0.56995,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 0.98936
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 0.99731
+          },
+          "key_occluded_by_lin": true
+        }
+      ],
+      "both_key_blocked_by_lin": true,
+      "both_folder_center_line_clear_of_lin": false,
+      "camera_K_center": {
+        "ACTION40": {
+          "blocked": true,
+          "blocker": "BLUE_FOLDER",
+          "distance_m": 2.41623
+        },
+        "DESK40": {
+          "blocked": true,
+          "blocker": "BLUE_FOLDER",
+          "distance_m": 1.72264
+        }
+      }
+    },
+    {
+      "frame": 40,
+      "sample": 17,
+      "ratio": 0.85,
+      "zhou_root": [
+        1.235,
+        -0.637,
+        0.0
+      ],
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "at": [
+            1.11958,
+            -0.57932,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 0.92851
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 0.93599
+          },
+          "key_occluded_by_lin": true
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "at": [
+            1.1615,
+            -0.53095,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 0.94079
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 0.9509
+          },
+          "key_occluded_by_lin": true
+        }
+      ],
+      "both_key_blocked_by_lin": true,
+      "both_folder_center_line_clear_of_lin": false,
+      "camera_K_center": {
+        "ACTION40": {
+          "blocked": true,
+          "blocker": "BLUE_FOLDER",
+          "distance_m": 2.41623
+        },
+        "DESK40": {
+          "blocked": true,
+          "blocker": "BLUE_FOLDER",
+          "distance_m": 1.72264
+        }
+      }
+    },
+    {
+      "frame": 40,
+      "sample": 18,
+      "ratio": 0.9,
+      "zhou_root": [
+        1.19,
+        -0.598,
+        0.0
+      ],
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "at": [
+            1.07458,
+            -0.54032,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 0.88015
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 0.88987
+          },
+          "key_occluded_by_lin": true
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "at": [
+            1.1165,
+            -0.49195,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 0.89262
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 0.90494
+          },
+          "key_occluded_by_lin": true
+        }
+      ],
+      "both_key_blocked_by_lin": true,
+      "both_folder_center_line_clear_of_lin": false,
+      "camera_K_center": {
+        "ACTION40": {
+          "blocked": true,
+          "blocker": "BLUE_FOLDER",
+          "distance_m": 2.41623
+        },
+        "DESK40": {
+          "blocked": true,
+          "blocker": "BLUE_FOLDER",
+          "distance_m": 1.72264
+        }
+      }
+    },
+    {
+      "frame": 40,
+      "sample": 19,
+      "ratio": 0.95,
+      "zhou_root": [
+        1.145,
+        -0.559,
+        0.0
+      ],
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "at": [
+            1.02958,
+            -0.50132,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 0.83291
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 0.84422
+          },
+          "key_occluded_by_lin": true
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "at": [
+            1.0715,
+            -0.45295,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 0.84679
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 0.85945
+          },
+          "key_occluded_by_lin": true
+        }
+      ],
+      "both_key_blocked_by_lin": true,
+      "both_folder_center_line_clear_of_lin": false,
+      "camera_K_center": {
+        "ACTION40": {
+          "blocked": true,
+          "blocker": "BLUE_FOLDER",
+          "distance_m": 2.41623
+        },
+        "DESK40": {
+          "blocked": true,
+          "blocker": "BLUE_FOLDER",
+          "distance_m": 1.72264
+        }
+      }
+    },
+    {
+      "frame": 40,
+      "sample": 20,
+      "ratio": 1.0,
+      "zhou_root": [
+        1.1,
+        -0.52,
+        0.0
+      ],
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "at": [
+            0.98458,
+            -0.46232,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 0.78837
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 0.79908
+          },
+          "key_occluded_by_lin": true
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "at": [
+            1.0265,
+            -0.41395,
+            1.6
+          ],
+          "key_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 0.80241
+          },
+          "folder_center_raycast": {
+            "blocked": true,
+            "blocker": "LIN_TORSO",
+            "distance_m": 0.81447
+          },
+          "key_occluded_by_lin": true
+        }
+      ],
+      "both_key_blocked_by_lin": true,
+      "both_folder_center_line_clear_of_lin": false,
+      "camera_K_center": {
+        "ACTION40": {
+          "blocked": true,
+          "blocker": "BLUE_FOLDER",
+          "distance_m": 2.41623
+        },
+        "DESK40": {
+          "blocked": true,
+          "blocker": "BLUE_FOLDER",
+          "distance_m": 1.72264
+        }
+      }
+    }
+  ],
+  "continuity_C1": {
+    "shot01_to_02": "derived baseline f1/f8/f20 contains paper movement; not an actual four-shot cut render",
+    "shot02_to_03": "source f40 covers K, left hand near folder; NO AFTER-f40 question/return/re-grasp keys; new freeze requested stop action lacks modeled referent",
+    "shot03_to_04": "source has NO uncover-and-right-hand-to-Zhou pickup/grip, only static reach estimate",
+    "status": "UNTESTED performance/cut continuity; old discrete geometry cannot substitute."
+  },
+  "handoff_C2": {
+    "source_reach_model_arm_segment_m": [
+      0.385,
+      0.385
+    ],
+    "old_lin_right_shoulder_m": [
+      0.34,
+      0.06,
+      1.29
+    ],
+    "old_lin_left_shoulder_m": [
+      -0.13,
+      0.06,
+      1.29
+    ],
+    "key_m": [
+      -0.25,
+      0.45,
+      0.755
+    ],
+    "old_lin_right_shoulder_to_K_m": 0.88681,
+    "old_lin_left_shoulder_to_K_m": 0.67285,
+    "old_lin_right_shoulder_can_reach_K_static": false,
+    "old_lin_left_shoulder_can_reach_K_static": true,
+    "candidate_handoff_point_m": [
+      0.75,
+      -0.1,
+      1.09
+    ],
+    "right_shoulder_to_candidate_handoff_m": 0.48343,
+    "zhou_shoulder_proxy_m": [
+      1.1,
+      -0.52,
+      1.51
+    ],
+    "zhou_shoulder_center_to_handoff_m": 0.68942,
+    "owner_states": [
+      "table(K)",
+      "Lin-right-picking",
+      "Lin-right-and-Zhou-right-overlap",
+      "Zhou-right-held"
+    ],
+    "owner_transfer_count": 1,
+    "actual_3d_right_hand_pickup_and_finger_contact": "NOT_TESTED: source has right hand braced on desk, no posed right-hand-to-K or Zhou right hand grip",
+    "implication": "If static source right shoulder to K >0.77m, requires derived Lin torso/stance or acquisition path change; NOT proof script impossible."
+  },
+  "limitations": [
+    "This is a derived test of a prior DirectorSKILL proxy, not new WAR-90 geometry authored to spec.",
+    "The prior model has right forearm/table penetration; do not call its actor motion physical.",
+    "Ray to K distinguishes physical line-of-sight, not character gaze, attention, knowledge or audience recognition.",
+    "Camera projection bbox dimensions and key patch visibility are not a viewer recognition score.",
+    "Two scene cameras were hypotheses from WAR-72 F1/F2, not required lens numbers from approved WAR-90.",
+    "Key pickup, right-hand grip and after-f40 move were not animated; only reach/missing coverage audited.",
+    "No rigid-body friction, natural movement, full 35-40s cut timing, true POV attribution, H3 or GPU."
+  ]
+}

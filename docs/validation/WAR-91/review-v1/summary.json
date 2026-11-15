@@ -1,0 +1,34 @@
+{
+  "complete": true,
+  "reviews": [
+    {
+      "label": "reviewer-geometry",
+      "model": "gpt-6-astra",
+      "effort": "medium",
+      "exit": 0,
+      "duration_sec": 26.2,
+      "prompt_sha256": "74abc4ca891ca94d5b927628cda3ba7be1bc3aababa3c4a96c9a0c7ffb9b97f9",
+      "result_sha256": "c0e7158cd93c8d67d24517ecae8176c688d26a1f7cff4b2a114d9f657a1242de"
+    },
+    {
+      "label": "reviewer-coverage",
+      "model": "gpt-6-luna",
+      "effort": "low",
+      "exit": 0,
+      "duration_sec": 27.7,
+      "prompt_sha256": "c632c55193c2043edd1bc37337217ff7b4c434791dcb6e696cc88a71437a3b10",
+      "result_sha256": "056e7b49efb760407f1e4661ab4c55d7172b211fc66f806672886c16818c9841"
+    }
+  ],
+  "lead": {
+    "label": "main-reviewer",
+    "model": "gpt-6-luna",
+    "effort": "medium",
+    "exit": 0,
+    "duration_sec": 21.3,
+    "prompt_sha256": "2a1474638421eddae8bf8c38ff7db1af032e865fa61101d539967ffc18116fa8",
+    "result_sha256": "3d4a7317165a1ad95e6c9ee28bb899516e1708d31a352ce33eb000b19ca273d4"
+  },
+  "B_accepted_not_modified": true,
+  "no_Geometry_code_changes": true
+}
