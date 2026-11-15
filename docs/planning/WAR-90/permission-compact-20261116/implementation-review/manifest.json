@@ -1,0 +1,7 @@
+{
+  "frozen_sha256": "7987d13f843ffece23409355a1383ab1926455d9aaae914952d23cbbf277cfab",
+  "architecture_sha256": "a0d543bcb9c05764d1e32542506336b9fe355c7c70a4ce22ff8535e4a61067f9",
+  "scoped_diff_sha256": "dbf41d8abdd029de7311581b4d30abbc4145dd4e3a0c28968cdd92f7201eadd2",
+  "prior_review_sha256": "240866983dfbe6af0fbd7098406779ee4795b3392fe60468d39d71844591d1d8",
+  "status": "postimplementation independent review; no B approval"
+}

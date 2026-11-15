@@ -1,0 +1,9 @@
+{
+  "role": "reviewer-security",
+  "model": "gpt-6-astra",
+  "effort": "medium",
+  "exit_code": 0,
+  "seconds": 63.6,
+  "prompt_sha256": "f20a69d07b0c11abc0ceefb4f035e3fde594a8735a8b7a6ba47e41c008b2b6ed",
+  "result_sha256": "c67f926d2a5b73c2c2581c35433436f47f696f3c6202daacd7fcb18a8856c8d6"
+}

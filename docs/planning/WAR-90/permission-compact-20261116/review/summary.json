@@ -1,0 +1,42 @@
+{
+  "manifest": {
+    "frozen_sha256": "d1ff30e407e65c5c589dd5fdd70d96d286186083fd64031601242ad520f0f509",
+    "design_sha256": "28f1840753e8ca98ec1099e49a16a8055e8da46614a18b51d33ba0d531ccc06b",
+    "roles": [
+      "reviewer-security",
+      "reviewer-director",
+      "lead-reviewer"
+    ],
+    "formal_approval": false
+  },
+  "reviewers": [
+    {
+      "role": "reviewer-director",
+      "model": "gpt-6-luna",
+      "effort": "medium",
+      "exit_code": 0,
+      "seconds": 21.3,
+      "prompt_sha256": "e63714b631354e7e3a7c90e675d9a37987729e4c47f1872b9e36327a283dcdd9",
+      "result_sha256": "196894d99c6595d07d882d9556c07f682d512dceb6b1e86e9ecd1a63a8b2d99a"
+    },
+    {
+      "role": "reviewer-security",
+      "model": "gpt-6-astra",
+      "effort": "medium",
+      "exit_code": 0,
+      "seconds": 63.6,
+      "prompt_sha256": "f20a69d07b0c11abc0ceefb4f035e3fde594a8735a8b7a6ba47e41c008b2b6ed",
+      "result_sha256": "c67f926d2a5b73c2c2581c35433436f47f696f3c6202daacd7fcb18a8856c8d6"
+    }
+  ],
+  "lead": {
+    "role": "lead-reviewer",
+    "model": "gpt-6-astra",
+    "effort": "medium",
+    "exit_code": 0,
+    "seconds": 136.1,
+    "prompt_sha256": "b4cc470ed2f40175c75c94d231486b88e77aa8d9e5de6de72a899e98f8cb3de8",
+    "result_sha256": "240866983dfbe6af0fbd7098406779ee4795b3392fe60468d39d71844591d1d8"
+  },
+  "complete": true
+}

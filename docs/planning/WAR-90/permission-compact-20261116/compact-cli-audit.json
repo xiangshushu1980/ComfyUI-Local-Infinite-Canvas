@@ -1,0 +1,46 @@
+{
+  "purpose": "real CLI read-only pilot audit; no candidate generated or modified",
+  "baseline_file_count": 65,
+  "pilot_all_file_hashes_unchanged": true,
+  "pilot_state_sha256": "23e78d5994ed18ea02d59c2c3eb588f36cc41d3b495b81009713ec7570d7e4b7",
+  "test_results": {
+    "Shot01": {
+      "code": 0,
+      "bytes": 21098,
+      "target_sha256": "8fff2f3e880dad4b4a0938c09b315d9049549b57556b9c9ec83f3593e535826d",
+      "source_sha256": "65b8a2f83cefc2281879fb254d3ee25dfd68d72e7cd0d811a2afbade5c1e165d",
+      "unknown_count": 77,
+      "trial_only": true
+    },
+    "Shot02": {
+      "code": 0,
+      "bytes": 24486,
+      "target_sha256": "92c27994389848915158d107bc6a304e012536f9f878d23049be9d9c3d7ded90",
+      "source_sha256": "65b8a2f83cefc2281879fb254d3ee25dfd68d72e7cd0d811a2afbade5c1e165d",
+      "unknown_count": 77,
+      "trial_only": true
+    },
+    "Shot03": {
+      "code": 0,
+      "bytes": 23595,
+      "target_sha256": "306a151a3dfc07e6cbfccd99acd998bcebe654e463a10fae48a479e9253b3163",
+      "source_sha256": "65b8a2f83cefc2281879fb254d3ee25dfd68d72e7cd0d811a2afbade5c1e165d",
+      "unknown_count": 77,
+      "trial_only": true
+    },
+    "Shot04": {
+      "code": 0,
+      "bytes": 26904,
+      "target_sha256": "3bc4fa212b3f57a38b66a48799989ab73c722e7eefbc89691a3207b64157d212",
+      "source_sha256": "65b8a2f83cefc2281879fb254d3ee25dfd68d72e7cd0d811a2afbade5c1e165d",
+      "unknown_count": 77,
+      "trial_only": true
+    },
+    "Shot99": {
+      "code": 2,
+      "blocked": true,
+      "stdout_empty": true
+    }
+  },
+  "formal_WAR35_approval": false
+}

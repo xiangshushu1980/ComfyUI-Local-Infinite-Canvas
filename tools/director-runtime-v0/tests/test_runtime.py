@@ -497,6 +497,154 @@ class RuntimeTests(unittest.TestCase):
         with self.assertRaisesRegex(PilotError, 'No matching external human pilot B'):
             self.pilot.review_packet()
 
+    def test_review_shot_requires_approved_A_B_and_preserves_baseline(self):
+        with self.assertRaisesRegex(PilotError, 'pilot A/B'):
+            self.pilot.review_shot('Shot02')
+        self.with_realistic_shot_baseline()
+        before = self.tree()
+        view = self.pilot.review_shot('Shot02')
+        self.assertEqual(before, self.tree())
+        self.assertEqual(view['format'], 'war90-director-shot-preview-only-v0')
+        self.assertTrue(view['pilot_only'])
+        self.assertEqual(view['scope']['target_shot_id'], 'Shot02')
+        self.assertFalse(view['scope']['editing_authorized'])
+        self.assertFalse(view['capabilities']['write_canvas'])
+        self.assertFalse(view['review_flags']['identity_verified'])
+        self.assertFalse(view['review_flags']['formal_WAR35_approval'])
+
+    def test_review_shot_exact_text_and_all_sha_objects(self):
+        self.with_realistic_shot_baseline()
+        full = self.pilot.review_packet()
+        from runtime import digest
+        for item in full['shots']:
+            view = self.pilot.review_shot(item['id'])
+            self.assertEqual(view['target_shot'], item)
+            self.assertEqual(view['source']['text'], full['authority']['source_text'])
+            self.assertEqual(view['source']['sha256'], digest(view['source']['text'].encode()))
+            hashes = view['hashes']
+            self.assertEqual(hashes['B_candidate_artifacts_utf8_json']['sha256'],
+                             full['authority']['approved_B_content_sha256'])
+            self.assertEqual(hashes['ShotPlan_stage_utf8_text']['sha256'],
+                             digest(full['stages']['shot']['text'].encode()))
+            self.assertEqual(hashes['target_Shot_section_utf8_text']['sha256'],
+                             digest(item['text'].encode()))
+            self.assertFalse(hashes['cross_object_hashes_should_match'])
+            self.assertEqual(view['authority']['approved_B_id'],
+                             full['authority']['approved_B_id'])
+
+    def test_review_shot_neighbor_exact_line_and_boundaries(self):
+        self.with_realistic_shot_baseline()
+        full = self.pilot.review_packet()
+        for pos,item in enumerate(full['shots']):
+            view = self.pilot.review_shot(item['id'])
+            for name,neighbor_index in [('previous',pos-1),('next',pos+1)]:
+                neighbor=view['neighbors'][name]
+                if neighbor_index<0 or neighbor_index>=len(full['shots']):
+                    self.assertIsNone(neighbor)
+                    continue
+                self.assertEqual(neighbor['id'],full['shots'][neighbor_index]['id'])
+                self.assertEqual(neighbor['full_text_sha256'],
+                                 full['shots'][neighbor_index]['text_sha256'])
+                self.assertFalse(neighbor['full_text_included'])
+                excerpt=neighbor['excerpt']
+                self.assertTrue(excerpt['not_complete_neighbor_context'])
+                if excerpt['status']=='exact-source-line':
+                    index=excerpt['line_number_1_based']
+                    self.assertEqual(
+                        excerpt['text'],full['shots'][neighbor_index]['text'].splitlines()[index-1])
+                else:
+                    self.assertEqual(excerpt['status'],'not-found')
+                    self.assertIsNone(excerpt['text'])
+
+    def test_review_shot_unknown_id_and_unapproved_edit_fail_closed(self):
+        self.with_realistic_shot_baseline()
+        before = self.tree()
+        for shot in ('Shot05','shot02','Shot02 ','Shot02\n',''):
+            with self.subTest(shot_id=shot),self.assertRaisesRegex(PilotError,'Unknown approved Shot'):
+                self.pilot.review_shot(shot)
+        self.assertEqual(self.tree(),before)
+        self.pilot.run('shot',targets=['Shot02'],
+            generator=self.fake(proposal=self.sample_shots().replace(
+                '纸移开露出 K 后，蓝夹再次盖 K。','纸移开露出 K 后，蓝夹盖 K。林让位。'),
+                changed_targets=['Shot02']))
+        with self.assertRaisesRegex(PilotError,'pilot A/B'):
+            self.pilot.review_shot('Shot02')
+
+    def test_review_shot_tampered_source_and_human_evidence_blocked(self):
+        self.with_realistic_shot_baseline()
+        src=self.source.read_bytes()
+        self.source.write_bytes(src+b' changed')
+        with self.assertRaisesRegex(PilotError,'hash changed'):
+            self.pilot.review_shot('Shot02')
+        self.source.write_bytes(src)
+        self.evidence.write_text('tampered by another participant')
+        with self.assertRaisesRegex(PilotError,'approval evidence has changed'):
+            self.pilot.review_shot('Shot02')
+
+    def test_review_shot_does_not_hide_unknown_or_claim_approval(self):
+        self.with_realistic_shot_baseline()
+        view=self.pilot.review_shot('Shot02')
+        full=self.pilot.review_packet()
+        self.assertEqual(view['review_flags']['unknown_count'],len(full['review']['unknown']))
+        self.assertEqual(view['review_flags']['unknown'],full['review']['unknown'])
+        self.assertTrue(view['review_flags']['unknown_requires_full_review'])
+        self.assertFalse(view['review_flags']['identity_verified'])
+        self.assertFalse(view['review_flags']['formal_WAR35_approval'])
+        self.assertFalse(view['review_flags']['geometry_verified'])
+        self.assertFalse(view['review_flags']['media_verified'])
+        self.assertFalse(view['review_flags']['audience_verified'])
+        self.assertIn('not a revision',view['purpose'])
+        self.assertIn('review-pack',view['full_context_command'])
+
+    def test_review_shot_reports_real_unknown_text(self):
+        self.with_realistic_shot_baseline()
+        state=self.pilot.load()
+        state['unknown'].append('TEST: geometry and line of sight not verified')
+        atomic_json(self.workspace/'state.json',state)
+        view=self.pilot.review_shot('Shot02')
+        full=self.pilot.review_packet()
+        self.assertEqual(view['review_flags']['unknown'],full['review']['unknown'])
+        self.assertIn('TEST: geometry and line of sight not verified',
+                      view['review_flags']['unknown'])
+        self.assertGreater(view['review_flags']['unknown_count'],0)
+
+    def test_review_shot_missing_neighbor_excerpt_is_explicit(self):
+        self.with_realistic_shot_baseline()
+        view=self.pilot.review_shot('Shot02')
+        for side in ('previous','next'):
+            excerpt=view['neighbors'][side]['excerpt']
+            self.assertEqual(excerpt['status'],'not-found')
+            self.assertIsNone(excerpt['line_number_1_based'])
+            self.assertIsNone(excerpt['text'])
+            self.assertTrue(excerpt['not_complete_neighbor_context'])
+        self.assertFalse(view['neighbors']['cross_shot_dependencies_resolved'])
+        self.assertIn('Sequential shots only',view['neighbors']['scope'])
+
+    def test_review_shot_duplicate_ids_rejected_by_shared_parser(self):
+        from runtime import shot_sections
+        self.with_realistic_shot_baseline()
+        approved=self.pilot.review_packet()
+        proposal=approved['stages']['shot']['text']
+        with self.assertRaisesRegex(PilotError,'Local shot structure'):
+            shot_sections(proposal,['Shot01','Shot02','Shot02','Shot04'])
+        with self.assertRaisesRegex(PilotError,'Local shot structure'):
+            shot_sections(proposal,['Shot01','Shot02','Shot03','Shot03'])
+
+    def test_review_shot_cli_routes_and_blocks_unknown_id(self):
+        self.with_realistic_shot_baseline()
+        import cli
+        args=['review-shot','--workspace',str(self.workspace),'--shot-id','Shot02']
+        with patch('cli.Pilot',return_value=self.pilot), io.StringIO() as stdout, redirect_stdout(stdout):
+            code=cli.main(args)
+            result=json.loads(stdout.getvalue())
+        self.assertEqual(code,0)
+        self.assertEqual(result['target_shot']['id'],'Shot02')
+        with patch('cli.Pilot',return_value=self.pilot), io.StringIO() as stderr, redirect_stderr(stderr):
+            code=cli.main(args[:-1]+['Shot99'])
+            error=stderr.getvalue()
+        self.assertEqual(code,2)
+        self.assertIn('Blocked: Unknown approved Shot',error)
+
     def external_result(self, prepared, **values):
         directory = Path(prepared['result_path']).parent
         raw, _ = self.fake(**values)('', directory)

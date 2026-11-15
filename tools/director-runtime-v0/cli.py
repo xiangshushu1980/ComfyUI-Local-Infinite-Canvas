@@ -36,6 +36,9 @@ def main(argv=None):
     status.add_argument('--workspace', required=True)
     preview = commands.add_parser('review-pack', help='Read-only preview handoff, not WAR-35 schema')
     preview.add_argument('--workspace', required=True)
+    review_shot = commands.add_parser('review-shot', help='Compact, pilot-only approved Shot read view')
+    review_shot.add_argument('--workspace', required=True)
+    review_shot.add_argument('--shot-id', required=True)
     args = parser.parse_args(argv)
     try:
         if args.command == 'init':
@@ -46,6 +49,8 @@ def main(argv=None):
                 result = pilot.status()
             elif args.command == 'review-pack':
                 result = pilot.review_packet()
+            elif args.command == 'review-shot':
+                result = pilot.review_shot(args.shot_id)
             elif args.command == 'record-review':
                 result = pilot.review(args.checkpoint, args.decision, args.evidence_file, args.actor)
             elif args.command == 'prepare-stage':

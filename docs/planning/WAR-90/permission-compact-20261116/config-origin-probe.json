@@ -1,0 +1,31 @@
+{
+  "test": "read-only config/read via actual Codex app-server; no model or browser",
+  "inherited_HOME_CODEX_HOME": "/home/sean/.codex",
+  "inherited_config": {
+    "initialized": true,
+    "mcp_names": [
+      "blender",
+      "codegraph",
+      "cua_repl",
+      "hindsight",
+      "hindsight-direct",
+      "infinite-canvas"
+    ],
+    "enabled": {
+      "cua_repl": false,
+      "hindsight": true,
+      "codegraph": true,
+      "blender": false,
+      "hindsight-direct": false,
+      "infinite-canvas": false
+    }
+  },
+  "empty_isolated_config": {
+    "initialized": true,
+    "mcp_names": [],
+    "enabled": {}
+  },
+  "no_auth_material_read": true,
+  "no_global_config_modified": true,
+  "important_scope": "config/read is config origin evidence, NOT actual thread tool scope or approval denial"
+}

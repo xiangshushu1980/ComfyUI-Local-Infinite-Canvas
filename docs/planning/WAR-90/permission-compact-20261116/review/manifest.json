@@ -1,0 +1,10 @@
+{
+  "frozen_sha256": "d1ff30e407e65c5c589dd5fdd70d96d286186083fd64031601242ad520f0f509",
+  "design_sha256": "28f1840753e8ca98ec1099e49a16a8055e8da46614a18b51d33ba0d531ccc06b",
+  "roles": [
+    "reviewer-security",
+    "reviewer-director",
+    "lead-reviewer"
+  ],
+  "formal_approval": false
+}

@@ -1,0 +1,9 @@
+{
+  "name": "lead-reviewer",
+  "model": "gpt-6-astra",
+  "effort": "medium",
+  "exit_code": 0,
+  "elapsed_seconds": 69.36,
+  "prompt_sha256": "9f2d7bd3064678ab560c8652cf40b5b6060797552c70f99c006896795ac1a75a",
+  "result_sha256": "d6ee663e4f06a25c1eb47c0427aaca16710ec453dd805dbc8b5ea2a63ce70d50"
+}

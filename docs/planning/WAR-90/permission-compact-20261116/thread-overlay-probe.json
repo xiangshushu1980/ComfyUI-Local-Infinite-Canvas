@@ -1,0 +1,31 @@
+{
+  "no_override": {
+    "config_names": [
+      "war90-fake-a",
+      "war90-fake-b"
+    ],
+    "override_disabled_requested": false,
+    "thread_started": true,
+    "status_names": [
+      "war90-fake-a",
+      "war90-fake-b"
+    ],
+    "status_error": null
+  },
+  "disable_both_thread_override": {
+    "config_names": [
+      "war90-fake-a",
+      "war90-fake-b"
+    ],
+    "override_disabled_requested": true,
+    "thread_started": true,
+    "status_names": [
+      "war90-fake-a",
+      "war90-fake-b"
+    ],
+    "status_error": null
+  },
+  "no_credentials_or_user_mcp_used": true,
+  "fake_command": "/bin/false",
+  "scope": "thread/status is not proof of every model tool permission"
+}

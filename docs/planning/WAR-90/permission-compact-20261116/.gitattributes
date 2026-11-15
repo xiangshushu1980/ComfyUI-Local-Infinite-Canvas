@@ -1,0 +1,8 @@
+*.jsonl -whitespace
+*.log -whitespace
+review/*/prompt.md -whitespace
+review/*/result.md -whitespace
+review/frozen-packet.md -whitespace
+implementation-review/*/prompt.md -whitespace
+implementation-review/*/result.md -whitespace
+implementation-review/frozen-packet.md -whitespace

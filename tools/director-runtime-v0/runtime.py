@@ -601,6 +601,106 @@ External DS/TF/VM sections are references only; their bodies were not loaded. Re
                             'DirectorPlan and not a Canvas Agent write command. '
                             'Media/geometry/audience require separate evidence.')}
 
+    def review_shot(self, shot_id):
+        """Pilot-only compact *read* view of one approved Shot and exact nearby excerpts.
+
+        All authority, evidence, source/skill hash and B/neighbor gates remain in
+        review_packet(). This projection cannot generate/submit/approve anything.
+        """
+        packet = self.review_packet()
+        shots = packet['shots']
+        ids = [item['id'] for item in shots]
+        if shot_id not in ids:
+            raise PilotError(f'Unknown approved Shot: {shot_id}')
+        position = ids.index(shot_id)
+        target = shots[position]
+        source = packet['authority']['source_text']
+        if digest(source.encode('utf-8')) != packet['authority']['source_sha256']:
+            raise PilotError('Source bytes do not match declared SHA256')
+
+        def neighbor(index, side):
+            if index < 0 or index >= len(shots):
+                return None
+            item = shots[index]
+            prefixes = ('切点',) if side == 'previous' else (
+                '入镜', '同镜连续动作', '观看任务')
+            lines = item['text'].splitlines()
+            found = next(((n + 1, line) for n, line in enumerate(lines)
+                          if any(line.startswith(prefix) for prefix in prefixes)), None)
+            return {
+                'id': item['id'],
+                'full_text_sha256': item['text_sha256'],
+                'full_text_included': False,
+                'excerpt': {
+                    'status': 'exact-source-line' if found else 'not-found',
+                    'line_number_1_based': found[0] if found else None,
+                    'text': found[1] if found else None,
+                    'not_complete_neighbor_context': True,
+                },
+                'full_text_json_path': f'$.shots[{index}].text',
+            }
+
+        review = packet['review']
+        return {
+            'format': 'war90-director-shot-preview-only-v0',
+            'purpose': 'Read-only approved-Shot-ID text lookup; not a revision or continuity review',
+            'pilot_only': True,
+            'scope': {'target_shot_id': shot_id, 'target_full_text': True,
+                      'neighbor_full_text': False, 'editing_authorized': False},
+            'authority': {
+                'approved_A_id': packet['authority']['approved_A_id'],
+                'approved_B_id': packet['authority']['approved_B_id'],
+                'source_sha256': packet['authority']['source_sha256'],
+                'approval_evidence_sha256': packet['authority']['approval_evidence_sha256'],
+            },
+            'hashes': {
+                'B_candidate_artifacts_utf8_json': {
+                    'sha256': packet['authority']['approved_B_content_sha256'],
+                    'source_field': 'authority.approved_B_content_sha256',
+                    'object_scope': ('Approved B artifacts JSON via runtime.encode() '
+                                     '(UTF-8, indent=2, ensure_ascii=False, trailing newline); '
+                                     'not JCS; not Shot text'),
+                },
+                'ShotPlan_stage_utf8_text': {
+                    'sha256': packet['stages']['shot']['text_sha256'],
+                    'source_field': 'stages.shot.text_sha256',
+                    'object_scope': 'Complete approved Shot Plan UTF-8 text',
+                },
+                'target_Shot_section_utf8_text': {
+                    'sha256': target['text_sha256'],
+                    'source_field': f'shots[{position}].text_sha256',
+                    'object_scope': 'Exact target Shot section UTF-8 text',
+                },
+                'cross_object_hashes_should_match': False,
+            },
+            'source': {'text': source,
+                       'sha256': packet['authority']['source_sha256'],
+                       'complete': True},
+            'target_shot': dict(target),
+            'neighbors': {'previous': neighbor(position - 1, 'previous'),
+                          'next': neighbor(position + 1, 'next'),
+                          'scope': 'Sequential shots only, not all related shots',
+                          'cross_shot_dependencies_resolved': False},
+            'stage_dependencies': {
+                stage: {'text_sha256': packet['stages'][stage]['text_sha256'],
+                        'text_not_included': True,
+                        'full_text_json_path': f'$.stages.{stage}.text'}
+                for stage in ('intent', 'beat', 'blocking')
+            },
+            'review_flags': {
+                key: value for key, value in review.items() if key != 'unknown'
+            } | {
+                'unknown': list(review['unknown']),
+                'unknown_count': len(review['unknown']),
+                'unknown_requires_full_review': True,
+            },
+            'capabilities': dict(packet['capabilities']),
+            'full_context_command': 'review-pack --workspace <same-pilot>',
+            'warning': ('Pilot-only presentation, not WAR-35 or identity verification. '
+                        'Neighbor excerpts only cover sequential shots; use review-pack before '
+                        'cross-Stage or full continuity assessment. No editing authority.'),
+        }
+
     def status(self):
         state = self.load()
         problems = []

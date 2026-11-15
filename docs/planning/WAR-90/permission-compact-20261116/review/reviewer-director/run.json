@@ -1,0 +1,9 @@
+{
+  "role": "reviewer-director",
+  "model": "gpt-6-luna",
+  "effort": "medium",
+  "exit_code": 0,
+  "seconds": 21.3,
+  "prompt_sha256": "e63714b631354e7e3a7c90e675d9a37987729e4c47f1872b9e36327a283dcdd9",
+  "result_sha256": "196894d99c6595d07d882d9556c07f682d512dceb6b1e86e9ecd1a63a8b2d99a"
+}
