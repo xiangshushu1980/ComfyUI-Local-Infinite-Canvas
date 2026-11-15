@@ -404,5 +404,88 @@ class RuntimeTests(unittest.TestCase):
 
 
 
+    def test_review_pack_requires_real_pilot_A_B_and_is_readonly(self):
+        with self.assertRaisesRegex(PilotError, 'pilot A/B'):
+            self.pilot.review_packet()
+        self.accept_A()
+        with self.assertRaisesRegex(PilotError, 'pilot A/B'):
+            self.pilot.review_packet()
+        for stage in ('beat', 'blocking', 'shot'):
+            self.run_stage(stage)
+        self.run_stage('shot', proposal=self.sample_shots())
+        self.pilot.review('B', 'accept', self.evidence, 'human')
+        before = self.tree()
+        pack = self.pilot.review_packet()
+        self.assertEqual(before, self.tree())
+        self.assertEqual(pack['format'], 'war90-director-preview-only-v0')
+        self.assertEqual(pack['authority']['source_text'], self.source.read_bytes().decode('utf-8'))
+        self.assertEqual(pack['authority']['approved_B_id'], self.pilot.load()['active']['id'])
+        self.assertEqual([x['id'] for x in pack['shots']], ['Shot01','Shot02','Shot03','Shot04'])
+        self.assertIn('Shot02｜', pack['shots'][1]['text'])
+        self.assertTrue(pack['capabilities']['display_text'])
+        for flag in ('write_canvas','generate_media','production_approval'):
+            self.assertFalse(pack['capabilities'][flag])
+        self.assertFalse(pack['review']['identity_verified'])
+        self.assertFalse(pack['review']['formal_WAR35_approval'])
+        self.assertFalse(pack['review']['geometry_verified'])
+        for stage in ('intent','beat','blocking','shot'):
+            self.assertEqual(pack['stages'][stage]['text'],
+                             self.pilot.load()['active']['artifacts'][stage]['proposal'])
+        for shot in pack['shots']:
+            from runtime import digest
+            self.assertEqual(digest(shot['text'].encode()),shot['text_sha256'])
+
+    def test_review_pack_rejects_unapproved_local_revision_and_keeps_B_evidence(self):
+        original = self.with_realistic_shot_baseline()
+        revision=self.sample_shots().replace('纸移开露出 K 后，蓝夹再次盖 K。',
+                       '纸移开露出 K 后，蓝夹再次盖 K。林让开周的视线。')
+        self.pilot.run('shot', targets=['Shot02'],
+                       generator=self.fake(proposal=revision, changed_targets=['Shot02']))
+        after = self.pilot.load()
+        self.assertEqual(after['phase'],'awaiting-human-B')
+        self.assertIn('Shot02',after['pending_shots'])
+        self.assertIsNone(after['pilot_B'])
+        with self.assertRaisesRegex(PilotError, 'pilot A/B'):
+            self.pilot.review_packet()
+        self.assertEqual(after, self.pilot.load())
+        self.assertEqual(after['reviews'],original['reviews'])
+
+    def test_review_pack_rejects_modified_source(self):
+        self.with_realistic_shot_baseline()
+        self.source.write_text('UNAPPROVED SOURCE CHANGE')
+        with self.assertRaisesRegex(PilotError, 'hash changed'):
+            self.pilot.review_packet()
+
+    def test_review_pack_rejects_modified_human_evidence(self):
+        self.with_realistic_shot_baseline()
+        self.evidence.write_text('altered evidence AFTER review')
+        with self.assertRaisesRegex(PilotError, 'approval evidence has changed'):
+            self.pilot.review_packet()
+
+    def test_review_pack_rejects_tampered_review_text_or_active_candidate(self):
+        self.with_realistic_shot_baseline()
+        good = self.pilot.load()
+        copy = __import__('copy')
+        changed=copy.deepcopy(good)
+        changed['reviews'][-1]['text']='TAMPERED WITH ORIGINAL HUMAN EVIDENCE'
+        atomic_json(self.workspace/'state.json',changed)
+        with self.assertRaisesRegex(PilotError, 'review text has changed'):
+            self.pilot.review_packet()
+        changed=copy.deepcopy(good)
+        changed['active']=copy.deepcopy(good['pilot_A'])
+        atomic_json(self.workspace/'state.json',changed)
+        with self.assertRaisesRegex(PilotError, 'differs from the accepted pilot B'):
+            self.pilot.review_packet()
+
+    def test_review_pack_rejects_b_claim_without_matching_human_review(self):
+        good = self.with_realistic_shot_baseline()
+        changed = __import__('copy').deepcopy(good)
+        changed['reviews']=[r for r in changed['reviews'] if r['checkpoint']!='B']
+        atomic_json(self.workspace/'state.json',changed)
+        with self.assertRaisesRegex(PilotError, 'No matching external human pilot B'):
+            self.pilot.review_packet()
+
+
+
 if __name__ == '__main__':
     unittest.main()

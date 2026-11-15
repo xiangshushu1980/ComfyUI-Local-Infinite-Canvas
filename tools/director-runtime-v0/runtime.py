@@ -434,6 +434,82 @@ External DS/TF/VM sections are references only; their bodies were not loaded. Re
             atomic_json(self.path / 'state.json', state)
             return review
 
+    def review_packet(self):
+        """Read-only, source-verified presentation view; never a Canvas execution API."""
+        with self.locked() as state:
+            self.check(state)
+            active, a, b = state['active'], state['pilot_A'], state['pilot_B']
+            if not a or not b or not active or state['stage'] != 'shot':
+                raise PilotError('Canvas review preview requires a pilot A/B approved Shot')
+            if state['phase'] != 'pilot-B-accepted' or state['pending_shots']:
+                raise PilotError('Unresolved Shot neighbor review or unapproved revision')
+            if active != b or active['id'] != b['id']:
+                raise PilotError('Active candidate differs from the accepted pilot B')
+            artifacts = active['artifacts']
+            if set(artifacts) != {'intent', 'beat', 'blocking', 'shot'}:
+                raise PilotError('Review preview requires four complete stage artifacts')
+            if artifacts['intent'] != a['artifacts']['intent']:
+                raise PilotError('Active Intent no longer matches approved pilot A')
+            order = artifacts['shot']['shot_ids']
+            segments = shot_sections(artifacts['shot']['proposal'], order)
+
+            def matching_review(checkpoint, candidate):
+                for review in reversed(state['reviews']):
+                    if (review['checkpoint'] == checkpoint
+                        and review['decision'] == 'accept'
+                        and review['actor'] == 'human'
+                        and review['candidate_id'] == candidate['id']
+                        and review['candidate_sha256'] == candidate['content_sha256']
+                        and review.get('pilot_only') is True
+                        and review.get('formal_WAR35_approval') is False):
+                        evidence = Path(review['evidence_origin'])
+                        if digest(read_text(evidence)) != review['evidence_sha256']:
+                            raise PilotError(f'Pilot {checkpoint} approval evidence has changed')
+                        if digest(review['text'].encode()) != review['evidence_sha256']:
+                            raise PilotError(f'Pilot {checkpoint} review text has changed')
+                        return review
+                raise PilotError(f'No matching external human pilot {checkpoint} approval evidence')
+
+            review_a = matching_review('A', a)
+            review_b = matching_review('B', b)
+            source = read_text(self.path / 'source.txt').decode('utf-8')
+            return {
+                'format': 'war90-director-preview-only-v0',
+                'purpose': 'read-only director review presentation for future Canvas Agent',
+                'authority': {
+                    'source_sha256': state['inputs']['source.txt']['sha256'],
+                    'source_text': source,
+                    'skill_sha256': {key: value['sha256'] for key, value
+                                     in state['inputs'].items() if key.startswith('skill/')},
+                    'approved_A_id': a['id'],
+                    'approved_A_content_sha256': a['content_sha256'],
+                    'approved_B_id': b['id'],
+                    'approved_B_content_sha256': b['content_sha256'],
+                    'approval_evidence_sha256': {
+                        'A': review_a['evidence_sha256'], 'B': review_b['evidence_sha256']},
+                },
+                'stages': {stage: {'text': data['proposal'],
+                                   'text_sha256': digest(data['proposal'].encode('utf-8'))}
+                           for stage, data in artifacts.items()},
+                'shots': [{'id': shot_id, 'text': segments[shot_id],
+                           'text_sha256': digest(segments[shot_id].encode('utf-8'))}
+                          for shot_id in order],
+                'review': {'pilot_A_accepted': True, 'pilot_B_accepted': True,
+                           'external_human_evidence_recorded': True,
+                           'identity_verified': False,
+                           'formal_WAR35_approval': False,
+                           'pending_shots': [],
+                           'unknown': state['unknown'],
+                           'media_verified': False,
+                           'geometry_verified': False,
+                           'audience_verified': False},
+                'capabilities': {'display_text': True, 'propose_edit': False,
+                                 'write_canvas': False, 'generate_media': False,
+                                 'production_approval': False},
+                'warning': ('This is an experimental review projection, not WAR-35 '
+                            'DirectorPlan and not a Canvas Agent write command. '
+                            'Media/geometry/audience require separate evidence.')}
+
     def status(self):
         state = self.load()
         problems = []

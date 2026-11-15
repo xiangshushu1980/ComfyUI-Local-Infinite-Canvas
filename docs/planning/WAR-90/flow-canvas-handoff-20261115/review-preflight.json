@@ -1,0 +1,76 @@
+{
+  "checks": {
+    "approved_original_B_allowed": {
+      "ok": true,
+      "detail": ""
+    },
+    "state_unchanged_original_B": {
+      "ok": true,
+      "detail": null
+    },
+    "approved_approved_new_B_allowed": {
+      "ok": true,
+      "detail": ""
+    },
+    "state_unchanged_approved_new_B": {
+      "ok": true,
+      "detail": null
+    },
+    "unapproved_rejected": {
+      "ok": true,
+      "detail": {
+        "return_code": 2,
+        "stderr": "Blocked: Canvas review preview requires a pilot A/B approved Shot"
+      }
+    },
+    "state_unchanged_unapproved_compact_candidate": {
+      "ok": true,
+      "detail": null
+    },
+    "new_B_correct_binding": {
+      "ok": true,
+      "detail": null
+    },
+    "original_B_still_independent": {
+      "ok": true,
+      "detail": null
+    },
+    "pilot_only_disclaimer": {
+      "ok": true,
+      "detail": null
+    },
+    "no_external_actions": {
+      "ok": true,
+      "detail": null
+    },
+    "four_ordered_shots": {
+      "ok": true,
+      "detail": null
+    },
+    "full_stage_texts": {
+      "ok": true,
+      "detail": null
+    },
+    "source_canonical_hash": {
+      "ok": true,
+      "detail": null
+    },
+    "all_stage_and_shot_text_hashes": {
+      "ok": true,
+      "detail": null
+    },
+    "risk_unknown_preserved": {
+      "ok": true,
+      "detail": null
+    }
+  },
+  "passed": 15,
+  "total": 15,
+  "baseline_state_sha256": {
+    "original_B": "020a2bda99e85d34a4f2441055c0c6d8fcd5cc14151fd66750ebc09d81d099ca",
+    "approved_new_B": "23e78d5994ed18ea02d59c2c3eb588f36cc41d3b495b81009713ec7570d7e4b7",
+    "unapproved_compact_candidate": "0b81c968c9eb9e4f050e274009b2d27abba1740d3aa75654c60d94513f569e55"
+  },
+  "approved_packet_sha256": "04538955e5950e20744815e0d2bc5fab328c7b343ac14a5b27eb9e128a26ef04",
+  "data_only_no_canvas_API_call": true
+}

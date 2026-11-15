@@ -108,3 +108,16 @@ python3 tools/director-runtime-v0/cli.py run-stage \
 冻结证据与可复现离线测试在 `docs/planning/WAR-90/compact-local-20261115/`：原真实模型两次完整包分别 119,045 与 128,933 字节，相同冻结条件构建紧凑包分别为 72,486 与 77,431 字节，减少 39.11% 与 39.94%。复用此前由 Astra 真实生成、已保存的两份**输出文本**做离线重放，两阶段均被新运行壳接收；**不是再次调用 Astra**，模型端耗时/质量收益尚未测量。
 
 默认 `Continue` 和 `Refresh` 依旧拒绝；本增量仅实现适配现有 `Resume` 的本地重建与确定性镜头文本保护。未来对正式 WAR-35 数据模型和会话重用的设计须单独验收。
+
+## 已批准试点 B 的只读审阅交接包（2026-11-15）
+
+可用于未来 Canvas Agent 的**文本审阅输入视图**，不是正式 WAR-35 Schema 或生产授权：
+
+```bash
+python3 tools/director-runtime-v0/cli.py review-pack \
+  --workspace docs/planning/WAR-90/pilot-D-local-repair-v2
+```
+
+输出 `war90-director-preview-only-v0` JSON：原剧本及 SHA、Skill 哈希、A/B 绑定候选与原始审阅证据 SHA、四阶段全文、四个分镜独立正文/哈希、未证风险及明确的只读权限标记。仅在 Source/Skill/候选 SHA 均有效、A/B 用户证据文件仍在且其 SHA 与审阅正文一致、当前活跃 Shot 与已经接受的 B 完全一致、邻镜待复检列表为空时才输出；否则返回退出码 2。CLI 不创建画布节点、不调用任何 Canvas Agent API，也不会帮用户确认身份或批准正式 WAR-35 方案。
+
+验证资料：`docs/planning/WAR-90/flow-canvas-handoff-20261115/README.md`。代码与 37 项单测、真实工作区 15 项只读检查的结果可复现。当前用户批准 B 是文本审阅，不证明几何、表演、视频或观众辨认已通过。

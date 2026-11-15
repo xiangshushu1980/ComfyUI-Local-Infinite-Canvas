@@ -1,0 +1,42 @@
+test_adapter_flags_events_and_credentials_cleanup_with_fake_process (test_runtime.RuntimeTests.test_adapter_flags_events_and_credentials_cleanup_with_fake_process) ... ok
+test_approval_pilot_only_unknown_stays_unknown (test_runtime.RuntimeTests.test_approval_pilot_only_unknown_stays_unknown) ... ok
+test_baseline_mismatch_block (test_runtime.RuntimeTests.test_baseline_mismatch_block) ... ok
+test_conflict_and_upstream_change_quarantine (test_runtime.RuntimeTests.test_conflict_and_upstream_change_quarantine) ... ok
+test_dry_packet_no_files_changed (test_runtime.RuntimeTests.test_dry_packet_no_files_changed) ... ok
+test_failed_generator_retains_evidence_and_candidate (test_runtime.RuntimeTests.test_failed_generator_retains_evidence_and_candidate) ... ok
+test_gate_A_blocks_every_downstream_stage (test_runtime.RuntimeTests.test_gate_A_blocks_every_downstream_stage) ... ok
+test_initial_none_and_no_overwrite (test_runtime.RuntimeTests.test_initial_none_and_no_overwrite) ... ok
+test_initializers_do_not_overwrite_under_concurrency (test_runtime.RuntimeTests.test_initializers_do_not_overwrite_under_concurrency) ... ok
+test_invalid_initial_input_is_atomic (test_runtime.RuntimeTests.test_invalid_initial_input_is_atomic) ... ok
+test_local_compact_packet_preserves_all_stage_proposals_and_human_feedback (test_runtime.RuntimeTests.test_local_compact_packet_preserves_all_stage_proposals_and_human_feedback) ... ok
+test_local_return_marks_neighbors_and_never_global_pass (test_runtime.RuntimeTests.test_local_return_marks_neighbors_and_never_global_pass) ... ok
+test_local_scope_excess_and_unknown_target_block (test_runtime.RuntimeTests.test_local_scope_excess_and_unknown_target_block) ... ok
+test_local_shot_guard_accepts_only_allowed_shot_content (test_runtime.RuntimeTests.test_local_shot_guard_accepts_only_allowed_shot_content) ... ok
+test_local_shot_guard_rejects_hidden_nontarget_edit_without_mutating_B (test_runtime.RuntimeTests.test_local_shot_guard_rejects_hidden_nontarget_edit_without_mutating_B) ... ok
+test_local_shot_guard_rejects_missing_duplicate_and_unreported_sections (test_runtime.RuntimeTests.test_local_shot_guard_rejects_missing_duplicate_and_unreported_sections) ... ok
+test_local_shot_nonhandoff_does_not_commit_new_candidate (test_runtime.RuntimeTests.test_local_shot_nonhandoff_does_not_commit_new_candidate) ... ok
+test_local_shot_order_change_blocks (test_runtime.RuntimeTests.test_local_shot_order_change_blocks) ... ok
+test_model_cannot_approve_and_workspace_evidence_rejected (test_runtime.RuntimeTests.test_model_cannot_approve_and_workspace_evidence_rejected) ... ok
+test_no_handoff_or_identical_proposal_no_snapshot (test_runtime.RuntimeTests.test_no_handoff_or_identical_proposal_no_snapshot) ... ok
+test_path_escape_symlink_and_production_rejected (test_runtime.RuntimeTests.test_path_escape_symlink_and_production_rejected) ... ok
+test_prompt_exact_source_and_initial_authority (test_runtime.RuntimeTests.test_prompt_exact_source_and_initial_authority) ... ok
+test_rejected_B_removed_from_new_session (test_runtime.RuntimeTests.test_rejected_B_removed_from_new_session) ... ok
+test_rejected_candidate_not_in_recovery (test_runtime.RuntimeTests.test_rejected_candidate_not_in_recovery) ... ok
+test_reuse_modes_explicitly_rejected (test_runtime.RuntimeTests.test_reuse_modes_explicitly_rejected) ... ok
+test_review_pack_rejects_b_claim_without_matching_human_review (test_runtime.RuntimeTests.test_review_pack_rejects_b_claim_without_matching_human_review) ... ok
+test_review_pack_rejects_modified_human_evidence (test_runtime.RuntimeTests.test_review_pack_rejects_modified_human_evidence) ... ok
+test_review_pack_rejects_modified_source (test_runtime.RuntimeTests.test_review_pack_rejects_modified_source) ... ok
+test_review_pack_rejects_tampered_review_text_or_active_candidate (test_runtime.RuntimeTests.test_review_pack_rejects_tampered_review_text_or_active_candidate) ... ok
+test_review_pack_rejects_unapproved_local_revision_and_keeps_B_evidence (test_runtime.RuntimeTests.test_review_pack_rejects_unapproved_local_revision_and_keeps_B_evidence) ... ok
+test_review_pack_requires_real_pilot_A_B_and_is_readonly (test_runtime.RuntimeTests.test_review_pack_requires_real_pilot_A_B_and_is_readonly) ... ok
+test_revision_of_beat_invalidates_downstream (test_runtime.RuntimeTests.test_revision_of_beat_invalidates_downstream) ... ok
+test_single_candidate_and_full_recovery (test_runtime.RuntimeTests.test_single_candidate_and_full_recovery) ... ok
+test_skill_origin_and_snapshot_change_block (test_runtime.RuntimeTests.test_skill_origin_and_snapshot_change_block) ... ok
+test_source_change_blocks_all_modes_and_review (test_runtime.RuntimeTests.test_source_change_blocks_all_modes_and_review) ... ok
+test_source_change_during_generation_preserves_raw_and_state (test_runtime.RuntimeTests.test_source_change_during_generation_preserves_raw_and_state) ... ok
+test_state_change_during_generation_not_overwritten (test_runtime.RuntimeTests.test_state_change_during_generation_not_overwritten) ... ok
+
+----------------------------------------------------------------------
+Ran 37 tests in 2.548s
+
+OK
