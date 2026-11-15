@@ -1,0 +1,9 @@
+{
+  "name": "reviewer-engineer",
+  "model": "gpt-6-astra",
+  "effort": "medium",
+  "exit_code": 0,
+  "duration_seconds": 42.1,
+  "prompt_sha256": "6064e2e83799af9246d26e37001710269b1659856f71cb5cafe4a80df8972978",
+  "result_sha256": "8ae07bc138467e3884f77358e161710d171dee7545817aa3636e1f71c49f2be3"
+}

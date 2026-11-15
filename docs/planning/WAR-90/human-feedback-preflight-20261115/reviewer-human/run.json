@@ -1,0 +1,9 @@
+{
+  "name": "reviewer-human",
+  "model": "gpt-6-luna",
+  "effort": "medium",
+  "exit_code": 0,
+  "duration_seconds": 24.1,
+  "prompt_sha256": "7933edbddf3c6e6bd8651eaa436f5f4326f0a4495f07d0240971a30f3893067b",
+  "result_sha256": "da9f47eb7eb8811f13bd5345d0cdae6187c555de2033e90cf01856d110c938a2"
+}

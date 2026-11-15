@@ -1,0 +1,7 @@
+{
+  "state_sha256": "23e78d5994ed18ea02d59c2c3eb588f36cc41d3b495b81009713ec7570d7e4b7",
+  "frozen_sha256": "445fcb7fad3dca718b00afd2833fa0d124b56ee9646ebe032f88c4a520820760",
+  "B_id": "b7b4fd156b884907b2431b6b1e0d9960",
+  "purpose": "preflight; no real user feedback yet",
+  "candidate": "human-facing test plan; not a DirectorPlan"
+}

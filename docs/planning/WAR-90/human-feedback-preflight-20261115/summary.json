@@ -1,0 +1,33 @@
+{
+  "frozen_sha256": "445fcb7fad3dca718b00afd2833fa0d124b56ee9646ebe032f88c4a520820760",
+  "reviewers": [
+    {
+      "name": "reviewer-human",
+      "model": "gpt-6-luna",
+      "effort": "medium",
+      "exit_code": 0,
+      "duration_seconds": 24.1,
+      "prompt_sha256": "7933edbddf3c6e6bd8651eaa436f5f4326f0a4495f07d0240971a30f3893067b",
+      "result_sha256": "da9f47eb7eb8811f13bd5345d0cdae6187c555de2033e90cf01856d110c938a2"
+    },
+    {
+      "name": "reviewer-engineer",
+      "model": "gpt-6-astra",
+      "effort": "medium",
+      "exit_code": 0,
+      "duration_seconds": 42.1,
+      "prompt_sha256": "6064e2e83799af9246d26e37001710269b1659856f71cb5cafe4a80df8972978",
+      "result_sha256": "8ae07bc138467e3884f77358e161710d171dee7545817aa3636e1f71c49f2be3"
+    }
+  ],
+  "lead": {
+    "name": "lead-reviewer",
+    "model": "gpt-6-astra",
+    "effort": "medium",
+    "exit_code": 0,
+    "duration_seconds": 55.9,
+    "prompt_sha256": "79bcdb20e9a1308d38187bcb10722e209843e06387ca15835d6b470386788029",
+    "result_sha256": "63472466f2db607ead537f6edcffc2a7ddcb1dc4f84e683d3b26531b28af807a"
+  },
+  "complete": true
+}
