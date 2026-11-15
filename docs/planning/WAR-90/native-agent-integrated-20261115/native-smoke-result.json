@@ -1,0 +1,48 @@
+{
+  "phase": "native-embedded-codex-readonly",
+  "baseline_sha": "23e78d5994ed18ea02d59c2c3eb588f36cc41d3b495b81009713ec7570d7e4b7",
+  "production_untouched": true,
+  "temporary_mcp_overrides": [
+    "blender",
+    "codegraph",
+    "cua_repl",
+    "hindsight",
+    "hindsight-direct"
+  ],
+  "skill_listing": [
+    {
+      "name": "director-skill-v0-candidate",
+      "path": "/tmp/war90-native-private-n5rrbom3/home/.infinite-canvas/codex-workspaces/site/.agents/skills/director-skill-v0-candidate/SKILL.md",
+      "enabled": true
+    }
+  ],
+  "skill_listing_errors_count": 0,
+  "project_id": "aMWLszUPVij73DtP74aXB",
+  "nodes": 5,
+  "selected_shot": "Shot02",
+  "private_skill_loaded": true,
+  "actual_client_id_present": true,
+  "client_id_safe_omitted": true,
+  "native_thread_http_status": 200,
+  "native_thread_id": "01a1dfed-14d1-7de0-8ed9-d73026b450f6",
+  "native_conversation_status": "warning",
+  "native_turn_http_status": 200,
+  "native_turn_accepted": true,
+  "native_busy_observed": true,
+  "native_finished_observed": true,
+  "conversation_last_status": "warning",
+  "history_keys": [
+    "ok",
+    "workspace",
+    "conversation",
+    "thread",
+    "messages",
+    "settledTurnIds",
+    "historyReady"
+  ],
+  "history_messages": 16,
+  "history_has_thread": true,
+  "settled_turns": 1,
+  "private_skill_selected_in_turn": true,
+  "canvas_unchanged_after_turn": true
+}

@@ -1,0 +1,6 @@
+{
+  "frozen_sha256": "d97411bf00a0d77c430a0eeabea39e296e179ffb0ccba8f549862f5dfe973d83",
+  "B_state_sha256": "23e78d5994ed18ea02d59c2c3eb588f36cc41d3b495b81009713ec7570d7e4b7",
+  "purpose": "review native Canvas Agent integration, not user A/B approval",
+  "read_only": true
+}

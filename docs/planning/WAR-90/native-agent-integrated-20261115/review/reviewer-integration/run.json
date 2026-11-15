@@ -1,0 +1,9 @@
+{
+  "role": "reviewer-integration",
+  "model": "gpt-6-luna",
+  "effort": "medium",
+  "returncode": 0,
+  "seconds": 38.39,
+  "prompt_sha256": "6128d9e45ab117743968f617323738d9006eae9324eea9566fe0f1aecfef5bdd",
+  "result_sha256": "f6e499c49d4cee229878a3b1fda995003e13bf4f15d65baf6ce4b52bc61f2953"
+}

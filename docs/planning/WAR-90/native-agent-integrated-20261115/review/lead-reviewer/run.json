@@ -1,0 +1,9 @@
+{
+  "role": "lead-reviewer",
+  "model": "gpt-6-astra",
+  "effort": "medium",
+  "returncode": 0,
+  "seconds": 34.33,
+  "prompt_sha256": "05407cde92e9d8310d4dd96aea4138ddfd3948b1d8e07467e22fd76adf8ac8f5",
+  "result_sha256": "78ca3231d389907366fb54630eac69b110f94c1ad54ce2f9f12807892ca74da0"
+}

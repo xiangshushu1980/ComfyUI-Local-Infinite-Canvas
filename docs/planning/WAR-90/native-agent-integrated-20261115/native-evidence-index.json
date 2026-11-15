@@ -1,0 +1,140 @@
+{
+  "format": "war90-native-evidence-index-v0",
+  "status": "read-only native skill+runtime+canvas succeeded, guardrails targeted revision",
+  "source_of_events": "native-thread-history.json",
+  "thread_id": "01a1dfed-14d1-7de0-8ed9-d73026b450f6",
+  "settled_turn_ids": [
+    "01a1dfed-16ad-75d1-b4ef-a4911404ae84"
+  ],
+  "history_ready": true,
+  "tool_items": [
+    {
+      "thread_id": "01a1dfed-14d1-7de0-8ed9-d73026b450f6",
+      "turn_id": "01a1dfed-16ad-75d1-b4ef-a4911404ae84",
+      "item_id": "exec-05bd8c33-0c5f-4647-87b0-a9757b0d2f81",
+      "role": "tool",
+      "title": "调用工具：hindsight_search_pages",
+      "status": "failed",
+      "kind": "tool",
+      "command_or_summary": ""
+    },
+    {
+      "thread_id": "01a1dfed-14d1-7de0-8ed9-d73026b450f6",
+      "turn_id": "01a1dfed-16ad-75d1-b4ef-a4911404ae84",
+      "item_id": "exec-e70f5dd6-ffae-4055-97a0-d5e92c5a4eda",
+      "role": "tool",
+      "title": "执行命令",
+      "status": "completed",
+      "kind": "command",
+      "command_or_summary": "/bin/bash -lc 'python3 /home/sean/projects/canvas-lab/tools/director-runtime-v0/cli.py review-pack --workspace /home/sean/projects/canvas-lab/docs/planning/WAR-90/pilot-D-local-repair-v2'"
+    },
+    {
+      "thread_id": "01a1dfed-14d1-7de0-8ed9-d73026b450f6",
+      "turn_id": "01a1dfed-16ad-75d1-b4ef-a4911404ae84",
+      "item_id": "exec-64fe53be-51d6-49c8-9845-1c8722697e88",
+      "role": "tool",
+      "title": "执行命令",
+      "status": "completed",
+      "kind": "command",
+      "command_or_summary": "/bin/bash -lc 'python3 /home/sean/projects/canvas-lab/tools/director-runtime-v0/cli.py review-pack --workspace /home/sean/projects/canvas-lab/docs/planning/WAR-90/pilot-D-local-repair-v2 --help'"
+    },
+    {
+      "thread_id": "01a1dfed-14d1-7de0-8ed9-d73026b450f6",
+      "turn_id": "01a1dfed-16ad-75d1-b4ef-a4911404ae84",
+      "item_id": "exec-c84a8cb0-19e7-42ec-9ff3-9c32169598d7",
+      "role": "tool",
+      "title": "执行命令",
+      "status": "failed",
+      "kind": "command",
+      "command_or_summary": "/bin/bash -lc \"python3 /home/sean/projects/canvas-lab/tools/director-runtime-v0/cli.py review-pack --workspace /home/sean/projects/canvas-lab/docs/planning/WAR-90/pilot-D-local-repair-v2 > /tmp/war90-review-pack.json && python3 -c 'import json; p=json.load(open(\\\"/tmp/war90-review-pack.json\\\")); print(\\\"APPROVED_B_ID:\\\",p[\\\"authority\\\"][\\\"approved_B_id\\\"]); print(\\\"APPROVED_B_CONTENT_SHA256:\\\",p[\\\"authority\\\"][\\\"approved_B_content_sha256\\\"]); print(\\\"B_TEXT_SHA256:\\\",p[\\\"stages\\\"][\\\"shot_plan\\\"][\\\"text_sha256\\\"]); print(\\\"--- APPROVED B FULL TEXT ---\\\"); print(p[\\\"stages\\\"][\\\"shot_plan\\\"][\\\"text\\\"]); print(\\\"--- REVIEW FLAGS ---\\\"); print(json.dumps(p[\\\"review\\\"],ensure_ascii=False,indent=2))' \""
+    },
+    {
+      "thread_id": "01a1dfed-14d1-7de0-8ed9-d73026b450f6",
+      "turn_id": "01a1dfed-16ad-75d1-b4ef-a4911404ae84",
+      "item_id": "exec-eb95371a-430a-4d52-b2fc-d1815b16d4d3",
+      "role": "tool",
+      "title": "执行命令",
+      "status": "completed",
+      "kind": "command",
+      "command_or_summary": "/bin/bash -lc \"python3 -c 'import json; p=json.load(open(\\\"/tmp/war90-review-pack.json\\\")); print(list(p[\\\"stages\\\"].keys()))' \""
+    },
+    {
+      "thread_id": "01a1dfed-14d1-7de0-8ed9-d73026b450f6",
+      "turn_id": "01a1dfed-16ad-75d1-b4ef-a4911404ae84",
+      "item_id": "exec-5f13f60c-6cf2-4cf6-bf5b-773771c8b94d",
+      "role": "tool",
+      "title": "执行命令",
+      "status": "completed",
+      "kind": "command",
+      "command_or_summary": "/bin/bash -lc \"python3 -c 'import json; p=json.load(open(\\\"/tmp/war90-review-pack.json\\\")); print(\\\"APPROVED_B_ID:\\\",p[\\\"authority\\\"][\\\"approved_B_id\\\"]); print(\\\"APPROVED_B_CONTENT_SHA256:\\\",p[\\\"authority\\\"][\\\"approved_B_content_sha256\\\"]); print(\\\"B_TEXT_SHA256:\\\",p[\\\"stages\\\"][\\\"shot\\\"][\\\"text_sha256\\\"]); print(\\\"--- APPROVED B FULL TEXT ---\\\"); print(p[\\\"stages\\\"][\\\"shot\\\"][\\\"text\\\"]); print(\\\"--- REVIEW FLAGS ---\\\"); print(json.dumps(p[\\\"review\\\"],ensure_ascii=False,indent=2))' \""
+    },
+    {
+      "thread_id": "01a1dfed-14d1-7de0-8ed9-d73026b450f6",
+      "turn_id": "01a1dfed-16ad-75d1-b4ef-a4911404ae84",
+      "item_id": "exec-6803d6b6-0eec-4155-9b0a-3cc829fcef26",
+      "role": "tool",
+      "title": "读取画布",
+      "status": "completed",
+      "kind": "tool",
+      "command_or_summary": "5 个文本"
+    },
+    {
+      "thread_id": "01a1dfed-14d1-7de0-8ed9-d73026b450f6",
+      "turn_id": "01a1dfed-16ad-75d1-b4ef-a4911404ae84",
+      "item_id": "exec-4478fa2b-36de-4f91-b786-f4f5067a0a93",
+      "role": "tool",
+      "title": "读取选区",
+      "status": "completed",
+      "kind": "tool",
+      "command_or_summary": "已读取当前选中内容"
+    },
+    {
+      "thread_id": "01a1dfed-14d1-7de0-8ed9-d73026b450f6",
+      "turn_id": "01a1dfed-16ad-75d1-b4ef-a4911404ae84",
+      "item_id": "exec-cc399966-07f3-483e-83be-7d7967bd795e",
+      "role": "tool",
+      "title": "执行命令",
+      "status": "completed",
+      "kind": "command",
+      "command_or_summary": "/bin/bash -lc \"python3 -c 'import json,hashlib; p=json.load(open(\\\"/tmp/war90-review-pack.json\\\")); a=p[\\\"authority\\\"]; s=p[\\\"stages\\\"][\\\"shot\\\"][\\\"text\\\"]; print(\\\"sha_match\\\",hashlib.sha256(s.encode()).hexdigest()==s and False); print(\\\"text_sha\\\",hashlib.sha256(s.encode()).hexdigest()); print(\\\"approved_content_sha\\\",a[\\\"approved_B_content_sha256\\\"]); print(\\\"same_hash\\\",hashlib.sha256(s.encode()).hexdigest()==a[\\\"approved_B_content_sha256\\\"]); print(\\\"approved_B_id\\\",a[\\\"approved_B_id\\\"]); print(\\\"B acceptance\\\",p[\\\"review\\\"][\\\"pilot_B_accepted\\\"]); print(\\\"identity_verified\\\",p[\\\"review\\\"][\\\"identity_verified\\\"]); print(\\\"formal_WAR35_approval\\\",p[\\\"review\\\"][\\\"formal_WAR35_approval\\\"]); print(\\\"pending_shots\\\",p[\\\"review\\\"][\\\"pending_shots\\\"]); print(\\\"SHOT02 FULL SECTION\\\"); t=s; start=t.index(\\\"Shot02｜\\\"); end=t.index(\\\"\\\\n\\\\nShot"
+    },
+    {
+      "thread_id": "01a1dfed-14d1-7de0-8ed9-d73026b450f6",
+      "turn_id": "01a1dfed-16ad-75d1-b4ef-a4911404ae84",
+      "item_id": "exec-158c0d03-ca58-4ed1-93af-67ff100ff7ce",
+      "role": "tool",
+      "title": "执行命令",
+      "status": "completed",
+      "kind": "command",
+      "command_or_summary": "/bin/bash -lc \"sed -n '1,220p' .agents/skills/director-skill-v0-candidate/stages/shot-plan.md && sed -n '1,220p' .agents/skills/director-skill-v0-candidate/references/review-method.md\""
+    }
+  ],
+  "positive_evidence": [
+    "Skill discovery and selection",
+    "native Codex turn settled",
+    "Runtime review-pack exit 0",
+    "MCP canvas state and selection completed",
+    "new test Canvas remained five nodes"
+  ],
+  "negative_evidence": [
+    "unrelated hindsight_search_pages attempt failed",
+    "Codegraph startup warning",
+    "wrong CLI JSON key first attempted",
+    "model falsely compared B candidate SHA with stage text SHA",
+    "model wrote a transient /tmp review JSON, later deleted"
+  ],
+  "unknown": [
+    "native tool approval denial behavior",
+    "effective unwanted MCP disable mechanism",
+    "exact raw MCP request parameters in UI history",
+    "production Skill install and rollback",
+    "editing prepare/submit; human B reapproval"
+  ],
+  "hash_semantics": {
+    "approved_B_candidate_content_sha256": "64c08817a33fcebc2bad86c8c81b29b2297b4eab7de8bc7cb6db998823c6f4c7",
+    "stage_shot_text_sha256": "b2c2d5e14eb292cfafa1e9049913f97c6229ea5f1be51b1f7a94020f90fe8817",
+    "stage_shot_text_computed_sha256": "b2c2d5e14eb292cfafa1e9049913f97c6229ea5f1be51b1f7a94020f90fe8817",
+    "different_objects_require_equal_sha": false
+  },
+  "frozen_B_state_sha256": "23e78d5994ed18ea02d59c2c3eb588f36cc41d3b495b81009713ec7570d7e4b7"
+}

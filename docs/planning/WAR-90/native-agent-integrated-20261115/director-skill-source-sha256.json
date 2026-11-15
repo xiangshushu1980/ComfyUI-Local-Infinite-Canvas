@@ -1,0 +1,34 @@
+{
+  "source_dir": "docs/planning/WAR-89/director-skill-v0-candidate",
+  "files": [
+    {
+      "path": "SKILL.md",
+      "sha256": "3eee7d6f3c3032fc43e97b86a9606f8ae77943fa377aa2f56e2770c2b76e8676"
+    },
+    {
+      "path": "references/knowledge-index.md",
+      "sha256": "4d8edcb664659d78f897aa7baa8c1f275a57b5ff128ab433c95745b32a5e2519"
+    },
+    {
+      "path": "references/review-method.md",
+      "sha256": "72b23f163fe1fdea6a547d5b47f39392ba0b9b63b814a7a285db4a7df0e88e8e"
+    },
+    {
+      "path": "stages/beat.md",
+      "sha256": "6e81d45db1d0249cf33a200135f0ab790a49b65d92c7d036b0e253ac978121a1"
+    },
+    {
+      "path": "stages/blocking.md",
+      "sha256": "2663d5acc282d636400539aecc643871c26c12867c5d480d9c02793ad45c5563"
+    },
+    {
+      "path": "stages/intent.md",
+      "sha256": "ac07ecb95cbd511888911a0f85aa08f5fee2824cbf8e23749ef0d6ffec065a38"
+    },
+    {
+      "path": "stages/shot-plan.md",
+      "sha256": "fa0c7d4cc39fdf6b5df9c8a0e3e9b0ee6eafa921142b5a5f07efcdc8cf989476"
+    }
+  ],
+  "not_installed_in_production": true
+}
