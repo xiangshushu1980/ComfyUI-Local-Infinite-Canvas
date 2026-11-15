@@ -1,0 +1,39 @@
+{
+  "ended_at": "2026-11-15T05:26:53.299937+00:00",
+  "independent": [
+    {
+      "role": "reviewer-story",
+      "model": "gpt-6-luna",
+      "effort": "low",
+      "exit": 0,
+      "seconds": 18.3,
+      "prompt_sha256": "ae2a80a35388097425463653e654614bfb0f155c6f56dec618894e375459264d",
+      "result_sha256": "683fccbf95b538adbdf2bfc6b264400cf7c33565bd4e1c9c2cd5e6458b674e4f",
+      "ended_at": "2026-11-15T05:26:30.044930+00:00"
+    },
+    {
+      "role": "reviewer-craft",
+      "model": "gpt-6-luna",
+      "effort": "low",
+      "exit": 0,
+      "seconds": 19.0,
+      "prompt_sha256": "83f97a54a614d7257860e8f97edf9304860700644b4387612a48347afde39f37",
+      "result_sha256": "1c66200440a1a8c7a1f9f33cad1d8c44b13efbd83d0951444f8beac6c5ac3d94",
+      "ended_at": "2026-11-15T05:26:30.746450+00:00"
+    }
+  ],
+  "lead": {
+    "role": "main-reviewer",
+    "model": "gpt-6-luna",
+    "effort": "medium",
+    "exit": 0,
+    "seconds": 22.5,
+    "prompt_sha256": "1e4b2e58f62c352fb5fa8d9b54fc5a29cebcc156b096a3cd13a4f9fd437b0c19",
+    "result_sha256": "fea8f7d3dff92951da196518cb7a59903fb6e50a24cc9f578d54ffcb0d9e0d5a",
+    "ended_at": "2026-11-15T05:26:53.281970+00:00"
+  },
+  "source_sha256": "65b8a2f83cefc2281879fb254d3ee25dfd68d72e7cd0d811a2afbade5c1e165d",
+  "candidate_sha256": "9179fdb542e5dcfa74085d5e2a0a30cac390ccf70e2d4182eee5eb76b060c522",
+  "pilot_A_still_unapproved": true,
+  "completed": true
+}

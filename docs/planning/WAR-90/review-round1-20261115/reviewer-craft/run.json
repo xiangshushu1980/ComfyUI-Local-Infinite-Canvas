@@ -1,0 +1,10 @@
+{
+  "role": "reviewer-craft",
+  "model": "gpt-6-luna",
+  "effort": "low",
+  "exit": 0,
+  "seconds": 19.0,
+  "prompt_sha256": "83f97a54a614d7257860e8f97edf9304860700644b4387612a48347afde39f37",
+  "result_sha256": "1c66200440a1a8c7a1f9f33cad1d8c44b13efbd83d0951444f8beac6c5ac3d94",
+  "ended_at": "2026-11-15T05:26:30.746450+00:00"
+}

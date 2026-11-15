@@ -1,0 +1,10 @@
+{
+  "role": "reviewer-story",
+  "model": "gpt-6-luna",
+  "effort": "low",
+  "exit": 0,
+  "seconds": 18.3,
+  "prompt_sha256": "ae2a80a35388097425463653e654614bfb0f155c6f56dec618894e375459264d",
+  "result_sha256": "683fccbf95b538adbdf2bfc6b264400cf7c33565bd4e1c9c2cd5e6458b674e4f",
+  "ended_at": "2026-11-15T05:26:30.044930+00:00"
+}

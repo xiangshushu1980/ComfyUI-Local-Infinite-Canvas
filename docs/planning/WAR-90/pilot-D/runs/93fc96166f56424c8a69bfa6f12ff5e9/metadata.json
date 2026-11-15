@@ -1,0 +1,20 @@
+{
+  "id": "93fc96166f56424c8a69bfa6f12ff5e9",
+  "started_at": "2026-11-15T05:22:34.645622+00:00",
+  "stage": "intent",
+  "mode": "resume",
+  "scope": "",
+  "targets": [],
+  "model": "gpt-6-astra",
+  "reasoning_effort": "medium",
+  "input_sha256": "21e58d8516430ed8352d6ea25306e72e5af474dd91f321dc88ef8057f131ba74",
+  "generator": "codex-cli",
+  "status": "candidate-saved",
+  "result_sha256": "9179fdb542e5dcfa74085d5e2a0a30cac390ccf70e2d4182eee5eb76b060c522",
+  "thread_id": "01a1dda8-450c-7b32-9df5-34abdc66fbf4",
+  "finished_at": "2026-11-15T05:23:58.632282+00:00",
+  "input.txt_sha256": "21e58d8516430ed8352d6ea25306e72e5af474dd91f321dc88ef8057f131ba74",
+  "result.txt_sha256": "9179fdb542e5dcfa74085d5e2a0a30cac390ccf70e2d4182eee5eb76b060c522",
+  "events.jsonl_sha256": "7377cbad3c3eb7b9388fbf1bc1cb69bc20a2ea44173b8a178f0590e7a1fafa71",
+  "stderr.txt_sha256": "0b1c81cc7f8cc79a3b0b53cc411ed610397ee8fcb373ca3bd2ab00a88d58af07"
+}

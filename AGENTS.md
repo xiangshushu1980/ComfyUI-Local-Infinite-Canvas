@@ -10,6 +10,8 @@
 
 ## Development agent workflow
 
+- **独立审阅协作**：遇到方案、代码或导演产物审阅，按 `docs/agent/review-agent-collaboration.md` 发起一个主审阅 Agent 和 1–3 个隔离 Reviewer；普通审阅优先轻量模型，复杂架构才升级。审阅 Agent 不得代替用户 A/B 批准。
+
 - **项目文档**：按需使用用户级 `project-docs` 维护项目文档和证据；Hindsight 插件按当前环境说明运行，不重复建立记忆操作流程。
 - **Linear**: Use the available user-level Linear integration for this Rebuild project's tasks, progress and acceptance; the `linear-local-agent-pilot` skill is for bounded local-agent pilots, not general project management. Do not reuse the old Infinite Canvas project's completion status.
 
