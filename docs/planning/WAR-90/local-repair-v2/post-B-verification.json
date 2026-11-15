@@ -1,0 +1,25 @@
+{
+  "passed": 16,
+  "total": 16,
+  "checks": {
+    "original_unchanged": true,
+    "old_B_unchanged": true,
+    "same_active_new_candidate": true,
+    "new_candidate_bytes_and_hash_preserved": true,
+    "A_baseline_kept": true,
+    "B_recorded": true,
+    "B_gate_only_pilot": true,
+    "evidence_exact": true,
+    "user_text_present": true,
+    "review_append_only": true,
+    "review_explicit_human": true,
+    "single_B_in_history": true,
+    "pending_cleared": true,
+    "stages_unchanged": true,
+    "unknown_kept": true,
+    "no_new_model_runs": true
+  },
+  "approved_candidate": "b7b4fd156b884907b2431b6b1e0d9960",
+  "approval_sha": "7d7986b88e12451cfe0b06395fc2b2403fbf70d56c266a877bf214e2d3d15b1c",
+  "original_workspace_sha": "020a2bda99e85d34a4f2441055c0c6d8fcd5cc14151fd66750ebc09d81d099ca"
+}
