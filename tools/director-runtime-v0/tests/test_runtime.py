@@ -307,5 +307,102 @@ class RuntimeTests(unittest.TestCase):
         self.assertFalse((directory / '.codex-home').exists())
 
 
+    @staticmethod
+    def sample_shots():
+        return ("场景不变量：唯一钥匙，顺序固定。\n"
+                "Shot01｜起因\n第一镜未露 K，周与林仍在寻找。\n"
+                "Shot02｜观众先知\n纸移开露出 K 后，蓝夹再次盖 K。\n"
+                "Shot03｜疑问发现\n周问一句，林揭夹，首次发现。\n"
+                "Shot04｜一次交接\n林右手交周右手，周去门边。\n")
+
+    def with_realistic_shot_baseline(self, approved=True):
+        self.reach_shot()
+        self.run_stage('shot', proposal=self.sample_shots())
+        if approved:
+            self.pilot.review('B', 'accept', self.evidence, 'human')
+        return self.pilot.load()
+
+    def test_local_compact_packet_preserves_all_stage_proposals_and_human_feedback(self):
+        self.with_realistic_shot_baseline()
+        state = self.pilot.load()
+        state['unknown'].extend(['repeated historical uncertainty'] * 100)
+        atomic_json(self.workspace / 'state.json', state)
+        scope = 'Only amend Shot02; source, approvals and full proposals must remain'
+        compact = self.pilot.packet(state, 'shot', 'resume', scope, ['Shot02'])
+        full = self.pilot.packet(state, 'shot', 'resume', scope)
+        self.assertIn('war90-local-compact-v1', compact)
+        self.assertNotIn('SOURCE VERBATIM', compact)
+        self.assertIn('SOURCE VERBATIM', full)
+        self.assertLess(len(compact.encode()), len(full.encode()) * .8)
+        self.assertIn(json.dumps(self.source.read_bytes().decode(), ensure_ascii=False), compact)
+        self.assertEqual(compact.count("原文"), 1)
+        self.assertNotIn('repeated historical uncertainty', compact)
+        for stage in ('intent', 'beat', 'blocking', 'shot'):
+            self.assertIn(json.dumps(state['active']['artifacts'][stage]['proposal'], ensure_ascii=False), compact)
+        self.assertIn(state['reviews'][-1]['text'], compact)
+        self.assertIn(state['pilot_A']['id'], compact)
+        self.assertIn('formal_WAR35_approval', compact)
+        self.assertIn('Test skill stages/shot-plan.md', compact)
+        self.assertNotIn('Test skill stages/blocking.md', compact)
+
+    def test_local_shot_guard_accepts_only_allowed_shot_content(self):
+        baseline = self.with_realistic_shot_baseline()
+        old_01 = baseline['active']['artifacts']['shot']['proposal'].split('Shot02｜')[0]
+        revision = self.sample_shots().replace('纸移开露出 K 后，蓝夹再次盖 K。',
+                                               '纸移开露出 K 后，蓝夹盖 K。林随后让位。')
+        metadata = self.pilot.run('shot', targets=['Shot02'],
+                                  generator=self.fake(proposal=revision, changed_targets=['Shot02']))
+        state = self.pilot.load()
+        self.assertEqual(metadata['status'], 'candidate-saved')
+        self.assertEqual(metadata['context_profile'], 'war90-local-compact-v1')
+        self.assertEqual(metadata['verified_changed_shots'], ['Shot02'])
+        self.assertEqual(state['phase'], 'awaiting-human-B')
+        self.assertIsNone(state['pilot_B'])
+        self.assertEqual(state['active']['artifacts']['shot']['proposal'].split('Shot02｜')[0], old_01)
+        self.assertEqual(state['pending_shots'], ['Shot01', 'Shot02', 'Shot03'])
+
+    def test_local_shot_guard_rejects_hidden_nontarget_edit_without_mutating_B(self):
+        baseline = self.with_realistic_shot_baseline()
+        mutated = self.sample_shots().replace('第一镜未露 K', '第一镜已经露出 K')
+        mutated = mutated.replace('纸移开露出 K 后，蓝夹再次盖 K。',
+                                  '纸移开露出 K 后，蓝夹再次盖 K。林后退。')
+        with self.assertRaisesRegex(PilotError, 'Non-target Shot'):
+            self.pilot.run('shot', targets=['Shot02'],
+                           generator=self.fake(proposal=mutated, changed_targets=['Shot02']))
+        latest = self.pilot.load()
+        self.assertEqual(latest, baseline)
+        self.assertEqual(latest['pilot_B']['id'], baseline['pilot_B']['id'])
+        metadata = [json.loads(p.read_text()) for p in (self.workspace / 'runs').glob('*/metadata.json')]
+        self.assertEqual(sum(r['status'] == 'quarantined' for r in metadata), 1)
+        self.assertEqual(sum(r['status'] == 'candidate-saved' for r in metadata),
+                         len(baseline['runs']))
+
+    def test_local_shot_guard_rejects_missing_duplicate_and_unreported_sections(self):
+        state = self.with_realistic_shot_baseline()
+        old = self.sample_shots()
+        variants = [
+            ('Local shot structure', old.replace('Shot03｜', 'MISSING-03｜')),
+            ('Local shot structure', old + 'Shot01｜偷偷重复镜头\n'),
+            ('underreported changed Shots', old.replace('周问一句', '周问完立刻看镜头')),
+            ('Only global/preamble', old.replace('场景不变量', '偷偷更改故事约束')),
+        ]
+        for message, payload in variants:
+            with self.subTest(message=message), self.assertRaisesRegex(PilotError, message):
+                self.pilot.run('shot', targets=['Shot02','Shot03'],
+                               generator=self.fake(proposal=payload,
+                                                   changed_targets=['Shot02']))
+            self.assertEqual(self.pilot.load(), state)
+
+    def test_local_shot_nonhandoff_does_not_commit_new_candidate(self):
+        before = self.with_realistic_shot_baseline()
+        metadata = self.pilot.run('shot', targets=['Shot02'],
+            generator=self.fake(handoff=False, proposal='Unable to produce a safe shot revision',
+                                shot_ids=[], changed_targets=[]))
+        self.assertEqual(metadata['status'], 'no-handoff')
+        self.assertEqual(self.pilot.load()['active'], before['active'])
+        self.assertEqual(self.pilot.load()['pilot_B'], before['pilot_B'])
+
+
+
 if __name__ == '__main__':
     unittest.main()

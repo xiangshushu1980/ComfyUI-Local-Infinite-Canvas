@@ -1,0 +1,72 @@
+{
+  "date": "2026-11-15",
+  "kind": "offline replay of two frozen real Astra responses, not fresh model call",
+  "frozen_original_state_sha256": "020a2bda99e85d34a4f2441055c0c6d8fcd5cc14151fd66750ebc09d81d099ca",
+  "source_was_left_unchanged": true,
+  "real_user_B_not_reapproved_by_replay": true,
+  "results": [
+    {
+      "stage": "blocking",
+      "archived_real_call_id": "ecc8a553cd0543eaa39448b0c922a44e",
+      "archived_real_model": "gpt-6-astra",
+      "frozen_real_output_sha256": "98ddf5679d299273649c4c0087d01e7c6a8fa084eb54806030973d892e44ec1a",
+      "old_input_bytes": 119045,
+      "new_compact_input_bytes": 72486,
+      "reduction_pct": 39.11,
+      "new_code_metadata_profile": "war90-local-compact-v1",
+      "generator": "offline archived real response replay (not new inference)",
+      "new_code_candidate_status": "candidate-saved",
+      "verified_changed_shots": [],
+      "candidate_shot_ids": [
+        "Shot01",
+        "Shot02",
+        "Shot03",
+        "Shot04"
+      ],
+      "new_candidate_approval": false,
+      "new_candidate_phase": "candidate-handoff",
+      "pending_shots": [
+        "Shot01",
+        "Shot02",
+        "Shot03",
+        "Shot04"
+      ]
+    },
+    {
+      "stage": "shot",
+      "archived_real_call_id": "b7b4fd156b884907b2431b6b1e0d9960",
+      "archived_real_model": "gpt-6-astra",
+      "frozen_real_output_sha256": "9a05260f475ff5694a1996f4224ad71a6953480a36566fa9d90dbcbc2ed38da1",
+      "old_input_bytes": 128933,
+      "new_compact_input_bytes": 77431,
+      "reduction_pct": 39.94,
+      "new_code_metadata_profile": "war90-local-compact-v1",
+      "generator": "offline archived real response replay (not new inference)",
+      "new_code_candidate_status": "candidate-saved",
+      "verified_changed_shots": [
+        "Shot02",
+        "Shot03",
+        "Shot04"
+      ],
+      "candidate_shot_ids": [
+        "Shot01",
+        "Shot02",
+        "Shot03",
+        "Shot04"
+      ],
+      "new_candidate_approval": false,
+      "new_candidate_phase": "awaiting-human-B",
+      "pending_shots": [
+        "Shot01",
+        "Shot02",
+        "Shot03",
+        "Shot04"
+      ]
+    }
+  ],
+  "limitations": [
+    "Byte reduction is measured, but actual model latency/tokens/quality for compact prompts are unmeasured.",
+    "Frozen model outputs were generated under the old full packet; replay validates runtime compatibility only.",
+    "Freeform preamble and outro continuity remain human/professional review, not formal WAR-35 checks."
+  ]
+}
