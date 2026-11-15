@@ -1,0 +1,1015 @@
+{
+  "task": "WAR-90 lightweight continuity V2",
+  "method": "Blender CPU, discrete proxy poses; no render/frames/timing proof",
+  "source_blend_sha256": "a4c7b48a9dac825c5422c626b17242599eeacbb9115eb640fe8d7f20e34f75a3",
+  "blender": "5.2.3 LTS",
+  "evidence_status": "candidate, not approved",
+  "approved_B_modified": false,
+  "baseline_source": {
+    "WAR72_B": "23fc26a252390e73ac50efd16001248ceec362bd0d590f16dbbe8a16385a0373"
+  },
+  "first_reveal": {
+    "frame": 20,
+    "camera_K": {
+      "WAR91_Action40": {
+        "clear_9": 9,
+        "folder_in_frame": true
+      },
+      "WAR91_Desk40": {
+        "clear_9": 9,
+        "folder_in_frame": true
+      }
+    },
+    "zhou_eyes": [
+      {
+        "eye": "ZHOU_LEFT_EYE",
+        "folder_visible_of_25": 2,
+        "covered_xy_target_hit": "LIN_TORSO",
+        "key_ray_occluder": "LIN_TORSO"
+      },
+      {
+        "eye": "ZHOU_RIGHT_EYE",
+        "folder_visible_of_25": 1,
+        "covered_xy_target_hit": "LIN_TORSO",
+        "key_ray_occluder": "LIN_TORSO"
+      }
+    ]
+  },
+  "baseline_covered": {
+    "camera_K": {
+      "WAR91_Action40": {
+        "clear_9": 0,
+        "folder_in_frame": true
+      },
+      "WAR91_Desk40": {
+        "clear_9": 0,
+        "folder_in_frame": true
+      }
+    },
+    "zhou_eyes": [
+      {
+        "eye": "ZHOU_LEFT_EYE",
+        "folder_visible_of_25": 0,
+        "covered_xy_target_hit": "LIN_TORSO",
+        "key_ray_occluder": "LIN_TORSO"
+      },
+      {
+        "eye": "ZHOU_RIGHT_EYE",
+        "folder_visible_of_25": 0,
+        "covered_xy_target_hit": "LIN_TORSO",
+        "key_ray_occluder": "LIN_TORSO"
+      }
+    ]
+  },
+  "obs": {
+    "change": "Lin proxy body steps (-0.20,-0.20,0.00) m after folder settles",
+    "eyes": [
+      {
+        "eye": "ZHOU_LEFT_EYE",
+        "folder_visible_of_25": 16,
+        "covered_xy_target_hit": null,
+        "key_ray_occluder": "BLUE_FOLDER"
+      },
+      {
+        "eye": "ZHOU_RIGHT_EYE",
+        "folder_visible_of_25": 17,
+        "covered_xy_target_hit": null,
+        "key_ray_occluder": "BLUE_FOLDER"
+      }
+    ],
+    "camera_K_when_covered": {
+      "WAR91_Action40": "BLUE_FOLDER",
+      "WAR91_Desk40": "BLUE_FOLDER"
+    },
+    "post_step_contacts": {
+      "LIN_TORSO": false,
+      "LIN_R_UPPER": false,
+      "LIN_R_FOREARM": false,
+      "LIN_RIGHT_HAND": false,
+      "LIN_L_UPPER": false,
+      "LIN_L_FOREARM": false,
+      "LIN_LEFT_HAND": false
+    }
+  },
+  "pickup_clearance": {
+    "hand_mesh_bottom_minus_key_top_m": 0.004,
+    "right_forearm_table_surface_intersect": false,
+    "right_hand_table_surface_intersect": false
+  },
+  "joins": {
+    "S02_S03_geometry_equal": true,
+    "S03_S04_geometry_equal": true
+  },
+  "stages": [
+    {
+      "label": "S02-out",
+      "key": [
+        -0.265,
+        0.45,
+        0.755
+      ],
+      "key_all_mesh_origins": {
+        "KEY_FIXED_RING": [
+          -0.265,
+          0.45,
+          0.755
+        ],
+        "KEY_FIXED_STEM": [
+          -0.214,
+          0.45,
+          0.754
+        ],
+        "KEY_FIXED_TOOTH": [
+          -0.184,
+          0.46,
+          0.754
+        ]
+      },
+      "key_owner": "table",
+      "folder": [
+        -0.37,
+        0.46,
+        0.7985
+      ],
+      "folder_state": "covering K",
+      "lin_left_hand": [
+        -0.57,
+        0.26,
+        0.8425
+      ],
+      "lin_right_hand": [
+        0.22,
+        -0.08,
+        0.79
+      ],
+      "zhou_root": [
+        1.1,
+        -0.52,
+        0.0
+      ],
+      "lin_contacts_with_desk": {
+        "LIN_TORSO": false,
+        "LIN_R_UPPER": false,
+        "LIN_R_FOREARM": false,
+        "LIN_RIGHT_HAND": false,
+        "LIN_L_UPPER": false,
+        "LIN_L_FOREARM": false,
+        "LIN_LEFT_HAND": false
+      },
+      "lin_reach": null,
+      "notes": "Zhou sees folder, not K; Lin has stepped back after cover; source pose not physically timed"
+    },
+    {
+      "label": "S03-in",
+      "key": [
+        -0.265,
+        0.45,
+        0.755
+      ],
+      "key_all_mesh_origins": {
+        "KEY_FIXED_RING": [
+          -0.265,
+          0.45,
+          0.755
+        ],
+        "KEY_FIXED_STEM": [
+          -0.214,
+          0.45,
+          0.754
+        ],
+        "KEY_FIXED_TOOTH": [
+          -0.184,
+          0.46,
+          0.754
+        ]
+      },
+      "key_owner": "table",
+      "folder": [
+        -0.37,
+        0.46,
+        0.7985
+      ],
+      "folder_state": "covering K",
+      "lin_left_hand": [
+        -0.57,
+        0.26,
+        0.8425
+      ],
+      "lin_right_hand": [
+        0.22,
+        -0.08,
+        0.79
+      ],
+      "zhou_root": [
+        1.1,
+        -0.52,
+        0.0
+      ],
+      "lin_contacts_with_desk": {
+        "LIN_TORSO": false,
+        "LIN_R_UPPER": false,
+        "LIN_R_FOREARM": false,
+        "LIN_RIGHT_HAND": false,
+        "LIN_L_UPPER": false,
+        "LIN_L_FOREARM": false,
+        "LIN_LEFT_HAND": false
+      },
+      "lin_reach": null,
+      "notes": "Identical geometrical state; Zhou question follows; Lin continues existing paper-straightening (not animated)"
+    },
+    {
+      "label": "S03-out",
+      "key": [
+        -0.265,
+        0.45,
+        0.755
+      ],
+      "key_all_mesh_origins": {
+        "KEY_FIXED_RING": [
+          -0.265,
+          0.45,
+          0.755
+        ],
+        "KEY_FIXED_STEM": [
+          -0.214,
+          0.45,
+          0.754
+        ],
+        "KEY_FIXED_TOOTH": [
+          -0.184,
+          0.46,
+          0.754
+        ]
+      },
+      "key_owner": "table",
+      "folder": [
+        -0.67,
+        0.26,
+        1.0685
+      ],
+      "folder_state": "held by Lin left; K uncovered",
+      "lin_left_hand": [
+        -0.87,
+        0.06,
+        1.12
+      ],
+      "lin_right_hand": [
+        0.15,
+        -0.12,
+        0.98
+      ],
+      "zhou_root": [
+        1.1,
+        -0.52,
+        0.0
+      ],
+      "lin_contacts_with_desk": {
+        "LIN_TORSO": false,
+        "LIN_R_UPPER": false,
+        "LIN_R_FOREARM": false,
+        "LIN_RIGHT_HAND": false,
+        "LIN_L_UPPER": false,
+        "LIN_L_FOREARM": false,
+        "LIN_LEFT_HAND": false
+      },
+      "lin_reach": {
+        "left": {
+          "shoulder": [
+            -0.33,
+            -0.14,
+            1.29
+          ],
+          "wrist": [
+            -0.87,
+            0.06,
+            1.12
+          ],
+          "elbow": [
+            -0.664,
+            -0.0163,
+            1.43618
+          ],
+          "shoulder_to_wrist_m": 0.60042,
+          "reach_le_0p77": true
+        },
+        "right": {
+          "shoulder": [
+            0.14,
+            -0.14,
+            1.29
+          ],
+          "wrist": [
+            0.15,
+            -0.12,
+            0.98
+          ],
+          "elbow": [
+            0.30212,
+            0.18424,
+            1.16034
+          ],
+          "shoulder_to_wrist_m": 0.31081,
+          "reach_le_0p77": true
+        }
+      },
+      "notes": "K unchanged after second reveal; Lin discovers K, responds, then pauses; right hand empty"
+    },
+    {
+      "label": "S04-in",
+      "key": [
+        -0.265,
+        0.45,
+        0.755
+      ],
+      "key_all_mesh_origins": {
+        "KEY_FIXED_RING": [
+          -0.265,
+          0.45,
+          0.755
+        ],
+        "KEY_FIXED_STEM": [
+          -0.214,
+          0.45,
+          0.754
+        ],
+        "KEY_FIXED_TOOTH": [
+          -0.184,
+          0.46,
+          0.754
+        ]
+      },
+      "key_owner": "table",
+      "folder": [
+        -0.67,
+        0.26,
+        1.0685
+      ],
+      "folder_state": "held by Lin left; K uncovered",
+      "lin_left_hand": [
+        -0.87,
+        0.06,
+        1.12
+      ],
+      "lin_right_hand": [
+        0.15,
+        -0.12,
+        0.98
+      ],
+      "zhou_root": [
+        1.1,
+        -0.52,
+        0.0
+      ],
+      "lin_contacts_with_desk": {
+        "LIN_TORSO": false,
+        "LIN_R_UPPER": false,
+        "LIN_R_FOREARM": false,
+        "LIN_RIGHT_HAND": false,
+        "LIN_L_UPPER": false,
+        "LIN_L_FOREARM": false,
+        "LIN_LEFT_HAND": false
+      },
+      "lin_reach": {
+        "left": {
+          "shoulder": [
+            -0.33,
+            -0.14,
+            1.29
+          ],
+          "wrist": [
+            -0.87,
+            0.06,
+            1.12
+          ],
+          "elbow": [
+            -0.664,
+            -0.0163,
+            1.43618
+          ],
+          "shoulder_to_wrist_m": 0.60042,
+          "reach_le_0p77": true
+        },
+        "right": {
+          "shoulder": [
+            0.14,
+            -0.14,
+            1.29
+          ],
+          "wrist": [
+            0.15,
+            -0.12,
+            0.98
+          ],
+          "elbow": [
+            0.30212,
+            0.18424,
+            1.16034
+          ],
+          "shoulder_to_wrist_m": 0.31081,
+          "reach_le_0p77": true
+        }
+      },
+      "notes": "Identical world; no extra uncover or dialogue"
+    },
+    {
+      "label": "S04-pre-pick",
+      "key": [
+        -0.265,
+        0.45,
+        0.755
+      ],
+      "key_all_mesh_origins": {
+        "KEY_FIXED_RING": [
+          -0.265,
+          0.45,
+          0.755
+        ],
+        "KEY_FIXED_STEM": [
+          -0.214,
+          0.45,
+          0.754
+        ],
+        "KEY_FIXED_TOOTH": [
+          -0.184,
+          0.46,
+          0.754
+        ]
+      },
+      "key_owner": "table",
+      "folder": [
+        -0.67,
+        0.26,
+        1.0685
+      ],
+      "folder_state": "held by Lin left; K uncovered",
+      "lin_left_hand": [
+        -0.87,
+        0.06,
+        1.12
+      ],
+      "lin_right_hand": [
+        -0.25,
+        0.45,
+        0.8
+      ],
+      "zhou_root": [
+        1.1,
+        -0.52,
+        0.0
+      ],
+      "lin_contacts_with_desk": {
+        "LIN_TORSO": false,
+        "LIN_R_UPPER": false,
+        "LIN_R_FOREARM": false,
+        "LIN_RIGHT_HAND": false,
+        "LIN_L_UPPER": false,
+        "LIN_L_FOREARM": false,
+        "LIN_LEFT_HAND": false
+      },
+      "lin_reach": {
+        "left": {
+          "shoulder": [
+            -0.31,
+            0.18,
+            1.18
+          ],
+          "wrist": [
+            -0.87,
+            0.06,
+            1.12
+          ],
+          "elbow": [
+            -0.61604,
+            0.11442,
+            1.4042
+          ],
+          "shoulder_to_wrist_m": 0.57585,
+          "reach_le_0p77": true
+        },
+        "right": {
+          "shoulder": [
+            0.16,
+            0.18,
+            1.18
+          ],
+          "wrist": [
+            -0.25,
+            0.45,
+            0.8
+          ],
+          "elbow": [
+            -0.16143,
+            0.39168,
+            1.17011
+          ],
+          "shoulder_to_wrist_m": 0.62081,
+          "reach_le_0p77": true
+        }
+      },
+      "notes": "No ownership change before right-hand pickup"
+    },
+    {
+      "label": "S04-Lin-right-lift",
+      "key": [
+        -0.265,
+        0.45,
+        0.825
+      ],
+      "key_all_mesh_origins": {
+        "KEY_FIXED_RING": [
+          -0.265,
+          0.45,
+          0.825
+        ],
+        "KEY_FIXED_STEM": [
+          -0.214,
+          0.45,
+          0.824
+        ],
+        "KEY_FIXED_TOOTH": [
+          -0.184,
+          0.46,
+          0.824
+        ]
+      },
+      "key_owner": "Lin-right",
+      "folder": [
+        -0.67,
+        0.26,
+        1.0685
+      ],
+      "folder_state": "held by Lin left; K uncovered",
+      "lin_left_hand": [
+        -0.87,
+        0.06,
+        1.12
+      ],
+      "lin_right_hand": [
+        -0.25,
+        0.45,
+        0.8
+      ],
+      "zhou_root": [
+        1.1,
+        -0.52,
+        0.0
+      ],
+      "lin_contacts_with_desk": {
+        "LIN_TORSO": false,
+        "LIN_R_UPPER": false,
+        "LIN_R_FOREARM": false,
+        "LIN_RIGHT_HAND": false,
+        "LIN_L_UPPER": false,
+        "LIN_L_FOREARM": false,
+        "LIN_LEFT_HAND": false
+      },
+      "lin_reach": null,
+      "notes": "Same key objects, lifted once; not animated finger grip"
+    },
+    {
+      "label": "S04-one-shared-contact",
+      "key": [
+        0.735,
+        -0.25,
+        1.16
+      ],
+      "key_all_mesh_origins": {
+        "KEY_FIXED_RING": [
+          0.735,
+          -0.25,
+          1.16
+        ],
+        "KEY_FIXED_STEM": [
+          0.786,
+          -0.25,
+          1.159
+        ],
+        "KEY_FIXED_TOOTH": [
+          0.816,
+          -0.24,
+          1.159
+        ]
+      },
+      "key_owner": "Lin-right + Zhou-right",
+      "folder": [
+        -0.67,
+        0.26,
+        1.0685
+      ],
+      "folder_state": "held by Lin left; K uncovered",
+      "lin_left_hand": [
+        -0.87,
+        0.06,
+        1.12
+      ],
+      "lin_right_hand": [
+        0.715,
+        -0.25,
+        1.175
+      ],
+      "zhou_root": [
+        1.1,
+        -0.52,
+        0.0
+      ],
+      "lin_contacts_with_desk": {
+        "LIN_TORSO": false,
+        "LIN_R_UPPER": false,
+        "LIN_R_FOREARM": false,
+        "LIN_RIGHT_HAND": false,
+        "LIN_L_UPPER": false,
+        "LIN_L_FOREARM": false,
+        "LIN_LEFT_HAND": false
+      },
+      "lin_reach": {
+        "left": {
+          "shoulder": [
+            -0.31,
+            0.18,
+            1.18
+          ],
+          "wrist": [
+            -0.87,
+            0.06,
+            1.12
+          ],
+          "elbow": [
+            -0.61604,
+            0.11442,
+            1.4042
+          ],
+          "shoulder_to_wrist_m": 0.57585,
+          "reach_le_0p77": true
+        },
+        "right": {
+          "shoulder": [
+            0.16,
+            0.18,
+            1.18
+          ],
+          "wrist": [
+            0.715,
+            -0.25,
+            1.175
+          ],
+          "elbow": [
+            0.43839,
+            -0.03569,
+            1.33557
+          ],
+          "shoulder_to_wrist_m": 0.7021,
+          "reach_le_0p77": true
+        }
+      },
+      "notes": "Zhou proxy right wrist computed analytically; source has no Zhou arm rig"
+    },
+    {
+      "label": "S04-Zhou-right",
+      "key": [
+        0.735,
+        -0.25,
+        1.16
+      ],
+      "key_all_mesh_origins": {
+        "KEY_FIXED_RING": [
+          0.735,
+          -0.25,
+          1.16
+        ],
+        "KEY_FIXED_STEM": [
+          0.786,
+          -0.25,
+          1.159
+        ],
+        "KEY_FIXED_TOOTH": [
+          0.816,
+          -0.24,
+          1.159
+        ]
+      },
+      "key_owner": "Zhou-right",
+      "folder": [
+        -0.67,
+        0.26,
+        1.0685
+      ],
+      "folder_state": "held by Lin left; K uncovered",
+      "lin_left_hand": [
+        -0.87,
+        0.06,
+        1.12
+      ],
+      "lin_right_hand": [
+        0.25,
+        -0.15,
+        1.07
+      ],
+      "zhou_root": [
+        1.1,
+        -0.52,
+        0.0
+      ],
+      "lin_contacts_with_desk": {
+        "LIN_TORSO": false,
+        "LIN_R_UPPER": false,
+        "LIN_R_FOREARM": false,
+        "LIN_RIGHT_HAND": false,
+        "LIN_L_UPPER": false,
+        "LIN_L_FOREARM": false,
+        "LIN_LEFT_HAND": false
+      },
+      "lin_reach": {
+        "left": {
+          "shoulder": [
+            -0.31,
+            0.18,
+            1.18
+          ],
+          "wrist": [
+            -0.87,
+            0.06,
+            1.12
+          ],
+          "elbow": [
+            -0.61604,
+            0.11442,
+            1.4042
+          ],
+          "shoulder_to_wrist_m": 0.57585,
+          "reach_le_0p77": true
+        },
+        "right": {
+          "shoulder": [
+            0.16,
+            0.18,
+            1.18
+          ],
+          "wrist": [
+            0.25,
+            -0.15,
+            1.07
+          ],
+          "elbow": [
+            0.23243,
+            -0.08557,
+            1.44916
+          ],
+          "shoulder_to_wrist_m": 0.3593,
+          "reach_le_0p77": true
+        }
+      },
+      "notes": "Lin RIGHT hand retracts after one release; key remains near Zhou RIGHT; exit not animated"
+    }
+  ],
+  "reach": {
+    "post_cover_grip": {
+      "left": {
+        "shoulder": [
+          -0.33,
+          -0.14,
+          1.29
+        ],
+        "wrist": [
+          -0.57,
+          0.26,
+          0.85
+        ],
+        "elbow": [
+          -0.52524,
+          0.1854,
+          1.22504
+        ],
+        "shoulder_to_wrist_m": 0.64125,
+        "reach_le_0p77": true
+      },
+      "right": {
+        "shoulder": [
+          0.14,
+          -0.14,
+          1.29
+        ],
+        "wrist": [
+          0.15,
+          -0.12,
+          0.98
+        ],
+        "elbow": [
+          0.30212,
+          0.18424,
+          1.16034
+        ],
+        "shoulder_to_wrist_m": 0.31081,
+        "reach_le_0p77": true
+      }
+    },
+    "after_uncover": {
+      "left": {
+        "shoulder": [
+          -0.33,
+          -0.14,
+          1.29
+        ],
+        "wrist": [
+          -0.87,
+          0.06,
+          1.12
+        ],
+        "elbow": [
+          -0.664,
+          -0.0163,
+          1.43618
+        ],
+        "shoulder_to_wrist_m": 0.60042,
+        "reach_le_0p77": true
+      },
+      "right": {
+        "shoulder": [
+          0.14,
+          -0.14,
+          1.29
+        ],
+        "wrist": [
+          0.15,
+          -0.12,
+          0.98
+        ],
+        "elbow": [
+          0.30212,
+          0.18424,
+          1.16034
+        ],
+        "shoulder_to_wrist_m": 0.31081,
+        "reach_le_0p77": true
+      }
+    },
+    "Lin_pickup": {
+      "left": {
+        "shoulder": [
+          -0.31,
+          0.18,
+          1.18
+        ],
+        "wrist": [
+          -0.87,
+          0.06,
+          1.12
+        ],
+        "elbow": [
+          -0.61604,
+          0.11442,
+          1.4042
+        ],
+        "shoulder_to_wrist_m": 0.57585,
+        "reach_le_0p77": true
+      },
+      "right": {
+        "shoulder": [
+          0.16,
+          0.18,
+          1.18
+        ],
+        "wrist": [
+          -0.25,
+          0.45,
+          0.8
+        ],
+        "elbow": [
+          -0.16143,
+          0.39168,
+          1.17011
+        ],
+        "shoulder_to_wrist_m": 0.62081,
+        "reach_le_0p77": true
+      }
+    },
+    "handoff_Lin": {
+      "left": {
+        "shoulder": [
+          -0.31,
+          0.18,
+          1.18
+        ],
+        "wrist": [
+          -0.87,
+          0.06,
+          1.12
+        ],
+        "elbow": [
+          -0.61604,
+          0.11442,
+          1.4042
+        ],
+        "shoulder_to_wrist_m": 0.57585,
+        "reach_le_0p77": true
+      },
+      "right": {
+        "shoulder": [
+          0.16,
+          0.18,
+          1.18
+        ],
+        "wrist": [
+          0.715,
+          -0.25,
+          1.175
+        ],
+        "elbow": [
+          0.43839,
+          -0.03569,
+          1.33557
+        ],
+        "shoulder_to_wrist_m": 0.7021,
+        "reach_le_0p77": true
+      }
+    },
+    "after_Lin_release": {
+      "left": {
+        "shoulder": [
+          -0.31,
+          0.18,
+          1.18
+        ],
+        "wrist": [
+          -0.87,
+          0.06,
+          1.12
+        ],
+        "elbow": [
+          -0.61604,
+          0.11442,
+          1.4042
+        ],
+        "shoulder_to_wrist_m": 0.57585,
+        "reach_le_0p77": true
+      },
+      "right": {
+        "shoulder": [
+          0.16,
+          0.18,
+          1.18
+        ],
+        "wrist": [
+          0.25,
+          -0.15,
+          1.07
+        ],
+        "elbow": [
+          0.23243,
+          -0.08557,
+          1.44916
+        ],
+        "shoulder_to_wrist_m": 0.3593,
+        "reach_le_0p77": true
+      }
+    },
+    "Zhou_right_shoulder_proxy": [
+      1.23099,
+      -0.36886,
+      1.51
+    ],
+    "Zhou_right_wrist_proxy": [
+      0.785,
+      -0.25,
+      1.175
+    ],
+    "Zhou_right_elbow_proxy": [
+      0.86118,
+      -0.2703,
+      1.55184
+    ],
+    "Zhou_shoulderto_wrist_m": 0.57031,
+    "Zhou_reach_le_0p77": true,
+    "handoff_key_xyz": [
+      0.75,
+      -0.25,
+      1.16
+    ],
+    "two_wrist_distance_m": 0.07
+  },
+  "single_transfer": {
+    "key_mesh_count": 3,
+    "owners_sequence": [
+      "table",
+      "table",
+      "table",
+      "Lin-right",
+      "Lin-right+Zhou-right",
+      "Zhou-right"
+    ],
+    "completed_world_ownership_transfers": 1,
+    "key_K_until_pickup": true,
+    "semantic_assertion_only_not_animated_grip": true
+  },
+  "key_reveal_after_uncover_camera_blockers": {
+    "WAR91_Action40": null,
+    "WAR91_Desk40": null
+  },
+  "open_risks": [
+    "Source scene lacks Zhou arms/rig: Zhou wrist/shoulder/elbow are bounded analytical proxy, not mesh collision proof.",
+    "Lin rebuilt 2-segment arm elbow/forearm poses are a first geometry candidate, not real human joint constraints.",
+    "Folder is moved as one rigid object: folder-left-hand grip and continuous support/hand pose are not demonstrated.",
+    "Discrete world snapshots do not prove natural 35-40 second performance, intermediate sweeps, hand contact, exact four-shot framing or real audience recognition.",
+    "Lin torso proxy step and later forward lean need continuous pose/mesh collision validation before claiming full action.",
+    "This reuses old WAR72 frozen mesh and WAR91 cameras, not a complete reauthored four-shot scene."
+  ]
+}

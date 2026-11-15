@@ -1,0 +1,575 @@
+{
+  "source_sha256": "a4c7b48a9dac825c5422c626b17242599eeacbb9115eb640fe8d7f20e34f75a3",
+  "blender": "5.2.3 LTS",
+  "rendered": false,
+  "steps": "11 evenly spaced discrete positions per path, not continuous collision guarantee",
+  "Lin_step_after_cover": [
+    {
+      "t": 0.0,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "folder_xy_hit": "LIN_TORSO",
+          "K_hit": "LIN_TORSO"
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "folder_xy_hit": "LIN_TORSO",
+          "K_hit": "LIN_TORSO"
+        }
+      ],
+      "actor_mesh_crossings": [],
+      "lin_desk_crossings": [],
+      "cam_K_hits": {
+        "WAR91_Action40": "BLUE_FOLDER",
+        "WAR91_Desk40": "BLUE_FOLDER"
+      }
+    },
+    {
+      "t": 0.1,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "folder_xy_hit": "LIN_TORSO",
+          "K_hit": "LIN_TORSO"
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "folder_xy_hit": "LIN_TORSO",
+          "K_hit": "LIN_TORSO"
+        }
+      ],
+      "actor_mesh_crossings": [],
+      "lin_desk_crossings": [],
+      "cam_K_hits": {
+        "WAR91_Action40": "BLUE_FOLDER",
+        "WAR91_Desk40": "BLUE_FOLDER"
+      }
+    },
+    {
+      "t": 0.2,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "folder_xy_hit": "LIN_TORSO",
+          "K_hit": "LIN_TORSO"
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "folder_xy_hit": "LIN_TORSO",
+          "K_hit": "LIN_TORSO"
+        }
+      ],
+      "actor_mesh_crossings": [],
+      "lin_desk_crossings": [],
+      "cam_K_hits": {
+        "WAR91_Action40": "BLUE_FOLDER",
+        "WAR91_Desk40": "BLUE_FOLDER"
+      }
+    },
+    {
+      "t": 0.3,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "folder_xy_hit": "LIN_TORSO",
+          "K_hit": "LIN_TORSO"
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "folder_xy_hit": "LIN_TORSO",
+          "K_hit": "LIN_TORSO"
+        }
+      ],
+      "actor_mesh_crossings": [],
+      "lin_desk_crossings": [],
+      "cam_K_hits": {
+        "WAR91_Action40": "BLUE_FOLDER",
+        "WAR91_Desk40": "BLUE_FOLDER"
+      }
+    },
+    {
+      "t": 0.4,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "folder_xy_hit": "LIN_TORSO",
+          "K_hit": "LIN_TORSO"
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "folder_xy_hit": "LIN_TORSO",
+          "K_hit": "LIN_TORSO"
+        }
+      ],
+      "actor_mesh_crossings": [],
+      "lin_desk_crossings": [],
+      "cam_K_hits": {
+        "WAR91_Action40": "BLUE_FOLDER",
+        "WAR91_Desk40": "BLUE_FOLDER"
+      }
+    },
+    {
+      "t": 0.5,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "folder_xy_hit": "LIN_TORSO",
+          "K_hit": "LIN_TORSO"
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "folder_xy_hit": null,
+          "K_hit": "BLUE_FOLDER"
+        }
+      ],
+      "actor_mesh_crossings": [],
+      "lin_desk_crossings": [],
+      "cam_K_hits": {
+        "WAR91_Action40": "BLUE_FOLDER",
+        "WAR91_Desk40": "BLUE_FOLDER"
+      }
+    },
+    {
+      "t": 0.6,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "folder_xy_hit": null,
+          "K_hit": "BLUE_FOLDER"
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "folder_xy_hit": null,
+          "K_hit": "BLUE_FOLDER"
+        }
+      ],
+      "actor_mesh_crossings": [],
+      "lin_desk_crossings": [],
+      "cam_K_hits": {
+        "WAR91_Action40": "BLUE_FOLDER",
+        "WAR91_Desk40": "BLUE_FOLDER"
+      }
+    },
+    {
+      "t": 0.7,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "folder_xy_hit": null,
+          "K_hit": "BLUE_FOLDER"
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "folder_xy_hit": null,
+          "K_hit": "BLUE_FOLDER"
+        }
+      ],
+      "actor_mesh_crossings": [],
+      "lin_desk_crossings": [],
+      "cam_K_hits": {
+        "WAR91_Action40": "BLUE_FOLDER",
+        "WAR91_Desk40": "BLUE_FOLDER"
+      }
+    },
+    {
+      "t": 0.8,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "folder_xy_hit": null,
+          "K_hit": "BLUE_FOLDER"
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "folder_xy_hit": null,
+          "K_hit": "BLUE_FOLDER"
+        }
+      ],
+      "actor_mesh_crossings": [],
+      "lin_desk_crossings": [],
+      "cam_K_hits": {
+        "WAR91_Action40": "BLUE_FOLDER",
+        "WAR91_Desk40": "BLUE_FOLDER"
+      }
+    },
+    {
+      "t": 0.9,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "folder_xy_hit": null,
+          "K_hit": "BLUE_FOLDER"
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "folder_xy_hit": null,
+          "K_hit": "BLUE_FOLDER"
+        }
+      ],
+      "actor_mesh_crossings": [],
+      "lin_desk_crossings": [],
+      "cam_K_hits": {
+        "WAR91_Action40": "BLUE_FOLDER",
+        "WAR91_Desk40": "BLUE_FOLDER"
+      }
+    },
+    {
+      "t": 1.0,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "folder_xy_hit": null,
+          "K_hit": "BLUE_FOLDER"
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "folder_xy_hit": null,
+          "K_hit": "BLUE_FOLDER"
+        }
+      ],
+      "actor_mesh_crossings": [],
+      "lin_desk_crossings": [],
+      "cam_K_hits": {
+        "WAR91_Action40": "BLUE_FOLDER",
+        "WAR91_Desk40": "BLUE_FOLDER"
+      }
+    }
+  ],
+  "folder_uncover_translation": [
+    {
+      "t": 0.0,
+      "camera_to_K": {
+        "WAR91_Action40": "BLUE_FOLDER",
+        "WAR91_Desk40": "BLUE_FOLDER"
+      },
+      "folder_key_mesh_intersection": {
+        "KEY_FIXED_RING": false,
+        "KEY_FIXED_STEM": false,
+        "KEY_FIXED_TOOTH": false
+      },
+      "folder_paper_surface_intersection": true
+    },
+    {
+      "t": 0.1,
+      "camera_to_K": {
+        "WAR91_Action40": "BLUE_FOLDER",
+        "WAR91_Desk40": "BLUE_FOLDER"
+      },
+      "folder_key_mesh_intersection": {
+        "KEY_FIXED_RING": false,
+        "KEY_FIXED_STEM": false,
+        "KEY_FIXED_TOOTH": false
+      },
+      "folder_paper_surface_intersection": false
+    },
+    {
+      "t": 0.2,
+      "camera_to_K": {
+        "WAR91_Action40": null,
+        "WAR91_Desk40": null
+      },
+      "folder_key_mesh_intersection": {
+        "KEY_FIXED_RING": false,
+        "KEY_FIXED_STEM": false,
+        "KEY_FIXED_TOOTH": false
+      },
+      "folder_paper_surface_intersection": false
+    },
+    {
+      "t": 0.3,
+      "camera_to_K": {
+        "WAR91_Action40": null,
+        "WAR91_Desk40": null
+      },
+      "folder_key_mesh_intersection": {
+        "KEY_FIXED_RING": false,
+        "KEY_FIXED_STEM": false,
+        "KEY_FIXED_TOOTH": false
+      },
+      "folder_paper_surface_intersection": false
+    },
+    {
+      "t": 0.4,
+      "camera_to_K": {
+        "WAR91_Action40": null,
+        "WAR91_Desk40": null
+      },
+      "folder_key_mesh_intersection": {
+        "KEY_FIXED_RING": false,
+        "KEY_FIXED_STEM": false,
+        "KEY_FIXED_TOOTH": false
+      },
+      "folder_paper_surface_intersection": false
+    },
+    {
+      "t": 0.5,
+      "camera_to_K": {
+        "WAR91_Action40": null,
+        "WAR91_Desk40": null
+      },
+      "folder_key_mesh_intersection": {
+        "KEY_FIXED_RING": false,
+        "KEY_FIXED_STEM": false,
+        "KEY_FIXED_TOOTH": false
+      },
+      "folder_paper_surface_intersection": false
+    },
+    {
+      "t": 0.6,
+      "camera_to_K": {
+        "WAR91_Action40": null,
+        "WAR91_Desk40": null
+      },
+      "folder_key_mesh_intersection": {
+        "KEY_FIXED_RING": false,
+        "KEY_FIXED_STEM": false,
+        "KEY_FIXED_TOOTH": false
+      },
+      "folder_paper_surface_intersection": false
+    },
+    {
+      "t": 0.7,
+      "camera_to_K": {
+        "WAR91_Action40": null,
+        "WAR91_Desk40": null
+      },
+      "folder_key_mesh_intersection": {
+        "KEY_FIXED_RING": false,
+        "KEY_FIXED_STEM": false,
+        "KEY_FIXED_TOOTH": false
+      },
+      "folder_paper_surface_intersection": false
+    },
+    {
+      "t": 0.8,
+      "camera_to_K": {
+        "WAR91_Action40": null,
+        "WAR91_Desk40": null
+      },
+      "folder_key_mesh_intersection": {
+        "KEY_FIXED_RING": false,
+        "KEY_FIXED_STEM": false,
+        "KEY_FIXED_TOOTH": false
+      },
+      "folder_paper_surface_intersection": false
+    },
+    {
+      "t": 0.9,
+      "camera_to_K": {
+        "WAR91_Action40": null,
+        "WAR91_Desk40": null
+      },
+      "folder_key_mesh_intersection": {
+        "KEY_FIXED_RING": false,
+        "KEY_FIXED_STEM": false,
+        "KEY_FIXED_TOOTH": false
+      },
+      "folder_paper_surface_intersection": false
+    },
+    {
+      "t": 1.0,
+      "camera_to_K": {
+        "WAR91_Action40": null,
+        "WAR91_Desk40": null
+      },
+      "folder_key_mesh_intersection": {
+        "KEY_FIXED_RING": false,
+        "KEY_FIXED_STEM": false,
+        "KEY_FIXED_TOOTH": false
+      },
+      "folder_paper_surface_intersection": false
+    }
+  ],
+  "key_transfer_proxy_line": [
+    {
+      "t": 0.0,
+      "key_proxy_center": [
+        -0.25,
+        0.45,
+        0.755
+      ],
+      "Lin_arm_reach_m": 0.62081,
+      "key_mesh_surface_intersections": {
+        "DESK_TOP": 3,
+        "PAPER_MOVING": 0,
+        "BLUE_FOLDER": 0,
+        "LIN_TORSO": 0,
+        "ZHOU_TORSO": 0
+      }
+    },
+    {
+      "t": 0.1,
+      "key_proxy_center": [
+        -0.15,
+        0.38,
+        0.7955
+      ],
+      "Lin_arm_reach_m": 0.50556,
+      "key_mesh_surface_intersections": {
+        "DESK_TOP": 0,
+        "PAPER_MOVING": 0,
+        "BLUE_FOLDER": 0,
+        "LIN_TORSO": 0,
+        "ZHOU_TORSO": 0
+      }
+    },
+    {
+      "t": 0.2,
+      "key_proxy_center": [
+        -0.05,
+        0.31,
+        0.836
+      ],
+      "Lin_arm_reach_m": 0.39625,
+      "key_mesh_surface_intersections": {
+        "DESK_TOP": 0,
+        "PAPER_MOVING": 0,
+        "BLUE_FOLDER": 0,
+        "LIN_TORSO": 0,
+        "ZHOU_TORSO": 0
+      }
+    },
+    {
+      "t": 0.3,
+      "key_proxy_center": [
+        0.05,
+        0.24,
+        0.8765
+      ],
+      "Lin_arm_reach_m": 0.29946,
+      "key_mesh_surface_intersections": {
+        "DESK_TOP": 0,
+        "PAPER_MOVING": 0,
+        "BLUE_FOLDER": 0,
+        "LIN_TORSO": 0,
+        "ZHOU_TORSO": 0
+      }
+    },
+    {
+      "t": 0.4,
+      "key_proxy_center": [
+        0.15,
+        0.17,
+        0.917
+      ],
+      "Lin_arm_reach_m": 0.23146,
+      "key_mesh_surface_intersections": {
+        "DESK_TOP": 0,
+        "PAPER_MOVING": 0,
+        "BLUE_FOLDER": 0,
+        "LIN_TORSO": 0,
+        "ZHOU_TORSO": 0
+      }
+    },
+    {
+      "t": 0.5,
+      "key_proxy_center": [
+        0.25,
+        0.1,
+        0.9575
+      ],
+      "Lin_arm_reach_m": 0.22071,
+      "key_mesh_surface_intersections": {
+        "DESK_TOP": 0,
+        "PAPER_MOVING": 0,
+        "BLUE_FOLDER": 0,
+        "LIN_TORSO": 0,
+        "ZHOU_TORSO": 0
+      }
+    },
+    {
+      "t": 0.6,
+      "key_proxy_center": [
+        0.35,
+        0.03,
+        0.998
+      ],
+      "Lin_arm_reach_m": 0.27402,
+      "key_mesh_surface_intersections": {
+        "DESK_TOP": 0,
+        "PAPER_MOVING": 0,
+        "BLUE_FOLDER": 0,
+        "LIN_TORSO": 0,
+        "ZHOU_TORSO": 0
+      }
+    },
+    {
+      "t": 0.7,
+      "key_proxy_center": [
+        0.45,
+        -0.04,
+        1.0385
+      ],
+      "Lin_arm_reach_m": 0.36428,
+      "key_mesh_surface_intersections": {
+        "DESK_TOP": 0,
+        "PAPER_MOVING": 0,
+        "BLUE_FOLDER": 0,
+        "LIN_TORSO": 0,
+        "ZHOU_TORSO": 0
+      }
+    },
+    {
+      "t": 0.8,
+      "key_proxy_center": [
+        0.55,
+        -0.11,
+        1.079
+      ],
+      "Lin_arm_reach_m": 0.47068,
+      "key_mesh_surface_intersections": {
+        "DESK_TOP": 0,
+        "PAPER_MOVING": 0,
+        "BLUE_FOLDER": 0,
+        "LIN_TORSO": 0,
+        "ZHOU_TORSO": 0
+      }
+    },
+    {
+      "t": 0.9,
+      "key_proxy_center": [
+        0.65,
+        -0.18,
+        1.1195
+      ],
+      "Lin_arm_reach_m": 0.58449,
+      "key_mesh_surface_intersections": {
+        "DESK_TOP": 0,
+        "PAPER_MOVING": 0,
+        "BLUE_FOLDER": 0,
+        "LIN_TORSO": 0,
+        "ZHOU_TORSO": 0
+      }
+    },
+    {
+      "t": 1.0,
+      "key_proxy_center": [
+        0.75,
+        -0.25,
+        1.16
+      ],
+      "Lin_arm_reach_m": 0.7021,
+      "key_mesh_surface_intersections": {
+        "DESK_TOP": 0,
+        "PAPER_MOVING": 0,
+        "BLUE_FOLDER": 0,
+        "LIN_TORSO": 0,
+        "ZHOU_TORSO": 0
+      }
+    }
+  ],
+  "Zhou_right_shoulder_proxy": [
+    1.231,
+    -0.3689,
+    1.51
+  ],
+  "Zhou_right_shoulder_to_transfer_m": 0.60661,
+  "limitations": [
+    "Lin step interpolates whole proxy actor, ignoring balance/footfall.",
+    "Folder motion changes rigid object without animating Lin hand grip; swept hand and object interactions are unverified.",
+    "Key moves linearly without articulated finger grip or two-player arm collision test; state-matching proof remains semantic.",
+    "Surface BVH misses complete containment and is not a dynamics/real-avatar guarantee.",
+    "No actual camera-cut sequence, timing, H3 media or audience interpretation was tested."
+  ]
+}

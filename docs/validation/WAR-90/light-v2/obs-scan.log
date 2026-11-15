@@ -1,0 +1,9 @@
+00:00.703  blend            | Read blend: "\\wsl.localhost\udev\home\sean\projects\canvas-lab\docs\validation\WAR-72\round4\candidate-b\WAR72_physical_B.blend"
+OBS_BASELINE [{'eye': 'ZHOU_LEFT_EYE', 'clear_or_folder': 0, 'lin_blocked': 25, 'covered_location_blocker': 'LIN_TORSO'}, {'eye': 'ZHOU_RIGHT_EYE', 'clear_or_folder': 0, 'lin_blocked': 25, 'covered_location_blocker': 'LIN_TORSO'}]
+OBS_TOP [(0.0, -0.2, 7, ['LIN_R_UPPER', 'LIN_R_UPPER']), (-0.1, -0.2, 9, ['LIN_R_UPPER', None]), (-0.2, -0.1, 5, ['LIN_R_FOREARM', 'LIN_R_FOREARM']), (-0.2, -0.2, 16, [None, None]), (0.0, -0.3, 20, [None, None]), (-0.3, 0.0, 4, ['LIN_R_FOREARM', 'LIN_R_FOREARM']), (-0.1, -0.3, 22, [None, None]), (0.1, -0.3, 17, [None, None]), (-0.3, -0.1, 10, [None, None]), (-0.2, -0.3, 23, [None, None]), (-0.3, -0.2, 19, [None, None]), (0.2, -0.3, 6, ['LIN_SHOULDERS', None]), (0.2, 0.3, 6, ['LIN_TORSO', 'LIN_TORSO']), (0.3, 0.2, 4, ['LIN_TORSO', 'LIN_TORSO']), (0.0, -0.4, 25, [None, None]), (-0.4, 0.0, 10, [None, None]), (-0.1, -0.4, 25, [None, None]), (0.1, -0.4, 25, [None, None]), (-0.4, -0.1, 19, [None, None]), (0.1, 0.4, 6, ['LIN_TORSO', 'LIN_TORSO'])]
+OBS_TOTAL 49
+ZHOU_TOP []
+ZHOU_TOTAL 0
+Blender 5.2.3 LTS (hash e13b728c6880 built 2026-10-22 01:37:16)
+
+Blender quit

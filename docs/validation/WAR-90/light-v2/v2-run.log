@@ -1,0 +1,9 @@
+00:00.734  blend            | Read blend: "\\wsl.localhost\udev\home\sean\projects\canvas-lab\docs\validation\WAR-91\v1\WAR91_derived_cameras.blend"
+V2_OBS [{'eye': 'ZHOU_LEFT_EYE', 'folder_visible_of_25': 16, 'covered_xy_target_hit': None, 'key_ray_occluder': 'BLUE_FOLDER'}, {'eye': 'ZHOU_RIGHT_EYE', 'folder_visible_of_25': 17, 'covered_xy_target_hit': None, 'key_ray_occluder': 'BLUE_FOLDER'}]
+V2_PICKUP {'hand_mesh_bottom_minus_key_top_m': 0.004, 'right_forearm_table_surface_intersect': False, 'right_hand_table_surface_intersect': False}
+V2_REACH {'shoulder': [0.16, 0.18, 1.18], 'wrist': [-0.25, 0.45, 0.8], 'elbow': [-0.16143, 0.39168, 1.17011], 'shoulder_to_wrist_m': 0.62081, 'reach_le_0p77': True} {'shoulder': [0.16, 0.18, 1.18], 'wrist': [0.715, -0.25, 1.175], 'elbow': [0.43839, -0.03569, 1.33557], 'shoulder_to_wrist_m': 0.7021, 'reach_le_0p77': True} 0.5703129204983663
+V2_JOINS {'S02_S03_geometry_equal': True, 'S03_S04_geometry_equal': True}
+V2_OK \\wsl.localhost\udev\home\sean\projects\canvas-lab\docs\validation\WAR-90\light-v2\v2-geometry.json
+Blender 5.2.3 LTS (hash e13b728c6880 built 2026-10-22 01:37:16)
+
+Blender quit

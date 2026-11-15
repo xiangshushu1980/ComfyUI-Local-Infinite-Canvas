@@ -1,0 +1,1027 @@
+{
+  "source_sha256": "23fc26a252390e73ac50efd16001248ceec362bd0d590f16dbbe8a16385a0373",
+  "frame": 40,
+  "moving_meshes": [
+    "LIN_HEAD",
+    "LIN_L_FOREARM",
+    "LIN_L_UPPER",
+    "LIN_LEFT_HAND",
+    "LIN_NECK",
+    "LIN_PANTS",
+    "LIN_R_FOREARM",
+    "LIN_R_UPPER",
+    "LIN_RIGHT_HAND",
+    "LIN_SHOULDERS",
+    "LIN_TORSO"
+  ],
+  "folder_bounds": [
+    [
+      -0.5900000333786011,
+      0.30000001192092896,
+      0.7914999723434448
+    ],
+    [
+      -0.15000000596046448,
+      0.6200000047683716,
+      0.8055000305175781
+    ]
+  ],
+  "baseline": [
+    {
+      "eye": "ZHOU_LEFT_EYE",
+      "clear_or_folder": 0,
+      "lin_blocked": 25,
+      "covered_location_blocker": "LIN_TORSO"
+    },
+    {
+      "eye": "ZHOU_RIGHT_EYE",
+      "clear_or_folder": 0,
+      "lin_blocked": 25,
+      "covered_location_blocker": "LIN_TORSO"
+    }
+  ],
+  "matching_candidates": [
+    {
+      "dx": 0.0,
+      "dy": -0.2,
+      "displacement_m": 0.2,
+      "minimum_visible": 7,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "clear_or_folder": 7,
+          "lin_blocked": 18,
+          "covered_location_blocker": "LIN_R_UPPER"
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "clear_or_folder": 10,
+          "lin_blocked": 15,
+          "covered_location_blocker": "LIN_R_UPPER"
+        }
+      ]
+    },
+    {
+      "dx": -0.1,
+      "dy": -0.2,
+      "displacement_m": 0.2236,
+      "minimum_visible": 9,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "clear_or_folder": 9,
+          "lin_blocked": 16,
+          "covered_location_blocker": "LIN_R_UPPER"
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "clear_or_folder": 13,
+          "lin_blocked": 12,
+          "covered_location_blocker": null
+        }
+      ]
+    },
+    {
+      "dx": -0.2,
+      "dy": -0.1,
+      "displacement_m": 0.2236,
+      "minimum_visible": 5,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "clear_or_folder": 5,
+          "lin_blocked": 20,
+          "covered_location_blocker": "LIN_R_FOREARM"
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "clear_or_folder": 6,
+          "lin_blocked": 19,
+          "covered_location_blocker": "LIN_R_FOREARM"
+        }
+      ]
+    },
+    {
+      "dx": -0.2,
+      "dy": -0.2,
+      "displacement_m": 0.2828,
+      "minimum_visible": 16,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "clear_or_folder": 16,
+          "lin_blocked": 9,
+          "covered_location_blocker": null
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "clear_or_folder": 17,
+          "lin_blocked": 8,
+          "covered_location_blocker": null
+        }
+      ]
+    },
+    {
+      "dx": 0.0,
+      "dy": -0.3,
+      "displacement_m": 0.3,
+      "minimum_visible": 20,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "clear_or_folder": 20,
+          "lin_blocked": 5,
+          "covered_location_blocker": null
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "clear_or_folder": 24,
+          "lin_blocked": 1,
+          "covered_location_blocker": null
+        }
+      ]
+    },
+    {
+      "dx": -0.3,
+      "dy": 0.0,
+      "displacement_m": 0.3,
+      "minimum_visible": 4,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "clear_or_folder": 4,
+          "lin_blocked": 21,
+          "covered_location_blocker": "LIN_R_FOREARM"
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "clear_or_folder": 6,
+          "lin_blocked": 19,
+          "covered_location_blocker": "LIN_R_FOREARM"
+        }
+      ]
+    },
+    {
+      "dx": -0.1,
+      "dy": -0.3,
+      "displacement_m": 0.3162,
+      "minimum_visible": 22,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "clear_or_folder": 22,
+          "lin_blocked": 3,
+          "covered_location_blocker": null
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "clear_or_folder": 25,
+          "lin_blocked": 0,
+          "covered_location_blocker": null
+        }
+      ]
+    },
+    {
+      "dx": 0.1,
+      "dy": -0.3,
+      "displacement_m": 0.3162,
+      "minimum_visible": 17,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "clear_or_folder": 17,
+          "lin_blocked": 8,
+          "covered_location_blocker": null
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "clear_or_folder": 21,
+          "lin_blocked": 4,
+          "covered_location_blocker": null
+        }
+      ]
+    },
+    {
+      "dx": -0.3,
+      "dy": -0.1,
+      "displacement_m": 0.3162,
+      "minimum_visible": 10,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "clear_or_folder": 10,
+          "lin_blocked": 15,
+          "covered_location_blocker": null
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "clear_or_folder": 15,
+          "lin_blocked": 10,
+          "covered_location_blocker": null
+        }
+      ]
+    },
+    {
+      "dx": -0.2,
+      "dy": -0.3,
+      "displacement_m": 0.3606,
+      "minimum_visible": 23,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "clear_or_folder": 23,
+          "lin_blocked": 2,
+          "covered_location_blocker": null
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "clear_or_folder": 25,
+          "lin_blocked": 0,
+          "covered_location_blocker": null
+        }
+      ]
+    },
+    {
+      "dx": -0.3,
+      "dy": -0.2,
+      "displacement_m": 0.3606,
+      "minimum_visible": 19,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "clear_or_folder": 19,
+          "lin_blocked": 6,
+          "covered_location_blocker": null
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "clear_or_folder": 22,
+          "lin_blocked": 3,
+          "covered_location_blocker": null
+        }
+      ]
+    },
+    {
+      "dx": 0.2,
+      "dy": -0.3,
+      "displacement_m": 0.3606,
+      "minimum_visible": 6,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "clear_or_folder": 6,
+          "lin_blocked": 19,
+          "covered_location_blocker": "LIN_SHOULDERS"
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "clear_or_folder": 17,
+          "lin_blocked": 8,
+          "covered_location_blocker": null
+        }
+      ]
+    },
+    {
+      "dx": 0.2,
+      "dy": 0.3,
+      "displacement_m": 0.3606,
+      "minimum_visible": 6,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "clear_or_folder": 9,
+          "lin_blocked": 16,
+          "covered_location_blocker": "LIN_TORSO"
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "clear_or_folder": 6,
+          "lin_blocked": 19,
+          "covered_location_blocker": "LIN_TORSO"
+        }
+      ]
+    },
+    {
+      "dx": 0.3,
+      "dy": 0.2,
+      "displacement_m": 0.3606,
+      "minimum_visible": 4,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "clear_or_folder": 9,
+          "lin_blocked": 16,
+          "covered_location_blocker": "LIN_TORSO"
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "clear_or_folder": 4,
+          "lin_blocked": 21,
+          "covered_location_blocker": "LIN_TORSO"
+        }
+      ]
+    },
+    {
+      "dx": 0.0,
+      "dy": -0.4,
+      "displacement_m": 0.4,
+      "minimum_visible": 25,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "clear_or_folder": 25,
+          "lin_blocked": 0,
+          "covered_location_blocker": null
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "clear_or_folder": 25,
+          "lin_blocked": 0,
+          "covered_location_blocker": null
+        }
+      ]
+    },
+    {
+      "dx": -0.4,
+      "dy": 0.0,
+      "displacement_m": 0.4,
+      "minimum_visible": 10,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "clear_or_folder": 10,
+          "lin_blocked": 15,
+          "covered_location_blocker": null
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "clear_or_folder": 10,
+          "lin_blocked": 15,
+          "covered_location_blocker": null
+        }
+      ]
+    },
+    {
+      "dx": -0.1,
+      "dy": -0.4,
+      "displacement_m": 0.4123,
+      "minimum_visible": 25,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "clear_or_folder": 25,
+          "lin_blocked": 0,
+          "covered_location_blocker": null
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "clear_or_folder": 25,
+          "lin_blocked": 0,
+          "covered_location_blocker": null
+        }
+      ]
+    },
+    {
+      "dx": 0.1,
+      "dy": -0.4,
+      "displacement_m": 0.4123,
+      "minimum_visible": 25,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "clear_or_folder": 25,
+          "lin_blocked": 0,
+          "covered_location_blocker": null
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "clear_or_folder": 25,
+          "lin_blocked": 0,
+          "covered_location_blocker": null
+        }
+      ]
+    },
+    {
+      "dx": -0.4,
+      "dy": -0.1,
+      "displacement_m": 0.4123,
+      "minimum_visible": 19,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "clear_or_folder": 19,
+          "lin_blocked": 6,
+          "covered_location_blocker": null
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "clear_or_folder": 19,
+          "lin_blocked": 6,
+          "covered_location_blocker": null
+        }
+      ]
+    },
+    {
+      "dx": 0.1,
+      "dy": 0.4,
+      "displacement_m": 0.4123,
+      "minimum_visible": 6,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "clear_or_folder": 10,
+          "lin_blocked": 15,
+          "covered_location_blocker": "LIN_TORSO"
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "clear_or_folder": 6,
+          "lin_blocked": 19,
+          "covered_location_blocker": "LIN_TORSO"
+        }
+      ]
+    },
+    {
+      "dx": 0.4,
+      "dy": 0.1,
+      "displacement_m": 0.4123,
+      "minimum_visible": 6,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "clear_or_folder": 11,
+          "lin_blocked": 14,
+          "covered_location_blocker": "LIN_TORSO"
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "clear_or_folder": 6,
+          "lin_blocked": 19,
+          "covered_location_blocker": "LIN_TORSO"
+        }
+      ]
+    },
+    {
+      "dx": -0.4,
+      "dy": 0.1,
+      "displacement_m": 0.4123,
+      "minimum_visible": 3,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "clear_or_folder": 3,
+          "lin_blocked": 22,
+          "covered_location_blocker": "LIN_R_FOREARM"
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "clear_or_folder": 3,
+          "lin_blocked": 22,
+          "covered_location_blocker": "LIN_R_FOREARM"
+        }
+      ]
+    },
+    {
+      "dx": -0.3,
+      "dy": -0.3,
+      "displacement_m": 0.4243,
+      "minimum_visible": 25,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "clear_or_folder": 25,
+          "lin_blocked": 0,
+          "covered_location_blocker": null
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "clear_or_folder": 25,
+          "lin_blocked": 0,
+          "covered_location_blocker": null
+        }
+      ]
+    },
+    {
+      "dx": 0.3,
+      "dy": 0.3,
+      "displacement_m": 0.4243,
+      "minimum_visible": 16,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "clear_or_folder": 20,
+          "lin_blocked": 5,
+          "covered_location_blocker": null
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "clear_or_folder": 16,
+          "lin_blocked": 9,
+          "covered_location_blocker": "LIN_TORSO"
+        }
+      ]
+    },
+    {
+      "dx": -0.2,
+      "dy": -0.4,
+      "displacement_m": 0.4472,
+      "minimum_visible": 25,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "clear_or_folder": 25,
+          "lin_blocked": 0,
+          "covered_location_blocker": null
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "clear_or_folder": 25,
+          "lin_blocked": 0,
+          "covered_location_blocker": null
+        }
+      ]
+    },
+    {
+      "dx": 0.2,
+      "dy": -0.4,
+      "displacement_m": 0.4472,
+      "minimum_visible": 25,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "clear_or_folder": 25,
+          "lin_blocked": 0,
+          "covered_location_blocker": null
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "clear_or_folder": 25,
+          "lin_blocked": 0,
+          "covered_location_blocker": null
+        }
+      ]
+    },
+    {
+      "dx": -0.4,
+      "dy": -0.2,
+      "displacement_m": 0.4472,
+      "minimum_visible": 24,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "clear_or_folder": 24,
+          "lin_blocked": 1,
+          "covered_location_blocker": null
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "clear_or_folder": 24,
+          "lin_blocked": 1,
+          "covered_location_blocker": null
+        }
+      ]
+    },
+    {
+      "dx": 0.2,
+      "dy": 0.4,
+      "displacement_m": 0.4472,
+      "minimum_visible": 16,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "clear_or_folder": 19,
+          "lin_blocked": 6,
+          "covered_location_blocker": null
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "clear_or_folder": 16,
+          "lin_blocked": 9,
+          "covered_location_blocker": "LIN_TORSO"
+        }
+      ]
+    },
+    {
+      "dx": 0.4,
+      "dy": 0.2,
+      "displacement_m": 0.4472,
+      "minimum_visible": 16,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "clear_or_folder": 21,
+          "lin_blocked": 4,
+          "covered_location_blocker": null
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "clear_or_folder": 16,
+          "lin_blocked": 9,
+          "covered_location_blocker": "LIN_TORSO"
+        }
+      ]
+    },
+    {
+      "dx": -0.4,
+      "dy": -0.3,
+      "displacement_m": 0.5,
+      "minimum_visible": 25,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "clear_or_folder": 25,
+          "lin_blocked": 0,
+          "covered_location_blocker": null
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "clear_or_folder": 25,
+          "lin_blocked": 0,
+          "covered_location_blocker": null
+        }
+      ]
+    },
+    {
+      "dx": -0.3,
+      "dy": -0.4,
+      "displacement_m": 0.5,
+      "minimum_visible": 25,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "clear_or_folder": 25,
+          "lin_blocked": 0,
+          "covered_location_blocker": null
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "clear_or_folder": 25,
+          "lin_blocked": 0,
+          "covered_location_blocker": null
+        }
+      ]
+    },
+    {
+      "dx": 0.4,
+      "dy": 0.3,
+      "displacement_m": 0.5,
+      "minimum_visible": 24,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "clear_or_folder": 25,
+          "lin_blocked": 0,
+          "covered_location_blocker": null
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "clear_or_folder": 24,
+          "lin_blocked": 1,
+          "covered_location_blocker": null
+        }
+      ]
+    },
+    {
+      "dx": 0.3,
+      "dy": 0.4,
+      "displacement_m": 0.5,
+      "minimum_visible": 23,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "clear_or_folder": 24,
+          "lin_blocked": 1,
+          "covered_location_blocker": null
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "clear_or_folder": 23,
+          "lin_blocked": 2,
+          "covered_location_blocker": null
+        }
+      ]
+    },
+    {
+      "dx": 0.3,
+      "dy": -0.4,
+      "displacement_m": 0.5,
+      "minimum_visible": 21,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "clear_or_folder": 21,
+          "lin_blocked": 4,
+          "covered_location_blocker": null
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "clear_or_folder": 25,
+          "lin_blocked": 0,
+          "covered_location_blocker": null
+        }
+      ]
+    },
+    {
+      "dx": -0.5,
+      "dy": 0.0,
+      "displacement_m": 0.5,
+      "minimum_visible": 15,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "clear_or_folder": 15,
+          "lin_blocked": 10,
+          "covered_location_blocker": null
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "clear_or_folder": 19,
+          "lin_blocked": 6,
+          "covered_location_blocker": null
+        }
+      ]
+    },
+    {
+      "dx": 0.5,
+      "dy": 0.0,
+      "displacement_m": 0.5,
+      "minimum_visible": 5,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "clear_or_folder": 12,
+          "lin_blocked": 13,
+          "covered_location_blocker": "LIN_TORSO"
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "clear_or_folder": 5,
+          "lin_blocked": 20,
+          "covered_location_blocker": "LIN_TORSO"
+        }
+      ]
+    },
+    {
+      "dx": -0.5,
+      "dy": -0.1,
+      "displacement_m": 0.5099,
+      "minimum_visible": 22,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "clear_or_folder": 22,
+          "lin_blocked": 3,
+          "covered_location_blocker": null
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "clear_or_folder": 24,
+          "lin_blocked": 1,
+          "covered_location_blocker": null
+        }
+      ]
+    },
+    {
+      "dx": 0.5,
+      "dy": 0.1,
+      "displacement_m": 0.5099,
+      "minimum_visible": 19,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "clear_or_folder": 24,
+          "lin_blocked": 1,
+          "covered_location_blocker": null
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "clear_or_folder": 19,
+          "lin_blocked": 6,
+          "covered_location_blocker": null
+        }
+      ]
+    },
+    {
+      "dx": -0.5,
+      "dy": 0.1,
+      "displacement_m": 0.5099,
+      "minimum_visible": 9,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "clear_or_folder": 9,
+          "lin_blocked": 16,
+          "covered_location_blocker": null
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "clear_or_folder": 10,
+          "lin_blocked": 15,
+          "covered_location_blocker": null
+        }
+      ]
+    },
+    {
+      "dx": -0.5,
+      "dy": -0.2,
+      "displacement_m": 0.5385,
+      "minimum_visible": 25,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "clear_or_folder": 25,
+          "lin_blocked": 0,
+          "covered_location_blocker": null
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "clear_or_folder": 25,
+          "lin_blocked": 0,
+          "covered_location_blocker": null
+        }
+      ]
+    },
+    {
+      "dx": 0.5,
+      "dy": 0.2,
+      "displacement_m": 0.5385,
+      "minimum_visible": 25,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "clear_or_folder": 25,
+          "lin_blocked": 0,
+          "covered_location_blocker": null
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "clear_or_folder": 25,
+          "lin_blocked": 0,
+          "covered_location_blocker": null
+        }
+      ]
+    },
+    {
+      "dx": -0.5,
+      "dy": 0.2,
+      "displacement_m": 0.5385,
+      "minimum_visible": 4,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "clear_or_folder": 4,
+          "lin_blocked": 21,
+          "covered_location_blocker": "LIN_R_FOREARM"
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "clear_or_folder": 5,
+          "lin_blocked": 20,
+          "covered_location_blocker": "LIN_R_FOREARM"
+        }
+      ]
+    },
+    {
+      "dx": -0.4,
+      "dy": -0.4,
+      "displacement_m": 0.5657,
+      "minimum_visible": 25,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "clear_or_folder": 25,
+          "lin_blocked": 0,
+          "covered_location_blocker": null
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "clear_or_folder": 25,
+          "lin_blocked": 0,
+          "covered_location_blocker": null
+        }
+      ]
+    },
+    {
+      "dx": 0.4,
+      "dy": 0.4,
+      "displacement_m": 0.5657,
+      "minimum_visible": 25,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "clear_or_folder": 25,
+          "lin_blocked": 0,
+          "covered_location_blocker": null
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "clear_or_folder": 25,
+          "lin_blocked": 0,
+          "covered_location_blocker": null
+        }
+      ]
+    },
+    {
+      "dx": 0.4,
+      "dy": -0.4,
+      "displacement_m": 0.5657,
+      "minimum_visible": 12,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "clear_or_folder": 12,
+          "lin_blocked": 13,
+          "covered_location_blocker": null
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "clear_or_folder": 24,
+          "lin_blocked": 1,
+          "covered_location_blocker": null
+        }
+      ]
+    },
+    {
+      "dx": -0.5,
+      "dy": -0.3,
+      "displacement_m": 0.5831,
+      "minimum_visible": 25,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "clear_or_folder": 25,
+          "lin_blocked": 0,
+          "covered_location_blocker": null
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "clear_or_folder": 25,
+          "lin_blocked": 0,
+          "covered_location_blocker": null
+        }
+      ]
+    },
+    {
+      "dx": 0.5,
+      "dy": 0.3,
+      "displacement_m": 0.5831,
+      "minimum_visible": 25,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "clear_or_folder": 25,
+          "lin_blocked": 0,
+          "covered_location_blocker": null
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "clear_or_folder": 25,
+          "lin_blocked": 0,
+          "covered_location_blocker": null
+        }
+      ]
+    },
+    {
+      "dx": -0.5,
+      "dy": -0.4,
+      "displacement_m": 0.6403,
+      "minimum_visible": 25,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "clear_or_folder": 25,
+          "lin_blocked": 0,
+          "covered_location_blocker": null
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "clear_or_folder": 25,
+          "lin_blocked": 0,
+          "covered_location_blocker": null
+        }
+      ]
+    },
+    {
+      "dx": 0.5,
+      "dy": 0.4,
+      "displacement_m": 0.6403,
+      "minimum_visible": 25,
+      "eyes": [
+        {
+          "eye": "ZHOU_LEFT_EYE",
+          "clear_or_folder": 25,
+          "lin_blocked": 0,
+          "covered_location_blocker": null
+        },
+        {
+          "eye": "ZHOU_RIGHT_EYE",
+          "clear_or_folder": 25,
+          "lin_blocked": 0,
+          "covered_location_blocker": null
+        }
+      ]
+    }
+  ],
+  "limit": "Exploratory upper-mesh translation on legacy proxy; no rig or continuous physical motion proof.",
+  "zhou_alternative_candidates": []
+}

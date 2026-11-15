@@ -1,0 +1,123 @@
+{
+  "passed": 29,
+  "total": 29,
+  "checks": {
+    "source_exact": {
+      "pass": true,
+      "detail": null
+    },
+    "not_production": {
+      "pass": true,
+      "detail": null
+    },
+    "camera_original_reveal": {
+      "pass": true,
+      "detail": null
+    },
+    "zhou_cannot_see_first_K": {
+      "pass": true,
+      "detail": null
+    },
+    "original_covered_zhou_blocked": {
+      "pass": true,
+      "detail": null
+    },
+    "cover_camera_K_hidden": {
+      "pass": true,
+      "detail": null
+    },
+    "obs_after_cover": {
+      "pass": true,
+      "detail": null
+    },
+    "obs_K_still_covered": {
+      "pass": true,
+      "detail": null
+    },
+    "obs_target_unblocked": {
+      "pass": true,
+      "detail": null
+    },
+    "obs_repair_not_source_teleport": {
+      "pass": true,
+      "detail": null
+    },
+    "baseline_arm_earlier_fail_preserved": {
+      "pass": true,
+      "detail": null
+    },
+    "swept_step_no_actor_body_contact": {
+      "pass": true,
+      "detail": null
+    },
+    "swept_step_no_desk_contact": {
+      "pass": true,
+      "detail": null
+    },
+    "swept_step_never_K_reveal": {
+      "pass": true,
+      "detail": null
+    },
+    "swept_step_end_zhou_covered_target": {
+      "pass": true,
+      "detail": null
+    },
+    "folder_uncover_no_key_contact": {
+      "pass": true,
+      "detail": null
+    },
+    "folder_uncover_camera_K_clean": {
+      "pass": true,
+      "detail": null
+    },
+    "key_transfer_reach_along_samples": {
+      "pass": true,
+      "detail": 0.7021
+    },
+    "transfer_zhu_right_reach": {
+      "pass": true,
+      "detail": null
+    },
+    "key_lift_no_intermediate_collisions": {
+      "pass": true,
+      "detail": null
+    },
+    "key_rest_contact_exception": {
+      "pass": true,
+      "detail": "K initial resting on table; prior known mesh surface overlap at f40"
+    },
+    "joins_equal": {
+      "pass": true,
+      "detail": null
+    },
+    "key_unchanged_until_pick": {
+      "pass": true,
+      "detail": null
+    },
+    "key_single_owner_sequence": {
+      "pass": true,
+      "detail": null
+    },
+    "end_Zhou_owner": {
+      "pass": true,
+      "detail": null
+    },
+    "right_retracts_clear_of_key": {
+      "pass": true,
+      "detail": 0.5178
+    },
+    "pose_no_table_surface_contact": {
+      "pass": true,
+      "detail": null
+    },
+    "lin_reaches_pick_and_handoff": {
+      "pass": true,
+      "detail": null
+    },
+    "source_has_no_zhou_arms_recorded": {
+      "pass": true,
+      "detail": null
+    }
+  },
+  "scope": "proxy geometry and discrete semantic seams; no production camera sequence or timed animation"
+}
