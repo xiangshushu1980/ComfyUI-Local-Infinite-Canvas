@@ -28,7 +28,36 @@ PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover \
 
 `--dry-run` / `resume-pack` 仅输出 prompt。需要留档时，由调用者将 stdout 重定向到白名单目录内的新文件。CLI 所有 workspace 写入限定在 `docs/planning/WAR-90/` 的子目录。初始化不覆盖既有目录，路径中的软链接被拒绝。
 
-## 真实 Intent 调用与停点
+## 单 Agent 外部阶段入口
+
+`prepare-stage` / `submit-stage` 供现有 Eric Canvas Codex Agent 使用：该 Agent 依据冻结的 Director Skill 与阶段输入完成导演推理，Python Runtime 只负责输入冻结、门禁、结果校验和存储，**不会创建第二个模型或调用 Codex CLI**。infinite-canvas MCP 仍由已有 Agent 按授权使用；本入口不连接或写入 Canvas，不生成媒体。外部冻结包允许同一 Agent 在专业推理外围使用 Runtime CLI 和 Canvas MCP 完成准备、提交、展示；不得调用媒体生成或伪造审批。旧 `run-stage` 的嵌套生成提示仍禁用工具。
+
+下面的 `$WORKSPACE` 应指向调用者已授权的试验工作区；这些示例不是修改现有批准 pilot-D 的授权。
+
+```bash
+python3 tools/director-runtime-v0/cli.py prepare-stage \
+  --workspace "$WORKSPACE" --stage shot --mode resume \
+  --scope '只调整 Shot02，保持非目标镜头' --targets Shot02
+
+# 同一个已有 Agent 读取返回的 input_path，以现有 JSON transport 格式
+# 把完整结果写到返回的 result_path，然后使用返回的 run_id：
+python3 tools/director-runtime-v0/cli.py submit-stage \
+  --workspace "$WORKSPACE" --run-id "$RUN_ID"
+```
+
+首次 Intent 使用 `--stage intent` 并省略 targets；下游阶段仍须人工 A，已有 Shot 的 Blocking 回退仍须明确 targets。Continue/Refresh 显式拒绝，不会隐式启动模型。
+
+prepare 在锁内调用复用原 `packet()` 门禁的 `external_packet()`，创建唯一 `runs/<run_id>/`，原子保存只读 `input.txt` 与 `metadata.json`，不改 `state.json`。成功 JSON 包含 `run_id`、`input_path`、`input_sha256`、`result_path`、`state_sha256`（当前 state.json 原始字节 SHA-256）及 `status: prepared`。
+
+submit 只读取该 run 下的 `result.txt`，锁内核对 prepared 状态、冻结输入 SHA、原始 state SHA，并重新通过 `external_packet()` 检查来源/Skill 原件与副本、候选及 A 基线。结果与 legacy `run-stage` 共用 `_apply_result()`：相同的 parse、冲突、目标、局部 Shot 逐段保护、邻镜 pending 与候选写入规则。局部有效修订清除当前 B 并等待重新审阅，历史 B 候选和审阅证据不变。`handoff=false` / proposal 未变仅记录运行，不新建候选，也不清除已有 B。
+
+成功返回 JSON，失败以 `Blocked: ...` 输出 stderr 并退出 2。有效 prepared run 的提交失败会记录 `quarantined` 和原因，保留输入、结果及已写证据，不更新批准状态；缺失 result 也会隔离。成功、无交接和隔离后的 run 都不可再次提交。修正后应重新 prepare；prepare 后任何 state 字节变化（包括另一 run 成功或人工 review）都会使旧 prepared run 失效。
+
+元数据明确标记 `generator: external-agent`，`model` / `thread_id` 为 null，`identity_verified: false`；这是外部操作者提供结果的来源声明，不是 Eric、模型或线程的认证。输出中的批准/身份字段不授予任何权限；A/B 仍只能通过显式人工 review 记录。
+
+输入、metadata、candidate、state 各自使用原子文件替换，state 是最终生效指针；它们不是跨文件事务。进程中断可能留下未提交的 candidate/metadata 证据，不能据此认定已交接。继续信任本机操作者，不防手工伪造 metadata/state。原 53 项单测只验证本地文件交接与回归；独立 Eric Codex + Canvas MCP 单 Agent 的无修订 `no-handoff` 联调证据见 `docs/planning/WAR-90/single-agent-live-20261115/README.md`。真人 Canvas 反馈引发的专业修订/B 重审仍未验证。
+
+## Legacy 真实 Intent 调用与停点
 
 ChatGPT 独立审阅代码后执行下列命令。真实模型固定 `gpt-6-astra`、Medium，最长等待 900 秒。
 
@@ -51,7 +80,7 @@ python3 tools/director-runtime-v0/cli.py record-review \
 
 获得真实 A 后，可按同一命令入口执行 `--stage beat`、`--stage blocking`、`--stage shot`，每次使用 `--mode resume`。B 通过 `record-review --checkpoint B` 记录，要求当前 Shot 及 Beat/Blocking 全场交接存在。B 人工接受表示用户已审阅 pending shots 的文本问题，媒体、几何、观众未知继续保留。
 
-## 会话模式支持
+## Legacy run-stage 会话模式支持
 
 | 模式 | 当前支持 | 验证边界 |
 | --- | --- | --- |
@@ -121,3 +150,5 @@ python3 tools/director-runtime-v0/cli.py review-pack \
 输出 `war90-director-preview-only-v0` JSON：原剧本及 SHA、Skill 哈希、A/B 绑定候选与原始审阅证据 SHA、四阶段全文、四个分镜独立正文/哈希、未证风险及明确的只读权限标记。仅在 Source/Skill/候选 SHA 均有效、A/B 用户证据文件仍在且其 SHA 与审阅正文一致、当前活跃 Shot 与已经接受的 B 完全一致、邻镜待复检列表为空时才输出；否则返回退出码 2。CLI 不创建画布节点、不调用任何 Canvas Agent API，也不会帮用户确认身份或批准正式 WAR-35 方案。
 
 验证资料：`docs/planning/WAR-90/flow-canvas-handoff-20261115/README.md`。代码与 37 项单测、真实工作区 15 项只读检查的结果可复现。当前用户批准 B 是文本审阅，不证明几何、表演、视频或观众辨认已通过。
+
+独立 Agent 通过 prepare-stage 获取的 stage 输入只约束专业结果：可以在其外围调用 Runtime CLI 和 Canvas MCP 来操作独立测试画布；不可运行媒体、改变权威来源或自签 A/B。旧 run-stage 的独立生成提示仍显式禁用工具。

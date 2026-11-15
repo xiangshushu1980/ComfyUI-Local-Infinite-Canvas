@@ -1,0 +1,48 @@
+{
+  "mode": "real Canvas Agent API + isolated headless Chrome frontend; no model or media",
+  "real_canvas_agent_calls": [
+    "canvas_get_state",
+    "canvas_create_text_nodes",
+    "canvas_get_state",
+    "canvas_select_nodes",
+    "canvas_get_selection"
+  ],
+  "selected_target": "Shot02",
+  "selected_node_binding_verified": true,
+  "private_project_id": "jarkALjlasvWIMVq3t-2E",
+  "node_count": 5,
+  "node_titles": [
+    "WAR-90｜Shot01 · B Review",
+    "WAR-90｜Shot02 · B Review",
+    "WAR-90｜Shot03 · B Review",
+    "WAR-90｜Shot04 · B Review",
+    "WAR-90｜试点 B 只读说明"
+  ],
+  "approved_B_id": "b7b4fd156b884907b2431b6b1e0d9960",
+  "approved_B_content_sha256": "64c08817a33fcebc2bad86c8c81b29b2297b4eab7de8bc7cb6db998823c6f4c7",
+  "source_sha256": "65b8a2f83cefc2281879fb254d3ee25dfd68d72e7cd0d811a2afbade5c1e165d",
+  "test_profile_deleted_on_exit": true,
+  "user_real_canvas_touched": false,
+  "feedback_test": {
+    "accepted_synthetic_example": {
+      "feedback_status": "unsubmitted_example_only",
+      "target_shot_id": "Shot02",
+      "baseline_B_id": "b7b4fd156b884907b2431b6b1e0d9960",
+      "baseline_B_content_sha256": "64c08817a33fcebc2bad86c8c81b29b2297b4eab7de8bc7cb6db998823c6f4c7",
+      "source_sha256": "65b8a2f83cefc2281879fb254d3ee25dfd68d72e7cd0d811a2afbade5c1e165d",
+      "requires_director_candidate_revision": true,
+      "new_B_user_approval": false
+    },
+    "rejected_invalid_examples": 4,
+    "real_user_feedback_received": false,
+    "model_candidate_created": false
+  },
+  "agent_page_connected": true,
+  "browser_project_route_verified": true,
+  "browser_ui_contains_review_title": true,
+  "limitations": [
+    "Canvas canvas_get_state intentionally truncates node content previews",
+    "No real user edits or actual Director return-call",
+    "No WAR-35 integration, identity verification, video generation or real audience check"
+  ]
+}

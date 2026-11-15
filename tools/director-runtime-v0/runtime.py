@@ -119,10 +119,14 @@ def read_text(path):
 
 
 def atomic_json(path, value):
+    atomic_bytes(path, encode(value))
+
+
+def atomic_bytes(path, data):
     fd, name = tempfile.mkstemp(prefix='.state-', dir=path.parent)
     try:
         with os.fdopen(fd, 'wb') as stream:
-            stream.write(encode(value))
+            stream.write(data)
             stream.flush()
             os.fsync(stream.fileno())
         os.replace(name, path)
@@ -314,6 +318,139 @@ External DS/TF/VM sections are references only; their bodies were not loaded. Re
             return contract + '\nB-FLEX INPUT\n' + json.dumps(packet, ensure_ascii=False, indent=2)
         return contract + '\nB-FLEX INPUT\n' + json.dumps(packet, ensure_ascii=False, indent=2) + '\n\nSOURCE VERBATIM\n' + source
 
+    def _apply_result(self, state, result, run_dir, metadata, thread_id):
+        """Shared validation and candidate application for legacy and external runs.
+
+        Caller holds the workspace lock and verifies authority/state before entry.
+        Only the caller commits state.json; candidate files remain run evidence.
+        """
+        run_id = metadata['id']
+        stage, scope, targets = metadata['stage'], metadata['scope'], metadata['targets']
+        output = parse_result(result)
+        if output['hard_conflicts'] or output['upstream_change']:
+            raise PilotError('Model reported conflict/upstream change; quarantined for human review')
+        if targets and not set(output['changed_targets']) <= set(targets):
+            raise PilotError('Reported changes exceed authorized local targets')
+        if targets and stage == 'shot' and output['handoff']:
+            checked = check_local_shot_delta(
+                state['active']['artifacts']['shot'], output, targets)
+            metadata['verified_changed_shots'] = checked
+        if stage == 'shot' and output['handoff'] and (not output['shot_ids'] or len(set(output['shot_ids'])) != len(output['shot_ids'])):
+            raise PilotError('Shot handoff requires unique ordered shot_ids')
+        old = state['active']
+        artifacts = copy.deepcopy(old['artifacts']) if old else {}
+        previous = artifacts.get(stage)
+        meaningful = output['handoff'] and output['proposal'].strip()
+        if previous and previous['proposal'].strip() == output['proposal'].strip():
+            meaningful = False
+        if not meaningful:
+            metadata['status'] = 'no-handoff'
+        else:
+            if stage in ('beat', 'blocking'):
+                state['pilot_B'] = None
+            if stage == 'beat':
+                artifacts.pop('blocking', None)
+                artifacts.pop('shot', None)
+                state['pending_shots'] = []
+            if stage in ('blocking', 'shot') and 'shot' in artifacts and (stage == 'blocking' or targets):
+                # Local Shot edits have exactly the same neighbor review
+                # responsibility as Shot -> Blocking -> Shot repairs.
+                order = artifacts['shot']['shot_ids']
+                affected = set(targets or order)
+                for index, shot in enumerate(order):
+                    if shot in targets:
+                        affected.update(order[max(0, index - 1):index + 2])
+                state['pending_shots'] = sorted(set(state['pending_shots']) | affected)
+            artifacts[stage] = output
+            candidate = {'id': run_id, 'stage': stage, 'inputs': copy.deepcopy(state['inputs']),
+                         'baseline_A': state['pilot_A']['id'] if state['pilot_A'] else None,
+                         'artifacts': artifacts, 'content_sha256': digest(encode(artifacts)),
+                         'scope': scope, 'targets': list(targets), 'created_at': now(),
+                         'generator': metadata['generator'], 'approval': 'exploration-only'}
+            atomic_json(run_dir / 'candidate.json', candidate)
+            state.update(active=candidate, stage=stage, pilot_B=None,
+                         phase={'intent': 'awaiting-human-A', 'shot': 'awaiting-human-B'}.get(stage, 'candidate-handoff'))
+            state['unknown'] = list(dict.fromkeys(state['unknown'] + output['unknown']))
+            metadata['status'] = 'candidate-saved'
+        state['thread_id'] = thread_id
+
+    def external_packet(self, state, stage, mode, scope='', targets=()):
+        """Frozen stage data for an agent that also owns CLI and Canvas tools."""
+        prompt = self.packet(state, stage, mode, scope, targets)
+        before = 'Use only this input. Do not call tools, read extra files, change files, run media, or approve anything.'
+        after = ('Use this frozen input for professional stage judgment. The outer agent may '
+                 'call Director Runtime CLI and Canvas MCP to prepare, submit, and display '
+                 'the result; never run media, change authorities, or invent human approval.')
+        if prompt.count(before) != 1:
+            raise PilotError('Unexpected stage transport contract; cannot prepare external agent')
+        return prompt.replace(before, after)
+
+    def prepare(self, stage, mode='resume', scope='', targets=()):
+        """Freeze a stage for the existing external agent; never start a model."""
+        with self.locked() as state:
+            prompt = self.external_packet(state, stage, mode, scope, targets).encode('utf-8')
+            run_id = uuid4().hex
+            run_dir = self.path / 'runs' / run_id
+            run_dir.mkdir(parents=True)
+            atomic_bytes(run_dir / 'input.txt', prompt)
+            (run_dir / 'input.txt').chmod(0o444)
+            metadata = {
+                'id': run_id, 'run_id': run_id, 'started_at': now(),
+                'stage': stage, 'mode': mode, 'scope': scope, 'targets': list(targets),
+                'input_path': str(run_dir / 'input.txt'),
+                'result_path': str(run_dir / 'result.txt'),
+                'input_sha256': digest(prompt), 'prompt_bytes': len(prompt),
+                'state_sha256': digest((self.path / 'state.json').read_bytes()),
+                'context_profile': 'war90-local-compact-v1' if targets else 'full-resume-v0',
+                'generator': 'external-agent', 'model': None, 'thread_id': None,
+                'identity_verified': False, 'status': 'prepared',
+                'provenance': 'Operator-supplied external agent result; model/thread identity unauthenticated',
+            }
+            atomic_json(run_dir / 'metadata.json', metadata)
+            return metadata
+
+    def submit(self, run_id):
+        """Consume exactly one prepared result under the same gates as run()."""
+        if not isinstance(run_id, str) or not re.fullmatch(r'[0-9a-f]{32}', run_id):
+            raise PilotError('Invalid prepared run ID')
+        with self.locked() as state:
+            run_dir = self.path / 'runs' / run_id
+            metadata = json.loads(read_text(run_dir / 'metadata.json'))
+            # Never overwrite successful or quarantined evidence on retries.
+            if (metadata.get('id') != run_id or metadata.get('generator') != 'external-agent'
+                    or metadata.get('status') != 'prepared'):
+                raise PilotError('Run is not prepared for external submission (already submitted or quarantined)')
+            try:
+                if any(run['id'] == run_id for run in state['runs']):
+                    raise PilotError('Run already submitted')
+                if digest((self.path / 'state.json').read_bytes()) != metadata['state_sha256']:
+                    raise PilotError('State changed since prepare; result quarantined')
+                frozen = read_text(run_dir / 'input.txt')
+                if digest(frozen) != metadata['input_sha256']:
+                    raise PilotError('Frozen input SHA changed; result quarantined')
+                # Rebuild with the exact packet gates, including original and frozen
+                # Source/Skill hashes and candidate/baseline integrity checks.
+                prompt = self.external_packet(state, metadata['stage'], metadata['mode'],
+                                              metadata['scope'], metadata['targets'])
+                if prompt.encode('utf-8') != frozen:
+                    raise PilotError('Prepared packet no longer matches authority/state')
+                result = read_text(run_dir / 'result.txt')
+                metadata['result_sha256'] = digest(result)
+                self._apply_result(state, result.decode('utf-8'), run_dir, metadata, None)
+                metadata['finished_at'] = now()
+                atomic_json(run_dir / 'metadata.json', metadata)
+                state['runs'].append(metadata)
+                atomic_json(self.path / 'state.json', state)
+            except (Exception, KeyboardInterrupt) as error:
+                metadata.update(status='quarantined', error=str(error), finished_at=now())
+                for name in ('input.txt', 'result.txt'):
+                    path = run_dir / name
+                    if path.is_file():
+                        metadata[name + '_sha256'] = digest(path.read_bytes())
+                atomic_json(run_dir / 'metadata.json', metadata)
+                raise
+            return metadata
+
     def run(self, stage, mode='resume', scope='', targets=(), generator=None):
         with self.locked() as state:
             prompt = self.packet(state, stage, mode, scope, targets)
@@ -336,53 +473,7 @@ External DS/TF/VM sections are references only; their bodies were not loaded. Re
                 self.check(state)
                 if digest(encode(self.load())) != before:
                     raise PilotError('State changed during generation; result quarantined')
-                output = parse_result(result)
-                if output['hard_conflicts'] or output['upstream_change']:
-                    raise PilotError('Model reported conflict/upstream change; quarantined for human review')
-                if targets and not set(output['changed_targets']) <= set(targets):
-                    raise PilotError('Reported changes exceed authorized local targets')
-                if targets and stage == 'shot' and output['handoff']:
-                    checked = check_local_shot_delta(
-                        state['active']['artifacts']['shot'], output, targets)
-                    metadata['verified_changed_shots'] = checked
-                if stage == 'shot' and output['handoff'] and (not output['shot_ids'] or len(set(output['shot_ids'])) != len(output['shot_ids'])):
-                    raise PilotError('Shot handoff requires unique ordered shot_ids')
-                old = state['active']
-                artifacts = copy.deepcopy(old['artifacts']) if old else {}
-                previous = artifacts.get(stage)
-                meaningful = output['handoff'] and output['proposal'].strip()
-                if previous and previous['proposal'].strip() == output['proposal'].strip():
-                    meaningful = False
-                if not meaningful:
-                    metadata['status'] = 'no-handoff'
-                else:
-                    if stage in ('beat', 'blocking'):
-                        state['pilot_B'] = None
-                    if stage == 'beat':
-                        artifacts.pop('blocking', None)
-                        artifacts.pop('shot', None)
-                        state['pending_shots'] = []
-                    if stage in ('blocking', 'shot') and 'shot' in artifacts and (stage == 'blocking' or targets):
-                        # Local Shot edits have exactly the same neighbor review
-                        # responsibility as Shot -> Blocking -> Shot repairs.
-                        order = artifacts['shot']['shot_ids']
-                        affected = set(targets or order)
-                        for index, shot in enumerate(order):
-                            if shot in targets:
-                                affected.update(order[max(0, index - 1):index + 2])
-                        state['pending_shots'] = sorted(set(state['pending_shots']) | affected)
-                    artifacts[stage] = output
-                    candidate = {'id': run_id, 'stage': stage, 'inputs': copy.deepcopy(state['inputs']),
-                                 'baseline_A': state['pilot_A']['id'] if state['pilot_A'] else None,
-                                 'artifacts': artifacts, 'content_sha256': digest(encode(artifacts)),
-                                 'scope': scope, 'targets': list(targets), 'created_at': now(),
-                                 'generator': metadata['generator'], 'approval': 'exploration-only'}
-                    atomic_json(run_dir / 'candidate.json', candidate)
-                    state.update(active=candidate, stage=stage, pilot_B=None,
-                                 phase={'intent': 'awaiting-human-A', 'shot': 'awaiting-human-B'}.get(stage, 'candidate-handoff'))
-                    state['unknown'] = list(dict.fromkeys(state['unknown'] + output['unknown']))
-                    metadata['status'] = 'candidate-saved'
-                state['thread_id'] = thread_id
+                self._apply_result(state, result, run_dir, metadata, thread_id)
             except (Exception, KeyboardInterrupt) as error:
                 metadata.update(status='quarantined', error=str(error))
                 atomic_json(run_dir / 'metadata.json', metadata)
@@ -539,6 +630,8 @@ External DS/TF/VM sections are references only; their bodies were not loaded. Re
 
 def parse_result(raw):
     result = json.loads(raw)
+    if not isinstance(result, dict):
+        raise PilotError('Result must be a JSON object')
     for key in ('proposal', 'reason', 'changes', 'impact', 'next_action'):
         if not isinstance(result.get(key), str) or not result[key].strip():
             raise PilotError(f'Result missing nonempty {key}')

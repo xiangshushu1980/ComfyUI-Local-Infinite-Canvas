@@ -1,0 +1,14 @@
+本次 smoke **在第 1 步阻塞并已停止**，未模拟成功。
+
+实际调用结果：
+
+| MCP 工具 | 结果 |
+|---|---|
+| `canvas_get_state` | 失败，`isError: true` |
+| `canvas_get_selection` | 失败，`isError: true` |
+
+两次均返回：`MCP tool call requires approval, but approval policy is never`。因此无法核验项目 ID `jarkALjlasvWIMVq3t-2E`、5 个文本节点或 Shot02 选中状态。
+
+按照你的停止条件，未执行 `prepare-stage` / `submit-stage`，未写 result JSON，未创建诊断节点，也未修改原批准 B、测试工作区或任何画布。未启动第二个 Agent、嵌套 Codex 或媒体生成。本会话已收到指定 Skill 正文，但尚未进入专业评估，未读取其阶段参考文件；没有产生新候选或任何批准。
+
+工具审批机制拒绝了上述两次只读 MCP 操作，原因是工具要求批准而当前审批策略为 `never`。需要运行环境允许这两项 MCP 读取后，才能从第 1 步重新执行；本次不能据此宣称集成验证通过。

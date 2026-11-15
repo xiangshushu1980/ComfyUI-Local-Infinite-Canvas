@@ -1,6 +1,8 @@
 """Deterministic fake-generator storage tests. No professional/model acceptance."""
 import copy
 import json
+import io
+from contextlib import redirect_stdout, redirect_stderr
 from pathlib import Path
 import subprocess
 import sys
@@ -9,7 +11,7 @@ import unittest
 from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from runtime import Pilot, PilotError, SKILL_FILES, initialize, atomic_json, codex_generate
+from runtime import Pilot, PilotError, SKILL_FILES, initialize, atomic_json, codex_generate, digest, encode
 
 
 class RuntimeTests(unittest.TestCase):
@@ -203,6 +205,16 @@ class RuntimeTests(unittest.TestCase):
         with self.assertRaises(PilotError):
             self.pilot.run('intent', generator=changing)
         self.assertEqual(self.pilot.load()['phase'], 'external change')
+
+    def test_external_packet_tool_policy_is_separate_from_nested_model(self):
+        state = self.pilot.load()
+        original = self.pilot.packet(state, 'intent', 'resume')
+        external = self.pilot.external_packet(state, 'intent', 'resume')
+        self.assertIn('Do not call tools', original)
+        self.assertNotIn('Do not call tools', external)
+        self.assertIn('Canvas MCP', external)
+        self.assertIn('never run media', external)
+        self.assertIn(self.source.read_bytes().decode('utf-8'), external)
 
     def test_dry_packet_no_files_changed(self):
         before = self.tree()
@@ -484,6 +496,220 @@ class RuntimeTests(unittest.TestCase):
         atomic_json(self.workspace/'state.json',changed)
         with self.assertRaisesRegex(PilotError, 'No matching external human pilot B'):
             self.pilot.review_packet()
+
+    def external_result(self, prepared, **values):
+        directory = Path(prepared['result_path']).parent
+        raw, _ = self.fake(**values)('', directory)
+        Path(prepared['result_path']).write_text(raw)
+        return raw
+
+    def assert_submit_quarantined(self, prepared, pattern, exception=PilotError):
+        before = (self.workspace / 'state.json').read_bytes()
+        result_path = Path(prepared['result_path'])
+        raw = result_path.read_bytes() if result_path.exists() else None
+        with self.assertRaisesRegex(exception, pattern):
+            self.pilot.submit(prepared['run_id'])
+        self.assertEqual((self.workspace / 'state.json').read_bytes(), before)
+        self.assertEqual(result_path.read_bytes() if result_path.exists() else None, raw)
+        metadata = json.loads((result_path.parent / 'metadata.json').read_text())
+        self.assertEqual(metadata['status'], 'quarantined')
+        self.assertIn('error', metadata)
+        evidence = self.tree()
+        with self.assertRaisesRegex(PilotError, 'not prepared'):
+            self.pilot.submit(prepared['run_id'])
+        self.assertEqual(evidence, self.tree())
+
+    def test_external_intent_happy_path_requires_human_A(self):
+        before = (self.workspace / 'state.json').read_bytes()
+        with patch('runtime.codex_generate', side_effect=AssertionError('No model calls')):
+            prepared = self.pilot.prepare('intent', scope='Explore intent')
+            self.assertEqual(prepared['status'], 'prepared')
+            self.assertEqual((self.workspace / 'state.json').read_bytes(), before)
+            self.assertEqual(prepared['state_sha256'], digest(encode(self.pilot.load())))
+            self.assertEqual(prepared['input_sha256'], digest(Path(prepared['input_path']).read_bytes()))
+            self.assertFalse(Path(prepared['result_path']).exists())
+            self.external_result(prepared, approved=True, actor='human', thread_id='forged')
+            submitted = self.pilot.submit(prepared['run_id'])
+        state = self.pilot.load()
+        self.assertEqual(submitted['status'], 'candidate-saved')
+        self.assertEqual(state['phase'], 'awaiting-human-A')
+        self.assertIsNone(state['pilot_A'])
+        self.assertIsNone(state['pilot_B'])
+        self.assertIsNone(state['thread_id'])
+        self.assertIsNone(submitted['model'])
+        self.assertFalse(submitted['identity_verified'])
+        self.assertEqual(state['active']['generator'], 'external-agent')
+        self.assertEqual(state['active']['approval'], 'exploration-only')
+        self.assertNotIn('approved', state['active']['artifacts']['intent'])
+        self.pilot.review('A', 'accept', self.evidence, 'human')
+        self.assertIsNotNone(self.pilot.load()['pilot_A'])
+
+    def test_external_prepare_uses_packet_gates_without_creating_runs(self):
+        before = self.tree()
+        for stage, mode in [('beat', 'resume'), ('intent', 'continue'), ('intent', 'refresh')]:
+            with self.subTest(stage=stage, mode=mode), self.assertRaises(PilotError):
+                self.pilot.prepare(stage, mode)
+        self.assertEqual(before, self.tree())
+
+    def test_external_local_revision_resets_B_and_preserves_original_snapshot(self):
+        original = self.with_realistic_shot_baseline()
+        baseline_files = self.tree()
+        b = copy.deepcopy(original['pilot_B'])
+        prepared = self.pilot.prepare('shot', targets=['Shot02'], scope='Only Shot02')
+        self.assertEqual(original, self.pilot.load())
+        revision = self.sample_shots().replace('蓝夹再次盖 K。', '蓝夹再次盖 K。林让开视线。')
+        self.external_result(prepared, proposal=revision, changed_targets=['Shot02'])
+        result = self.pilot.submit(prepared['run_id'])
+        state = self.pilot.load()
+        self.assertIsNone(state['pilot_B'])
+        self.assertEqual(state['pilot_A'], original['pilot_A'])
+        self.assertEqual(state['reviews'], original['reviews'])
+        self.assertEqual(state['pending_shots'], ['Shot01', 'Shot02', 'Shot03'])
+        self.assertEqual(result['verified_changed_shots'], ['Shot02'])
+        self.assertEqual(state['phase'], 'awaiting-human-B')
+        self.assertFalse(state['formal_WAR35_approval'])
+        for path, data in baseline_files.items():
+            if path != 'state.json':
+                self.assertEqual((self.workspace / path).read_bytes(), data, path)
+        self.assertEqual(json.loads((self.workspace / 'runs' / b['id'] / 'candidate.json').read_text()), b)
+
+    def test_external_stale_state_and_competing_preparations(self):
+        first = self.pilot.prepare('intent')
+        second = self.pilot.prepare('intent')
+        self.assertNotEqual(first['result_path'], second['result_path'])
+        self.external_result(first)
+        self.external_result(second)
+        self.pilot.submit(first['run_id'])
+        self.assert_submit_quarantined(second, 'State changed')
+
+    def test_external_tampered_input(self):
+        prepared = self.pilot.prepare('intent')
+        self.external_result(prepared)
+        path = Path(prepared['input_path'])
+        path.chmod(0o644)
+        path.write_text('tampered input')
+        self.assert_submit_quarantined(prepared, 'Frozen input SHA changed')
+
+    def test_external_duplicate_submission_preserves_all_evidence(self):
+        prepared = self.pilot.prepare('intent')
+        self.external_result(prepared)
+        self.pilot.submit(prepared['run_id'])
+        before = self.tree()
+        with self.assertRaisesRegex(PilotError, 'not prepared'):
+            self.pilot.submit(prepared['run_id'])
+        self.assertEqual(self.tree(), before)
+
+    def test_external_forbidden_and_hidden_local_target_changes(self):
+        self.with_realistic_shot_baseline()
+        cases = [dict(changed_targets=['Shot04']),
+                 dict(proposal=self.sample_shots().replace('第一镜未露 K', '第一镜露出 K'),
+                      changed_targets=['Shot02']),
+                 dict(proposal=self.sample_shots().replace('蓝夹再次盖 K。', '蓝夹盖 K。'),
+                      changed_targets=[]),
+                 dict(shot_ids=['Shot02', 'Shot01', 'Shot03', 'Shot04'])]
+        for values in cases:
+            with self.subTest(values=values):
+                prepared = self.pilot.prepare('shot', targets=['Shot02'])
+                self.external_result(prepared, **values)
+                self.assert_submit_quarantined(prepared, 'targets|Non-target|underreported|reorder')
+
+    def test_external_malformed_result(self):
+        for raw in ('not JSON', '[]', '{}', '{"proposal":true}'):
+            with self.subTest(raw=raw):
+                prepared = self.pilot.prepare('intent')
+                Path(prepared['result_path']).write_text(raw)
+                self.assert_submit_quarantined(prepared, '.', (PilotError, ValueError))
+
+    def test_external_conflict_preserves_approved_B(self):
+        self.with_realistic_shot_baseline()
+        for values in ({'hard_conflicts': ['source contradiction']}, {'upstream_change': True}):
+            with self.subTest(values=values):
+                prepared = self.pilot.prepare('shot')
+                self.external_result(prepared, **values)
+                self.assert_submit_quarantined(prepared, 'conflict/upstream')
+
+    def test_external_missing_result(self):
+        prepared = self.pilot.prepare('intent')
+        self.assert_submit_quarantined(prepared, 'Missing regular input file.*result.txt')
+
+    def test_external_authority_change_after_prepare(self):
+        for path in (self.source, self.skill / 'SKILL.md', self.workspace / 'skill/stages/intent.md'):
+            with self.subTest(path=path):
+                prepared = self.pilot.prepare('intent')
+                self.external_result(prepared)
+                before = path.read_bytes()
+                path.chmod(0o644)
+                path.write_text('changed authority')
+                self.assert_submit_quarantined(prepared, 'Authority/knowledge hash changed')
+                path.write_bytes(before)
+
+    def test_external_no_handoff_and_unchanged_proposal_preserve_B(self):
+        original = self.with_realistic_shot_baseline()
+        for values in ({'handoff': False}, {'proposal': self.sample_shots()}):
+            with self.subTest(values=values):
+                prepared = self.pilot.prepare('shot')
+                self.external_result(prepared, **values)
+                result = self.pilot.submit(prepared['run_id'])
+                self.assertEqual(result['status'], 'no-handoff')
+                self.assertFalse((Path(prepared['result_path']).parent / 'candidate.json').exists())
+                state = self.pilot.load()
+                for key in ('active', 'pilot_A', 'pilot_B', 'phase', 'pending_shots'):
+                    self.assertEqual(state[key], original[key])
+
+    def test_external_candidate_write_failure_preserves_state(self):
+        prepared = self.pilot.prepare('intent')
+        self.external_result(prepared)
+        def fail_candidate(path, value):
+            if path.name == 'candidate.json':
+                raise OSError('simulated candidate write failure')
+            return atomic_json(path, value)
+        with patch('runtime.atomic_json', side_effect=fail_candidate):
+            self.assert_submit_quarantined(prepared, 'candidate write failure', OSError)
+
+    def test_external_state_snapshot_hash_uses_exact_file_bytes(self):
+        path = self.workspace / 'state.json'
+        path.write_text(json.dumps(self.pilot.load(), separators=(',', ':')))
+        prepared = self.pilot.prepare('intent')
+        self.assertEqual(prepared['state_sha256'], digest(path.read_bytes()))
+        self.external_result(prepared)
+        path.write_bytes(path.read_bytes() + b'\n')
+        self.assert_submit_quarantined(prepared, 'State changed')
+
+    def test_external_state_commit_failure_preserves_approved_B(self):
+        self.with_realistic_shot_baseline()
+        prepared = self.pilot.prepare('shot', targets=['Shot02'])
+        revision = self.sample_shots().replace('蓝夹再次盖 K。', '蓝夹盖 K。')
+        self.external_result(prepared, proposal=revision, changed_targets=['Shot02'])
+        def fail_state(path, value):
+            if path.name == 'state.json':
+                raise OSError('simulated state write failure')
+            return atomic_json(path, value)
+        with patch('runtime.atomic_json', side_effect=fail_state):
+            self.assert_submit_quarantined(prepared, 'state write failure', OSError)
+        # An uncommitted candidate is evidence, never an active/approved pointer.
+        self.assertTrue((Path(prepared['result_path']).parent / 'candidate.json').is_file())
+
+    def test_external_cli_json_and_useful_errors_without_model(self):
+        import cli
+        def invoke(*args):
+            out, err = io.StringIO(), io.StringIO()
+            with redirect_stdout(out), redirect_stderr(err):
+                code = cli.main([*args, '--workspace', str(self.workspace)])
+            return code, out.getvalue(), err.getvalue()
+        with patch('cli.Pilot', return_value=self.pilot), patch('runtime.codex_generate', side_effect=AssertionError('No model')):
+            code, out, err = invoke('prepare-stage', '--stage', 'intent', '--mode', 'resume')
+            self.assertEqual((code, err), (0, ''))
+            prepared = json.loads(out)
+            self.external_result(prepared)
+            code, out, err = invoke('submit-stage', '--run-id', prepared['run_id'])
+            self.assertEqual((code, err), (0, ''))
+            self.assertEqual(json.loads(out)['status'], 'candidate-saved')
+            code, out, err = invoke('submit-stage', '--run-id', prepared['run_id'])
+            self.assertEqual((code, out), (2, ''))
+            self.assertIn('not prepared', err)
+            code, out, err = invoke('submit-stage', '--run-id', '../escape')
+            self.assertEqual(code, 2)
+            self.assertIn('Invalid prepared run ID', err)
 
 
 

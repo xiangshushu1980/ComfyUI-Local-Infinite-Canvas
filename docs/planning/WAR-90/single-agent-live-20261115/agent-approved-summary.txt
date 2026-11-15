@@ -1,0 +1,13 @@
+已完成真实单 Agent 集成 smoke，结果为 **`no-handoff`**，没有产生新候选或新批准。
+
+- **Skill / 模型评价**：由当前同一 Codex Agent 读取本地 `director-skill-v0-candidate`、`shot-plan.md`、`review-method.md` 和完整冻结输入，撰写新的专业诊断；未调用第二 Agent、嵌套 Codex 或模拟生成器。
+- **MCP 实际成功**：首次 `canvas_get_state`、`canvas_get_selection` 确认项目 `jarkALjlasvWIMVq3t-2E`、5 个测试文本节点及选中的 Shot02。写入前再次核验项目成功。
+- **CLI 实际成功**：`prepare-stage` 执行恰好一次；`submit-stage` 返回 `no-handoff`。Run ID：`e3e4286019a24f76ac39fe27ddb9620f`。
+- **状态核验**：`handoff=false`、`changed_targets=[]`、`pending_shots=[]`；既有 B 保持 `pilot-B-accepted`，active、pilot B 和审批记录均未变；没有本轮 `candidate.json`。原批准工作区全部 **65 个文件哈希保持一致**。
+- **Canvas 展示成功**：仅新增一个文本节点「WAR-90 单Agent导演只读诊断 · 非新B批准」，节点 ID 为 `text-1794753260894-0`，其余节点未执行修改。
+
+专业结论是：Shot02 已在文字上安排首次钥匙辨认、无意遮挡及遮挡后的让位与轻理，但**钥匙尺度、注意竞争、假 POV 和周未提前目击仍未证**。Shot02→03 必须延续同一次轻理的运动阶段，问句才能真正造成停手；静态姿势一致不足以证明连续性。Shot03→04 的文字边界保留了发现后再伸手、起取和单次交付的顺序。本轮未发现确定的文本硬冲突，也未改稿。
+
+完整诊断已保存为 [result.txt](/home/sean/projects/canvas-lab/docs/planning/WAR-90/pilot-D-canvas-single-agent-live-20261115/runs/e3e4286019a24f76ac39fe27ddb9620f/result.txt)。没有收到新真人反馈或审阅；媒体、几何与观众效果继续为 unknown。未运行媒体生成、GPU、Blender、ComfyUI、`run-stage` 或 HTTP bridge。`formal_WAR35_approval=false`。
+
+Runtime 将本轮记录为 `external-agent`，其 `model`、`thread_id` 为 null，`identity_verified=false`：实际单 Agent 工具链已执行，但 CLI 本身不提供模型或线程身份认证。

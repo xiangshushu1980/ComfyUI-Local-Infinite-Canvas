@@ -14,7 +14,7 @@ def main(argv=None):
     init.add_argument('--workspace', required=True)
     init.add_argument('--source', required=True)
     init.add_argument('--skill', required=True, help='Seven-file directory or its SKILL.md')
-    for name in ('run-stage', 'resume-pack'):
+    for name in ('run-stage', 'resume-pack', 'prepare-stage'):
         stage = commands.add_parser(name)
         stage.add_argument('--workspace', required=True)
         stage.add_argument('--stage', choices=('intent', 'beat', 'blocking', 'shot'), required=True)
@@ -23,6 +23,9 @@ def main(argv=None):
         stage.add_argument('--targets', nargs='*', default=[])
         if name == 'run-stage':
             stage.add_argument('--dry-run', action='store_true')
+    submit = commands.add_parser('submit-stage')
+    submit.add_argument('--workspace', required=True)
+    submit.add_argument('--run-id', required=True)
     review = commands.add_parser('record-review')
     review.add_argument('--workspace', required=True)
     review.add_argument('--checkpoint', choices=('A', 'B'), required=True)
@@ -45,6 +48,10 @@ def main(argv=None):
                 result = pilot.review_packet()
             elif args.command == 'record-review':
                 result = pilot.review(args.checkpoint, args.decision, args.evidence_file, args.actor)
+            elif args.command == 'prepare-stage':
+                result = pilot.prepare(args.stage, args.mode, args.scope, args.targets)
+            elif args.command == 'submit-stage':
+                result = pilot.submit(args.run_id)
             elif args.command == 'resume-pack' or args.dry_run:
                 print(pilot.packet(pilot.load(), args.stage, args.mode, args.scope, args.targets), end='')
                 return 0

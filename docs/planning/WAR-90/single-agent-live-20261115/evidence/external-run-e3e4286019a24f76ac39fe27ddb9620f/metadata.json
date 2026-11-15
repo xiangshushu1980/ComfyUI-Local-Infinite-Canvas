@@ -1,0 +1,25 @@
+{
+  "id": "e3e4286019a24f76ac39fe27ddb9620f",
+  "run_id": "e3e4286019a24f76ac39fe27ddb9620f",
+  "started_at": "2026-11-15T14:32:20.861133+00:00",
+  "stage": "shot",
+  "mode": "resume",
+  "scope": "已批准 B 的 Shot02 及邻镜只读专业检查；暂无真人新修改意见；不提交改稿；保留 B 与所有未证风险",
+  "targets": [
+    "Shot02"
+  ],
+  "input_path": "/home/sean/projects/canvas-lab/docs/planning/WAR-90/pilot-D-canvas-single-agent-live-20261115/runs/e3e4286019a24f76ac39fe27ddb9620f/input.txt",
+  "result_path": "/home/sean/projects/canvas-lab/docs/planning/WAR-90/pilot-D-canvas-single-agent-live-20261115/runs/e3e4286019a24f76ac39fe27ddb9620f/result.txt",
+  "input_sha256": "c97c0c3a53b3d2bb501a19210fa003e95c18a8606e8e46e40e618b8d689c5492",
+  "prompt_bytes": 81307,
+  "state_sha256": "23e78d5994ed18ea02d59c2c3eb588f36cc41d3b495b81009713ec7570d7e4b7",
+  "context_profile": "war90-local-compact-v1",
+  "generator": "external-agent",
+  "model": null,
+  "thread_id": null,
+  "identity_verified": false,
+  "status": "no-handoff",
+  "provenance": "Operator-supplied external agent result; model/thread identity unauthenticated",
+  "result_sha256": "a86462d862fa0b9f2e42959e62321415d1e759774d1c617ec2dcabe9866b688a",
+  "finished_at": "2026-11-15T14:33:46.320564+00:00"
+}
