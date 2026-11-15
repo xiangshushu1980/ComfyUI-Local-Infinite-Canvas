@@ -1,0 +1,10 @@
+{
+  "role": "reviewer-space",
+  "model": "gpt-6-astra",
+  "effort": "medium",
+  "exit": 0,
+  "duration_s": 41.7,
+  "start_and_end": "2026-11-15T06:47:47.359087+00:00",
+  "prompt_sha256": "1e867302a3b0a51789defc840f85d8e80097a80fdbf3b8662f371001ae903f5a",
+  "result_sha256": "159c43dbae546742f0d5923287254847d9c72aa84f186fcd483096d5219bf16f"
+}

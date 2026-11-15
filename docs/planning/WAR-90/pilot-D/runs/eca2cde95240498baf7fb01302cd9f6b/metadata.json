@@ -1,0 +1,20 @@
+{
+  "id": "eca2cde95240498baf7fb01302cd9f6b",
+  "started_at": "2026-11-15T06:39:35.648146+00:00",
+  "stage": "blocking",
+  "mode": "resume",
+  "scope": "WAR-90 BLOCKING exploration, A human pilot approved and BEAT candidate from active single branch (six beats are narrative, NOT six shots). Deliver a coherent executable actor/prop movement route across all six beats, and state at each instant what is physically visible, each character's actual attention/knowledge, and what viewers need to read. KEY DETAIL FIRST: the silver key at its fixed table position must be readable to viewer when files move, then covered by blue folder placed naturally ON FILE STACK, without moving key; this geometry is a conditional staging hypothesis, not verified dimensions. Zhou enters from door side, only notices folder's covered tabletop POSITION but never earlier key; Lin not aware until he removes folder second time. Preserve one silver key, exact original spoken lines/order, Lin natural organizing, momentary embarrassed silence only AFTER he sees key, Zhou extends RIGHT hand and receives key exactly once, Zhou walks toward door and Lin stays. Do not invent north/east coordinates, camera/shot count, actor memories, added events or claim actual tested sightlines. Explicit physical intermediate handoff states and at least one credible alternate staging with costs; if any geometry cannot be guaranteed mark unknown, not fixed fact. User B not yet approved.",
+  "targets": [],
+  "model": "gpt-6-astra",
+  "reasoning_effort": "medium",
+  "input_sha256": "b251721e2f78a1559dabdcf93a2fb934a1ec68045dc7b326e53a64c414dcd0c5",
+  "generator": "codex-cli",
+  "status": "candidate-saved",
+  "result_sha256": "b358ae440fbbafc17cb275c50b95b45a7bd7a5fbf1dea0c439d17881a26e802e",
+  "thread_id": "01a1ddee-c891-7743-8f16-c0bf13b494ef",
+  "finished_at": "2026-11-15T06:42:27.307426+00:00",
+  "input.txt_sha256": "b251721e2f78a1559dabdcf93a2fb934a1ec68045dc7b326e53a64c414dcd0c5",
+  "result.txt_sha256": "b358ae440fbbafc17cb275c50b95b45a7bd7a5fbf1dea0c439d17881a26e802e",
+  "events.jsonl_sha256": "1d8cf3416c928882e19cb7b5fbd97292fc7e6f9a2a7ea1515a2c606e1593f586",
+  "stderr.txt_sha256": "b279e9c267cfb3f1fc2a0510a08f65e782843033914812b2da49d178996ab3f7"
+}

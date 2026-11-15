@@ -1,0 +1,10 @@
+{
+  "started_at": "2026-11-15T06:47:05.610899+00:00",
+  "source_sha256": "65b8a2f83cefc2281879fb254d3ee25dfd68d72e7cd0d811a2afbade5c1e165d",
+  "B_candidate_id": "d23b8bdab90f43ef8ff0098fb8021f78",
+  "B_candidate_content_sha256": "4c20f10eb45a1f8dcd47408ad45c058f6a2c39fdc7ff9a0937adb17cf594324d",
+  "A_pilot_id": "68d2717b905641d5a872550a896abcfc",
+  "packet_sha256": "a833595e1296abac633e7503527642f534325500222e023396d826aeb68abb73",
+  "reviewers": "story Luna Low; directing Luna Medium; complex geometry Astra Medium; lead Luna Medium",
+  "B_user_approval_at_start": null
+}

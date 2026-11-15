@@ -1,0 +1,49 @@
+{
+  "ended_at": "2026-11-15T06:48:14.595759+00:00",
+  "complete": true,
+  "reviewers": [
+    {
+      "role": "reviewer-story",
+      "model": "gpt-6-luna",
+      "effort": "low",
+      "exit": 0,
+      "duration_s": 20.4,
+      "start_and_end": "2026-11-15T06:47:26.006457+00:00",
+      "prompt_sha256": "ea5b1b2692d5882c8ef5688eb91c80b1290141aab5b700fd7ac6ca127248b2cc",
+      "result_sha256": "437b2bef91fa0254b585c1186a8b526f3a950b7395f09ecd17d97808c2f41b65"
+    },
+    {
+      "role": "reviewer-craft",
+      "model": "gpt-6-luna",
+      "effort": "medium",
+      "exit": 0,
+      "duration_s": 27.2,
+      "start_and_end": "2026-11-15T06:47:32.772762+00:00",
+      "prompt_sha256": "28e4cd6698d5e5247e8e54777b707e74e57ebb940f38c7e4dade0ce74c367fcc",
+      "result_sha256": "eee4d0c2f17b287476a58d0586d071c8b3466a8c299b07ca35cfc97f5aefab51"
+    },
+    {
+      "role": "reviewer-space",
+      "model": "gpt-6-astra",
+      "effort": "medium",
+      "exit": 0,
+      "duration_s": 41.7,
+      "start_and_end": "2026-11-15T06:47:47.359087+00:00",
+      "prompt_sha256": "1e867302a3b0a51789defc840f85d8e80097a80fdbf3b8662f371001ae903f5a",
+      "result_sha256": "159c43dbae546742f0d5923287254847d9c72aa84f186fcd483096d5219bf16f"
+    }
+  ],
+  "lead": {
+    "role": "main-reviewer",
+    "model": "gpt-6-luna",
+    "effort": "medium",
+    "exit": 0,
+    "duration_s": 27.2,
+    "start_and_end": "2026-11-15T06:48:14.580281+00:00",
+    "prompt_sha256": "5ccf579eb3466bcc9b32318246be3558a5141b379a14c3e1917e5c2742e676d6",
+    "result_sha256": "4117b3f8545a117272da914ec5828c064d8ee513ebf27e65601fcb3baf50cd38"
+  },
+  "B_candidate_id": "d23b8bdab90f43ef8ff0098fb8021f78",
+  "B_candidate_content_sha256": "4c20f10eb45a1f8dcd47408ad45c058f6a2c39fdc7ff9a0937adb17cf594324d",
+  "user_B_still_unapproved": true
+}

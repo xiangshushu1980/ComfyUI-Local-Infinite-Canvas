@@ -1,0 +1,20 @@
+{
+  "id": "bd5a44cc27324852a8efdaacc7fc5e82",
+  "started_at": "2026-11-15T06:36:23.953181+00:00",
+  "stage": "beat",
+  "mode": "resume",
+  "scope": "WAR-90 BEAT DESIGN, actual user-approved pilot Intent A=68d2717b905641d5a872550a896abcfc, priority key detail guides viewer attention. Keep story original verbatim and four dialogues order. Design concise narrative Beats by meaningful change in viewer knowledge/character actions (not fixed shot count). Explicitly carry key conceal -> first reveal while Lin unaware -> Lin unintentionally covers with BLUE folder -> Zhou only sees covered location anomaly, not key -> Lin discovers after removing folder, short embarrassed pause -> one key transfers to Zhou RIGHT hand, exits to door while Lin stays. Distinguish confirmed facts vs proposed time/readability assumptions; no new events or hard 8s limit, no frozen precise shot timing. Maintain naturally continuous action and visual opportunities, state story/knowledge transition and unknown. This is stage exploration, no B approval.",
+  "targets": [],
+  "model": "gpt-6-astra",
+  "reasoning_effort": "medium",
+  "input_sha256": "6541753477d27e38984d5684e26172ac9f37f167d232432ae5f22fa945b1166c",
+  "generator": "codex-cli",
+  "status": "candidate-saved",
+  "result_sha256": "5065a80e33e7cdb905234fb43e21508109687eae47676a300e79eb774a6a6fc5",
+  "thread_id": "01a1ddeb-dc37-7b01-b60c-0a4abdb208b0",
+  "finished_at": "2026-11-15T06:38:26.641400+00:00",
+  "input.txt_sha256": "6541753477d27e38984d5684e26172ac9f37f167d232432ae5f22fa945b1166c",
+  "result.txt_sha256": "5065a80e33e7cdb905234fb43e21508109687eae47676a300e79eb774a6a6fc5",
+  "events.jsonl_sha256": "47305d6a3fd1b3fa27c52a4d21e8bba9caf10c89b40fd4b5eaf2d10f5033db71",
+  "stderr.txt_sha256": "e7aa5b0d77f107311ffc572ef01de72bab8b73f069deb4267a0e585994db1de4"
+}

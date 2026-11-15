@@ -1,0 +1,1 @@
+WARNING: proceeding, even though we could not create PATH aliases: Refusing to create helper binaries under temporary dir "/home/sean/projects/canvas-lab/docs/planning/WAR-90/pilot-D/runs/d23b8bdab90f43ef8ff0098fb8021f78/.codex-home" (codex_home: AbsolutePathBuf("/home/sean/projects/canvas-lab/docs/planning/WAR-90/pilot-D/runs/d23b8bdab90f43ef8ff0098fb8021f78/.codex-home"))

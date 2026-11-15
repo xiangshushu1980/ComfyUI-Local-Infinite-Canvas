@@ -1,0 +1,20 @@
+{
+  "id": "d23b8bdab90f43ef8ff0098fb8021f78",
+  "started_at": "2026-11-15T06:43:03.587925+00:00",
+  "stage": "shot",
+  "mode": "resume",
+  "scope": "WAR-90 SHOT PLAN: build whole-scene candidate for user B from the approved key-detail-first Intent A, the current six narrative Beats, and conditional selected Blocking route with fixed key K, file stack relocated beside K and blue folder supported by stack overlapping K. Choose shots freely from viewer-information tasks, NOT one shot per Beat; label shots with unique IDs Shot01 etc and preserve ordered shot_ids. Each Shot includes viewer attention task, key visual state/cover, characters' actual eye-lines and knowledge, camera relative relation (avoid falsely treating inserted objective key detail as Lin/Zhou POV), foreground/environment cues, natural entry/exit action, cut transitions and adjacent state, any exact dialogue/audio, conditional time opportunity (no frozen seconds), action/hand propagation. Whole-scene two-way coverage must explicitly account all 4 original dialogue lines, source action facts, key first reveal Lin unaware, Lin unintentionally re-cover by blue folder supported on file stack, Zhou only sees folder covered position, second uncover/brief embarrassment, Zhou right-hand accepts single key from Lin one time then walks toward door leaving Lin at table. Preserve natural uninterrupted gesture, avoid repeated take/transfer, ensure perceptual first key readable, folder position causal, no invented events. Geometry and audience readability unknown; preserve B gate and no media claims. If Shot demands changing Blocking or higher story facts, signal upstream_change (don't claim repaired); propose credible alternatives with costs and record unresolved risks.",
+  "targets": [],
+  "model": "gpt-6-astra",
+  "reasoning_effort": "medium",
+  "input_sha256": "351a27966f30f9e991f33bf6175efe568d23f5c30fec80aa9e19d36e7effaf56",
+  "generator": "codex-cli",
+  "status": "candidate-saved",
+  "result_sha256": "57665d7e94b5a004c6d864940fc17f9c86595d58dd94e633f0c20d54e15e9e6e",
+  "thread_id": "01a1ddf1-f4a9-7000-b075-497f875d9345",
+  "finished_at": "2026-11-15T06:46:37.668344+00:00",
+  "input.txt_sha256": "351a27966f30f9e991f33bf6175efe568d23f5c30fec80aa9e19d36e7effaf56",
+  "result.txt_sha256": "57665d7e94b5a004c6d864940fc17f9c86595d58dd94e633f0c20d54e15e9e6e",
+  "events.jsonl_sha256": "7075d2b1c2210b6c3ebe2d97b7f6070c99783a5ad7e5213f6f6fd624e893571a",
+  "stderr.txt_sha256": "dad8d0f96d9560b1de8471ae782566d01e8a7e71ebcdafca7789332c64359a0b"
+}
