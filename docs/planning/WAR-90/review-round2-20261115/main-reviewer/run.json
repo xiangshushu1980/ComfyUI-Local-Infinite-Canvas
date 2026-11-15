@@ -1,0 +1,10 @@
+{
+  "role": "main-reviewer",
+  "model": "gpt-6-luna",
+  "effort": "medium",
+  "exit": 0,
+  "seconds": 39.4,
+  "prompt_sha256": "b6f7e888225b118d08c496d66e86db54bbd39f2c7eaa8ed028183f6a288ef915",
+  "result_sha256": "2b4bed788437e13cc11ea6cdec64b40c0fd13c12c1bd17f80baf9f5f166f0e26",
+  "ended_at": "2026-11-15T06:06:29.644007+00:00"
+}

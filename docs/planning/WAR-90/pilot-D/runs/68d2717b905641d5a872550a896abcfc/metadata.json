@@ -1,0 +1,20 @@
+{
+  "id": "68d2717b905641d5a872550a896abcfc",
+  "started_at": "2026-11-15T06:03:31.276393+00:00",
+  "stage": "intent",
+  "mode": "resume",
+  "scope": "USER ACTUAL A-REVISION REQUEST (NOT APPROVAL): WAR-90《错过的钥匙》的 A 导演意图需要修改：我更希望以钥匙细节引导观众观看。请先局部修订，再交我审阅。 External immutable evidence docs/planning/WAR-90/user-feedback-A-revision-20261115.md SHA256=279884d4449fa39ebf3a0b10636cf2d8a3842f23f29ff8a7c665cabf28f6e782. This is a local Intent revision of ACTIVE UNAPPROVED A candidate (not a fresh story, not permission to change Story Basis). Reprioritize from shared-action-first to KEY-DETAIL-FIRST viewer guidance, explicitly explain how visible key detail earns attention and then folder accidentally re-covers it. Preserve characters' ignorance, action causality, dialogue, story facts, natural acting, one key/one transfer, no fixed shot count or premature media verification. Return full revised Intent and CONCRETE DELTA vs active prior candidate; note unchanged facts and genuine alternative cost. Keep pilot A pending actual user review; do NOT approve A or proceed Beat.",
+  "targets": [],
+  "model": "gpt-6-astra",
+  "reasoning_effort": "medium",
+  "input_sha256": "02b7556381c2d58b67d2028487e18c152cfca203e3d6003bcedb8a7bd5040fbd",
+  "generator": "codex-cli",
+  "status": "candidate-saved",
+  "result_sha256": "d7ab9dcafc200ca12e2fa3550d3a60de87304a66a8d8929663814bf08def05fe",
+  "thread_id": "01a1ddcd-c1d5-7172-a35d-126e30ffc3fd",
+  "finished_at": "2026-11-15T06:05:12.454409+00:00",
+  "input.txt_sha256": "02b7556381c2d58b67d2028487e18c152cfca203e3d6003bcedb8a7bd5040fbd",
+  "result.txt_sha256": "d7ab9dcafc200ca12e2fa3550d3a60de87304a66a8d8929663814bf08def05fe",
+  "events.jsonl_sha256": "07f1a0559d7a7aaddf069ef8bae03268d4a8a5125c9e5e9084d664a7f5516888",
+  "stderr.txt_sha256": "7a4c58a03ac697a4fbc93128087c4393f4a327519d7c4a854f6f66a056b0563a"
+}

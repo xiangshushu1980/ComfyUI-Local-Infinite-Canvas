@@ -1,0 +1,7 @@
+{
+  "began_at": "2026-11-15T06:05:28.900434+00:00",
+  "source_sha256": "65b8a2f83cefc2281879fb254d3ee25dfd68d72e7cd0d811a2afbade5c1e165d",
+  "candidate_sha256": "d7ab9dcafc200ca12e2fa3550d3a60de87304a66a8d8929663814bf08def05fe",
+  "review_topology": "2 isolated Luna Low, 1 Luna Medium lead",
+  "pilot_A_on_start": null
+}

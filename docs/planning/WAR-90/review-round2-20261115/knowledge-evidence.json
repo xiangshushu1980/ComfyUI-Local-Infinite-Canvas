@@ -1,0 +1,35 @@
+{
+  "source_input": "docs/planning/WAR-90/pilot-D/runs/68d2717b905641d5a872550a896abcfc/input.txt",
+  "input_sha256": "02b7556381c2d58b67d2028487e18c152cfca203e3d6003bcedb8a7bd5040fbd",
+  "knowledge_entries": [
+    {
+      "entry": "SKILL.md",
+      "in_prompt": true,
+      "content_equals_frozen_file": true,
+      "sha256": "3eee7d6f3c3032fc43e97b86a9606f8ae77943fa377aa2f56e2770c2b76e8676",
+      "bytes": 3258
+    },
+    {
+      "entry": "stages/intent.md",
+      "in_prompt": true,
+      "content_equals_frozen_file": true,
+      "sha256": "ac07ecb95cbd511888911a0f85aa08f5fee2824cbf8e23749ef0d6ffec065a38",
+      "bytes": 2242
+    },
+    {
+      "entry": "references/knowledge-index.md",
+      "in_prompt": true,
+      "content_equals_frozen_file": true,
+      "sha256": "4d8edcb664659d78f897aa7baa8c1f275a57b5ff128ab433c95745b32a5e2519",
+      "bytes": 6799
+    },
+    {
+      "entry": "references/review-method.md",
+      "in_prompt": true,
+      "content_equals_frozen_file": true,
+      "sha256": "72b23f163fe1fdea6a547d5b47f39392ba0b9b63b814a7a285db4a7df0e88e8e",
+      "bytes": 2623
+    }
+  ],
+  "distinct_terms": "in-prompt knowledge-index/review-method full bodies versus EXTERNAL director sources referenced by index (not loaded)"
+}
