@@ -1,0 +1,89 @@
+{
+  "phase": "isolated-native-compact-shot-readonly",
+  "baseline_sha256": "23e78d5994ed18ea02d59c2c3eb588f36cc41d3b495b81009713ec7570d7e4b7",
+  "source_skill_sha256": {
+    "SKILL.md": "3eee7d6f3c3032fc43e97b86a9606f8ae77943fa377aa2f56e2770c2b76e8676",
+    "references/knowledge-index.md": "4d8edcb664659d78f897aa7baa8c1f275a57b5ff128ab433c95745b32a5e2519",
+    "references/review-method.md": "72b23f163fe1fdea6a547d5b47f39392ba0b9b63b814a7a285db4a7df0e88e8e",
+    "stages/beat.md": "6e81d45db1d0249cf33a200135f0ab790a49b65d92c7d036b0e253ac978121a1",
+    "stages/blocking.md": "2663d5acc282d636400539aecc643871c26c12867c5d480d9c02793ad45c5563",
+    "stages/intent.md": "ac07ecb95cbd511888911a0f85aa08f5fee2824cbf8e23749ef0d6ffec065a38",
+    "stages/shot-plan.md": "fa0c7d4cc39fdf6b5df9c8a0e3e9b0ee6eafa921142b5a5f07efcdc8cf989476"
+  },
+  "native_http_agent": true,
+  "native_thread": true,
+  "native_turn": true,
+  "native_cli_execution_proven": true,
+  "native_canvas_mcp_read_proven": true,
+  "production_untouched": true,
+  "production_services_started": false,
+  "model_execution_mode": "isolated native Codex, existing authorized CODEX_HOME; no credentials copied",
+  "not_approval_test": true,
+  "skill_discovered_by_http": true,
+  "skill_errors_count": 0,
+  "mcp_config_summary": [
+    {
+      "name": "blender",
+      "effective_enabled": false,
+      "overridden": true
+    },
+    {
+      "name": "hindsight-direct",
+      "effective_enabled": false,
+      "overridden": true
+    },
+    {
+      "name": "cua_repl",
+      "effective_enabled": false,
+      "overridden": true
+    },
+    {
+      "name": "infinite-canvas",
+      "effective_enabled": true,
+      "overridden": false
+    },
+    {
+      "name": "codegraph",
+      "effective_enabled": false,
+      "overridden": true
+    },
+    {
+      "name": "hindsight",
+      "effective_enabled": false,
+      "overridden": true
+    }
+  ],
+  "undesired_effective_mcp_enabled": [],
+  "private_project_id_verified": true,
+  "test_canvas_nodes_before_model": 5,
+  "test_canvas_selected": "Shot02",
+  "thread_origin": "auto_created_by_isolated_web_client",
+  "thread_id": "01a1e30e-e29e-7ee3-b702-767a8a4170c0",
+  "thread_conversation_status": "ready",
+  "thread_mcp_status_names": [
+    "codex_apps",
+    "infinite-canvas"
+  ],
+  "turn_http_code": 200,
+  "busy_observed": true,
+  "busy_finished": true,
+  "conversation_final_status": "ready",
+  "history_messages_count": 8,
+  "settled_turn_ids_count": 1,
+  "private_canvas_unchanged": true,
+  "private_selection_unchanged": true,
+  "history_mentions_review_shot": true,
+  "history_mentions_canvas_get_state": true,
+  "history_mentions_canvas_get_selection": true,
+  "history_has_hindsight_tool_call": false,
+  "native_review_shot_command_observed": 1,
+  "review_shot_completed_zero_exit": true,
+  "completed_native_mcp_tool_titles": [
+    "读取画布",
+    "读取选区"
+  ],
+  "native_turn_settled_proven": true,
+  "read_only_end_to_end_pass": true,
+  "private_test_cleaned": true,
+  "duration_s": 42.43
+}
