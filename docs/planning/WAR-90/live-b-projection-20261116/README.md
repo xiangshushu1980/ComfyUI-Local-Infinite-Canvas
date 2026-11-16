@@ -60,3 +60,12 @@ Web 正式路由为 /canvas/:id。项目状态由浏览器本地 Zustand persist
 - 当前Agent clients=2。19:23:16新客户端短断并于19:23:17重连；它最新呈现的是页面非画布（API canvas_get_state={hasCanvas:false, clientId:新客户端}），不能对它进行任何Canvas编辑。未激活/切换客户端、未重定向浏览器、未写项目。
 - 辅助原因：本地 Zustand persist 持久化键 infinite-canvas:canvas_store，底层 localforage(name infinite-canvas, storeName app_state)；项目只有浏览器端权威数据。即便来自同一origin，两个已打开的标签页可能存在未同步的内存状态，不能只凭两个客户端就断言是两个不同origin。
 - 恢复操作：先找回约18:08在用的原窗口，读取它地址栏中的scheme/host/port，直接进入相同origin加固定ID的 /canvas/mrEXrMQoY-2ef3U6NsHtj；若仍重定向列表，先检查原浏览器 profile 的本地项目列表是否含该ID，并避免新建空项目/删除缓存。原窗口URL尚未读到，因此不发送无条件可用的绝对链接。
+
+
+## 2026-11-16 19:25｜根因正式核实：127.0.0.1 与 localhost Origin 隔离
+
+用户证实其两个入口分别为 http://127.0.0.1:3000/canvas 和 http://localhost:3000/canvas，画布列表不一致。Eric 上只读实测两个 Host 的 /canvas、/src/stores/canvas/use-canvas-store.ts、/src/lib/localforage-storage.ts 的 HTTP 状态均200，且三个资源各自的 SHA256 在两个 Host 下逐字节相同；只有一个 Web Vite 服务监听127.0.0.1:3000（PID7295）。因此不是本机两个不同 Canvas Lab Web 实例。
+
+**已证原因**：浏览器 Origin 由 scheme+host+port 组成，http://127.0.0.1:3000 与 http://localhost:3000 属于不同 Origin，即使指向同一服务器，浏览器也按 Origin 隔离 IndexedDB/localForage/localStorage。Canvas Lab 的项目列表使用 Zustand persist，底层 localforage(name=infinite-canvas, storeName=app_state)，数据键 infinite-canvas:canvas_store；当前没有自动跨Origin迁移。不同画布列表是按此架构的预期行为。原来两个同名但不同ID的“无限画布1”并非同一个项目。可直接将之前四 Shot 的确切路径 /canvas/mrEXrMQoY-2ef3U6NsHtj 附加到原browser的 localhost:3000 Origin，避免 mode=recent。客户端属于哪个 Origin 尚未从浏览器开发者工具直接读取，若原项目被重定向仍须查同一浏览器profile/本地数据，不能宣称已经恢复。
+
+**短期建议**：为 WAR-90 明确一个规范 Web Origin（优先沿用最初承载四 Shot 的 localhost:3000），后续提示、文档、脚本和启动器始终使用它；不要在未经迁移前随意把已有127.0.0.1画布库删除或覆盖。两个Origin的数据可能都各有真实资产。长期设计可考虑统一入口、浏览器Origin差异提示、项目导入/导出迁移或服务端项目仓库，且Agent操作前必须固定projectId+clientId/版本，避免仅凭同名标题操作。
