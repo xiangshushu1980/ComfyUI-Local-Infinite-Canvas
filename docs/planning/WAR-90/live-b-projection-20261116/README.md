@@ -38,3 +38,14 @@
 - evidence.sha256：此目录必要研究材料的文件指纹。
 
 下一步在用户实际画布选中 Shot02，继续使用正式 Canvas Agent 与用户审阅镜头观看目标、注意力及钥匙可读风险，仍不自动修订 B 或生成媒体。
+
+
+## 2026-11-16 19:19｜用户报告找不到刚才画布：同名项目与双客户端
+
+只读诊断：Agent/Web 正常、HTTP 200，Agent clients=2、未执行 Codex turn。日志确认19:14:22新客户端 D1l1a2E-C7WZ3-bJch_zN 连接；原四镜投影客户端04wsd618VDFdUWb74oZZI 自16:54:06保持连接，未见断开记录，原标签页/窗口可能仍开着。
+
+当前 active 客户端的 canvas_get_state 返回 title“无限画布1”，但 projectId=YDOXJBsX1hiZuK58rfmdy，节点数7，不含 Shot01–04。此客户端 canvas_list_projects 仅有两个项目：无限画布3（ID VBDrDdBK9cou6_nYrGCW3，0节点）、无限画布1（ID YDOXJBsX1hiZuK58rfmdy，7节点），不含先前已操作项目 ID mrEXrMQoY-2ef3U6NsHtj。不能仅凭名称选择项目，不应往当前同名画布写四镜。
+
+Web 正式路由为 /canvas/:id。项目状态由浏览器本地 Zustand persist + localforage/IndexedDB 保存，存储键 infinite-canvas:canvas_store。同名不同 ID 可能源自不同浏览器配置、不同 URL origin，或多标签页状态未同步；哪一种尚未确认。HTTP GET /canvas/mrEXrMQoY-2ef3U6NsHtj 得到200只证明前端 SPA 路由存在，不能证明当前浏览器本地有该项目。
+
+找回建议：优先切回19:14之前的原浏览器标签页/窗口，并使用它原有的协议、地址、端口进入 /canvas/mrEXrMQoY-2ef3U6NsHtj；若看不到，检查协议、域名、端口及 browser profile 差异。没有调用 activate/navigate，没有移动或重建节点，没有验证原项目刷新后的持久恢复。后续产品工作须显示精确 projectId/origin/active-client 并设计请求级写目标绑定，归 WAR-37。
