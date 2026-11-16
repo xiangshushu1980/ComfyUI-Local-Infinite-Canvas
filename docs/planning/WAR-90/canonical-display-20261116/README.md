@@ -29,3 +29,13 @@ Gateway unit static，canvas-lab.target disabled；本次当前运行不代表�
 
 - 旧画布和浏览器数据保持原样。旧 Origin 数据迁移原型已按用户决定撤销，不再开发。
 - 下一步在规范画布真实选中的 Shot02 上进行 Director Skill/Canvas Agent 导演审阅：观看目标、钥匙瞬间显露和连续性。B 仍是 Runtime 权威，文本展示不代表最终视觉验证完成。
+
+## 2026-11-16｜原生 Canvas Agent 的 Shot02 只读导演审阅
+
+- 已按用户“直接建立画布完成后续操作”授权，继续在真实已连接的 canvas.localhost 画布中触发一次 Canvas Agent 原生 Codex turn；使用已启用的 director-skill-v0-candidate，模型 gpt-6-luna / medium。
+- 提交前再次核对唯一连接、Project ID 2FwEbySI5PYe7d6BL4pES、4个节点、已选 Shot02 text-1794832120997-1、无其他运行 turn。原生 Agent 确实调用 infinite-canvas MCP 的 canvas_get_state / canvas_get_selection，并执行 Director Runtime CLI review-shot --shot-id Shot02，返回已批准 B ID b7b4fd156b884907b2431b6b1e0d9960。
+- turn HTTP 200 且18.5秒正常结束，原生 Assistant 最终解释：应让观众先认出银色钥匙，随后理解蓝色文件夹无意遮住钥匙；风险一为钥匙细节显露窗口太短或其他动作过载导致先知效果不成立；风险二为林遮挡周的双眼视线，同时镜头又允许观众看清钥匙，几何与纸叠承托关系尚未得到实际验证。
+- 文字画布只验证四镜计划可被 Agent 正确读取和解释，**不**证明视觉质量、空间遮挡、人物视线和镜头剪辑效果。Agent 提出审阅问题并停下，没有擅自创作媒体或修改 B。
+- 实测审阅前后 projectId、4节点、Shot02 选区保持完全相同；Agent 恢复 idle，批准 B SHA 再核未变；Gateway 仍 status=ok 且 comfy.reachable=true。
+- 证据：shot02-native-review-audit.json，保存原生 Assistant 返回的简要审阅结论及工具调用标题，不含连接凭据。
+- 下一停点：用户在画布上查看 Shot02 的文本表达，判断钥匙“观众先看见→周看不见→文件夹又遮住”是否成立。无需先生成 H3 视频，也未授权修改新的导演计划。

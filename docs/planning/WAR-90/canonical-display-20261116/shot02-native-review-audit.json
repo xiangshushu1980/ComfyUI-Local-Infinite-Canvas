@@ -1,0 +1,41 @@
+{
+  "purpose": "read-only Shot02 interaction using native Canvas Agent + Director Skill",
+  "expected_project": "2FwEbySI5PYe7d6BL4pES",
+  "expected_client": "jeUNwaV-t0QApaAKC2pMh",
+  "expected_shot2_node": "text-1794832120997-1",
+  "accepted": true,
+  "done": true,
+  "preflight_pass": true,
+  "turn_submit_called": true,
+  "turn_http_code": 200,
+  "duration_s": 18.5,
+  "final_agent_conversation_status": "ready",
+  "post_canvas": {
+    "project_id": "2FwEbySI5PYe7d6BL4pES",
+    "nodes": 4,
+    "selected_ids": [
+      "text-1794832120997-1"
+    ]
+  },
+  "no_canvas_count_or_selection_change": true,
+  "thread_fetch_http_code": 200,
+  "history_message_count": 36,
+  "assistant_messages": [
+    "我会先用 Canvas MCP 核对指定画布与 Shot02 选区；匹配后再只读运行 Runtime CLI，并按 Skill 的 Shot Plan 与 Review 方法给出简短审阅。",
+    "画布核对通过：项目 ID 为 `2FwEbySI5PYe7d6BL4pES`，标题是“无限画布 1”；选区映射到 `text-1794832120997-1`，标题为 Shot02 展示副本。Runtime 只读 CLI 返回 Shot02 全文，批准 B ID 为 `b7b4fd156b884907b2431b6b1e0d9960`。本轮没有改动画布。\n\n1. **观众首先应注意钥匙。**纸边退开后，观众应有机会辨认银色钥匙；随后沿同一桌面位置看清蓝色文件夹落在移开的文件叠上，并无意遮住钥匙。Shot02 的文本目标是在显露与遮挡完成后，才把注意转向林继续整理。\n\n2. **两个主要表达风险：**\n   - **钥匙显露不够可读：**细节镜头还要同时呈现纸叠承托、蓝夹覆盖过程和后续手部动作；若钥匙太小或注意被动作分散，观众可能来不及认出它，先知效果便不成立。\n   - **视线与空间连续性不成立：**林的身体需要挡住周看见钥匙，同时机位仍能看清；文件夹还必须由移开的纸叠承托并遮住原位置的钥匙。文字规定了这些关系，但没有实际场景几何证明它们可同时实现。\n\n3. **文字画布能证明什么、不能证明什么：**当前画布上有四个镜头的文本展示副本，Shot02 文本写明观看任务、动作顺序、人物知情边界和切点要求。这只能证明计划以文字表达了这些意图，不能证明钥匙在实际画面中足够清楚、周确实看不到、遮挡动作可信，或 Shot01→02→03 的剪辑与表演自然。Runtime 也标明几何、媒体和观众效果尚未验证。\n\n**最有判别力的问题：**按这段 Shot02 的描述，你认为观众能否在林继续自然整理时，清楚地先认出钥匙、再看懂它被蓝夹无意遮住，同时相信周尚未看见钥匙？如果不能，最先让你不相信的是钥匙辨认窗口、林的遮挡，还是机位与空间关系？我会停在这里等你的意见。"
+  ],
+  "tool_titles": [
+    "执行命令",
+    "执行命令",
+    "读取画布",
+    "批量创建文本",
+    "读取画布",
+    "读取画布",
+    "更新文本",
+    "读取画布",
+    "执行命令",
+    "读取选区",
+    "读取画布",
+    "执行命令"
+  ]
+}
