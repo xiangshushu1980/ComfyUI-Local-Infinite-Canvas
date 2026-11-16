@@ -1,0 +1,10 @@
+{
+  "test": "offline installer & reversible retire, mocked systemctl",
+  "source_files": 7,
+  "install_matches_manifest": true,
+  "collision_guard_refused": true,
+  "active_service_guard_refused": true,
+  "backup_preserved_and_verified": true,
+  "clean_reinstall_allowed_after_retire": true,
+  "did_not_touch_production": true
+}

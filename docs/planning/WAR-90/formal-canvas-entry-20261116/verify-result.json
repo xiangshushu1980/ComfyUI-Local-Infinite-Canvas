@@ -1,0 +1,20 @@
+{
+  "purpose": "internal pilot only, not WAR-89 knowledge/license signoff",
+  "action": "verify",
+  "workspace": "/home/sean/.infinite-canvas/codex-workspaces/canvas-agent",
+  "skill_name": "director-skill-v0-candidate",
+  "target": "/home/sean/.infinite-canvas/codex-workspaces/canvas-agent/.agents/skills/director-skill-v0-candidate",
+  "source": "/home/sean/projects/canvas-lab/docs/planning/WAR-89/director-skill-v0-candidate",
+  "manifest": {
+    "SKILL.md": "3eee7d6f3c3032fc43e97b86a9606f8ae77943fa377aa2f56e2770c2b76e8676",
+    "references/knowledge-index.md": "4d8edcb664659d78f897aa7baa8c1f275a57b5ff128ab433c95745b32a5e2519",
+    "references/review-method.md": "72b23f163fe1fdea6a547d5b47f39392ba0b9b63b814a7a285db4a7df0e88e8e",
+    "stages/beat.md": "6e81d45db1d0249cf33a200135f0ab790a49b65d92c7d036b0e253ac978121a1",
+    "stages/blocking.md": "2663d5acc282d636400539aecc643871c26c12867c5d480d9c02793ad45c5563",
+    "stages/intent.md": "ac07ecb95cbd511888911a0f85aa08f5fee2824cbf8e23749ef0d6ffec065a38",
+    "stages/shot-plan.md": "fa0c7d4cc39fdf6b5df9c8a0e3e9b0ee6eafa921142b5a5f07efcdc8cf989476"
+  },
+  "original_source_unchanged": true,
+  "no_canvas_data_modified": true,
+  "installed_matches_source": true
+}

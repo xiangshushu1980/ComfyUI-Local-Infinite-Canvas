@@ -1,0 +1,44 @@
+{
+  "canvas_agent_http_status": 200,
+  "canvas_web_http_status": 200,
+  "candidate_found_once": true,
+  "enabled": true,
+  "skill_path_matches_workspace": true,
+  "skills_total": 22,
+  "skill_errors_count": 0,
+  "health": {
+    "hasCanvas": false,
+    "clients": 0,
+    "codexBusy": false,
+    "conversation_status": "preparing"
+  },
+  "mcp": [
+    {
+      "name": "infinite-canvas",
+      "enabled": true
+    },
+    {
+      "name": "hindsight-direct",
+      "enabled": false
+    },
+    {
+      "name": "hindsight",
+      "enabled": false
+    },
+    {
+      "name": "cua_repl",
+      "enabled": false
+    },
+    {
+      "name": "codegraph",
+      "enabled": false
+    },
+    {
+      "name": "blender",
+      "enabled": false
+    }
+  ],
+  "no_codex_turn_requested": true,
+  "no_canvas_tools_called": true,
+  "source_skill_unmodified": true
+}
