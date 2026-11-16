@@ -52,3 +52,20 @@ Eric 上 Caddy 主文件 /etc/caddy/Caddyfile 包含 /var/lib/hivemind-caddy/Cad
 ## 回退
 
 如有必要，先备份新配置，再在 Eric 恢复上面的旧 Caddyfile（或仅删除该独立站点块），运行 caddy validate，随后 caddy reload。不需要动用户浏览器的项目库。
+
+## 2026-11-16 21:02｜Gateway CORS 标准域名修复
+
+用户可在 http://canvas.localhost/canvas/2FwEbySI5PYe7d6BL4pES 看到四个镜头文本节点，但页面出现“本地网关连接断开，正在自动重连…”。Eric Web、Canvas Agent、Gateway 均 active；Gateway /health HTTP200、comfy.reachable=true。根因是 Gateway 的 CORS_ORIGINS 默认列表缺少 http://canvas.localhost；新域名请求 GET /health 和 OPTIONS /api/session/heartbeat 不能得到 Access-Control-Allow-Origin，浏览器拦截响应，UI 不断提示重连。旧 localhost:3000 和 127.0.0.1:3000 则被允许。
+
+在 Eric 新增持久 systemd drop-in：
+/home/sean/.config/systemd/user/canvas-lab-gateway.service.d/canvas-canonical-origin.conf
+
+配置内容：
+    [Service]
+    Environment="CORS_ORIGINS=http://canvas.localhost,http://localhost:3000,http://127.0.0.1:3000,http://localhost:8188,http://127.0.0.1:8188"
+
+执行 systemctl --user daemon-reload 与 restart canvas-lab-gateway.service。复验新 Origin GET /health HTTP200 且返回 Access-Control-Allow-Origin=http://canvas.localhost；OPTIONS 心跳预检 HTTP204 也带同一允许头；旧两个来源继续允许；陌生 Origin http://evil.example 仍不允许，没有放宽到通配符。重启后 Gateway HTTP200、status=ok、comfy.reachable=true、setup.phase=ready；Windows PowerShell 携带新 Origin 实测同样 HTTP200 且 CORS 响应正确。后续 Gateway /v1/models 与 /health 日志持续 HTTP200。
+
+只读复核规范画布 projectId=2FwEbySI5PYe7d6BL4pES，Shot01–Shot04 四节点全部仍在；没有删除、修改任何画布或调用媒体生成。
+
+验收边界：服务端修复和 Windows 请求 PASS；浏览器顶部 banner 是否消失仍需用户在实际 UI 中确认，不能把命令行返回200当作 UI 证据。前端 GatewayStatus 探测恢复后会自动清除 warning 并刷新。无须改 Caddy 或 Director Skill。
