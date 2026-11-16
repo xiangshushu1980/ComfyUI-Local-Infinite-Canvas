@@ -1,0 +1,40 @@
+{
+  "origin": "http://canvas.localhost",
+  "projectId": "2FwEbySI5PYe7d6BL4pES",
+  "clientId": "jeUNwaV-t0QApaAKC2pMh",
+  "baseline_node_ids": [
+    "text-1794832120997-0",
+    "text-1794832120997-1",
+    "text-1794832120997-2",
+    "text-1794832120997-3"
+  ],
+  "baseline_compact_content_sha256": {
+    "text-1794832120997-0": "8c62c4ae3d30f25a438c5080b7a0c96579d7f4475c5b6f3cfcf52880209d13f1",
+    "text-1794832120997-1": "fe49ed6863e009c68b52e40d266697c801074ef14ad91b42c7c761284e41c001",
+    "text-1794832120997-2": "8fadf407b45a7af10d1bfab816c561ff3f796596648e4e9d944fd702b6a43224",
+    "text-1794832120997-3": "ef20a5e1003bd7be8e87c92fa41a45273c50fe7a2cf88148a2f329ba4f9bfaf0"
+  },
+  "initial_node_count": 4,
+  "original_selection": [
+    "text-1794832120997-3"
+  ],
+  "candidate_id": "6cbcaf51a55e4bb0a097147eb34dd3cb",
+  "candidate_content_sha256": "58c5895d5d041703fca10f56ffcb96792796953803d32c66edcb7f94b7c7318f",
+  "feedback_origin": "synthetic-test",
+  "human_B_decision": false,
+  "model_generator": "codex-cli",
+  "writeCalled": true,
+  "writeSuccess": true,
+  "display_node_title": "【实验待审｜非批准】Shot02 R2 · 最小局部差异",
+  "display_text_sha256": "bd2b896f574d5640ec4afa9aaa375f1454ea1befb34c403f60a4a78a7e548c85",
+  "tool_full_node_count": 5,
+  "display_node_id": "text-1794847881140-0",
+  "post_node_count": 5,
+  "baseline_nodes_preserved": true,
+  "candidate_displayed": true,
+  "selection_preserved": true,
+  "approved_B_state_sha256_unchanged": true,
+  "pass": true,
+  "display_node_preserved": true,
+  "selectionRestoredByExplicitCall": true
+}

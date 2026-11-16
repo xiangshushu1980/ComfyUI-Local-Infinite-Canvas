@@ -1,0 +1,33 @@
+{
+  "format": "war90-canvas-shot-selection-v0",
+  "project_id": "2FwEbySI5PYe7d6BL4pES",
+  "approved_B_id": "b7b4fd156b884907b2431b6b1e0d9960",
+  "approved_B_content_sha256": "64c08817a33fcebc2bad86c8c81b29b2297b4eab7de8bc7cb6db998823c6f4c7",
+  "source_sha256": "65b8a2f83cefc2281879fb254d3ee25dfd68d72e7cd0d811a2afbade5c1e165d",
+  "nodes": [
+    {
+      "id": "text-1794832120997-0",
+      "title": "D《错过的钥匙》 · Shot01｜B 展示副本",
+      "shot_id": "Shot01",
+      "shot_text_sha256": "8fff2f3e880dad4b4a0938c09b315d9049549b57556b9c9ec83f3593e535826d"
+    },
+    {
+      "id": "text-1794832120997-1",
+      "title": "D《错过的钥匙》 · Shot02｜B 展示副本",
+      "shot_id": "Shot02",
+      "shot_text_sha256": "92c27994389848915158d107bc6a304e012536f9f878d23049be9d9c3d7ded90"
+    },
+    {
+      "id": "text-1794832120997-2",
+      "title": "D《错过的钥匙》 · Shot03｜B 展示副本",
+      "shot_id": "Shot03",
+      "shot_text_sha256": "306a151a3dfc07e6cbfccd99acd998bcebe654e463a10fae48a479e9253b3163"
+    },
+    {
+      "id": "text-1794832120997-3",
+      "title": "D《错过的钥匙》 · Shot04｜B 展示副本",
+      "shot_id": "Shot04",
+      "shot_text_sha256": "3bc4fa212b3f57a38b66a48799989ab73c722e7eefbc89691a3207b64157d212"
+    }
+  ]
+}

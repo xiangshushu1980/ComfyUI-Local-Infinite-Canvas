@@ -1,0 +1,33 @@
+{
+  "checks": {
+    "baseline_authority_unchanged": true,
+    "baseline_still_approved": true,
+    "isolated_branch_awaiting_real_human_review": true,
+    "no_formal_WAR35_authority": true,
+    "real_model_generator": true,
+    "branch_passes_integrity_check": true,
+    "only_Shot02_edited": true,
+    "other_shots_byte_identical": true,
+    "shot_list_stable": true,
+    "revised_Shot02_mentions_dynamic_handoff": true,
+    "Shot03_still_continues_and_stops_only_on_question": true,
+    "review_neighbors_tagged": true,
+    "transport_feedback_is_synthetic": true,
+    "canvas_display_audit_pass": true,
+    "candidate_preview_is_not_base_node": true
+  },
+  "pass": true,
+  "candidate_id": "6cbcaf51a55e4bb0a097147eb34dd3cb",
+  "approved_B_id": "b7b4fd156b884907b2431b6b1e0d9960",
+  "changed_shots": [
+    "Shot02"
+  ],
+  "review_neighbors": [
+    "Shot01",
+    "Shot02",
+    "Shot03"
+  ],
+  "new_shot02_sha256": "547f71e9cdb20bf0671890c7f0ab4c02c4c7f288fddabf4de87631d78d0553b6",
+  "old_shot02_sha256": "92c27994389848915158d107bc6a304e012536f9f878d23049be9d9c3d7ded90",
+  "warning": "Static identity and token checks do not prove human acceptance, final editing permission, or actual film continuity."
+}

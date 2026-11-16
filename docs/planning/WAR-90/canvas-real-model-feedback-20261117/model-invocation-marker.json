@@ -1,0 +1,9 @@
+{
+  "generator": "real-codex-cli",
+  "model": "gpt-6-astra",
+  "stage": "shot",
+  "target": "Shot02",
+  "started_at_unix": 1794847558.3924994,
+  "feedback_origin": "synthetic-test",
+  "human_approval": false
+}

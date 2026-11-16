@@ -1,0 +1,18 @@
+{
+  "format": "war90-canvas-feedback-pilot-v0",
+  "status": "revision-request-only",
+  "pilot_only": true,
+  "origin": "synthetic-test",
+  "actor_identity_verified": false,
+  "human_B_decision": false,
+  "canvas_project_id": "2FwEbySI5PYe7d6BL4pES",
+  "canvas_node_id": "text-1794832120997-1",
+  "target_shot_id": "Shot02",
+  "target_shot_sha256": "92c27994389848915158d107bc6a304e012536f9f878d23049be9d9c3d7ded90",
+  "base_B_id": "b7b4fd156b884907b2431b6b1e0d9960",
+  "base_B_content_sha256": "64c08817a33fcebc2bad86c8c81b29b2297b4eab7de8bc7cb6db998823c6f4c7",
+  "source_sha256": "65b8a2f83cefc2281879fb254d3ee25dfd68d72e7cd0d811a2afbade5c1e165d",
+  "instruction": "【合成测试意见，非用户本人导演反馈，禁止自动批准】希望 Shot02 的视觉重点更集中于“纸边退开→观众辨认唯一银色钥匙→蓝色文件夹自然落下并再遮挡”的因果过程。落夹后的林让位与空右手轻理保留，但请尝试将轻理作为本镜尾部短暂可见的动作启动，完整动作连续到 Shot03，并且只有周的提问才真正打断轻理。不要把周在背景接近与林轻理变成与首次认出钥匙竞争的注意力中心；保持斜俯桌面近景、固定钥匙、蓝夹由纸叠承托、林无意遮挡、周未先看见钥匙。只考虑修改 Shot02 的观看任务/镜头画幅组织/切点相关描述，Shot01、Shot03、Shot04 文本必须逐字不变。如果要维持连续性就不得取消 Shot02→Shot03 同一次右手轻理；如果专业判断改变毫无增益，请给出 No-change，不要制造差异。",
+  "instruction_sha256": "7e9d0bcb4cfbad61ef731309c4025b2383a5ae821f0ffc9033912fefe1fe8b50",
+  "requires_director_candidate_revision": true
+}

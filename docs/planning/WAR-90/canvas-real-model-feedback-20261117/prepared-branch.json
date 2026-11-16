@@ -1,0 +1,11 @@
+{
+  "workspace": "/home/sean/projects/canvas-lab/docs/planning/WAR-90/pilot-D-canvas-shot02-flowtest-20261117",
+  "original_state_sha256": "23e78d5994ed18ea02d59c2c3eb588f36cc41d3b495b81009713ec7570d7e4b7",
+  "state_sha256": "23e78d5994ed18ea02d59c2c3eb588f36cc41d3b495b81009713ec7570d7e4b7",
+  "stage": "shot",
+  "mode": "resume",
+  "target": "Shot02",
+  "scope": "WAR-90 Canvas selected-Shot local revision REQUEST, not a human B approval.\nApproved B baseline: b7b4fd156b884907b2431b6b1e0d9960 content=64c08817a33fcebc2bad86c8c81b29b2297b4eab7de8bc7cb6db998823c6f4c7.\nSource SHA256: 65b8a2f83cefc2281879fb254d3ee25dfd68d72e7cd0d811a2afbade5c1e165d.\nTarget and only permitted modified Shot: Shot02, Shot text SHA256=92c27994389848915158d107bc6a304e012536f9f878d23049be9d9c3d7ded90.\nUser-edit instruction provenance: synthetic-test; identity_verified=false; new_B_approved=false.\nExact request text:\n【合成测试意见，非用户本人导演反馈，禁止自动批准】希望 Shot02 的视觉重点更集中于“纸边退开→观众辨认唯一银色钥匙→蓝色文件夹自然落下并再遮挡”的因果过程。落夹后的林让位与空右手轻理保留，但请尝试将轻理作为本镜尾部短暂可见的动作启动，完整动作连续到 Shot03，并且只有周的提问才真正打断轻理。不要把周在背景接近与林轻理变成与首次认出钥匙竞争的注意力中心；保持斜俯桌面近景、固定钥匙、蓝夹由纸叠承托、林无意遮挡、周未先看见钥匙。只考虑修改 Shot02 的观看任务/镜头画幅组织/切点相关描述，Shot01、Shot03、Shot04 文本必须逐字不变。如果要维持连续性就不得取消 Shot02→Shot03 同一次右手轻理；如果专业判断改变毫无增益，请给出 No-change，不要制造差异。\nDo not alter any non-target Shot. Preserve story facts, current approved Intent, Beat and Blocking, knowledge order, four dialogue lines, only one key, and final right-hand transfer. If the request needs Blocking/Beat or source changes, report the upstream requirement and DO NOT pretend the requested change is a valid Shot-only revision. Do not approve new B yourself. Report unresolved risks.\n",
+  "fresh_model_call_performed": false,
+  "B_approval_recorded": false
+}

@@ -1,0 +1,20 @@
+{
+  "at": "2026-11-16T16:45:12.417277+00:00",
+  "source_B_state_sha256": "23e78d5994ed18ea02d59c2c3eb588f36cc41d3b495b81009713ec7570d7e4b7",
+  "project_id": "2FwEbySI5PYe7d6BL4pES",
+  "client_id": "jeUNwaV-t0QApaAKC2pMh",
+  "original_selection": [
+    "text-1794832120997-3"
+  ],
+  "test_selected_shot": "Shot02",
+  "browser_node_ids": [
+    "text-1794832120997-0",
+    "text-1794832120997-1",
+    "text-1794832120997-2",
+    "text-1794832120997-3"
+  ],
+  "feedback_origin": "synthetic-test",
+  "actual_user_creative_feedback": false,
+  "actor_identity_verified": false,
+  "approval_recorded": false
+}
