@@ -1,0 +1,18 @@
+{
+  "shot": "Shot01",
+  "targetNodeId": "text-1794823805462-0",
+  "no_chat_http_writes": true,
+  "no_new_nodes": true,
+  "expected_sha256": "1111209fdee28828c3c6509837fff87418a4dbc2e71ad01c841e8403e12b213b",
+  "before_text_sha256": "99f5fca88e92a254357f5e97e751427d76f9a8a35ba6f33710e6816ffc901933",
+  "turn_http_code": 200,
+  "native_turn_accepted": true,
+  "elapsed_s": 9.1,
+  "turn_settled": true,
+  "node_count_after": 7,
+  "original_node_ids_kept": true,
+  "after_node_id_preserved": true,
+  "after_text_sha256": "99f5fca88e92a254357f5e97e751427d76f9a8a35ba6f33710e6816ffc901933",
+  "exact_text": false,
+  "passed": false
+}

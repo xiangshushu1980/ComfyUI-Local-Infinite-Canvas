@@ -1,0 +1,40 @@
+# WAR-90｜真实画布「无限画布 1」的 B 镜头展示副本
+
+日期 2026-11-16；机器 Eric。用户在 Chat 明确授权向其已连接的“无限画布 1”增加 D《错过的钥匙》Shot01–Shot04 四个文本审阅节点，保留原有三个空节点。没有授权更改批准导演计划、生成媒体或建立新的通用写入协议。
+
+## 目标与输入
+
+- 真实目标：projectId mrEXrMQoY-2ef3U6NsHtj，title“无限画布 1”；写入前 Agent 单客户端、Codex ready。
+- 三个原节点：text-1793372915213-2q1pb、image-1793372917582-2pevr、audio-1793372920916-z4dgp；原内容、属性与位置由只读工具冻结哈希，后续复核未变。
+- 新四镜节点：Shot01=text-1794823805462-0、Shot02=text-1794823805462-1、Shot03=text-1794823805462-2、Shot04=text-1794823805462-3；x=1040/1740/2440/3140，y=140，宽650，最后节点高850，其余740。新建节点时画布自动选中了 Shot04。
+- 权威源：docs/planning/WAR-90/pilot-D-local-repair-v2/state.json，SHA256 23e78d5994ed18ea02d59c2c3eb588f36cc41d3b495b81009713ec7570d7e4b7。批准 B ID b7b4fd156b884907b2431b6b1e0d9960，属于 WAR-90 的 pilot-only 批准，并非正式 WAR-35 类型化数据/审批。prepare_projection.py 经 Pilot.review_packet() 验证来源后生成四节点的完整正文和哈希；文本清楚标记为展示副本、非权威版本。
+
+## 实际执行与发现
+
+1. read_only_preflight.py 确认了用户真实画布、三原节点、无选区与已批准 B。run_native_projection.py 由正式 Canvas Agent 的原生 Codex 线程执行，选择七文件 Director Skill，真实调用一次 Canvas MCP canvas_create_text_nodes 新增四个文本节点，随后再次读取。节点总数 3→7；无重复创建。
+2. 初次自动审计发生了误判：Canvas Agent 源码 infinite-canvas/canvas-agent/src/canvas/tools.ts 的 compactNode() 明确规定 metadata.content 超过240字符时，canvas_get_state 返回前120字符加三个点，即长度123。此前审计把这个压缩预览当作真实全文来算 SHA，从而错误地认为四个镜头都被模型省略。**这个 123 字符不是数据丢失证据。**
+3. 基于误判要求模型修复 Shot01，模型确实调用了一次 canvas_update_node_text，但写入的值只有111字符，造成 Shot01 的真实临时不完整。第二次尝试让模型终端执行确定性帮助脚本，受到 Codex shell 网络沙箱限制，连接本地 127.0.0.1:17373 报 Operation not permitted，因此未写入。
+4. 最终为修复四个既存节点，在已有用户授权下采用**一次性严格守门的本地 Canvas Agent API 批量更新**：apply_exact_projection.py 检查只有一个客户端、Agent 无同时运行的 turn、projectId/title/clientId 精确匹配、七个节点 ID 精确匹配、原三个节点哈希未变、批准 B SHA 不变。一个 canvas_apply_ops 请求含四个 update_node 操作，只更新新建四镜的文本；无 add/delete/move/generate。文本来自 Runtime，完全绕开模型转写。
+5. 该批量更新工具 HTTP 200，浏览器返回完整的七节点快照；exact-tool-inner-diagnostic.json 记录四镜实际**完整工具结果**的全文 SHA，Shot01–Shot04 与确定性来源预期 4/4 完全匹配。其后对 canvas_get_state 的只读回查仍返回四个123字符 compact 摘要，正是前述压缩行为。
+6. verify_projection.py 结合浏览器完整工具结果 SHA 与最新 compact 前缀回读进行最终核查：目标项目正确、7节点、原三个哈希不变、四个展示节点正文完整工具结果 SHA 全匹配、缩略前缀全匹配、坐标/尺寸匹配、权威 B state SHA 未变。projection-final-audit.json success=true。**未通过浏览器页面刷新重新加载以验证持久化**，不得称存储恢复已验收。
+7. apply_exact_projection.py 增加了完成后拒绝重复更新的保护：存在已通过的 projection-final-audit.json 时不再执行。no-repeat-guard-result.json 实测拒绝再次写入。Director Runtime 64/64 回归通过。
+
+## 状态与边界
+
+**PASS（文本展示副本试点）**：四个展示节点已创建，最新浏览器完整工具结果与权威 B 的四段文本哈希完全相同；原有三节点、批准 B 未改；没有执行媒体/GPU 工作。
+
+**未验收**：刷新/重新打开画布后的持久化、正式 Node→Shot typed mapping、通用多客户端请求级 CAS、MCP 审批拒执行、真实视听/观众表达验证。该显示副本不取代 Runtime 中的批准 B。
+
+**关于权限**：通用 Chat HTTP 画布写入仍 BLOCK。本次在用户明示授权、仅一个客户端、固定项目、固定四个**已创建**节点 ID 且无新增/删除的情况下进行一次性收窄修复，不代表跨客户端安全写入通过。原生 Agent 模型可判断专业问题，但不可将缩略工具回复冒充全文，或使用生成模型手抄内容作为确定性版本同步机制。
+
+## 证据入口
+
+- prepare_projection.py：来自已批准 Runtime B 的精确节点内容生成。
+- run_native_projection.py、native-projection-result.json：原生 Agent 首轮创建及停点。
+- repair_native_node.py、repair-Shot01.json：模型写入111字符的反例；原生 CLI 网络沙箱拒绝的诊断日志。
+- apply_exact_projection.py、exact-preflight.json、exact-tool-inner-diagnostic.json：受控单次确定性修复、完整工具结果 SHA 与原始来源保护。
+- verify_projection.py、projection-final-audit.json：正确理解 compact 行为的最终只读核验。
+- no-repeat-guard-result.json：完成后阻止重复写入。
+- evidence.sha256：此目录必要研究材料的文件指纹。
+
+下一步在用户实际画布选中 Shot02，继续使用正式 Canvas Agent 与用户审阅镜头观看目标、注意力及钥匙可读风险，仍不自动修订 B 或生成媒体。

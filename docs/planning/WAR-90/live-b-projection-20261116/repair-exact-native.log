@@ -1,0 +1,1 @@
+REPAIR_RESULT {"shot": "Shot01", "turn_http_code": 200, "elapsed_s": 9.1, "turn_settled": true, "exact_text": false, "node_count_after": 7, "passed": false, "error_type": null, "error_message": null}

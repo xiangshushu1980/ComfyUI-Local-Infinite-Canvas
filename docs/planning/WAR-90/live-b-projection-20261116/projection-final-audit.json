@@ -1,0 +1,60 @@
+{
+  "phase": "user-live-canvas-approved-B-display-projection",
+  "target_project_title": "无限画布 1",
+  "target_project_id": "mrEXrMQoY-2ef3U6NsHtj",
+  "connected_clients": 1,
+  "has_canvas": true,
+  "agent_busy": false,
+  "expected_node_count": 7,
+  "actual_node_count": 7,
+  "original_three_nodes_unchanged": true,
+  "selected_ids": [
+    "text-1794823805462-3"
+  ],
+  "approved_B_state_sha256": "23e78d5994ed18ea02d59c2c3eb588f36cc41d3b495b81009713ec7570d7e4b7",
+  "four_shots": [
+    {
+      "shot": "Shot01",
+      "node_id": "text-1794823805462-0",
+      "full_update_tool_return_exact_sha": true,
+      "compact_read_matches_source_prefix": true,
+      "compact_chars": 123,
+      "expected_full_chars": 864,
+      "unchanged_position": true,
+      "unchanged_dimensions": true
+    },
+    {
+      "shot": "Shot02",
+      "node_id": "text-1794823805462-1",
+      "full_update_tool_return_exact_sha": true,
+      "compact_read_matches_source_prefix": true,
+      "compact_chars": 123,
+      "expected_full_chars": 1824,
+      "unchanged_position": true,
+      "unchanged_dimensions": true
+    },
+    {
+      "shot": "Shot03",
+      "node_id": "text-1794823805462-2",
+      "full_update_tool_return_exact_sha": true,
+      "compact_read_matches_source_prefix": true,
+      "compact_chars": 123,
+      "expected_full_chars": 1463,
+      "unchanged_position": true,
+      "unchanged_dimensions": true
+    },
+    {
+      "shot": "Shot04",
+      "node_id": "text-1794823805462-3",
+      "full_update_tool_return_exact_sha": true,
+      "compact_read_matches_source_prefix": true,
+      "compact_chars": 123,
+      "expected_full_chars": 3101,
+      "unchanged_position": true,
+      "unchanged_dimensions": true
+    }
+  ],
+  "preexisting_model_transcription_failure_not_authoritative": true,
+  "audit_limit": "Agent canvas_get_state intentionally truncates long metadata.content to first 120 characters + ...; exact full SHA is validated from browser tool returned full post-update snapshot. Browser reload durability not tested.",
+  "success": true
+}

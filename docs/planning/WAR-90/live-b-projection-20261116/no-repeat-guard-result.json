@@ -1,0 +1,7 @@
+{
+  "test": "no repeat after successful final audit",
+  "status": "PASS",
+  "write_prevented": true,
+  "exit_code": 1,
+  "source_code_guard": "projection-final-audit.json success=true"
+}

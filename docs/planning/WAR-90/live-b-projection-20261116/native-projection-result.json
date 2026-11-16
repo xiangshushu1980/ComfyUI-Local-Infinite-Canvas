@@ -1,0 +1,136 @@
+{
+  "purpose": "User-authorized 4 exact approved B text display nodes via native Canvas Agent",
+  "no_chat_http_writes": true,
+  "expected_project": "mrEXrMQoY-2ef3U6NsHtj",
+  "expected_title": "无限画布 1",
+  "approved_B_state_sha256": "23e78d5994ed18ea02d59c2c3eb588f36cc41d3b495b81009713ec7570d7e4b7",
+  "model": "gpt-6-luna",
+  "effort": "medium",
+  "preflight": {
+    "old_nodes_sha256": {
+      "text-1793372915213-2q1pb": "da4084e4cdd3e27ce4cc78703ea4d989ac6862229def4c27844ce51ce56cf432",
+      "image-1793372917582-2pevr": "6cf0f0effa903664c6cd3e02f86ab61c55881e85f1f8b02dd5492a91d3506781",
+      "audio-1793372920916-z4dgp": "f0cf73b355d4c5563de4a299852b92040635b4f3548505dd3a1548300f94deac"
+    },
+    "old_node_ids": [
+      "audio-1793372920916-z4dgp",
+      "image-1793372917582-2pevr",
+      "text-1793372915213-2q1pb"
+    ],
+    "title": "无限画布 1",
+    "projectId": "mrEXrMQoY-2ef3U6NsHtj",
+    "clientId": "04wsd618VDFdUWb74oZZI",
+    "skill": "director-skill-v0-candidate",
+    "thread_id": "01a1e38f-1df0-7ad3-9826-02e304cb66c0",
+    "revision": 17,
+    "shot_id_order": [
+      "Shot01",
+      "Shot02",
+      "Shot03",
+      "Shot04"
+    ],
+    "node_expected_text_sha256": {
+      "D《错过的钥匙》 · Shot01｜B 展示副本": "1111209fdee28828c3c6509837fff87418a4dbc2e71ad01c841e8403e12b213b",
+      "D《错过的钥匙》 · Shot02｜B 展示副本": "c09b58fba2ada677f7ecf723997a11da6fb44923f425dc4e23d41d0203557fae",
+      "D《错过的钥匙》 · Shot03｜B 展示副本": "ab5b400e2ab236ca6e7a5dbee1660981ce38cab0038324dffa88ca62e5c90336",
+      "D《错过的钥匙》 · Shot04｜B 展示副本": "c3054257034d853048a0fbbc17778e95709decef1093be9bba4eeef01fbcef32"
+    }
+  },
+  "native_turn_http_code": 200,
+  "native_turn_accepted": true,
+  "model_turn_elapsed_s": 127.86,
+  "model_busy_observed": true,
+  "model_turn_settled": true,
+  "conversation_final_status": "ready",
+  "post_health": {
+    "clients": 1,
+    "busy": false
+  },
+  "post_canvas_title": "无限画布 1",
+  "post_project_id": "mrEXrMQoY-2ef3U6NsHtj",
+  "post_node_count": 7,
+  "post_selection_ids": [
+    "text-1794823805462-3"
+  ],
+  "original_nodes_unchanged": true,
+  "new_nodes": [
+    {
+      "title": "D《错过的钥匙》 · Shot01｜B 展示副本",
+      "id": "text-1794823805462-0",
+      "text_exact": false,
+      "expected_sha256": "1111209fdee28828c3c6509837fff87418a4dbc2e71ad01c841e8403e12b213b",
+      "actual_sha256": "8c62c4ae3d30f25a438c5080b7a0c96579d7f4475c5b6f3cfcf52880209d13f1"
+    },
+    {
+      "title": "D《错过的钥匙》 · Shot02｜B 展示副本",
+      "id": "text-1794823805462-1",
+      "text_exact": false,
+      "expected_sha256": "c09b58fba2ada677f7ecf723997a11da6fb44923f425dc4e23d41d0203557fae",
+      "actual_sha256": "fe49ed6863e009c68b52e40d266697c801074ef14ad91b42c7c761284e41c001"
+    },
+    {
+      "title": "D《错过的钥匙》 · Shot03｜B 展示副本",
+      "id": "text-1794823805462-2",
+      "text_exact": false,
+      "expected_sha256": "ab5b400e2ab236ca6e7a5dbee1660981ce38cab0038324dffa88ca62e5c90336",
+      "actual_sha256": "8fadf407b45a7af10d1bfab816c561ff3f796596648e4e9d944fd702b6a43224"
+    },
+    {
+      "title": "D《错过的钥匙》 · Shot04｜B 展示副本",
+      "id": "text-1794823805462-3",
+      "text_exact": false,
+      "expected_sha256": "c3054257034d853048a0fbbc17778e95709decef1093be9bba4eeef01fbcef32",
+      "actual_sha256": "ef20a5e1003bd7be8e87c92fa41a45273c50fe7a2cf88148a2f329ba4f9bfaf0"
+    }
+  ],
+  "all_four_exact": false,
+  "history_http_status": 200,
+  "history_tool_items": [
+    {
+      "title": "执行命令",
+      "status": "completed"
+    },
+    {
+      "title": "调用工具：linear.get_issue",
+      "status": "completed"
+    },
+    {
+      "title": "执行命令",
+      "status": "completed"
+    },
+    {
+      "title": "执行命令",
+      "status": "completed"
+    },
+    {
+      "title": "读取画布",
+      "status": "completed"
+    },
+    {
+      "title": "读取选区",
+      "status": "completed"
+    },
+    {
+      "title": "执行命令",
+      "status": "completed"
+    },
+    {
+      "title": "执行命令",
+      "status": "completed"
+    },
+    {
+      "title": "读取画布",
+      "status": "completed"
+    },
+    {
+      "title": "批量创建文本",
+      "status": "completed"
+    },
+    {
+      "title": "读取画布",
+      "status": "completed"
+    }
+  ],
+  "B_unchanged": true,
+  "result_pass": false
+}
