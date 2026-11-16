@@ -1,0 +1,202 @@
+2026-11-16 12:37:41 WARN Interrupting active Codex turn threadId='thread-1' turnId='turn-1'
+2026-11-16 12:37:41 WARN Interrupting active Codex turn threadId='draft-thread' turnId='draft-turn'
+✔ 分页线程按顺序读取所有历史回合 (3.853047ms)
+✔ MCP 覆盖只包含启用标志且不能禁用画布 (0.263843ms)
+✔ Skill 线程覆盖保留其他共享配置并替换同一路径 (0.252191ms)
+✔ 迁移线程只接受原目录中明确记录的会话 (0.298638ms)
+✔ 审批只在 app-server 确认 resolved 后清除 (0.796868ms)
+✔ 中断请求只作用于当前运行线程 (2.929217ms)
+✔ Skill 列表与启用配置使用 app-server 原生协议 (0.602615ms)
+✔ 并发强制刷新同一工作空间时只扫描一次 Skill (0.36988ms)
+✔ 显式 Skill 同时使用文本标记和结构化输入传给 turn/start (10.193597ms)
+✔ 显式 Skill 不重复已有的文本标记 (1.926586ms)
+✔ skills/changed 作为站点级事件单独广播 (0.200675ms)
+✔ MCP 启动状态区分空对话预热与正常 turn 运行 (2.027644ms)
+✔ 静默 Skill 草稿 turn 只返回结构化结果，不广播也不写历史 (1.195501ms)
+✔ 静默线程创建期间只隐藏响应返回的线程 (0.288589ms)
+✔ 静默 Skill 草稿不吞掉全局 Skill 变更通知 (0.185627ms)
+✔ 静默 Skill 草稿自动拒绝未携带线程 ID 的权限请求 (0.196427ms)
+✔ app-server 退出时清理尚未确认的静默线程 (0.575284ms)
+✔ app-server 在草稿运行中退出后不再等待线程取消订阅 (1.273457ms)
+✔ 画布 Skill 草稿源保留流程信息并移除媒体、本地路径、凭据和临时任务字段 (2.144543ms)
+✔ 画布 Skill 草稿源保留普通中文斜杠文本和斜杠命令 (0.175798ms)
+✔ 画布 Skill 草稿源匿名化任意字符串中的已知节点 ID (0.228316ms)
+✔ 画布 Skill 草稿源匿名化 metadata 对象键中的已知节点 ID (0.18247ms)
+✔ 画布 Skill 草稿源为截断节点保留完整快照范围内的安全引用 (38.360717ms)
+✔ 画布 Skill 草稿源限制总长度并优先保留选中流程 (238.316861ms)
+✔ Skill 草稿拒绝普通外部 URL，避免对话内容泄露媒体地址 (0.524399ms)
+✔ Skill 草稿允许普通动作名称，但拒绝任意本地绝对路径 (0.558022ms)
+✔ turn/started 早于 turn/start 响应时保持完整事件归属 (0.521864ms)
+✔ turn/start 响应早于通知时 onTurn 仍只调用一次 (2.460753ms)
+✔ turn/started 通知缺失时使用 turn/start 响应回调 (0.578229ms)
+✔ onTurn 按 threadId 和 turnId 去重 (0.928914ms)
+✔ 稀疏的命令完成通知会保留开始通知中的命令内容 (0.529709ms)
+✔ 稀疏的 plan 完成通知会保留流式正文 (0.233526ms)
+✔ reasoning 完成通知缺少 summary 时保留流式摘要 (0.335747ms)
+✔ 流式更新只发送当前增量而不重复传输累计正文 (100.883652ms)
+✔ 新版协作工具完成通知会归一化并写入补充历史 (0.332611ms)
+✔ 并行条目按开始顺序保存而不是完成顺序 (0.391521ms)
+✔ turn 完成通知会保存本轮输入与终态 turn (1.038328ms)
+✔ turn 完成状态会等待补充历史落盘后再广播 (0.526313ms)
+✔ app-server 失效时清除不能跨进程复用的 turn 状态 (0.242322ms)
+✔ app-server 在 turn 完成通知前退出时保存失败终态 (1.024582ms)
+✔ turn/started 已到达但 turn/start 尚未响应时退出仍保存失败终态 (0.418261ms)
+✔ app-server 退出时等待失败历史落盘后再结束 turn (0.816955ms)
+2026-11-16 12:37:41 INFO SSE client connected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client connected clientId='second' statusOnly=false
+2026-11-16 12:37:41 INFO MCP tool called name='canvas_get_state' input={} targetClientId='first'
+2026-11-16 12:37:41 INFO MCP tool called name='canvas_get_state' input={} targetClientId='second'
+2026-11-16 12:37:41 INFO SSE client disconnected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client disconnected clientId='second' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client connected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client connected clientId='second' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client disconnected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client disconnected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client disconnected clientId='second' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client connected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client connected clientId='second' statusOnly=false
+2026-11-16 12:37:41 INFO MCP tool called name='canvas_create_text_node' input={ text: '只写入第二个画布' } targetClientId='second'
+2026-11-16 12:37:41 INFO SSE client disconnected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client disconnected clientId='second' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client connected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client connected clientId='second' statusOnly=false
+2026-11-16 12:37:41 INFO MCP tool called name='pose_atlas_search' input={ query: 'salute', angle: 'side', collection: 'pose' } targetClientId='second'
+2026-11-16 12:37:41 INFO MCP tool called name='pose_atlas_insert' input={ index: 22, render: 'line' } targetClientId='second'
+2026-11-16 12:37:41 INFO SSE client disconnected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client disconnected clientId='second' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client connected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO MCP tool called name='canvas_create_attachment_nodes' input={ attachmentIds: [ 'attachment-1' ], x: 100, y: 200 } targetClientId='first'
+2026-11-16 12:37:41 INFO SSE client disconnected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client connected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client connected clientId='second' statusOnly=false
+2026-11-16 12:37:41 INFO MCP tool called name='canvas_create_attachment_nodes' input={ attachmentIds: [ 'attachment-1' ] } targetClientId='second'
+2026-11-16 12:37:41 INFO SSE client disconnected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client disconnected clientId='second' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client connected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client connected clientId='second' statusOnly=false
+2026-11-16 12:37:41 INFO MCP tool called name='canvas_create_text_node' input={ text: 'first only' } targetClientId='first'
+2026-11-16 12:37:41 INFO SSE client disconnected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client disconnected clientId='second' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client connected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client connected clientId='second' statusOnly=false
+2026-11-16 12:37:41 INFO MCP tool called name='generation_get_status' input={ scope: 'all' } targetClientId='second'
+2026-11-16 12:37:41 INFO SSE client disconnected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client disconnected clientId='second' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client connected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client connected clientId='second' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client disconnected clientId='second' statusOnly=false
+2026-11-16 12:37:41 INFO MCP tool called name='canvas_get_state' input={} targetClientId='first'
+2026-11-16 12:37:41 INFO SSE client disconnected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client disconnected clientId='second' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client connected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client connected clientId='second' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client connected clientId='third' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client disconnected clientId='second' statusOnly=false
+2026-11-16 12:37:41 INFO MCP tool called name='canvas_get_state' input={} targetClientId='third'
+2026-11-16 12:37:41 INFO SSE client disconnected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client disconnected clientId='second' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client disconnected clientId='third' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client connected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO MCP tool called name='canvas_create_text_node' input={ text: 'pending' } targetClientId='first'
+2026-11-16 12:37:41 INFO SSE client disconnected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client connected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client connected clientId='second' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client disconnected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client disconnected clientId='second' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client connected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client disconnected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client connected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client connected clientId='second' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client disconnected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client disconnected clientId='second' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client connected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client disconnected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client connected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client connected clientId='second' statusOnly=false
+2026-11-16 12:37:41 INFO MCP tool called name='canvas_get_state' input={} targetClientId='first'
+2026-11-16 12:37:41 INFO MCP tool called name='canvas_create_text_node' input={ text: 'bound' } targetClientId='first'
+2026-11-16 12:37:41 INFO MCP tool called name='canvas_get_state' input={} targetClientId='second'
+2026-11-16 12:37:41 INFO SSE client disconnected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client disconnected clientId='second' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client connected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client connected clientId='second' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client disconnected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO MCP tool called name='canvas_get_state' input={} targetClientId='first'
+2026-11-16 12:37:41 INFO SSE client connected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO MCP tool called name='canvas_get_state' input={} targetClientId='first'
+2026-11-16 12:37:41 INFO MCP tool called name='canvas_create_text_node' input={ text: 'reconnected' } targetClientId='first'
+2026-11-16 12:37:41 INFO SSE client disconnected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client disconnected clientId='second' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client disconnected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client connected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client disconnected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client connected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client disconnected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client connected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client disconnected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client connected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client disconnected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client connected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client disconnected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client connected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client disconnected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client connected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client connected clientId='second' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client disconnected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client disconnected clientId='second' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client connected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client disconnected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client connected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client disconnected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client connected clientId='first' statusOnly=false
+2026-11-16 12:37:41 INFO SSE client disconnected clientId='first' statusOnly=false
+✔ MCP 读取当前激活网页的画布 (7.009317ms)
+✔ 按精确 clientId 读取画布快照，不受当前焦点影响 (1.256194ms)
+✔ 画布写操作只发送给当前激活网页 (2.675664ms)
+✔ PoseAtlas 查询是只读站点工具，插图只路由到当前目标画布 (3.428479ms)
+✔ 当前 turn 的图片附件可在发起标签页画布创建图片节点 (2.305073ms)
+✔ 图片附件只允许发起 turn 的标签页读取和落入画布 (1.418257ms)
+✔ tool result is accepted only from the request client (1.107127ms)
+✔ 生成状态查询由当前激活网页返回 (0.979538ms)
+✔ 活动网页关闭后回退到仍连接的画布 (0.826894ms)
+✔ closing the active client falls back to the most recently focused client (1.132875ms)
+✔ closing a client rejects its pending tool requests (0.9376ms)
+✔ shared thread events are broadcast with the active thread id (0.776309ms)
+✔ new clients receive the current Codex state and later updates (0.649382ms)
+✔ 对话 revision 单调递增且 MCP 全部进入终态前保持 preparing (0.434722ms)
+✔ 可选 MCP 失败进入 warning，画布 MCP 失败进入 failed (0.194804ms)
+✔ 无启动通知和工具的清单项不视为已连接 (0.102051ms)
+✔ Codex 写操作在多窗口之间互斥且不能与运行 turn 并发 (0.127498ms)
+✔ Skill draft generation broadcasts shared busy state and restores the previous thread (0.635917ms)
+✔ Skill draft busy state preserves the previous turn replay until history acknowledges it (0.62697ms)
+✔ a bound client remains the tool target while focus changes (1.094152ms)
+✔ a disconnected bound client never falls back and can resume with the same client id (1.817573ms)
+✔ 新连接会回放当前运行 turn 的最新事件快照 (0.634805ms)
+✔ 同一 item 的多次增量只回放最新内容 (0.433519ms)
+✔ 增量事件重放时转换为完整文本快照 (0.452134ms)
+✔ 并行 item 更新后重放仍保留开始顺序和命令字段 (0.972365ms)
+✔ 长 turn 不会淘汰仍在更新的活动条目快照 (1.525838ms)
+✔ 内置生图事件会回放展示但标记为不可重复执行 (0.669209ms)
+✔ turn 结束后保留实时快照，直到网页确认权威历史 (1.100915ms)
+✔ 开始下一 turn 时只回放当前 turn 的事件 (0.853263ms)
+✔ 同一用户消息从 pending 绑定 turn 后只回放最终版本 (0.595802ms)
+✔ 切换活动线程会清除上一线程的实时快照 (0.587748ms)
+✔ 创建、读取和更新画布专属 Skill (37.537169ms)
+✔ revision 不匹配时拒绝覆盖或删除 (11.775053ms)
+✔ 清空界面字段时保留未由画布管理的 openai 元数据 (17.576533ms)
+✔ 名称、正文大小和默认提示词均经过校验 (1.920269ms)
+✔ 更新校验失败时不会提前改写 SKILL.md (7.80619ms)
+✔ 拒绝读取非对象格式的 openai.yaml (9.859162ms)
+✔ 不完整更新请求返回校验错误而不是运行时异常 (1.517538ms)
+✔ 空 interface 元数据读取为空 (10.333197ms)
+✔ 读取或修改不存在的 Skill 不会创建目录 (2.244119ms)
+✔ 更新后只保留完整文件且不遗留临时文件 (15.862798ms)
+✔ 拒绝读取非对象格式的 interface 元数据 (8.931421ms)
+ℹ tests 84
+ℹ suites 0
+ℹ pass 84
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 735.153623

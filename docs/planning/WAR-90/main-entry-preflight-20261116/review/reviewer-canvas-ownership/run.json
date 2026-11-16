@@ -1,0 +1,9 @@
+{
+  "name": "reviewer-canvas-ownership",
+  "model": "gpt-6-astra",
+  "effort": "medium",
+  "return_code": 0,
+  "seconds": 54.93,
+  "prompt_sha256": "176c56b2cd2fc38455dad4bf94209a69f35bf4475ae0fbdc0de38f764794458b",
+  "result_sha256": "f2dc63db9f9a28c2a832ff72384dcea3741f65d57ceca2be617d33ad159f9623"
+}

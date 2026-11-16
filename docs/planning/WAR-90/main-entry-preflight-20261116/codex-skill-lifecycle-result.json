@@ -1,0 +1,57 @@
+{
+  "probe": "direct Codex app-server skills/list used by Canvas Agent, without network or model",
+  "result": "PASS",
+  "source_relative_paths_hash": {
+    "SKILL.md": "3eee7d6f3c3032fc43e97b86a9606f8ae77943fa377aa2f56e2770c2b76e8676",
+    "references/knowledge-index.md": "4d8edcb664659d78f897aa7baa8c1f275a57b5ff128ab433c95745b32a5e2519",
+    "references/review-method.md": "72b23f163fe1fdea6a547d5b47f39392ba0b9b63b814a7a285db4a7df0e88e8e",
+    "stages/beat.md": "6e81d45db1d0249cf33a200135f0ab790a49b65d92c7d036b0e253ac978121a1",
+    "stages/blocking.md": "2663d5acc282d636400539aecc643871c26c12867c5d480d9c02793ad45c5563",
+    "stages/intent.md": "ac07ecb95cbd511888911a0f85aa08f5fee2824cbf8e23749ef0d6ffec065a38",
+    "stages/shot-plan.md": "fa0c7d4cc39fdf6b5df9c8a0e3e9b0ee6eafa921142b5a5f07efcdc8cf989476"
+  },
+  "source_reference_links_checked": [
+    "SKILL.md: stages/intent.md",
+    "SKILL.md: stages/beat.md",
+    "SKILL.md: stages/blocking.md",
+    "SKILL.md: stages/shot-plan.md",
+    "SKILL.md: references/review-method.md",
+    "SKILL.md: references/knowledge-index.md",
+    "references/review-method.md: knowledge-index.md",
+    "stages/beat.md: ../references/knowledge-index.md",
+    "stages/blocking.md: ../references/knowledge-index.md",
+    "stages/intent.md: ../references/knowledge-index.md",
+    "stages/shot-plan.md: ../references/review-method.md",
+    "stages/shot-plan.md: ../references/knowledge-index.md"
+  ],
+  "initial_discovery": {
+    "name": "director-skill-v0-candidate",
+    "path_matches_workspace": true,
+    "enabled": true,
+    "errors_count": 0
+  },
+  "synthetic_v2_discovery": {
+    "name": "director-skill-v0-candidate",
+    "path_matches_workspace": true,
+    "enabled": true,
+    "errors_count": 0
+  },
+  "rollback_discovery": {
+    "name": "director-skill-v0-candidate",
+    "path_matches_workspace": true,
+    "enabled": true,
+    "errors_count": 0
+  },
+  "reloaded_skill_path_same": true,
+  "seven_file_original_restored": true,
+  "models_called": false,
+  "canvas_agent_http_called": false,
+  "production_modified": false,
+  "no_auth_files_or_codex_global_config_used": true,
+  "limitations": [
+    "7-file sibling update has same Skill path; skills/list alone does not attest sibling hashes",
+    "directory exchange requires quiesced thread; two renames have short unavailable window",
+    "active Codex thread may cache previous Skill and must not be hot-swapped mid-turn",
+    "Canvas Agent HTTP path not verified here due unavailable loopback"
+  ]
+}

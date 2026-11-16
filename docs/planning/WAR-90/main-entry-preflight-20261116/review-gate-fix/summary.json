@@ -1,0 +1,19 @@
+{
+  "reviewer": {
+    "model": "gpt-6-luna",
+    "effort": "medium",
+    "returncode": 0,
+    "seconds": 12.04,
+    "prompt_sha": "9cd6797ee736601ccb0b6dd45cd6b4db74646385a707aa5ec7f9fe51875cd035",
+    "result_sha": "a2fc264c6ac64f393d0363174e443481bc6c75c0f0d00eb3e8d84eecfff56fd8"
+  },
+  "lead": {
+    "model": "gpt-6-astra",
+    "effort": "medium",
+    "returncode": 0,
+    "seconds": 29.77,
+    "prompt_sha": "a3d025bef51ad8ed98cb8c7cfaeaa966d77ba3e68a7dc6700d182775b0604357",
+    "result_sha": "2a014380b94d6745b324e611221673450ddc4b3d79ec986f7eca93d73691bbe8"
+  },
+  "complete": true
+}

@@ -1,0 +1,44 @@
+{
+  "manifest": {
+    "packet_sha256": "25060938dd3bbbe0ee7f50c152a60d2ebed30cea93e412411c095debb1487cc9",
+    "report_scope": "single Canvas native primary + Chat alternate preflight; no production install",
+    "original_B_state_sha256": "23e78d5994ed18ea02d59c2c3eb588f36cc41d3b495b81009713ec7570d7e4b7",
+    "not_authorized": [
+      "production service start",
+      "production Skill install",
+      "media",
+      "B approval",
+      "production Canvas mutations"
+    ]
+  },
+  "reviewers": [
+    {
+      "name": "reviewer-skill-lifecycle",
+      "model": "gpt-6-luna",
+      "effort": "medium",
+      "return_code": 0,
+      "seconds": 35.99,
+      "prompt_sha256": "b0d900caba906b82ba3e05fcfe64c89f0da38268cc2366ddf2661114f02c83f7",
+      "result_sha256": "fc64b4a882a3b7f3277165d68b4eddc12c46ea917d55b722e39f39e7f84f7095"
+    },
+    {
+      "name": "reviewer-canvas-ownership",
+      "model": "gpt-6-astra",
+      "effort": "medium",
+      "return_code": 0,
+      "seconds": 54.93,
+      "prompt_sha256": "176c56b2cd2fc38455dad4bf94209a69f35bf4475ae0fbdc0de38f764794458b",
+      "result_sha256": "f2dc63db9f9a28c2a832ff72384dcea3741f65d57ceca2be617d33ad159f9623"
+    }
+  ],
+  "lead": {
+    "name": "lead-reviewer",
+    "model": "gpt-6-astra",
+    "effort": "medium",
+    "return_code": 0,
+    "seconds": 40.86,
+    "prompt_sha256": "5155904723d92b7ec960603a24aa407126e06fdae136990d14692b63b554ce08",
+    "result_sha256": "afc2472a9788121cd4998e3294d071ffbc5b8729a5f05316390e8565bfea0118"
+  },
+  "complete": true
+}

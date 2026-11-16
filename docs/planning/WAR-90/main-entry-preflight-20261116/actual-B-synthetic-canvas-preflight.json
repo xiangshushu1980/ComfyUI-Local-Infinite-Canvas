@@ -1,0 +1,17 @@
+{
+  "status": "PASS pure-data with actual approved-B review-shot projection",
+  "canvas_state": "SYNTHETIC - no real browser API called",
+  "can_write": false,
+  "B_id": "b7b4fd156b884907b2431b6b1e0d9960",
+  "source_sha256": "65b8a2f83cefc2281879fb254d3ee25dfd68d72e7cd0d811a2afbade5c1e165d",
+  "shot_sha256": "92c27994389848915158d107bc6a304e012536f9f878d23049be9d9c3d7ded90",
+  "unverified": [
+    "whether selected Canvas Node actually maps to the claimed Director Shot",
+    "whether selection and state originate from one atomic client/project snapshot",
+    "whether any supplied snapshot is fresh or still current",
+    "whether the rendered Canvas node text is the complete approved B source",
+    "identity of user authorizing a future mutation",
+    "no race after this check (server has no cross-entry CAS)",
+    "permissions of native Codex MCP tools"
+  ]
+}

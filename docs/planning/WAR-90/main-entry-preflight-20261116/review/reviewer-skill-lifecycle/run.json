@@ -1,0 +1,9 @@
+{
+  "name": "reviewer-skill-lifecycle",
+  "model": "gpt-6-luna",
+  "effort": "medium",
+  "return_code": 0,
+  "seconds": 35.99,
+  "prompt_sha256": "b0d900caba906b82ba3e05fcfe64c89f0da38268cc2366ddf2661114f02c83f7",
+  "result_sha256": "fc64b4a882a3b7f3277165d68b4eddc12c46ea917d55b722e39f39e7f84f7095"
+}

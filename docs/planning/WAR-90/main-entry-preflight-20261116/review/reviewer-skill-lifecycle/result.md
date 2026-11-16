@@ -1,0 +1,60 @@
+# 结论：targeted-revision
+
+冻结包足以支持“有限的原生 Skill 生命周期通过”和“Chat 只读前检通过”，但不足以证明 Canvas Agent HTTP 路由、正式安装或生产操作已通过。对 WAR-90 的阶段性预检可有条件接受；不得据此批准 A/B 或开放 Chat 写入。
+
+## P0
+
+无。提供的证据没有显示已经发生生产写入、误改画布或自动批准；当前只读 gate 也明确返回 `can_write=false`。
+
+## P1
+
+1. **原生 Codex Skill 发现通过，不代表 Canvas Agent HTTP 集成通过。**  
+   可复现证据：`codex-skill-lifecycle-result.json` 记录干净临时环境下 `skills/list(forceReload)` 三次发现均无错误、临时升级后发现仍在、回退后七文件 SHA 恢复；同时明确 `canvas_agent_http_called=false`。HTTP 尝试因 localhost 超时未完成。  
+   **最低修改：** 在隔离环境完成一次 Canvas Agent HTTP 路由验证，记录实际 workspace、发现结果和错误；在此之前将 HTTP 路径标为未验证。不要把原生 skills/list 的 PASS 延伸为 Agent HTTP PASS。
+
+2. **多文件 Skill 的 revision 与回退治理不完整。**  
+   可复现证据：给出的 `SkillStore.revision()` 只对 `SKILL.md` 和可选 `agents/openai.yaml` 的原始内容计算 SHA；`update()` 也只更新这两者。它不会发现 `stages/` 或 `references/` 的变更。原生 Skill 列表中的 `enabled` 和 `path` 同样不提供七文件内容签名。  
+   **最低修改：** 将正式安装候选固定为完整七文件发布包：对每个相对路径记录 SHA，并绑定到已审阅的源码 Git 版本。部署前校验完整清单；升级或回退后再次校验。未有多文件版本校验的 Store revision 不得作为包版本或回退成功的证明。
+
+3. **目录替换不构成原子更新，活动 turn 可能继续使用旧知识。**  
+   可复现证据：冻结结果明确说明两次 rename 之间存在不可用窗口，且活动 Codex thread 可能缓存旧 Skill；测试是在临时副本完成，不能证明正式 workspace 的活动线程会刷新。  
+   **最低修改：** 替换或回退前确认相关专业 turn 已停止，并在新线程强制重新发现后核对七文件清单。保留旧版本备份和失败记录；不得在活动 turn 中热切换。
+
+4. **Chat gate 是只读一致性前检，不是原子写授权。**  
+   可复现证据：`chat_read_preflight.verify()` 只检查传入的健康状态、project/client/node/selection 与 B、Source、Shot 标识；通过时仍返回 `can_write=false`。它不发网络请求，不验证 Canvas 节点全文与批准 B 一致，也无法阻止检查之后状态改变。源码路由为 `/api/tools` → `session.callTool(...)`，没有 client/project 的原子绑定参数。`CanvasSession.targetClientId` 使用 turn 绑定客户端或最近激活客户端；`/canvas/activate` 也不创建事务。  
+   **最低修改：** 保持 gate 为只读前检。不要把通过结果解释成可写许可，也不要以该结果声称消除了竞态。Chat 写操作继续受阻，直到现有 API 提供并验证原子目标绑定及相应授权路径；该工程能力属于后续 WAR-35/WAR-37 范围。
+
+5. **配置声明不等于正式工具权限已经验证。**  
+   可复现证据：正式配置将 codegraph、hindsight 的 `mcpOverrides` 置为 false，但冻结包指出正式线程的实际工具列表和拒绝生效尚未验收。`default_tools_approval_mode=approve` 也不能证明每次 MCP 调用会请求真人批准。  
+   **最低修改：** 将正式 MCP 工具可见性、实际拒绝路径、以及真实写入权限分别标为未验证；在隔离环境取得对应运行证据后再更新结论。
+
+## P2
+
+- **候选发布版本的名称和状态容易误读。** 目录名 `director-skill-v0-candidate` 仍明确是候选，冻结包也说明正式 workspace 未安装它。  
+  **最低修改：** 在候选发布清单上标明候选身份、来源 Git 版本、七文件 SHA、审阅状态和“未安装”；经审阅确定发布版本后再使用发布标识，避免仅凭目录名或 Codex Skill 名称推断版本。
+
+- **路径治理的证据限于给出的临时测试。** 冻结包记录正式 workspace 是 `/home/sean/.infinite-canvas/codex-workspaces/canvas-agent`，并说明它不是默认 site；正式服务当时 inactive，候选未安装。  
+  **最低修改：** 将未来安装前的 workspace、活动任务、现有同名 Skill 和目标画布检查作为发布记录项。当前证据不支持宣称正式工作区已安装、已运行或已回退。
+
+- **84 项测试是定向单元回归，不覆盖端到端权限语义。** 日志显示 Skills Store、Codex Client、CanvasSession 的 84 项测试通过；不能据此证明真实 MCP 拒绝、Chat 跨端竞态控制或生产安装安全。13 项纯数据 gate 测试同样不能覆盖网络读写时序。  
+  **最低修改：** 保留测试范围描述，不把单元测试结果升级为生产验收结论。
+
+## 当前可确认与仍未知
+
+可确认的范围：
+
+- 七文件 Skill 在临时 CODEX_HOME 下经原生 `skills/list(forceReload)` 发现；临时升级和回退后仍可发现，七文件恢复原 SHA。
+- Chat 纯数据只读 gate 的 13 项离线测试通过；该 gate 明确不授予写权限。
+- 三个相关模块的 84 项定向测试通过。
+- 按冻结包记录，Canvas Agent 和 Web 服务当时均 inactive；正式候选 Skill 未安装。
+
+仍未知的范围：
+
+- Canvas Agent HTTP 路由是否能发现并使用这份多文件 Skill。
+- 正式 workspace 中的安装、完整七文件校验、升级、失败恢复及回退是否实际完成。
+- 正式线程是否确实看不到 codegraph/hindsight，以及 MCP 工具是否存在可验证的拒绝执行路径。
+- Chat 经现有 HTTP API 的真实写入是否能原子锁定指定 client/project；当前源码和 gate 证据不支持这一点。
+- Canvas 节点全文是否与批准的 B 候选完全一致、批准用户身份如何核验、以及 A/B 真人审批闭环是否完成。
+- 真实用户修改、Canvas 差异、B 再审、媒体与 ComfyUI/H3 操作均未由本冻结包证明。
+
+**验收边界：** 可记录为“临时环境原生 Skill 生命周期通过；Chat 只读前检通过”。Canvas Agent HTTP、正式安装、生产权限拒绝和双入口原子写入均保持未验证；不批准 A/B，不据此扩建新 Agent 或授权 Chat 写入。

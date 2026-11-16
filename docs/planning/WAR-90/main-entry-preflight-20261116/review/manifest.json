@@ -1,0 +1,12 @@
+{
+  "packet_sha256": "25060938dd3bbbe0ee7f50c152a60d2ebed30cea93e412411c095debb1487cc9",
+  "report_scope": "single Canvas native primary + Chat alternate preflight; no production install",
+  "original_B_state_sha256": "23e78d5994ed18ea02d59c2c3eb588f36cc41d3b495b81009713ec7570d7e4b7",
+  "not_authorized": [
+    "production service start",
+    "production Skill install",
+    "media",
+    "B approval",
+    "production Canvas mutations"
+  ]
+}

@@ -1,0 +1,8 @@
+*.jsonl -whitespace
+*.log -whitespace
+review/*/prompt.md -whitespace
+review/*/result.md -whitespace
+review/frozen-packet.md -whitespace
+review-gate-fix/*/prompt.md -whitespace
+review-gate-fix/*/result.md -whitespace
+review-gate-fix/frozen-fix-packet.md -whitespace
