@@ -22,3 +22,18 @@
 **仍待真正闭环**：真人创作改稿意见、真人的批准/拒绝/要求再改、正式批准后重新加载及画布版本同步；正式身份/CAS/typed Review 的设计归 WAR-35/37，而非本轮另造。浏览器刷新后的 IndexedDB 恢复尚未单独验证。没有媒体/Blender/H3 生成，不增删旧镜头、不安装新资产或实体系统。
 
 接下来的真人决定：A 拒绝合成候选、保留原 B；B 明确接受这个新的具体镜头主张，并进入真实 B 人审确认；C 要求进一步修改一处具体条件。**没有真实用户回复时，Agent 不得写入批准决定**。审阅即便同意，也需遵循现行试点审批流程，不能宣称 WAR-35 正式批准。
+
+## 2026-11-17｜用户认可 R2 后的试点 B 落账与 Canvas 同步（补充最终记录）
+
+用户明确回复“认可R2.”，并在后续讨论中允许 **WAR-90 仅简要完成流程闭环，再由其他任务设计专业交互界面**。本轮严格使用现有 Pilot.record_review 和原生 Canvas Agent API，不建设新的产品层审批机制。用户认可的是经真实模型生成的 R2 修改候选，原发起修改的 instruction **仍是 synthetic-test**，不得倒填为用户亲自书写的改稿意见。
+
+- 真人原话证据保存在 user-R2-acceptance-evidence.md（SHA256 73310fdec6d87b24f4cde822236d694a0e239d850d5eca556be73cdff3ccba0f）；作为**候选工作区外**的证据，调用 Director Runtime CLI record-review --checkpoint B --decision accept --actor human，原始回执 pilot-B-R2-accept-receipt.json。运行壳记录身份 identity_verified=false、formal_WAR35_approval=false，**不是**生产级授权认证或 WAR-35 正式审批。
+- 被接受的试点 B ID：6cbcaf51a55e4bb0a097147eb34dd3cb；**仅**在隔离的工作区 pilot-D-canvas-shot02-flowtest-20261117/ 中 phase=pilot-B-accepted、pilot_B.id=R2、pending_shots=[]、gates B=true；新工作区权威 state.json SHA256 f8b3922311074f6d7c126596939ecd468c1f452bce67f1faf9f5875d0f8afffa。原批准 B 工作区 pilot-D-local-repair-v2/state.json SHA256 23e78d5994ed18ea02d59c2c3eb588f36cc41d3b495b81009713ec7570d7e4b7，完整保持不变。
+- 为避免仅存本机未跟踪分支，本 Issue 证据包 evidence/ 内保存批准后的 state.json 冻结快照 approved-R2-pilot-state-snapshot.json，及包含四个精确镜头文本的 approved-R2-four-shot-projection.json；不是第二套生产数据契约。操作前快照 before-acceptance-state.json、审批复核 R2-approval-validation.json 均在当前目录。
+- 为避免 Canvas 展示出现两个不一致的“当前 B”，对唯一规范项目 2FwEbySI5PYe7d6BL4pES 使用一次批量 Canvas Agent canvas_apply_ops，**原位更新**四个 Shot 文本展示节点的批准 B 元信息与原文（Shot02 内容切换为 R2；Shot01/03/04 正文逐字相同）。历史差异节点 text-1794847881140-0 由“实验待审”改成“【R2 试点 B 已接受】Shot02 · 修改差异记录”，明确反馈来源 synthetic-test 及用户审阅后接受。
+- Canvas 仍然只有 **5 个节点**（四镜和一历史差异节点），未增删节点、关系边、媒体；没有改变任何原节点 ID、位置、大小或用户当时的选区。浏览器批量写入返回完整五节点文本 SHA **5/5** 精确相符，后续 Canvas Agent live compact 只读回查通过；画布同步审计 approved-R2-canvas-sync-audit.json pass=true。
+- 新的独立后续校验 R2-post-sync-verification.json **18/18 PASS**：原 B、R2 试点批准、真人证据、输入非合成身份的正确标注、仅 Shot02 修改、五节点展示版本、无多余图关系与服务状态均满足当前可测不变量。注意 Pilot 试点批准会**按机制清除 pending_shots**，这是用户试点文本审批状态收口，**不是**新增了连续动作专业复验或看过成片。
+- 本轮**没有**重新打开/刷新 Windows 浏览器验证 IndexedDB reload，因此只能宣布 Runtime 已持久写盘、当前浏览器 Canvas 已同步并回读；重载持久化仍需一次浏览器刷新后的核验，不应冒称所有产品级闭环完成。
+- User 对“文本显得粗糙、不工程化”给出了明确产品反馈：当前通用 Text 节点是单纯的**技术投影**，不是理想的导演镜头交互。专业术语、镜头卡层级、实体关联、连续动作连线、精确 Diff 和批准交互的设计由总控已分配的 WAR-37（设计）及 WAR-42（工程集成）承接，**不要在 WAR-90 增加新的产品层数据协议或临时定制面板**。
+
+**阶段判断：WAR-90 试点“已认可 R2 → 独立 B 审批落账 → 原生 Canvas 文本版本同步 → 读回无污染”有限闭环完成。** 尚无正式 WAR-35 typed Review/Decision、产品身份认证、刷新恢复/图形审阅视图与媒体质量验收。详细记录均属 Eric 项目目录，Linear 只保存状态及索引。

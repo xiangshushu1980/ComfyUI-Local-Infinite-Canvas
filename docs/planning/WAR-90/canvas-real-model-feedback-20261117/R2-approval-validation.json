@@ -1,0 +1,13 @@
+{
+  "phase": "pilot-B-accepted",
+  "active_id": "6cbcaf51a55e4bb0a097147eb34dd3cb",
+  "pilot_B_id": "6cbcaf51a55e4bb0a097147eb34dd3cb",
+  "pending_shots": [],
+  "human_pilot_decision": "accept",
+  "review_actor": "human",
+  "review_candidate": "6cbcaf51a55e4bb0a097147eb34dd3cb",
+  "identity_verified": false,
+  "formal_WAR35_approval": false,
+  "approved_B_original_sha_unchanged": true,
+  "new_branch_state_sha256": "f8b3922311074f6d7c126596939ecd468c1f452bce67f1faf9f5875d0f8afffa"
+}

@@ -1,0 +1,35 @@
+{
+  "checkpoint": "post-approval live Canvas read-back",
+  "checks": {
+    "original_approved_B_unchanged": true,
+    "original_B_id_retained": true,
+    "new_R2_accepted_B_id": true,
+    "R2_authority_integrity_ok": true,
+    "R2_no_pending_neighbor_flags": true,
+    "actual_human_evidence_sha": true,
+    "pilot_not_formal_WAR35_review": true,
+    "external_evidence_recorded": true,
+    "only_Shot02_text_changed": true,
+    "real_professional_model_came_from_codex_cli": true,
+    "one_expected_canvas_project": true,
+    "five_nodes_no_additional_ones": true,
+    "all_nodes_display_R2": true,
+    "no_canvas_graph_edges_added": true,
+    "full_content_verified_by_batch_write_reply": true,
+    "canvas_compact_still_mentions_R2": true,
+    "B_saved_after_canvas_write_same_byte": true,
+    "canvas_gateway_services_running": true
+  },
+  "pass": true,
+  "checks_count": 18,
+  "approvedBId": "6cbcaf51a55e4bb0a097147eb34dd3cb",
+  "approvedBStateSHA": "f8b3922311074f6d7c126596939ecd468c1f452bce67f1faf9f5875d0f8afffa",
+  "canvasProjectId": "2FwEbySI5PYe7d6BL4pES",
+  "canvasNodeCount": 5,
+  "notes": [
+    "This is an experimental WAR-90 pilot approval, not formal WAR-35 review.",
+    "The user approved the R2 candidate, not the synthetic feedback origin.",
+    "Browser refresh/IndexedDB rehydration has not been independently tested.",
+    "No media, audience, continuous-geometry, or live acting validation was done."
+  ]
+}

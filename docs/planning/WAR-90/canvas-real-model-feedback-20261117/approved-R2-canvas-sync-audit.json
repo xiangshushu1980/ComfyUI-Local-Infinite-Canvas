@@ -1,0 +1,136 @@
+{
+  "projectId": "2FwEbySI5PYe7d6BL4pES",
+  "clientId": "jeUNwaV-t0QApaAKC2pMh",
+  "origin": "http://canvas.localhost",
+  "oldB": "b7b4fd156b884907b2431b6b1e0d9960",
+  "approvedR2": "6cbcaf51a55e4bb0a097147eb34dd3cb",
+  "acceptedBSourceSha256": "f8b3922311074f6d7c126596939ecd468c1f452bce67f1faf9f5875d0f8afffa",
+  "oldBSourceSha256": "23e78d5994ed18ea02d59c2c3eb588f36cc41d3b495b81009713ec7570d7e4b7",
+  "humanPilotApprovalEvidenceSha256": "73310fdec6d87b24f4cde822236d694a0e239d850d5eca556be73cdff3ccba0f",
+  "preflight": {
+    "nodeIds": [
+      "text-1794832120997-0",
+      "text-1794832120997-1",
+      "text-1794832120997-2",
+      "text-1794832120997-3",
+      "text-1794847881140-0"
+    ],
+    "selectedNodeIds": [
+      "text-1794847881140-0"
+    ],
+    "nodePositions": {
+      "text-1794832120997-0": {
+        "x": 91.8789950284091,
+        "y": 6.909235174005687
+      },
+      "text-1794832120997-1": {
+        "x": 720.0751896905176,
+        "y": 17.728933295736795
+      },
+      "text-1794832120997-2": {
+        "x": 1440.3906311825585,
+        "y": 19.5543638396832
+      },
+      "text-1794832120997-3": {
+        "x": 2192.9827648378428,
+        "y": 38.44857145818417
+      },
+      "text-1794847881140-0": {
+        "x": 720,
+        "y": 1270
+      }
+    },
+    "nodeSizes": {
+      "text-1794832120997-0": [
+        581.7500747464637,
+        717.4314499467904
+      ],
+      "text-1794832120997-1": [
+        687.5374588894449,
+        1174.7059491454836
+      ],
+      "text-1794832120997-2": [
+        665.3562331820457,
+        1010.9061285369964
+      ],
+      "text-1794832120997-3": [
+        796.0775866624203,
+        1210.9635765664652
+      ],
+      "text-1794847881140-0": [
+        730.9381209281632,
+        925.6899423174423
+      ]
+    },
+    "nodeTitleAndCompactContentSHA": {
+      "text-1794832120997-0": {
+        "title": "D《错过的钥匙》 · Shot01｜B 展示副本",
+        "contentSHA": "8c62c4ae3d30f25a438c5080b7a0c96579d7f4475c5b6f3cfcf52880209d13f1"
+      },
+      "text-1794832120997-1": {
+        "title": "D《错过的钥匙》 · Shot02｜B 展示副本",
+        "contentSHA": "fe49ed6863e009c68b52e40d266697c801074ef14ad91b42c7c761284e41c001"
+      },
+      "text-1794832120997-2": {
+        "title": "D《错过的钥匙》 · Shot03｜B 展示副本",
+        "contentSHA": "8fadf407b45a7af10d1bfab816c561ff3f796596648e4e9d944fd702b6a43224"
+      },
+      "text-1794832120997-3": {
+        "title": "D《错过的钥匙》 · Shot04｜B 展示副本",
+        "contentSHA": "ef20a5e1003bd7be8e87c92fa41a45273c50fe7a2cf88148a2f329ba4f9bfaf0"
+      },
+      "text-1794847881140-0": {
+        "title": "【实验待审｜非批准】Shot02 R2 · 最小局部差异",
+        "contentSHA": "31ea5b42d8db02a2dd90aa2d970cad8a225717e3c1482dac1571c0f3285eb64a"
+      }
+    }
+  },
+  "expected": {
+    "text-1794832120997-0": {
+      "title": "D《错过的钥匙》 · Shot01｜R2 试点 B 展示",
+      "sha256": "cba3c8450ccfa6ce7fce911ef505dfcfec67d56f7441e1767364442d1c59d30b",
+      "shotTextSha": "8fff2f3e880dad4b4a0938c09b315d9049549b57556b9c9ec83f3593e535826d"
+    },
+    "text-1794832120997-1": {
+      "title": "D《错过的钥匙》 · Shot02｜R2 试点 B 展示",
+      "sha256": "77c784b4a3b2fa9cb6276ab6cbc37c30572231b5706aa0f4f1222f109d503aad",
+      "shotTextSha": "547f71e9cdb20bf0671890c7f0ab4c02c4c7f288fddabf4de87631d78d0553b6"
+    },
+    "text-1794832120997-2": {
+      "title": "D《错过的钥匙》 · Shot03｜R2 试点 B 展示",
+      "sha256": "172fc262d5bc799c4b0c72e8755af5b69270a01be6734e1ab35299b0ad5a7b14",
+      "shotTextSha": "306a151a3dfc07e6cbfccd99acd998bcebe654e463a10fae48a479e9253b3163"
+    },
+    "text-1794832120997-3": {
+      "title": "D《错过的钥匙》 · Shot04｜R2 试点 B 展示",
+      "sha256": "ca64241ca95b544f73d5a6ff5fd3d211e6f516719dcc23b729c567ec09ef04cd",
+      "shotTextSha": "3bc4fa212b3f57a38b66a48799989ab73c722e7eefbc89691a3207b64157d212"
+    },
+    "text-1794847881140-0": {
+      "title": "【R2 试点 B 已接受】Shot02 · 修改差异记录",
+      "sha256": "86dcbd08601dc7c2d817e00028667e1937063e71dc3cc6dfd8d30567e7f9155f",
+      "shotTextSha": null
+    }
+  },
+  "writeIssued": true,
+  "writeSuccess": true,
+  "notes": "One batch update of five existing text nodes. No add/remove/reorder, media, connection or approval operations.",
+  "fullResultNodes": 5,
+  "fullTextMatch": {
+    "text-1794832120997-0": true,
+    "text-1794832120997-1": true,
+    "text-1794832120997-2": true,
+    "text-1794832120997-3": true,
+    "text-1794847881140-0": true
+  },
+  "fullResultSelectionPreserved": true,
+  "postNodeCount": 5,
+  "compactTitlesMatch": true,
+  "positionsPreserved": true,
+  "sizesPreserved": true,
+  "selectionPreserved": true,
+  "graphConnectionsPreserved": true,
+  "newApprovedBUnchanged": true,
+  "oldApprovedBUnchanged": true,
+  "pass": true
+}
