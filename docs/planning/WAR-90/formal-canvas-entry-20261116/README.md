@@ -32,11 +32,13 @@ ChatGPT/DCR 负责安装核验、证据和独立评估；画布内置 Canvas Age
 
 ### 首次互动提示词（给 Canvas Agent）
 
-本轮是 WAR-90 的 Director Skill 内部交互试用。请显式使用 director-skill-v0-candidate，只读审阅 D《错过的钥匙》已批准 B 的 Shot02。先通过终端工具真实执行：
+请作为画布中的导演助手，显式使用 director-skill-v0-candidate，对 D《错过的钥匙》已批准 B 的 Shot02 做一次只读镜头审阅。这是导演工作，不是执行 Linear 工程任务，不需要查询 WAR-90。先通过终端工具真实执行：
 
     python3 /home/sean/projects/canvas-lab/tools/director-runtime-v0/cli.py review-shot --workspace /home/sean/projects/canvas-lab/docs/planning/WAR-90/pilot-D-local-repair-v2 --shot-id Shot02
 
 然后通过 infinite-canvas MCP 读取当前画布与选区，说明项目和节点是否确实对应 Shot02；如无对应节点，不猜测或自行创建。请按 Skill 的 Shot Plan/Review 方法说明观众观看任务、一个重要风险与未证依据，询问我是否有实际修改意见。没有反馈即停在 no-handoff。禁止修改画布或批准 B，不调用 prepare/submit、ComfyUI/H3 或任何媒体生成。
+
+**职责分界纠正（2026-11-16）**：实际原生 Codex skills/list 列出 linear-task-collab、project-docs、director-skill-v0-candidate 为 enabled；但 config/read 的 MCP 服务名称中未发现 Linear，不能声称内置 Agent 已验证能直接读取 Linear Issue。WAR-90 仅是当前 Chat/Linear 对研究交互证据的索引，不应将“开始 WAR-90”当成导演 Agent 的用户工作指令，也不把“能够阅读 Linear Skill”误当作“能够查询 Issue”。CLI 参数中的 WAR-90 是本地批准 B 的存储路径，不指示访问 Linear。首次交互无需读取任务全文。
 
 这只是第一次试点的一次性启动包，不是最终产品要求用户每次粘贴全部上下文。后续需按 WAR-35/37 设计自动装配 Source/Shot/画布状态。
 
