@@ -1,0 +1,37 @@
+{
+  "ok": true,
+  "workspace": {
+    "workspacePath": "/tmp/war90-native-compact-lp2_50ve/home/.infinite-canvas/codex-workspaces/site",
+    "activeThreadId": "01a1e2fb-3ac1-79e1-995b-aff96182a024"
+  },
+  "conversation": {
+    "revision": 8,
+    "conversationId": "53733d49-331a-48ff-9b16-c5edaad79dd5",
+    "threadId": "01a1e2fb-3ac1-79e1-995b-aff96182a024",
+    "status": "running",
+    "mcpStatuses": {
+      "codex_apps": {
+        "status": "ready"
+      },
+      "infinite-canvas": {
+        "status": "ready"
+      }
+    },
+    "sourceClientId": "XntcAb4CEvhlO54dLsf35"
+  },
+  "thread": {
+    "id": "01a1e2fb-3ac1-79e1-995b-aff96182a024",
+    "sessionId": "01a1e2fb-3ac1-79e1-995b-aff96182a024",
+    "preview": "$director-skill-v0-candidate WAR-90 私有隔离画布中的原生 Canvas Agent 只读集成测试。你是唯一专业 Agent，选择的 Skill 是 director-skill-v0-candidate。按需阅读此 Skill 的 shot-plan 与 review-method 阶段卡。请通过终端工具真实执行以下只读命令（不是自己编造 JSON）：python3 /home/sean/projects/canvas-lab/tools/director-runtime-v0/cli.py review-shot --workspace /home/sean/projects/canvas-lab/docs/planning/WAR-90/pilot-D-local-repair-v2 --shot-id Shot02 。它会返回目标 Shot02 的完整原文、故事源、版本哈希与未知项。然后真实调用 infinite-canvas MCP 的 canvas_get_state 与 canvas_get_selection，核对这是五节点的试验画布，唯一选中 Shot02。明确指出 B candidate 内容 SHA、Shot Plan 全文 SHA、Shot02 文本 SHA 是三个不同对象，不能比较相等。只输出 100-250 字中文简短事实与一个观看风险：目标 Shot02 / B ID / CLI 读成功否 / MCP 读成功否 / 工具范围或未知。当前没有真人修改意见，因此必须 no-handoff。不得用 shell 写临时文件，不调用 prepare/submit/run-stage，不修改任何画布或已批准 B，不生成媒体，不自签 A/B。",
+    "name": null,
+    "cwd": "/tmp/war90-native-compact-lp2_50ve/home/.infinite-canvas/codex-workspaces/site",
+    "status": "active",
+    "source": "vscode",
+    "threadSource": "user",
+    "createdAt": 1794809482,
+    "updatedAt": 1794809515
+  },
+  "messages": [],
+  "settledTurnIds": [],
+  "historyReady": true
+}

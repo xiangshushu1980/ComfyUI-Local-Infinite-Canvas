@@ -1,0 +1,56 @@
+{
+  "purpose": "seven-file Skill lifecycle on isolated Canvas Agent / no model calls",
+  "source_manifest": {
+    "SKILL.md": "3eee7d6f3c3032fc43e97b86a9606f8ae77943fa377aa2f56e2770c2b76e8676",
+    "references/knowledge-index.md": "4d8edcb664659d78f897aa7baa8c1f275a57b5ff128ab433c95745b32a5e2519",
+    "references/review-method.md": "72b23f163fe1fdea6a547d5b47f39392ba0b9b63b814a7a285db4a7df0e88e8e",
+    "stages/beat.md": "6e81d45db1d0249cf33a200135f0ab790a49b65d92c7d036b0e253ac978121a1",
+    "stages/blocking.md": "2663d5acc282d636400539aecc643871c26c12867c5d480d9c02793ad45c5563",
+    "stages/intent.md": "ac07ecb95cbd511888911a0f85aa08f5fee2824cbf8e23749ef0d6ffec065a38",
+    "stages/shot-plan.md": "fa0c7d4cc39fdf6b5df9c8a0e3e9b0ee6eafa921142b5a5f07efcdc8cf989476"
+  },
+  "relative_references_checked": [
+    "SKILL.md: stages/intent.md",
+    "SKILL.md: stages/beat.md",
+    "SKILL.md: stages/blocking.md",
+    "SKILL.md: stages/shot-plan.md",
+    "SKILL.md: references/review-method.md",
+    "SKILL.md: references/knowledge-index.md",
+    "references/review-method.md: knowledge-index.md",
+    "stages/beat.md: ../references/knowledge-index.md",
+    "stages/blocking.md: ../references/knowledge-index.md",
+    "stages/intent.md: ../references/knowledge-index.md",
+    "stages/shot-plan.md: ../references/review-method.md",
+    "stages/shot-plan.md: ../references/knowledge-index.md"
+  ],
+  "missing_references": [],
+  "production_modified": false,
+  "v1_discovery": {
+    "enabled": true,
+    "managed": true,
+    "path": "/tmp/war90-skill-lifecycle-ompqu_0h/home/.infinite-canvas/codex-workspaces/site/.agents/skills/director-skill-v0-candidate/SKILL.md",
+    "list_errors": 0
+  },
+  "v1_exact_seven_file_sha": true,
+  "v2_discovery": {
+    "enabled": true,
+    "managed": true,
+    "path": "/tmp/war90-skill-lifecycle-ompqu_0h/home/.infinite-canvas/codex-workspaces/site/.agents/skills/director-skill-v0-candidate/SKILL.md",
+    "list_errors": 0
+  },
+  "v2_sibling_file_changed": true,
+  "reload_does_not_attest_all_7_files": true,
+  "rollback_discovery": {
+    "enabled": true,
+    "managed": true,
+    "path": "/tmp/war90-skill-lifecycle-ompqu_0h/home/.infinite-canvas/codex-workspaces/site/.agents/skills/director-skill-v0-candidate/SKILL.md",
+    "list_errors": 0
+  },
+  "rollback_restored_all_7_hashes": true,
+  "rollback_relative_references_checked": 12,
+  "clean_codex_home": true,
+  "no_auth_or_model_turn": true,
+  "no_web_canvas_client_created": true,
+  "two_rename_swap_has_unavailable_window": true,
+  "result": "PASS: isolated skill discovery/reload/rollback"
+}

@@ -1,0 +1,6 @@
+{
+  "decision": "BLOCK",
+  "reason": "Canvas Codex turn busy or unknown",
+  "can_write": false,
+  "codex_busy": true
+}

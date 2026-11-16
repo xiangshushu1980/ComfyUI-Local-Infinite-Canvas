@@ -1,0 +1,30 @@
+{
+  "test": "isolated Canvas Agent /api/tools read target follows active client",
+  "synthetic_clients": true,
+  "api_read_only": true,
+  "production_untouched": true,
+  "status": "PASS",
+  "observed_routes": [
+    {
+      "active": "war90-probe-A",
+      "get_state_project": "war90-project-A",
+      "get_state_client": "war90-probe-A",
+      "selection_node": "war90-node-A"
+    },
+    {
+      "active": "war90-probe-B",
+      "get_state_project": "war90-project-B",
+      "get_state_client": "war90-probe-B",
+      "selection_node": "war90-node-B"
+    },
+    {
+      "active": "war90-probe-A",
+      "get_state_project": "war90-project-A",
+      "get_state_client": "war90-probe-A",
+      "selection_node": "war90-node-A"
+    }
+  ],
+  "http_tool_request_has_no_client_id_binding": true,
+  "multi_client_read_target_changed_by_activate": true,
+  "runtime_permission_not_tested": true
+}
