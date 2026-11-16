@@ -1,0 +1,71 @@
+{
+  "purpose": "create 4 approved B text display nodes in canonical Windows browser Canvas Lab",
+  "canonical_origin": "http://canvas.localhost",
+  "project_id": "2FwEbySI5PYe7d6BL4pES",
+  "client_id": "jeUNwaV-t0QApaAKC2pMh",
+  "B_sha256_expected": "23e78d5994ed18ea02d59c2c3eb588f36cc41d3b495b81009713ec7570d7e4b7",
+  "one_off_creation_requested": true,
+  "write_called": true,
+  "write_successful": true,
+  "result_pass": true,
+  "method": "Canvas Agent API canvas_create_text_nodes",
+  "preflight": {
+    "connected_clients": 1,
+    "canvas_title": "无限画布 1",
+    "node_count": 0,
+    "B_sha256": "23e78d5994ed18ea02d59c2c3eb588f36cc41d3b495b81009713ec7570d7e4b7",
+    "shot_character_lengths": [
+      864,
+      1824,
+      1463,
+      3101
+    ],
+    "expected_text_sha256": {
+      "D《错过的钥匙》 · Shot01｜B 展示副本": "1111209fdee28828c3c6509837fff87418a4dbc2e71ad01c841e8403e12b213b",
+      "D《错过的钥匙》 · Shot02｜B 展示副本": "c09b58fba2ada677f7ecf723997a11da6fb44923f425dc4e23d41d0203557fae",
+      "D《错过的钥匙》 · Shot03｜B 展示副本": "ab5b400e2ab236ca6e7a5dbee1660981ce38cab0038324dffa88ca62e5c90336",
+      "D《错过的钥匙》 · Shot04｜B 展示副本": "c3054257034d853048a0fbbc17778e95709decef1093be9bba4eeef01fbcef32"
+    }
+  },
+  "write_http_code": 200,
+  "write_response_keys": [
+    "projectId",
+    "title",
+    "nodes",
+    "connections",
+    "selectedNodeIds",
+    "viewport"
+  ],
+  "returned_node_count": 4,
+  "complete_return_sha_matches": {
+    "D《错过的钥匙》 · Shot01｜B 展示副本": true,
+    "D《错过的钥匙》 · Shot02｜B 展示副本": true,
+    "D《错过的钥匙》 · Shot03｜B 展示副本": true,
+    "D《错过的钥匙》 · Shot04｜B 展示副本": true
+  },
+  "created_ids": {
+    "D《错过的钥匙》 · Shot01｜B 展示副本": "text-1794832120997-0",
+    "D《错过的钥匙》 · Shot02｜B 展示副本": "text-1794832120997-1",
+    "D《错过的钥匙》 · Shot03｜B 展示副本": "text-1794832120997-2",
+    "D《错过的钥匙》 · Shot04｜B 展示副本": "text-1794832120997-3"
+  },
+  "full_return_project_id": "2FwEbySI5PYe7d6BL4pES",
+  "postflight": {
+    "clients": 1,
+    "busy": false,
+    "project_id": "2FwEbySI5PYe7d6BL4pES",
+    "client_id": "jeUNwaV-t0QApaAKC2pMh",
+    "title": "无限画布 1",
+    "nodes": 4,
+    "selected_ids": [
+      "text-1794832120997-3"
+    ],
+    "source_B_unchanged": true
+  },
+  "compact_prefix_matches": {
+    "D《错过的钥匙》 · Shot01｜B 展示副本": true,
+    "D《错过的钥匙》 · Shot02｜B 展示副本": true,
+    "D《错过的钥匙》 · Shot03｜B 展示副本": true,
+    "D《错过的钥匙》 · Shot04｜B 展示副本": true
+  }
+}
