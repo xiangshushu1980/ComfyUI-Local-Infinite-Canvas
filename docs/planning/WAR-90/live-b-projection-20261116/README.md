@@ -49,3 +49,14 @@
 Web 正式路由为 /canvas/:id。项目状态由浏览器本地 Zustand persist + localforage/IndexedDB 保存，存储键 infinite-canvas:canvas_store。同名不同 ID 可能源自不同浏览器配置、不同 URL origin，或多标签页状态未同步；哪一种尚未确认。HTTP GET /canvas/mrEXrMQoY-2ef3U6NsHtj 得到200只证明前端 SPA 路由存在，不能证明当前浏览器本地有该项目。
 
 找回建议：优先切回19:14之前的原浏览器标签页/窗口，并使用它原有的协议、地址、端口进入 /canvas/mrEXrMQoY-2ef3U6NsHtj；若看不到，检查协议、域名、端口及 browser profile 差异。没有调用 activate/navigate，没有移动或重建节点，没有验证原项目刷新后的持久恢复。后续产品工作须显示精确 projectId/origin/active-client 并设计请求级写目标绑定，归 WAR-37。
+
+
+## 2026-11-16 19:24｜单实例与多浏览器数据源核对（只读）
+
+- 本轮实测 Eric systemd 中 Web 仅一个 vite 实例（PID7295，自16:08启动，监听127.0.0.1:3000）；Canvas Agent 单实例（PID7294 / 子进程7315，监听127.0.0.1:17373）；ComfyUI Gateway PID8636/8647监听127.0.0.1:8190。没有第二个 Web/Agent 监听端口，也没有同时运行的独立临时174xx私有测试服务。不能据此排除**用户其它机器**另有 Web 实例，当前只证明 Eric 的运行面。
+- Eric Caddy配置中没有Canvas Lab Web代理路由；浏览器入口有可能从 WSL localhost、127.0.0.1、Tailscale/代理、浏览器 profile 等来源打开同一个Web实例。不同 scheme/host/port 属于不同origin，浏览器 IndexedDB/localforage 完全独立。实际两页访问origin尚未从浏览器确认，不能当作已经证实的根因。
+- 官方操作指南 docs/agent/canvas-agent-remote-control-20261112.md 第26行记载当时用 Windows PowerShell Start-Process打开 http://localhost:3000/canvas?mode=recent；此入口是**浏览器本地最近项目**快捷方式，不是项目ID定位。源码 infinite-canvas/web/src/pages/canvas/index.tsx 表明mode=recent取本地projects[0]，若为空则创建新画布，可能误入另一张同名画布。因此不应再把 /canvas?mode=recent 作为本次固定项目的入口。
+- 真实目标为 /canvas/mrEXrMQoY-2ef3U6NsHtj，但这是纯SPA路由：源码 infinite-canvas/web/src/pages/canvas/project.tsx 若本地 openProject(projectId) 缺失就navigate('/canvas')，故HTTP 200不能验证本地项目存在。需在**旧客户端相同浏览器profile和origin**访问。原浏览器客户端仍连接不代表刷新后的数据已保存；持续连接状态与本地IndexedDB持久性是不同命题。
+- 当前Agent clients=2。19:23:16新客户端短断并于19:23:17重连；它最新呈现的是页面非画布（API canvas_get_state={hasCanvas:false, clientId:新客户端}），不能对它进行任何Canvas编辑。未激活/切换客户端、未重定向浏览器、未写项目。
+- 辅助原因：本地 Zustand persist 持久化键 infinite-canvas:canvas_store，底层 localforage(name infinite-canvas, storeName app_state)；项目只有浏览器端权威数据。即便来自同一origin，两个已打开的标签页可能存在未同步的内存状态，不能只凭两个客户端就断言是两个不同origin。
+- 恢复操作：先找回约18:08在用的原窗口，读取它地址栏中的scheme/host/port，直接进入相同origin加固定ID的 /canvas/mrEXrMQoY-2ef3U6NsHtj；若仍重定向列表，先检查原浏览器 profile 的本地项目列表是否含该ID，并避免新建空项目/删除缓存。原窗口URL尚未读到，因此不发送无条件可用的绝对链接。
