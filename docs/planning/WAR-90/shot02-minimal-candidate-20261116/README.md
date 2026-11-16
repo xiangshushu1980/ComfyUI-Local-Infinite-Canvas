@@ -28,3 +28,12 @@
 - 无画布写入，无生成，无 Runtime authority/approval 变更；未运行 prepare-stage/submit-stage/record-review/run-stage。
 - 没有正式 Runtime 的新 pending B 候选，没有用户批准记录，没有改变 Script/Shot01–04。
 - 与 WAR-90 所规定的“用户审阅先于修改/签批”的边界相符，维持 In Progress 的人机交互停点。
+
+## 既有验证资料复用补充（ChatGPT 只读交叉核查，不是 Agent 本轮所读输入）
+
+本轮正式 Canvas Agent 只读读取 Shot01–03 的批准 B 文本，**没有调用 WAR-72/WAR-90 已有 Blender 证据**；不能声称它已经独立分析过旧测试。完成本轮后，ChatGPT 又按需核对了：
+- docs/planning/WAR-90/V0-evidence-reuse-and-V1-minimal-scope-20261115.md：旧 WAR-72 的 Shot02/03 镜头责任与新版四镜不等价；不可直接套用历史 Shot02→03 的镜头号和几何结论。
+- docs/validation/WAR-90/light-v2/README.md：**确实已有**局部 CPU Blender 代理复检，修正过蓝夹落稳后林让位、周看到覆盖区域、K 不动、右前臂穿桌等问题；部分 11 点抽检与离散状态接缝通过，但仍**没有连续真人动作动画、观众观看判断或新版最终镜头视觉可读性的证明**。
+- docs/planning/WAR-90/local-repair-v2/README.md：此前已经真实执行 Shot→Blocking→Shot 局部修订，最终候选 B 正是当前批准的 b7b4fd156b884907b2431b6b1e0d9960；轻理动作专为保持 Shot02→03 的“周问话实际打断”接口而补入，不是偶然多余动作。
+
+故“没有几何证据”只能准确表述为“没有**足以确认新版最终 Shot02 视觉效果/动作时序**的完整证据”，不是说所有几何测试从未发生。原生 Agent R1 本轮没有提出新的文字改动，在已经进行过上述局部修订的背景下是合理保守的结果。若后续进入可读性测试，应按现有工作复用证据，不重新执行 WAR-72 或无限循环 Blender 几何搜索。
