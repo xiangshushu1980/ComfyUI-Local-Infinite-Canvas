@@ -2,6 +2,12 @@
 
 日期：2026-11-16；机器：Eric；工作方向：Canvas Lab Rebuild。
 
+## 当前有效决定（2026-11-16 晚间更新）
+
+**用户明确取消旧 Origin 数据迁移：不用开发或保留迁移页面。** 从现在起仅以 http://canvas.localhost/canvas 为 Canvas Lab 的标准访问地址，在该 Origin 新建画布并重新创建需要的 Shot01–Shot04 文本节点即可。此前临时创建、未提交的迁移原型 HTML/TS 已撤销，仓库中不保留该功能。旧 localhost:3000、127.0.0.1:3000 下的项目不迁入新 Origin；用户允许以后清理它们，但目前未执行清理，避免错删非试点项目。
+
+**当前唯一待执行的产品操作**：用户用 Windows 浏览器打开规范入口并进入一张新画布，确认 Canvas Agent 与这张画布连接后，按批准 Runtime B 的只读输出重新创建四个文本审阅节点，并复核其内容。不可在未确认浏览器 Origin/projectId 的情况下通过 Chat HTTP 对当前 active client 写入。
+
 ## 有效约定
 
 Canvas Lab 唯一推荐入口：**http://canvas.localhost/canvas**。
@@ -34,7 +40,7 @@ Eric 上 Caddy 主文件 /etc/caddy/Caddyfile 包含 /var/lib/hivemind-caddy/Cad
 
 这三者在浏览器安全模型下各有独立存储。浏览器 localforage name=infinite-canvas, storeName=app_state，Zustand 持久化 key=infinite-canvas:canvas_store。此规则不代表有三份 Canvas Lab 服务实例；只是三套互不自动共享的项目库。
 
-## 旧数据安全迁移策略（未执行）
+## 历史方案：旧数据安全迁移策略（用户已取消，不再执行）
 
 不做旧地址重定向、不删除旧项目、不合并覆盖浏览器数据库，因为那会令旧 Origin 的项目难以访问。用户确认新入口可正常打开后：
 
