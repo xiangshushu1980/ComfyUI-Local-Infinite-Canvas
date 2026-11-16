@@ -69,3 +69,7 @@ Eric 上 Caddy 主文件 /etc/caddy/Caddyfile 包含 /var/lib/hivemind-caddy/Cad
 只读复核规范画布 projectId=2FwEbySI5PYe7d6BL4pES，Shot01–Shot04 四节点全部仍在；没有删除、修改任何画布或调用媒体生成。
 
 验收边界：服务端修复和 Windows 请求 PASS；浏览器顶部 banner 是否消失仍需用户在实际 UI 中确认，不能把命令行返回200当作 UI 证据。前端 GatewayStatus 探测恢复后会自动清除 warning 并刷新。无须改 Caddy 或 Director Skill。
+
+## 2026-11-16 21:23｜Windows 浏览器 UI 最终验收
+
+用户明确反馈：在固定入口 canvas.localhost 的四镜头画布上，先前“本地网关连接断开，正在自动重连…”的提示**已经消失**，Shot01–Shot04 **四个文本节点已正常显示**。因此新 Origin 的 Gateway CORS 修复获得真实用户浏览器 UI 验收。此前服务端健康/CORS/Windows 跨域请求 PASS，本轮用户确认补齐前端可见性。无需再改 Caddy/Gateway/画布数据。入口与连接故障可以收口；WAR-90 的 Shot02 导演交互审阅是下一独立工作，不应自动执行生成或修改批准 B。
