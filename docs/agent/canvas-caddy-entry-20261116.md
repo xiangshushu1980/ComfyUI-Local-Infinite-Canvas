@@ -1,0 +1,48 @@
+# Canvas Lab｜Caddy 规范入口与浏览器 Origin 数据隔离
+
+日期：2026-11-16；机器：Eric；工作方向：Canvas Lab Rebuild。
+
+## 有效约定
+
+Canvas Lab 唯一推荐入口：**http://canvas.localhost/canvas**。
+用户已明确请求沿用 Hive0 的既有 Caddy 服务，为 Canvas Lab 建立固定入口，后续统一从此地址访问。
+
+Eric 上 Caddy 主文件 /etc/caddy/Caddyfile 包含 /var/lib/hivemind-caddy/Caddyfile。2026-11-16 新增单一站点：
+
+    http://canvas.localhost {
+        reverse_proxy 127.0.0.1:3000
+    }
+
+配置文件的实体路径 /var/lib/hivemind-caddy/Caddyfile（用户 sean，组 caddy），已由 Caddy reload 热更新。原 Hive0 站点 http://hive0.localhost、Hive 及其他代理保留不动。没有新增 Canvas Lab 实例、没有修改 Web 代码、没有重启 Canvas Lab 或 Agent 进程，也没有修改 ComfyUI/H3。
+
+## 真实验收与证据
+
+- Caddy 配置先经 /usr/local/bin/caddy validate --config /etc/caddy/Caddyfile 验证，返回 Valid configuration；随后 /usr/local/bin/caddy reload --config /etc/caddy/Caddyfile 成功。
+- 原配置备份在 Eric 的 /var/lib/hivemind-caddy/Caddyfile.backup-canvaslab-20261116T194709。Caddy 运行中，重载后 Hive0 仍 HTTP 200。重启后服务从实体配置文件加载，配置持久。
+- 固定入口通过 Caddy Host=canvas.localhost 获取 /canvas 与动态项目路由，HTTP 200、HTML 1229 字节，HTML SHA256 与 127.0.0.1:3000/canvas 一致（7320a09c4c0c9f8dd7807bddb0ee92b3f9a70fa2c0acc41c9773af25414fba14）。/src/stores/canvas/use-canvas-store.ts HTTP 200，JS 内容与原服务一致。
+- WebSocket/HMR 以 Host: canvas.localhost 提交 Upgrade，收到 HTTP 101 Switching Protocols；测试客户端因仅请求握手、不保持消息而 5 秒超时，此时 101 已证明 Caddy 传递 Upgrade。
+- Canvas Agent 原址 127.0.0.1:17373 对 Origin: http://canvas.localhost 的 OPTIONS 预检 HTTP 200，响应 Access-Control-Allow-Origin 和必要请求头。用户在新 Origin 连接 Agent 可能需在画布 Agent UI 重新授权/连接一次；不转移或公开原有 token。
+- Eric 侧新站点经 HTTP 验证；**尚未从用户 Windows 浏览器实际点击、创建/打开项目并完成 Agent 对话验收**。Caddy 热重载日志有一条 autosave 目录不可写警告，但 load complete、实际站点响应与实体配置持久性均正常；这条警告不是本轮入口阻塞。
+
+## 为什么过去出现三套画布
+
+现有 Canvas Lab Web 项目保存在各浏览器 Origin 独立的 localforage/IndexedDB 中，而非 Eric 统一后端：
+
+- http://localhost:3000
+- http://127.0.0.1:3000
+- **http://canvas.localhost（新的规范 Origin）**
+
+这三者在浏览器安全模型下各有独立存储。浏览器 localforage name=infinite-canvas, storeName=app_state，Zustand 持久化 key=infinite-canvas:canvas_store。此规则不代表有三份 Canvas Lab 服务实例；只是三套互不自动共享的项目库。
+
+## 旧数据安全迁移策略（未执行）
+
+不做旧地址重定向、不删除旧项目、不合并覆盖浏览器数据库，因为那会令旧 Origin 的项目难以访问。用户确认新入口可正常打开后：
+
+1. 分别进入两个旧地址的 /canvas 项目列表，将需要保留的画布**导出为 ZIP**，留一份外部备份。导出功能会收集相关资产引用。尤其注意之前已批准 B 的四镜头展示项目 ID mrEXrMQoY-2ef3U6NsHtj 位于旧 localhost:3000 Origin，需先核对其原浏览器存储中仍有此项目。
+2. 在 http://canvas.localhost/canvas 的项目列表中使用 UI **导入** ZIP，然后逐个检查画布名称、节点、媒体引用与内容。源码中的 importProject 会给导入项目分配**新的 project ID**，因此不能把旧 URL 当作新画布的导航入口。原旧版项目与新版本内容可能同名，迁移后按新 ID 登记。
+3. 仅在用户确认新 Origin 内全部需要的项目与 Agent 交互正常且备份有效后，才考虑弃用旧入口。**本次未执行任何迁移，不清理浏览器数据，也不重定向旧地址。**
+4. 更长远的工程任务是项目身份、存储和 Agent 写入目标的稳定绑定；本次只有固定域名配置，不能将其误认为解决了跨 Origin 同步或 WAR-37 多客户端目标竞态。
+
+## 回退
+
+如有必要，先备份新配置，再在 Eric 恢复上面的旧 Caddyfile（或仅删除该独立站点块），运行 caddy validate，随后 caddy reload。不需要动用户浏览器的项目库。
