@@ -158,6 +158,10 @@ def source_policy(plan, spec, targets):
     return definition
 
 
+def strict_sha256(value):
+    # Exact lowercase hex, without Python regex '$' end-before-newline ambiguity.
+    return isinstance(value, str) and re.fullmatch(r"[0-9a-f]{64}", value) is not None
+
 def payload(pkg,spec):
     if spec.get("dependencyHashRule", RULE) != RULE:
         raise Unresolved("incompatible dependency profile")
@@ -188,11 +192,15 @@ def payload(pkg,spec):
             raise Unresolved("missing/invalid immutable executionTarget")
         if not isinstance(evidence,list) or not evidence:
             raise Unresolved("missing media evidence")
+        if not strict_sha256(target.get("projectionContentSha256")):
+            raise Unresolved("invalid projection SHA")
         if any(not isinstance(x,dict) or not {"evidenceRef","contentSha256"}.issubset(x) or
                set(x)-{"evidenceRef","contentSha256","conditionSha256"} for x in evidence):
             raise Unresolved("invalid media evidence binding")
         if any(not isinstance(x["evidenceRef"],str) or not x["evidenceRef"] or
-               not isinstance(x["contentSha256"],str) or len(x["contentSha256"])!=64 for x in evidence):
+               not strict_sha256(x["contentSha256"]) or
+               ("conditionSha256" in x and not strict_sha256(x["conditionSha256"]))
+               for x in evidence):
             raise Unresolved("invalid media SHA")
         refs=[x["evidenceRef"] for x in evidence]
         if len(set(refs))!=len(refs):
