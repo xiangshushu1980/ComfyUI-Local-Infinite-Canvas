@@ -1226,3 +1226,29 @@ CheckSpec 的可信登记包括版本、全文、method、目标类型与来源�
 
 - 重点审计 Gate 全覆盖的反例、风险适用性与版本替代、冲突 Decision 的可信生效机制、可信父边来源及分叉、raw I-JSON 更广输入与固定 Golden 的稳定性。
 - 如发现阻塞，继续在 B 中定向修复并保留红绿证据；独立 Accepted 后才决定 RC5/正式 v0.1.0 Schema ID 与最终冻结 commit。不得将本候选的 26/26 当作生产审阅或用户 A/B 批准；不修改 WAR-52、原始 Skill、生产与 GPU/H3。
+
+
+## 30. 阶段 B｜Astra 独立审查 Not Accepted 与 RC2 定向修正（2026-11-17）
+
+### 30.1 原始独立审查证据
+
+- Astra 对固定 Stage B 初版 Git d2ec0028a63084b54f3a09b173ac989765926177 判 **Not Accepted**。原始独立报告保存于 phase-b-astra-independent-review-20261117.md，SHA-256 a7aaa8289eaaa5037725e5509137a1bdffcf154c6ff9ecaa8397514b120d17a5；在独立 commit e40473d 中原文保存。Stage A RC4 Accepted 不受影响。
+- Blocking 1：调用方可遗漏冲突 rejected Decision，保留其他可信 seal，而 wholePlan 仍返回 True；当前 B 被封存为 rejected 后又传入 approved，同样未被发现。
+- Blocking 2：带 executionTarget 的来源 Intent A 可以升级为整门 A 的 verified_carry_forward，或当前 A 自身携带 executionTarget 仍获整门批准。
+- 入口缺口：外置 Risk status 的非法枚举 OPEN 未经 Schema 检查而躲过 hard_conflict，外置 Inheritance 省略 basis 却有效。
+- 独立通过项：第一轮 Gate 26/26、raw 26/26；新增固定种子 10,007 个数值输入在本轮未发现 raw→JCS→raw 不封闭；RC4 P/D Golden 由 Node 与 Python 独立复算匹配。超长整数与深嵌套的报错统一仍可改善，属非阻塞。
+
+### 30.2 第二轮设计候选：保守完整性与范围边界
+
+- 每个可信 (planId,revisionId,gate) 都要有完整的受信 sealedDecisionManifests，索引包含有序 Decision ID 与内容 seal。遗漏冲突记录或当前 Decision 内容被篡改，即拒绝批准。
+- 当前及历史源 Decision 还必须逐条匹配 sealedDecisions，不能只封存 carry-forward 源。
+- 整门 A/B 的 Decision 均不能附带 executionTarget，包含 carry-forward 的来源 A 与当前 A。投影级批准另行验证，不能升级为 whole Plan。
+- 外置 Risk 必须符合 RC4 Risk Schema，外置 Inheritance 必须符合 RC4 Inheritance Schema。合法 seal 无法使非法字段通过。
+- 增加独立受信 trustedCurrentTarget，防止请求方选择旧版本当作当前 Plan；所有当前和源 Check 均需与受信 sealedChecks 一致，而非只检查 D-JCS 与 pass 自报。
+- 研究脚本中的 sealed*、完整清单与可信当前目标均为从受信不可变外部账本读入的**合成先决条件**；fixture 中的 refresh_authoritative 只是模拟合法写入，不构成生产可用的签名/身份权限/历史存储。生产不能信任调用方自己生成的 seal。
+
+### 30.3 验证与阶段判断
+
+- 研究参考文件：phase_b_gate_rules.py、verify-phase-b.py；保留原 raw_ijson_gate.py 与 verify-phase-b-raw.py。
+- Gate/风险/Revision/批准范围：原 26 项加 9 个定向反例，**35/35** 自测通过。raw 仍为 **26/26**；其他 RC4 回归需在此候选固定后复跑。
+- **RC2 仍是候选，等待独立只读验收，不发布 Schema、不标记 WAR-35 Done。** 独立审查必须固定 Git/SHA 并专门复测四项原阻塞及新增 manifest 信任边界。任何通过不等于 Canvas 真实审阅授权、生产接口、媒体字节验证或 WAR-52 跨层执行。

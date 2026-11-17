@@ -2,8 +2,8 @@
   "task": "WAR-35",
   "scope": "Phase B candidate research semantic Gate/risk/direct-parent",
   "sourceSchema": "urn:canvas-lab:director-plan:0.1.0-rc4",
-  "passed": 26,
-  "total": 26,
+  "passed": 35,
+  "total": 35,
   "cases": [
     {
       "case": "B-P01-direct-parent-A-carry-full-B-text-coverage",
@@ -94,7 +94,7 @@
       "expected": false,
       "observed": false,
       "passed": true,
-      "reason": "projection-scoped approval is not whole Plan approval"
+      "reason": "projection-scoped decision cannot authorize a whole gate"
     },
     {
       "case": "B-N12-identical-revision-ID-different-content",
@@ -164,14 +164,14 @@
       "expected": false,
       "observed": false,
       "passed": true,
-      "reason": "source check missing or tampered"
+      "reason": "check content not backed by trusted history"
     },
     {
       "case": "B-N22-inherited-source-decision-unsealed",
       "expected": false,
       "observed": false,
       "passed": true,
-      "reason": "source decision untrusted"
+      "reason": "decision content not backed by trusted history"
     },
     {
       "case": "B-N23-caller-omits-trusted-risk-ledger-entry",
@@ -186,6 +186,69 @@
       "observed": false,
       "passed": true,
       "reason": "direct parent edge not in trusted history"
+    },
+    {
+      "case": "B-N25-omitted-conflicting-decision-with-trusted-index",
+      "expected": false,
+      "observed": false,
+      "passed": true,
+      "reason": "decision manifest incomplete or untrusted"
+    },
+    {
+      "case": "B-N26-current-decision-content-forged-after-seal",
+      "expected": false,
+      "observed": false,
+      "passed": true,
+      "reason": "decision manifest incomplete or untrusted"
+    },
+    {
+      "case": "B-N27-scoped-source-A-cannot-carry-to-whole-gate",
+      "expected": false,
+      "observed": false,
+      "passed": true,
+      "reason": "projection-scoped decision cannot authorize a whole gate"
+    },
+    {
+      "case": "B-N28-scoped-current-A-cannot-authorize-whole-gate",
+      "expected": false,
+      "observed": false,
+      "passed": true,
+      "reason": "projection-scoped decision cannot authorize a whole gate"
+    },
+    {
+      "case": "B-N29-malformed-risk-enum-even-when-sealed",
+      "expected": false,
+      "observed": false,
+      "passed": true,
+      "reason": "invalid risk shape"
+    },
+    {
+      "case": "B-N30-inheritance-missing-required-basis",
+      "expected": false,
+      "observed": false,
+      "passed": true,
+      "reason": "invalid inheritance shape"
+    },
+    {
+      "case": "B-N31-untrusted-current-revision-selection",
+      "expected": false,
+      "observed": false,
+      "passed": true,
+      "reason": "caller selected an untrusted current revision"
+    },
+    {
+      "case": "B-N32-missing-trusted-decision-manifest",
+      "expected": false,
+      "observed": false,
+      "passed": true,
+      "reason": "decision manifest incomplete or untrusted"
+    },
+    {
+      "case": "B-N33-current-check-content-forged-after-seal",
+      "expected": false,
+      "observed": false,
+      "passed": true,
+      "reason": "check content not backed by trusted history"
     }
   ],
   "productionApprovalServiceImplemented": false,

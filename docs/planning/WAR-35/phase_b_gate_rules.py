@@ -19,6 +19,8 @@ ROOT = Path(__file__).resolve().parent
 SCHEMA = json.loads((ROOT / "director-plan.schema.v0-rc4.json").read_text())
 CHECK_VALIDATOR = Draft202012Validator({"$defs": SCHEMA["$defs"], "$ref": "#/$defs/check"})
 DECISION_VALIDATOR = Draft202012Validator({"$defs": SCHEMA["$defs"], "$ref": "#/$defs/decision"})
+RISK_VALIDATOR = Draft202012Validator({"$defs": SCHEMA["$defs"], "$ref": "#/$defs/risk"})
+INHERITANCE_VALIDATOR = Draft202012Validator({"$defs": SCHEMA["$defs"], "$ref": "#/$defs/inheritance"})
 PACKAGE_VALIDATOR = Draft202012Validator(SCHEMA)
 
 # The immutable RC4 CheckSpec registry + /4 D-JCS implementation are reused.
@@ -72,10 +74,17 @@ def stage_b_validate(case):
                    "untrusted or changed plan revision")
         current = packages[tuple(case["currentKey"])]
         current_target = plan_target(current)
+        # Same trust rule as revision/risk manifests: the authoritative
+        # workspace selects the current target, not the approval caller.
+        demand(case["trustedCurrentTarget"] == current_target,
+               "caller selected an untrusted current revision")
         checks = indexed(case["checks"], lambda c: c["id"])
         decisions = indexed(case["decisions"], lambda d: d["id"])
         inheritance = indexed(case["inheritances"], lambda e: e["intoCheckId"])
         risks = indexed(case["risks"], lambda r: (r["id"], r["riskVersionId"], r["target"]["revisionId"]))
+        demand(all(RISK_VALIDATOR.is_valid(r) for r in risks.values()), "invalid risk shape")
+        demand(all(INHERITANCE_VALIDATOR.is_valid(i) for i in inheritance.values()),
+               "invalid inheritance shape")
         target_to_package = indexed(case["packages"], lambda p: json.dumps(plan_target(p), sort_keys=True))
         # The caller cannot omit an inconvenient Risk: the complete risk index
         # for each revision is from an independently sealed authoritative ledger.
@@ -87,6 +96,16 @@ def stage_b_validate(case):
             expected.sort()
             demand(case["sealedRiskManifests"].get("|".join(key)) == seal(expected),
                    "risk manifest incomplete or untrusted")
+            for gate in GATE_PROFILE:
+                # Complete, independently trusted decision index is essential:
+                # omitting a conflicting rejection must not restore approval.
+                rows = sorted([
+                    [dec["id"], seal(dec)] for dec in decisions.values()
+                    if dec["gate"] == gate and dec["target"] == plan_target(pkg)
+                ])
+                manifest_key = "|".join(key) + "|" + gate
+                demand(case["sealedDecisionManifests"].get(manifest_key) == seal(rows),
+                       "decision manifest incomplete or untrusted")
         competing = {}
         for dec in decisions.values():
             key = (dec["gate"], json.dumps(dec["target"], sort_keys=True))
@@ -110,6 +129,8 @@ def stage_b_validate(case):
             expected = GATE_PROFILE[expected_gate]
             demand(CHECK_VALIDATOR.is_valid(check), "invalid check schema")
             demand(check["target"] == plan_target(pkg), "check target mismatch")
+            demand(case["sealedChecks"].get(check["id"]) == seal(check),
+                   "check content not backed by trusted history")
             demand(check["result"] == "pass" and check["applicability"] == "valid",
                    "check is not valid pass")
             demand(check["checkSpecVersion"] == expected[0] and
@@ -166,8 +187,12 @@ def stage_b_validate(case):
             demand(dec_id not in seen, "cyclic decision")
             dec = decisions[dec_id]
             demand(DECISION_VALIDATOR.is_valid(dec), "invalid decision shape")
+            demand(case["sealedDecisions"].get(dec["id"]) == seal(dec),
+                   "decision content not backed by trusted history")
             gate = dec["gate"]
             demand(gate in GATE_PROFILE, "unsupported gate")
+            demand("executionTarget" not in dec,
+                   "projection-scoped decision cannot authorize a whole gate")
             key = (gate, json.dumps(dec["target"], sort_keys=True))
             demand(len(competing[key]) == 1, "conflicting decisions without trusted supersession")
             pkg = target_to_package.get(json.dumps(dec["target"], sort_keys=True))

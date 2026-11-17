@@ -56,7 +56,7 @@ def make_case():
                    "dependencyFingerprintSha256": a2["dependencyFingerprintSha256"],
                    "basis": "unchanged_dependencies"}
     assert a2["dependencyFingerprintSha256"] == a3["dependencyFingerprintSha256"]
-    return {
+    case = {
         "packages": [r2, r3],
         "currentKey": ["P-FOX", "R3"],
         "sealedPlans": {"P-FOX|R2": plan_target(r2)["planContentSha256"],
@@ -73,6 +73,28 @@ def make_case():
         "sealedDecisions": {"D-A2": seal(da2)},
         "approvedPlan": {"decisionId": "D-B3", "gate": "shotB", "target": plan_target(r3)},
     }
+    refresh_authoritative(case)
+    return case
+
+def refresh_authoritative(case):
+    """Research fixture only: simulate an EXTERNALLY TRUSTED append-only store.
+
+    Never perform this from user-provided data in a production validator.
+    Call only after intentionally adding/reviewing a legitimate record, so
+    negative cases test precise semantics rather than an unrelated stale seal.
+    """
+    case["trustedCurrentTarget"] = plan_target(case["packages"][-1])
+    case["sealedChecks"] = {c["id"]: seal(c) for c in case["checks"]}
+    case["sealedDecisions"] = {d["id"]: seal(d) for d in case["decisions"]}
+    manifests = {}
+    for pkg in case["packages"]:
+        for gate in GATE_PROFILE:
+            rows = sorted([
+                [d["id"], seal(d)] for d in case["decisions"]
+                if d["gate"] == gate and d["target"] == plan_target(pkg)
+            ])
+            manifests[pkg["plan"]["planId"] + "|" + pkg["plan"]["revisionId"] + "|" + gate] = seal(rows)
+    case["sealedDecisionManifests"] = manifests
 
 def refresh_current(case):
     """Restore legitimate current signatures after a Plan edit to isolate Gate bugs."""
@@ -97,6 +119,7 @@ def refresh_current(case):
     case["sealedParentEdges"]["P-FOX|R3"] = seal({
         "childTarget": t, "parentTarget": plan_target(case["packages"][0])})
     reseal_manifest(case)
+    refresh_authoritative(case)
 
 def reseal_manifest(case):
     for pkg in case["packages"]:
@@ -126,6 +149,7 @@ def conditional(case, *risk_names):
         {"riskId": name, "riskVersionId": "V1"} for name in risk_names
     ]
     d["rationale"] = "Explicitly accept evidence uncertainty"
+    refresh_authoritative(case)
 
 def new_intent(case):
     i = copy.deepcopy(case["packages"][-1]["plan"]["intents"][0])
@@ -147,6 +171,7 @@ def skip_parent(case):
     case["sealedPlans"]["P-FOX|R-intermediate"] = plan_target(mid)["planContentSha256"]
     case["packages"][-1]["revisionControl"]["candidates"][0]["basedOnRevisionId"] = "R-intermediate"
     reseal_manifest(case)
+    refresh_authoritative(case)
 
 def duplicate_revision(case):
     alt = copy.deepcopy(case["packages"][0])
@@ -157,22 +182,26 @@ def set_wrong_B_target(case):
     c = next(c for c in case["checks"] if c["id"] == "C-B-S01")
     c["targetRefs"] = ["subject:CREEK"]
     c["dependencyFingerprintSha256"] = dependency_sha(case["packages"][-1], c) or "f" * 64
+    refresh_authoritative(case)
 
 def set_wrong_B_method(case):
     c = next(c for c in case["checks"] if c["id"] == "C-B-S01")
     c["method"] = "geometry_proxy"
     c["dependencyFingerprintSha256"] = dependency_sha(case["packages"][-1], c) or "f" * 64
+    refresh_authoritative(case)
 
 def external_check(case):
     c = case["checks"][1]
     c["evidenceRefs"] = ["evidence:UNVERIFIED-1"]
     c["dependencyFingerprintSha256"] = dependency_sha(case["packages"][-1], c) or "f" * 64
+    refresh_authoritative(case)
 
 def conflicting_decision(case):
     d = copy.deepcopy(case["decisions"][-1])
     d["id"] = "D-B3-LATER"
     d["verdict"] = "rejected"
     case["decisions"].append(d)
+    refresh_authoritative(case)
 
 def scoped_decision(case):
     case["decisions"][-1]["executionTarget"] = {
@@ -180,6 +209,7 @@ def scoped_decision(case):
         "projectionContentSha256": "a"*64,
         "projectionHashRule": "war52-projection-test/1",
     }
+    refresh_authoritative(case)
 
 def no_direct_parent(case):
     case["packages"][-1]["revisionControl"]["candidates"] = []
@@ -193,9 +223,11 @@ def tamper_source(case):
 
 def lost_check(case):
     case["decisions"][-1]["checkIds"].remove("C-B-S01")
+    refresh_authoritative(case)
 
 def stale_current_decision(case):
     case["decisions"][-1]["verdict"] = "changes_requested"
+    refresh_authoritative(case)
 
 def unknown_risk_scope(case):
     add_risk(case, refs=["subject:FOX"])
@@ -203,6 +235,44 @@ def unknown_risk_scope(case):
 def omit_indexed_risk(case):
     add_risk(case, kind="hard_conflict")
     case["risks"].clear()  # trusted manifest still contains R-UNKNOWN
+
+# Astra's fixed-commit independent counterexamples. Each malicious omission
+# retains the preexisting trusted manifest; this is deliberately NOT resealed.
+def omit_conflicting_decision(case):
+    conflicting_decision(case)  # explicitly register the competing rejection
+    case["decisions"].pop()     # caller hides it; trusted index stays unchanged
+
+def mutate_current_decision(case):
+    case["decisions"][-1]["verdict"] = "rejected"
+    refresh_authoritative(case)  # independent history now seals rejected
+    case["decisions"][-1]["verdict"] = "approved"  # caller-only rewrite
+
+def scoped_A_decision(case, idx):
+    case["decisions"][idx]["executionTarget"] = {
+        "unitRef": "UNIT-1", "projectionRevision": "PR1",
+        "projectionContentSha256": "a" * 64,
+        "projectionHashRule": "war52-projection-test/1",
+    }
+    refresh_authoritative(case)
+
+def bad_risk_status_with_valid_manifest(case):
+    add_risk(case, kind="hard_conflict")
+    risk = case["risks"][0]
+    risk["status"] = "OPEN"  # not the Schema enum
+    case["sealedRisks"][risk["id"] + "|" + risk["riskVersionId"]] = seal(risk)
+    reseal_manifest(case)  # simulate accepted immutable blob; Schema still fails
+
+def missing_inheritance_basis(case):
+    del case["inheritances"][0]["basis"]
+
+def change_trusted_current(case):
+    case["currentKey"] = ["P-FOX", "R2"]  # trusted current stays R3
+
+def missing_decision_manifest(case):
+    del case["sealedDecisionManifests"]["P-FOX|R3|shotB"]
+
+def current_check_rewritten(case):
+    case["checks"][-1]["result"] = "fail"  # seal retains original pass
 
 CASES = [
     ("B-P01-direct-parent-A-carry-full-B-text-coverage", lambda c: None, True),
@@ -233,6 +303,15 @@ CASES = [
     ("B-N22-inherited-source-decision-unsealed", lambda c: c["sealedDecisions"].clear(), False),
     ("B-N23-caller-omits-trusted-risk-ledger-entry", omit_indexed_risk, False),
     ("B-N24-parent-edge-seal-missing", lambda c: c["sealedParentEdges"].clear(), False),
+    ("B-N25-omitted-conflicting-decision-with-trusted-index", omit_conflicting_decision, False),
+    ("B-N26-current-decision-content-forged-after-seal", mutate_current_decision, False),
+    ("B-N27-scoped-source-A-cannot-carry-to-whole-gate", lambda c: scoped_A_decision(c, 0), False),
+    ("B-N28-scoped-current-A-cannot-authorize-whole-gate", lambda c: scoped_A_decision(c, 1), False),
+    ("B-N29-malformed-risk-enum-even-when-sealed", bad_risk_status_with_valid_manifest, False),
+    ("B-N30-inheritance-missing-required-basis", missing_inheritance_basis, False),
+    ("B-N31-untrusted-current-revision-selection", change_trusted_current, False),
+    ("B-N32-missing-trusted-decision-manifest", missing_decision_manifest, False),
+    ("B-N33-current-check-content-forged-after-seal", current_check_rewritten, False),
 ]
 results = []
 for name, edit, expected in CASES:
