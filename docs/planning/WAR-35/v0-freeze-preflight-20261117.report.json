@@ -1,0 +1,73 @@
+{
+  "task": "WAR-35",
+  "kind": "Design freeze preflight, NOT RELEASED",
+  "date": "2026-11-17",
+  "baselineGit": "baced88c1071ac235f4194331673a44ea60c4164",
+  "baselineBranch": "war-35-stage-b-rc2-20261117",
+  "candidateContractVersion": "director-plan/0.1.0",
+  "candidateSchemaId": "urn:canvas-lab:director-plan:0.1.0",
+  "candidateSchemaFileIfApproved": "director-plan.schema.v0.1.0.json",
+  "rc4SchemaSha256": "338af8b84d2b799364d3568b67559ca422ec074398487fec9811e0bff4ab6ee8",
+  "rc4GoldenReportSha256": "20c8457fabe9d70d2185b8dd2b18b917c2a60427b1c8a188a64650ef1ae81390",
+  "proposedMetadataOnlyTransform": {
+    "changedKeys": [
+      "$id",
+      "title",
+      "description"
+    ],
+    "semanticsIdentical": true,
+    "candidateSchemaValid": true
+  },
+  "fixtures": {
+    "no-action-beat.example.v0-rc4.json": {
+      "P-JCS-1-sha256": "c3a7e1b938fb16aedb0f3e28c6693223c80d3cab4c9a450adfe896778b33ef0e",
+      "canonicalBytes": 794,
+      "pythonNodeEqual": true,
+      "dependencyGoldenRC4": "7043382336e1aad8fb6ac4b0e234cbb00dcef6ecb73bb8145178cd14e7c29d5a"
+    },
+    "cross-shot-once.example.v0-rc4.json": {
+      "P-JCS-1-sha256": "8b163c5db47ef392da2181b3801fef051eb63a0012f773021d434c036df261ac",
+      "canonicalBytes": 2679,
+      "pythonNodeEqual": true,
+      "dependencyGoldenRC4": "69d960d6f2d6ac8350c17d59540deb4d570b86937dd7f127fc51fc305f8606f4"
+    }
+  },
+  "regression": {
+    "scripts": [
+      "verify-fact-source-proof.py",
+      "verify-d-jcs1-schema.py",
+      "verify-media-check.py",
+      "verify-decision-gates.py",
+      "verify-raw-ijson.py",
+      "verify-v0-rc4.py",
+      "verify-checkspec-contract-rc4.py",
+      "verify-media-hash-rc4.py",
+      "verify-phase-a.py",
+      "verify-phase-b.py",
+      "verify-phase-b-raw.py",
+      "verify-d-jcs1.py",
+      "verify_jcs.py"
+    ],
+    "passed": 13,
+    "allPassed": true,
+    "logSha256": "e33907c9db7564ec5be333e7fe26cde51bf440c39429ebdf4be33542ac536fd4"
+  },
+  "reviewEvidence": {
+    "stageA": "phase-a-rc4-astra-independent-acceptance-20261117.md",
+    "stageB": "phase-b-rc2-astra-independent-acceptance-20261117.md"
+  },
+  "explicitDecisionsPending": [
+    "Accept director-plan/0.1.0 and urn:canvas-lab:director-plan:0.1.0 for design-contract freeze",
+    "Accept conservative verified_carry_forward of only risk-free unconditionally approved Intent A, with revalidated checks and fresh decision; no Shot B carry"
+  ],
+  "excluded": [
+    "production authorization",
+    "trusted immutable manifest service",
+    "real authenticated human review",
+    "media bytes/source resolver",
+    "WAR-52/H3 runtime adapter"
+  ],
+  "released": false,
+  "officialSchemaWritten": false,
+  "goldenFrozen": false
+}

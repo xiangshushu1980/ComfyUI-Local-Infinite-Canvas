@@ -1264,3 +1264,30 @@ CheckSpec 的可信登记包括版本、全文、method、目标类型与来源�
 - 已确认的语义要求：全 Gate Check 覆盖；可信完整的 Risk/Decision 清单；版本化内容封存；风险版本和条件批准；直接父修订；执行范围不可偷换；当前 PlanTarget 与 Check 封存；raw I-JSON 保守整数闭包。
 - 未实施：真实不可变审阅账本/可信目录/防回滚、用户授权、生产中的审批存储和 API、媒体 resolver、WAR-52 H3 投影执行。合成可信封存只证明**若外部真实提供可信完整记录**，候选语义判断不会接受目前复现的绕过。生产不能让提交人自签可信记录。
 - **阶段 B 设计候选验收完成；WAR-35 整体维持 In Progress/Not frozen。** 下一步单独整理公共 0.1.0 release gate：正式 Schema ID、不可变 Golden、发布/实施的边界与所需真实可信存储适配。未经用户明确批准，不发布正式 Schema、不更改生产、不声明真实 A/B 权限校验。
+
+## 32. 公共 v0.1.0 设计冻结预检（2026-11-17；正式发布待明确决定）
+
+### 32.1 版本与发布对象
+
+在阶段 A RC4 和阶段 B RC2 研究设计独立 Accepted 的基础上，建议将首个**设计冻结**公共版本确定为 `contractVersion=director-plan/0.1.0`、正式 `$id=urn:canvas-lab:director-plan:0.1.0`，文件命名为 `director-plan.schema.v0.1.0.json`。它是面向独立 Director Skill 的公共 DirectorPackage 数据契约，**不是已部署的可信审阅与执行服务**。
+
+拟发布文件以固定 RC4 Schema 为输入，仅变更根级 `$id`、`title`、`description` 三项版本元数据，保留所有 `$defs`、校验规则、`contractVersion.const` 与现有 fixture 的语义和字节。后者现已是 `director-plan/0.1.0`；不得覆盖 RC4、旧 fixture、历史 Golden 或审阅报告。
+
+### 32.2 ChatGPT/DCR 独立冻结预检证据
+
+- 预检**只读基线**：已接受阶段 B 证据 Git `baced88c1071ac235f4194331673a44ea60c4164`；独立工作区与分支 `war-35-v0-freeze-preflight-20261117`；未使用 Codex。
+- 既有回归在 Eric **13/13 脚本通过**：来源证明、D-JCS Schema、Media、Decision、raw I-JSON、RC4 Golden、CheckSpec、Media SHA、阶段 A、阶段 B、阶段 B raw、D-JCS 以及 Python/Node JCS。原始运行日志 `v0-freeze-preflight-20261117.log`；结构化预检 `v0-freeze-preflight-20261117.report.json`。后两者为新审阅证据，不冒充原阶段 A/B 独立报告。
+- 在**内存中**构造正式 ID 的预览 Schema（未写入发布文件），通过 Draft 2020-12 元校验；除 `$id/title/description` 外与 RC4 结构完全相同；两份 RC4 fixture 经预览 Schema 验证通过，Python/Node JCS bytes 一致。
+- `P-JCS-1` 固定 Golden 未改变：无 Action Beat `c3a7e1b938fb16aedb0f3e28c6693223c80d3cab4c9a450adfe896778b33ef0e`（794 字节）；跨 Shot 一次 Action `8b163c5db47ef392da2181b3801fef051eb63a0012f773021d434c036df261ac`（2679 字节）。D-JCS-1 当前规则仍为 `war35-dep-jcs8785-sha256/4`，两份候选依赖 Golden 见 RC4 固定报告；本轮回归已重测相关实现。
+- 固定 RC4 Schema SHA-256：`338af8b84d2b799364d3568b67559ca422ec074398487fec9811e0bff4ab6ee8`。预检记录不是最终发布证明，不能替代获批后的正式文件 SHA、独立冻结提交及再次核验。
+
+### 32.3 仍需用户明确确认的两个冻结决定
+
+1. **正式身份**：接受公共设计契约 v0.1.0 与稳定 Schema ID `urn:canvas-lab:director-plan:0.1.0`。建议接受，避免继续增加 RC 编号或提前扩展版本范围。
+2. **保守继承**：仅无风险、原判定为无条件 `approved` 的 Intent A，才允许通过可信直接父修订、复算完整 /4 依赖、新 Check 与新 Decision 走 `verified_carry_forward`；任何 conditional/rejected/changes_requested、带 executionTarget 的整门批准或 Shot B 均不可自动承接。建议接受，条件批准必须新 reviewed。
+
+用户确认后再新建**正式 Schema 文件与不可变发布 Golden**，执行元 Schema、raw、跨语言 JCS、P/D、Gate/Decision/父修订全回归并记录 Git 文件 SHA 与唯一发布 commit；最后更新 WAR-35 的版本冻结事实和实施边界。若预览文件与 RC4 出现元数据之外的差异，停止发布并单独审阅。**当前未生成正式 Schema 文件、未冻结 Golden、未标记 WAR-35 Done。**
+
+### 32.4 冻结不代表生产准入
+
+Stage B 的完整 Decision/Risk manifest、当前可信 PlanTarget、直接父边与 seal 是合成受信输入；生产必须先有**权威不可变、完整、可验证的审阅记录与授权机制**，不能接受请求方自签证明。真实媒体 SHA/bytes、外部来源 resolver、真实人工 A/B 批准、WAR-52 投影/Join/phase 与 Canvas 集成验证均在发布的设计契约之外。冻结公共 Schema **允许下游以此开展适配设计**，不自动授权生产运行或解除 WAR-36/37 的实施审查条件。

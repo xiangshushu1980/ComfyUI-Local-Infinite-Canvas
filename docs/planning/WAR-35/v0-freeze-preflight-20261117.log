@@ -1,0 +1,560 @@
+RUN verify-fact-source-proof.py
+{
+  "profile": "war35-dep-jcs8785-sha256/4",
+  "cases": [
+    {
+      "case": "orphan-unchanged-digest",
+      "observed": "unresolved",
+      "expected": "unresolved",
+      "passed": true
+    },
+    {
+      "case": "orphan-unchanged-Intent-A",
+      "observed": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "case": "orphan-changed-digest",
+      "observed": "unresolved",
+      "expected": "unresolved",
+      "passed": true
+    },
+    {
+      "case": "orphan-changed-Intent-A",
+      "observed": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "case": "orphan-missing-digest",
+      "observed": "unresolved",
+      "expected": "unresolved",
+      "passed": true
+    },
+    {
+      "case": "orphan-missing-Intent-A",
+      "observed": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "case": "linked-unchanged-digest",
+      "observed": "same",
+      "expected": "same",
+      "passed": true
+    },
+    {
+      "case": "linked-unchanged-Intent-A",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "linked-changed-digest",
+      "observed": "different",
+      "expected": "different",
+      "passed": true
+    },
+    {
+      "case": "linked-changed-Intent-A",
+      "observed": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "case": "linked-missing-digest",
+      "observed": "unresolved",
+      "expected": "unresolved",
+      "passed": true
+    },
+    {
+      "case": "linked-missing-Intent-A",
+      "observed": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "case": "fact:F-ONCE-unrelated-seed",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "intent:I-CROSS-unrelated-seed",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "unrelated-seed-Intent-A",
+      "observed": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "case": "local-orphan-no-bytes",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "unregistered-spec",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "mislabeled-spec",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "old-profile-refused",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "other-fact-seed",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "indirect-orphan-Intent-A",
+      "observed": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "case": "indirect-linked-Intent-A",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "direct-script-Intent-A",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "local-policy-cannot-authorize-Intent-A",
+      "observed": false,
+      "expected": false,
+      "passed": true
+    }
+  ],
+  "passed": 24
+}
+PASS verify-fact-source-proof.py
+RUN verify-d-jcs1-schema.py
+PASS fixture-no-action-beat.example.review-v0.json
+PASS fixture-cross-shot-once.example.review-v0.json
+PASS unknown-no-fingerprint
+PASS not_checked-no-fingerprint
+PASS pass-no-fingerprint
+PASS fail-no-fingerprint
+PASS pass-with-fingerprint
+PASS empty-extra-dependencies
+PASS duplicate-extra-dependencies
+TOTAL 9 PASS
+PASS verify-d-jcs1-schema.py
+RUN verify-media-check.py
+PASS M-P01-media-pass-complete-binding
+PASS M-P02-media-fail-complete-binding
+PASS M-N01-pass-missing-executionTarget
+PASS M-N02-pass-missing-evidenceBindings
+PASS M-N03-pass-empty-evidenceBindings
+PASS M-N04-fail-missing-executionTarget
+PASS M-N05-fail-missing-evidenceBindings
+PASS M-N06-binding-missing-media-digest
+PASS M-N07-binding-duplicate-exact
+PASS M-N08-pass-missing-dependency-digest
+PASS M-P03-nonmedia-pass-no-media-bindings
+PASS M-P04-unknown-media-no-bindings
+PASS M-P05-media-dependency-resolves
+PASS M-P06-evidence-order-independent
+PASS M-N09-media-content-changed-cannot-inherit
+PASS M-N10-projection-content-changed-cannot-inherit
+PASS M-N11-generation-condition-changed-cannot-inherit
+PASS M-N12-missing-execution-target-no-digest
+PASS M-N13-no-media-evidence-no-digest
+PASS M-N14-duplicate-ref-conflict-no-digest
+TOTAL 20 PASS
+PASS verify-media-check.py
+RUN verify-decision-gates.py
+PASS D-P01-valid-A-carry-and-approved-B
+PASS D-P02-reviewed-conditional-B-with-risk
+PASS D-P03-reviewed-new-risk-version-explicit
+PASS D-N01-rejected-to-approved
+PASS D-N02-changes-requested-to-approved
+PASS D-N03-conditional-to-approved-upgrade
+PASS D-N04-conditional-to-conditional-not-automatic
+PASS D-N05-accepted-risk-silently-dropped
+PASS D-N06-source-approved-but-risk-bearing
+PASS D-N07-approvedPlan-points-to-rejected-B
+PASS D-N08-approvedPlan-points-to-A
+PASS D-N09-approvedPlan-target-mismatch
+PASS D-N10-approvedPlan-falsified-content-hash
+PASS D-N11-new-check-uses-old-target
+PASS D-N12-new-check-fingerprint-changed
+PASS D-N13-source-history-missing
+PASS D-N14-source-check-mutated
+PASS D-N15-inheritance-record-missing
+PASS D-N16-duplicate-current-check-ids
+PASS D-N17-B-decision-check-wrong-target
+PASS D-N18-B-unknown-risk
+PASS D-N19-B-risk-version-substituted
+PASS D-N20-B-risk-target-different-revision
+PASS D-N21-B-open-hard-conflict
+PASS D-N22-risk-same-version-in-place-rewrite
+PASS D-N23-duplicate-risk-version-pair
+PASS D-N24-B-gate-backed-by-A-only-check
+PASS D-N25-source-check-fail-even-if-sealed
+PASS D-N26-source-check-stale-even-if-sealed
+PASS D-N27-new-check-unknown
+PASS D-N28-same-revision-not-carry
+PASS D-N29-conditional-without-explicit-risk
+PASS D-N30-conditional-without-rationale
+PASS D-N31-two-accepted-versions-of-same-risk
+PASS original-full-package-shape
+PASS schema-no-conditional-carry
+PASS schema-no-risk-bearing-carry
+TOTAL 37 PASS
+PASS verify-decision-gates.py
+RUN verify-raw-ijson.py
+PASS duplicate-root-key reject
+PASS duplicate-nested-key reject
+PASS duplicate-decoded-escaped-key reject
+PASS duplicate-unicode-key reject
+PASS unsafe-positive-integer reject
+PASS unsafe-negative-integer reject
+PASS unsafe-integer-as-float reject
+PASS unsafe-integer-as-exponent reject
+PASS overflow-binary64 reject
+PASS underflow-to-zero reject
+PASS unpaired-high-surrogate reject
+PASS unpaired-low-surrogate reject
+PASS unpaired-surrogate-as-key reject
+PASS noncharacter-in-string reject
+PASS noncharacter-as-key reject
+PASS NaN-not-JSON reject
+PASS Infinity-not-JSON reject
+PASS malformed-JSON reject
+PASS bad-utf8 reject
+PASS utf8-BOM reject
+PASS max-safe-positive accept
+PASS max-safe-negative accept
+PASS normal-decimal accept
+PASS negative-zero accept
+PASS subnormal-finite accept
+PASS legal-surrogate-pair accept
+PASS different-normalization-stays-different accept
+PASS reordered-keys-valid accept
+PASS real-package-no-action-beat.example.review-v0.json accept
+PASS independent-JCS no-action-beat.example.review-v0.json c15b2272d787862a1366f24391982c25df906375ebf141e17427df2d633e3322
+PASS tampered-package-duplicate-no-action-beat.example.review-v0.json reject
+PASS real-package-cross-shot-once.example.review-v0.json accept
+PASS independent-JCS cross-shot-once.example.review-v0.json 0bb91a8f207effbe17756217e92bf9f5311243339b1a0064a6f19554f7c35dbc
+PASS tampered-package-duplicate-cross-shot-once.example.review-v0.json reject
+TOTAL 34 PASS
+PASS verify-raw-ijson.py
+RUN verify-v0-rc4.py
+PASS RC-schema-identical-except-version-and-metadata
+PASS RC-raw-and-schema-no-action-beat.example.v0-rc4.json
+PASS review-version-rejected-no-action-beat.example.review-v0.json
+PASS new-version-rejected-by-old-schema-no-action-beat.example.v0-rc4.json
+PASS fixture-identical-except-version-no-action-beat.example.v0-rc4.json
+PASS cross-language-RC-JCS-no-action-beat.example.v0-rc4.json
+PASS changed-version-changes-golden-no-action-beat.example.v0-rc4.json
+PASS locator-change-independent-no-action-beat.example.v0-rc4.json
+PASS review-change-independent-no-action-beat.example.v0-rc4.json
+PASS revision-change-changes-golden-no-action-beat.example.v0-rc4.json
+PASS snapshot-sha-consistent-no-action-beat.example.v0-rc4.json
+PASS contractVersion-changes-D-JCS-1-no-action-beat.example.v0-rc4.json
+PASS RC-raw-and-schema-cross-shot-once.example.v0-rc4.json
+PASS review-version-rejected-cross-shot-once.example.review-v0.json
+PASS new-version-rejected-by-old-schema-cross-shot-once.example.v0-rc4.json
+PASS fixture-identical-except-version-cross-shot-once.example.v0-rc4.json
+PASS cross-language-RC-JCS-cross-shot-once.example.v0-rc4.json
+PASS changed-version-changes-golden-cross-shot-once.example.v0-rc4.json
+PASS locator-change-independent-cross-shot-once.example.v0-rc4.json
+PASS review-change-independent-cross-shot-once.example.v0-rc4.json
+PASS revision-change-changes-golden-cross-shot-once.example.v0-rc4.json
+PASS snapshot-sha-consistent-cross-shot-once.example.v0-rc4.json
+PASS contractVersion-changes-D-JCS-1-cross-shot-once.example.v0-rc4.json
+TOTAL 23 PASS
+PASS verify-v0-rc4.py
+RUN verify-checkspec-contract-rc4.py
+PASS fact-script/1-valid-method-and-kind expected=True observed=True
+PASS fact-script/1-wrong-method-media expected=True observed=True
+PASS fact-script/1-wrong-method-human expected=True observed=True
+PASS fact-script/1-wrong-method-geometry_proxy expected=True observed=True
+PASS fact-script/1-wrong-target-kind expected=True observed=True
+PASS fact-script/1-missing-target expected=True observed=True
+PASS fact-script/1-mismatched-spec-text expected=True observed=True
+PASS intentA/2-valid-method-and-kind expected=True observed=True
+PASS intentA/2-wrong-method-media expected=True observed=True
+PASS intentA/2-wrong-method-human expected=True observed=True
+PASS intentA/2-wrong-method-geometry_proxy expected=True observed=True
+PASS intentA/2-wrong-target-kind expected=True observed=True
+PASS intentA/2-missing-target expected=True observed=True
+PASS intentA/2-mismatched-spec-text expected=True observed=True
+PASS A/2-valid-method-and-kind expected=True observed=True
+PASS A/2-wrong-method-media expected=True observed=True
+PASS A/2-wrong-method-human expected=True observed=True
+PASS A/2-wrong-method-geometry_proxy expected=True observed=True
+PASS A/2-wrong-target-kind expected=True observed=True
+PASS A/2-missing-target expected=True observed=True
+PASS A/2-mismatched-spec-text expected=True observed=True
+PASS intentA/v1-valid-method-and-kind expected=True observed=True
+PASS intentA/v1-wrong-method-media expected=True observed=True
+PASS intentA/v1-wrong-method-human expected=True observed=True
+PASS intentA/v1-wrong-method-geometry_proxy expected=True observed=True
+PASS intentA/v1-wrong-target-kind expected=True observed=True
+PASS intentA/v1-missing-target expected=True observed=True
+PASS intentA/v1-mismatched-spec-text expected=True observed=True
+PASS fact-local/1-valid-method-and-kind expected=True observed=True
+PASS fact-local/1-wrong-method-media expected=True observed=True
+PASS fact-local/1-wrong-method-human expected=True observed=True
+PASS fact-local/1-wrong-method-geometry_proxy expected=True observed=True
+PASS fact-local/1-wrong-target-kind expected=True observed=True
+PASS fact-local/1-missing-target expected=True observed=True
+PASS fact-local/1-mismatched-spec-text expected=True observed=True
+PASS closure/1-valid-method-and-kind expected=True observed=True
+PASS closure/1-wrong-method-media expected=True observed=True
+PASS closure/1-wrong-method-human expected=True observed=True
+PASS closure/1-wrong-method-geometry_proxy expected=True observed=True
+PASS closure/1-wrong-target-kind expected=True observed=True
+PASS closure/1-missing-target expected=True observed=True
+PASS closure/1-mismatched-spec-text expected=True observed=True
+PASS shotB/1-valid-method-and-kind expected=True observed=True
+PASS shotB/1-wrong-method-media expected=True observed=True
+PASS shotB/1-wrong-method-human expected=True observed=True
+PASS shotB/1-wrong-method-geometry_proxy expected=True observed=True
+PASS shotB/1-wrong-target-kind expected=True observed=True
+PASS shotB/1-missing-target expected=True observed=True
+PASS shotB/1-mismatched-spec-text expected=True observed=True
+PASS media-v1-valid-method-and-kind expected=True observed=True
+PASS media-v1-wrong-method-text expected=True observed=True
+PASS media-v1-wrong-method-human expected=True observed=True
+PASS media-v1-wrong-method-geometry_proxy expected=True observed=True
+PASS media-v1-wrong-target-kind expected=True observed=True
+PASS media-v1-missing-target expected=True observed=True
+PASS media-v1-mismatched-spec-text expected=True observed=True
+PASS attack-media-as-text-no-reusable-hash expected=True observed=True
+PASS attack-fact-as-subject-no-reusable-hash expected=True observed=True
+PASS ordinary-orphan-fact-local-remains-allowed expected=True observed=True
+PASS media-missing-evidence-unresolved expected=True observed=True
+PASS media-with-evidence-but-text-method-unresolved expected=True observed=True
+PASS registry-exactly-eight expected=True observed=True
+PASS media-v1-valid-shot-kind expected=True observed=True
+PASS old-profile-rejected-before-hash expected=True observed=True
+PASS independent-rc2-rc4-schema-ids expected=True observed=True
+PASS schema-version-isolated-check expected=True observed=True
+PASS schema-version-isolated-inheritance expected=True observed=True
+PASS unchanged-P-JCS-no-action-beat.example.v0-rc2.json expected=True observed=True
+PASS changed-D-JCS-no-action-beat.example.v0-rc2.json expected=True observed=True
+PASS unchanged-P-JCS-cross-shot-once.example.v0-rc2.json expected=True observed=True
+PASS changed-D-JCS-cross-shot-once.example.v0-rc2.json expected=True observed=True
+PASS canonical-binds-method-and-kind expected=True observed=True
+PASS independent-node-D-golden-no-action-beat.example.v0-rc4.json expected=True observed=True
+PASS independent-node-D-golden-cross-shot-once.example.v0-rc4.json expected=True observed=True
+TOTAL 74/74 PASS
+PASS verify-checkspec-contract-rc4.py
+RUN verify-media-hash-rc4.py
+PASS valid-media-declaration-schema
+PASS valid-media-declaration-hash
+PASS valid-media-payload-canonical
+PASS unchanged-media-dependency-survives-revision
+PASS projection-trailing-newline-R2-schema-reject
+PASS projection-trailing-newline-R2-no-digest
+PASS projection-trailing-newline-R3-schema-reject
+PASS projection-trailing-newline-R3-no-digest
+PASS content-trailing-newline-R2-schema-reject
+PASS content-trailing-newline-R2-no-digest
+PASS content-trailing-newline-R3-schema-reject
+PASS content-trailing-newline-R3-no-digest
+PASS condition-trailing-newline-R2-schema-reject
+PASS condition-trailing-newline-R2-no-digest
+PASS condition-trailing-newline-R3-schema-reject
+PASS condition-trailing-newline-R3-no-digest
+PASS projection-nonhex-R2-schema-reject
+PASS projection-nonhex-R2-no-digest
+PASS projection-nonhex-R3-schema-reject
+PASS projection-nonhex-R3-no-digest
+PASS content-nonhex-R2-schema-reject
+PASS content-nonhex-R2-no-digest
+PASS content-nonhex-R3-schema-reject
+PASS content-nonhex-R3-no-digest
+PASS condition-nonhex-R2-schema-reject
+PASS condition-nonhex-R2-no-digest
+PASS condition-nonhex-R3-schema-reject
+PASS condition-nonhex-R3-no-digest
+PASS projection-short-R2-schema-reject
+PASS projection-short-R2-no-digest
+PASS projection-short-R3-schema-reject
+PASS projection-short-R3-no-digest
+PASS content-short-R2-schema-reject
+PASS content-short-R2-no-digest
+PASS content-short-R3-schema-reject
+PASS content-short-R3-no-digest
+PASS condition-short-R2-schema-reject
+PASS condition-short-R2-no-digest
+PASS condition-short-R3-schema-reject
+PASS condition-short-R3-no-digest
+PASS projection-uppercase-R2-schema-reject
+PASS projection-uppercase-R2-no-digest
+PASS projection-uppercase-R3-schema-reject
+PASS projection-uppercase-R3-no-digest
+PASS content-uppercase-R2-schema-reject
+PASS content-uppercase-R2-no-digest
+PASS content-uppercase-R3-schema-reject
+PASS content-uppercase-R3-no-digest
+PASS condition-uppercase-R2-schema-reject
+PASS condition-uppercase-R2-no-digest
+PASS condition-uppercase-R3-schema-reject
+PASS condition-uppercase-R3-no-digest
+PASS ordinary-intent-text-still-allowed
+PASS unchanged-P-golden-no-action-beat.example.v0-rc4.json
+PASS unchanged-valid-D-golden-no-action-beat.example.v0-rc4.json
+PASS unchanged-P-golden-cross-shot-once.example.v0-rc4.json
+PASS unchanged-valid-D-golden-cross-shot-once.example.v0-rc4.json
+TOTAL 57 / 57
+PASS verify-media-hash-rc4.py
+RUN verify-phase-a.py
+test_direct_reference_set_closure (__main__.PhaseA.test_direct_reference_set_closure) ... ok
+test_external_carry (__main__.PhaseA.test_external_carry) ... ok
+test_incompatible_profile (__main__.PhaseA.test_incompatible_profile) ... ok
+test_indirect_action (__main__.PhaseA.test_indirect_action) ... ok
+test_opaque_literal_is_not_a_dependency (__main__.PhaseA.test_opaque_literal_is_not_a_dependency) ... ok
+test_opaque_order (__main__.PhaseA.test_opaque_order) ... ok
+test_required_source (__main__.PhaseA.test_required_source) ... ok
+test_safe_carry_and_scope_order (__main__.PhaseA.test_safe_carry_and_scope_order) ... ok
+test_typed_set_order (__main__.PhaseA.test_typed_set_order) ... ok
+test_whole_plan_with_unreferenced_source (__main__.PhaseA.test_whole_plan_with_unreferenced_source) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.067s
+
+OK
+PASS verify-phase-a.py
+RUN verify-phase-b.py
+PASS B-P01-direct-parent-A-carry-full-B-text-coverage
+PASS B-N01-added-intent-missing-A-check: whole gate member/check coverage incomplete
+PASS B-N02-added-shot-missing-B-check: whole gate member/check coverage incomplete
+PASS B-N03-omitted-required-shot-B-check: whole gate member/check coverage incomplete
+PASS B-N04-B-check-target-wrong-kind: uncovered or incorrectly typed member
+PASS B-N05-B-check-forged-geometry-method: method/spec/gate spoofing
+PASS B-N06-A-check-dependent-on-unbound-external-evidence: unresolved external evidence
+PASS B-N07-hard-conflict-omitted-from-approval: open hard conflict
+PASS B-N08-open-unknown-risk-not-accepted: unaccepted applicable risk
+PASS B-P02-conditional-accept-all-current-unknown-risks
+PASS B-N09-conditional-omits-second-relevant-risk: incomplete applicable risk coverage
+PASS B-N10-conflicting-same-target-reviewed-decisions: missing/ambiguous current gate decision
+PASS B-N11-projection-scoped-B-not-whole-Plan: projection-scoped decision cannot authorize a whole gate
+PASS B-N12-identical-revision-ID-different-content: duplicate record: ('P-FOX', 'R2')
+PASS B-N13-direct-parent-skipped: carry skips direct parent revision
+PASS B-N14-missing-direct-parent-candidate: missing or ambiguous revision parent
+PASS B-N15-unsealed-current-Plan-revision: untrusted or changed plan revision
+PASS B-N16-tampered-trusted-ancestor: untrusted or changed plan revision
+PASS B-N17-stale-approvedPlan-pointer: approvedPlan pointer mismatch
+PASS B-N18-two-current-risk-versions-ambiguous: ambiguous current risk versions
+PASS B-N19-unprovable-risk-applicability: risk applicability cannot be proved
+PASS B-N20-current-B-not-approved: current gate not approved
+PASS B-N21-inherited-source-check-unsealed: check content not backed by trusted history
+PASS B-N22-inherited-source-decision-unsealed: decision content not backed by trusted history
+PASS B-N23-caller-omits-trusted-risk-ledger-entry: risk manifest incomplete or untrusted
+PASS B-N24-parent-edge-seal-missing: direct parent edge not in trusted history
+PASS B-N25-omitted-conflicting-decision-with-trusted-index: decision manifest incomplete or untrusted
+PASS B-N26-current-decision-content-forged-after-seal: decision manifest incomplete or untrusted
+PASS B-N27-scoped-source-A-cannot-carry-to-whole-gate: projection-scoped decision cannot authorize a whole gate
+PASS B-N28-scoped-current-A-cannot-authorize-whole-gate: projection-scoped decision cannot authorize a whole gate
+PASS B-N29-malformed-risk-enum-even-when-sealed: invalid risk shape
+PASS B-N30-inheritance-missing-required-basis: invalid inheritance shape
+PASS B-N31-untrusted-current-revision-selection: caller selected an untrusted current revision
+PASS B-N32-missing-trusted-decision-manifest: decision manifest incomplete or untrusted
+PASS B-N33-current-check-content-forged-after-seal: check content not backed by trusted history
+TOTAL 35 / 35
+PASS verify-phase-b.py
+RUN verify-phase-b-raw.py
+PASS raw-B-N01-9007199254740991.9 rejected
+PASS raw-B-N02--9007199254740991.9 rejected
+PASS raw-B-N03-9.0071992547409919e15 rejected
+PASS raw-B-N04--9.0071992547409919e15 rejected
+PASS raw-B-N05-9007199254740992.0000001 rejected
+PASS raw-B-N06--9007199254740992.0000001 rejected
+PASS raw-B-N07-9007199254740993.0 rejected
+PASS raw-B-N08-1e400 rejected
+PASS raw-B-N09-1e-400 rejected
+PASS raw-B-N10-9007199254740992 rejected
+PASS raw-B-N11--9007199254740992 rejected
+PASS raw-B-P01-9007199254740991 accepted
+PASS raw-B-P02--9007199254740991 accepted
+PASS raw-B-P03-9007199254740991.0 accepted
+PASS raw-B-P04--9007199254740991.0 accepted
+PASS raw-B-P05-9007199254740990.1 accepted
+PASS raw-B-P06--9007199254740990.1 accepted
+PASS raw-B-P07-1e-300 accepted
+PASS raw-B-P08-0e999999999999999999999 accepted
+PASS raw-B-P09--0.0 accepted
+PASS raw-B-P10-5e-324 accepted
+PASS raw-B-P11-0.1 accepted
+PASS raw-B-P12-{"nested":[1.25,0.0,9007199254740991],"safe":"value"} accepted
+PASS raw-B-package-no-action-beat.example.v0-rc4.json accepted
+PASS raw-B-package-cross-shot-once.example.v0-rc4.json accepted
+PASS raw-B-bad-package-boundary-cross-shot-once.example.v0-rc4.json rejected
+TOTAL 26 / 26
+PASS verify-phase-b-raw.py
+RUN verify-d-jcs1.py
+PASS baseline-resolved
+PASS D-P01-scope-set-order
+PASS D-P02-typed-ref-set-normalization
+PASS D-P03-new-shot-no-A-dependency
+PASS D-N01-D-N05-closure-not-allowlist
+PASS D-N02-missing-ref
+PASS D-N02-missing-source-sha
+PASS D-N02-source-unavailable
+PASS D-N02-source-mismatch
+PASS D-N02-collection-path-missing
+PASS D-N03-complete-object-changed
+PASS D-N04-collection-member
+PASS D-N04-collection-order
+PASS other-fixture
+TOTAL 14 PASS
+PASS verify-d-jcs1.py
+RUN verify_jcs.py
+PASS sorted-object 43258cff783fe703 13 B
+PASS rfc8785-b-0000000000000000 5feceb66ffc86f38 1 B
+PASS rfc8785-b-8000000000000000 5feceb66ffc86f38 1 B
+PASS rfc8785-b-0000000000000001 c46e7ca1be4c8734 6 B
+PASS rfc8785-b-8000000000000001 046f4049d09944fc 7 B
+PASS rfc8785-b-7fefffffffffffff c2784e1abd631745 23 B
+PASS rfc8785-b-ffefffffffffffff f0347276b171ff0c 24 B
+PASS rfc8785-b-4340000000000000 c681da39d7273a6a 16 B
+PASS rfc8785-b-c340000000000000 83e109bfd7fb4984 17 B
+PASS rfc8785-b-44b52d02c7e14af5 143eadc1fc2fe10a 21 B
+PASS rfc8785-b-44b52d02c7e14af6 0b1af6b73e932475 5 B
+PASS rfc8785-b-44b52d02c7e14af7 de7cb5db5ee06bf7 22 B
+PASS rfc8785-b-3eb0c6f7a0b5ed8c 2ace34b29d30d300 20 B
+PASS rfc8785-b-3eb0c6f7a0b5ed8d 159fb29a827ad04b 8 B
+PASS rfc8785-b-41b3de4355555555 6bd9be1c14102878 17 B
+PASS rfc8785-b-43143ff3c1cb0959 e1547479d27f057e 18 B
+PASS unicode-and-nested 03d7d749804404f1 89 B
+PASS number-edges 87be4dc219925816 82 B
+PASS rfc-section-3-sample f9ef8430c38ca3ed 82 B
+PASS duplicate JSON keys rejected by pre-validation
+PASS invalid input rejected: NaN FloatDomainError
+PASS invalid input rejected: Infinity FloatDomainError
+PASS invalid input rejected: integer > I-JSON safe bound IntegerDomainError
+PASS invalid input rejected: unpaired surrogate CanonicalizationError
+PASS plan-no-action-beat.example.review-v0.json c15b2272d787862a 799 B
+PASS profile invariants no-action-beat.example.review-v0.json order/locator/Review stable; plan edit changes hash; source hash good
+PASS plan-cross-shot-once.example.review-v0.json 0bb91a8f207effbe 2684 B
+PASS profile invariants cross-shot-once.example.review-v0.json order/locator/Review stable; plan edit changes hash; source hash good
+TOTAL PASS 21 JCS cases + pre-validation and Plan profile invariants; report /home/sean/projects/canvas-lab/docs/planning/WAR-35/jcs-verification.report.json
+PASS verify_jcs.py
+ALL_PASSED
