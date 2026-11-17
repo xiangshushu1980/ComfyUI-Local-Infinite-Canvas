@@ -1170,3 +1170,7 @@ Astra 第二轮阶段 A 独立验收 `phase-a-rc2-independent-acceptance-2026111
 原 Astra 审阅会话只读复核 Git `0ed1388`：RC2 方法/目标伪装反例已关闭，但 RC3 的媒体 SHA 尾随换行仍会通过 Python Schema 并产生可继承的局部依赖指纹，故 **阶段 A Not Accepted**。独立矩阵包括 352 个规格/方法/目标组合及 88 个混合目标组合；完整事实见 [独立审阅整理](phase-a-rc3-astra-independent-review-20261117.md)。
 
 ChatGPT 主流程在隔离 Git archive 中形成 RC4：严格检查媒体投影、内容与条件 SHA 整串十六进制长度，Schema hash 强制 64 字符；新的 57/57 媒体格式专项、74/74 CheckSpec 与原有专项回归全部通过，合法 P/D Golden 未变。详细方法、边界与证据见 [RC4 补修记录](media-hash-rc4-20261117.md)。**RC4 仍待原 Astra 定向再验收，B 未启动，WAR-35 公共 Schema 仍未冻结。**
+
+### 28.4 原 Astra 对固定 RC4 的独立定向再验收（2026-11-17）
+
+原 Astra 审阅会话针对冻结 Git `0dcdadf1237e6f0442e17684637d22da8488269c` 已正式判定 **阶段 A Accepted**：对媒体投影 SHA、内容 SHA、可选条件 SHA 各自构造 10 个异常值，30/30 均被完整 RC4 Schema 和直接 D-JCS 拒绝；合法媒体、旧 CheckSpec 伪装负例、Fact 来源承接均符合预期；两份 P/D Golden 由独立 Node JCS 复算保持不变。确认 RC3/RC4 为未发布候选，D-JCS /4 可沿用，但旧摘要不得跳过 RC4 复算。独立原始输出依据及具体边界见 [阶段 A 独立验收](phase-a-rc4-astra-independent-acceptance-20261117.md)。**WAR-35 整体仍 Not ready，阶段 B 未启动，公共 Schema 尚未正式冻结。**
