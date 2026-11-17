@@ -1,0 +1,64 @@
+{
+  "contractVersion": "director-plan/0.1.0",
+  "plan": {
+    "planId": "P-DOUBT",
+    "sceneId": "SC-DOUBT",
+    "revisionId": "R1",
+    "storyBasis": {
+      "sources": [
+        {
+          "sourceId": "source:S-DOUBT",
+          "mediaKind": "text",
+          "contentSha256": "ed1c8895c8f18aff348106616ba9585ba7972e41e5ce876938951bb04e0e73f1"
+        }
+      ],
+      "facts": [
+        {
+          "id": "F-STATEMENT",
+          "statement": "男人说自己没见过钥匙；观众暂未获证实其真假",
+          "sourceRefs": [
+            "source:S-DOUBT"
+          ]
+        }
+      ],
+      "subjects": [
+        {
+          "id": "MAN",
+          "label": "男人",
+          "kind": "person"
+        },
+        {
+          "id": "WOMAN",
+          "label": "女子",
+          "kind": "person"
+        }
+      ]
+    },
+    "intents": [
+      {
+        "id": "I-DOUBT",
+        "basisRefs": [
+          "fact:F-STATEMENT"
+        ],
+        "creativeGoal": "观众开始怀疑男人是否隐瞒事实",
+        "rationale": "利用沉默制造信息悬念"
+      }
+    ],
+    "beats": [
+      {
+        "id": "B-DOUBT",
+        "dramaticChange": "观众开始怀疑男人在说谎",
+        "intentRefs": [
+          "intent:I-DOUBT"
+        ]
+      }
+    ]
+  },
+  "sourceSnapshots": [
+    {
+      "sourceId": "source:S-DOUBT",
+      "contentSha256": "ed1c8895c8f18aff348106616ba9585ba7972e41e5ce876938951bb04e0e73f1",
+      "text": "男人说：“我没见过钥匙。” 女子沉默，观众开始怀疑他隐瞒了什么。"
+    }
+  ]
+}

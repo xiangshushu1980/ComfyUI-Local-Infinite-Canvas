@@ -1164,3 +1164,9 @@ Astra 第二轮阶段 A 独立验收 `phase-a-rc2-independent-acceptance-2026111
 本轮以已有八个登记版本为完整范围，采用 `(text,sourcePolicy,allowedMethods,targetKinds)` 的可信登记内容，在解析完整 typed target、目标字段、方法匹配且证明必需来源后才产出指纹。未新增 Check 字段，不改变整体 Gate 审批覆盖的待审设计。兼容边界升级至 **D-JCS-1 /4**，canonical payload 的 checkSpec 附加已登记的 `allowedMethods/targetKinds`，单独生成 **RC3** Schema ID 和两份 D Golden；保留 RC1/RC2 原件及 P-JCS-1 Golden。
 
 同案测试：`edcbd82` 为 **50/63**，RC3 为 **63/63**，另十一项 RC3 隔离/Golden 验证后 **74/74**；旧六组 137/137、Fact 来源证明 24/24 和阶段 A 10/10 回归通过。完整方法/目标矩阵、精确 SHA、可复现脚本、限制与待审事项见 [RC3 CheckSpec 阶段 A 证据](checkspec-contract-rc3-20261114.md)。**这是实现候选，尚待 Astra 独立验收；阶段 A、WAR-35 均不标为 Done，未开始阶段 B，也不意味着真实媒体或生产审批已验证。**
+
+### 28.3 原 Astra RC3 独立复核与 RC4 媒体 SHA 定向修复（2026-11-17）
+
+原 Astra 审阅会话只读复核 Git `0ed1388`：RC2 方法/目标伪装反例已关闭，但 RC3 的媒体 SHA 尾随换行仍会通过 Python Schema 并产生可继承的局部依赖指纹，故 **阶段 A Not Accepted**。独立矩阵包括 352 个规格/方法/目标组合及 88 个混合目标组合；完整事实见 [独立审阅整理](phase-a-rc3-astra-independent-review-20261117.md)。
+
+ChatGPT 主流程在隔离 Git archive 中形成 RC4：严格检查媒体投影、内容与条件 SHA 整串十六进制长度，Schema hash 强制 64 字符；新的 57/57 媒体格式专项、74/74 CheckSpec 与原有专项回归全部通过，合法 P/D Golden 未变。详细方法、边界与证据见 [RC4 补修记录](media-hash-rc4-20261117.md)。**RC4 仍待原 Astra 定向再验收，B 未启动，WAR-35 公共 Schema 仍未冻结。**

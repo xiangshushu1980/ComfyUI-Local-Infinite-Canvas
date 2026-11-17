@@ -1,0 +1,455 @@
+{
+  "task": "WAR-35",
+  "scope": "Phase A CheckSpec method + target type before D-JCS digest",
+  "profile": "war35-dep-jcs8785-sha256/4",
+  "passed": 74,
+  "total": 74,
+  "cases": [
+    {
+      "case": "fact-script/1-valid-method-and-kind",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "fact-script/1-wrong-method-media",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "fact-script/1-wrong-method-human",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "fact-script/1-wrong-method-geometry_proxy",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "fact-script/1-wrong-target-kind",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "fact-script/1-missing-target",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "fact-script/1-mismatched-spec-text",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "intentA/2-valid-method-and-kind",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "intentA/2-wrong-method-media",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "intentA/2-wrong-method-human",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "intentA/2-wrong-method-geometry_proxy",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "intentA/2-wrong-target-kind",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "intentA/2-missing-target",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "intentA/2-mismatched-spec-text",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "A/2-valid-method-and-kind",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "A/2-wrong-method-media",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "A/2-wrong-method-human",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "A/2-wrong-method-geometry_proxy",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "A/2-wrong-target-kind",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "A/2-missing-target",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "A/2-mismatched-spec-text",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "intentA/v1-valid-method-and-kind",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "intentA/v1-wrong-method-media",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "intentA/v1-wrong-method-human",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "intentA/v1-wrong-method-geometry_proxy",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "intentA/v1-wrong-target-kind",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "intentA/v1-missing-target",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "intentA/v1-mismatched-spec-text",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "fact-local/1-valid-method-and-kind",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "fact-local/1-wrong-method-media",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "fact-local/1-wrong-method-human",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "fact-local/1-wrong-method-geometry_proxy",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "fact-local/1-wrong-target-kind",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "fact-local/1-missing-target",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "fact-local/1-mismatched-spec-text",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "closure/1-valid-method-and-kind",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "closure/1-wrong-method-media",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "closure/1-wrong-method-human",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "closure/1-wrong-method-geometry_proxy",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "closure/1-wrong-target-kind",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "closure/1-missing-target",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "closure/1-mismatched-spec-text",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "shotB/1-valid-method-and-kind",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "shotB/1-wrong-method-media",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "shotB/1-wrong-method-human",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "shotB/1-wrong-method-geometry_proxy",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "shotB/1-wrong-target-kind",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "shotB/1-missing-target",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "shotB/1-mismatched-spec-text",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "media-v1-valid-method-and-kind",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "media-v1-wrong-method-text",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "media-v1-wrong-method-human",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "media-v1-wrong-method-geometry_proxy",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "media-v1-wrong-target-kind",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "media-v1-missing-target",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "media-v1-mismatched-spec-text",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "attack-media-as-text-no-reusable-hash",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "attack-fact-as-subject-no-reusable-hash",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "ordinary-orphan-fact-local-remains-allowed",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "media-missing-evidence-unresolved",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "media-with-evidence-but-text-method-unresolved",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "registry-exactly-eight",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "media-v1-valid-shot-kind",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "old-profile-rejected-before-hash",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "independent-rc2-rc4-schema-ids",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "schema-version-isolated-check",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "schema-version-isolated-inheritance",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "unchanged-P-JCS-no-action-beat.example.v0-rc2.json",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "changed-D-JCS-no-action-beat.example.v0-rc2.json",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "unchanged-P-JCS-cross-shot-once.example.v0-rc2.json",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "changed-D-JCS-cross-shot-once.example.v0-rc2.json",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "canonical-binds-method-and-kind",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "independent-node-D-golden-no-action-beat.example.v0-rc4.json",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    },
+    {
+      "case": "independent-node-D-golden-cross-shot-once.example.v0-rc4.json",
+      "expected": true,
+      "observed": true,
+      "passed": true
+    }
+  ],
+  "independentMediaBytesVerified": false,
+  "fullGateValidityTested": false
+}

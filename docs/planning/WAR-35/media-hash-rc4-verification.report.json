@@ -1,0 +1,352 @@
+{
+  "task": "WAR-35",
+  "phase": "A RC4 media SHA syntax",
+  "passed": 57,
+  "total": 57,
+  "cases": [
+    {
+      "case": "valid-media-declaration-schema",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "valid-media-declaration-hash",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "valid-media-payload-canonical",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "unchanged-media-dependency-survives-revision",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "projection-trailing-newline-R2-schema-reject",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "projection-trailing-newline-R2-no-digest",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "projection-trailing-newline-R3-schema-reject",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "projection-trailing-newline-R3-no-digest",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "content-trailing-newline-R2-schema-reject",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "content-trailing-newline-R2-no-digest",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "content-trailing-newline-R3-schema-reject",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "content-trailing-newline-R3-no-digest",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "condition-trailing-newline-R2-schema-reject",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "condition-trailing-newline-R2-no-digest",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "condition-trailing-newline-R3-schema-reject",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "condition-trailing-newline-R3-no-digest",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "projection-nonhex-R2-schema-reject",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "projection-nonhex-R2-no-digest",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "projection-nonhex-R3-schema-reject",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "projection-nonhex-R3-no-digest",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "content-nonhex-R2-schema-reject",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "content-nonhex-R2-no-digest",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "content-nonhex-R3-schema-reject",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "content-nonhex-R3-no-digest",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "condition-nonhex-R2-schema-reject",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "condition-nonhex-R2-no-digest",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "condition-nonhex-R3-schema-reject",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "condition-nonhex-R3-no-digest",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "projection-short-R2-schema-reject",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "projection-short-R2-no-digest",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "projection-short-R3-schema-reject",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "projection-short-R3-no-digest",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "content-short-R2-schema-reject",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "content-short-R2-no-digest",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "content-short-R3-schema-reject",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "content-short-R3-no-digest",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "condition-short-R2-schema-reject",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "condition-short-R2-no-digest",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "condition-short-R3-schema-reject",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "condition-short-R3-no-digest",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "projection-uppercase-R2-schema-reject",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "projection-uppercase-R2-no-digest",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "projection-uppercase-R3-schema-reject",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "projection-uppercase-R3-no-digest",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "content-uppercase-R2-schema-reject",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "content-uppercase-R2-no-digest",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "content-uppercase-R3-schema-reject",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "content-uppercase-R3-no-digest",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "condition-uppercase-R2-schema-reject",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "condition-uppercase-R2-no-digest",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "condition-uppercase-R3-schema-reject",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "condition-uppercase-R3-no-digest",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "ordinary-intent-text-still-allowed",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "unchanged-P-golden-no-action-beat.example.v0-rc4.json",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "unchanged-valid-D-golden-no-action-beat.example.v0-rc4.json",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "unchanged-P-golden-cross-shot-once.example.v0-rc4.json",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "case": "unchanged-valid-D-golden-cross-shot-once.example.v0-rc4.json",
+      "observed": true,
+      "expected": true,
+      "passed": true
+    }
+  ],
+  "realMediaBytesValidated": false,
+  "gateCoverageValidated": false
+}
