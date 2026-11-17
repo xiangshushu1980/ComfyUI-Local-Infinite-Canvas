@@ -1,0 +1,56 @@
+{
+  "task": "WAR-35",
+  "releaseType": "public-schema-design-freeze",
+  "freezeDate": "2026-11-17",
+  "contractVersion": "director-plan/0.1.0",
+  "schemaId": "urn:canvas-lab:director-plan:0.1.0",
+  "schemaFile": "director-plan.schema.v0.1.0.json",
+  "schemaSha256": "b14149c0bd79e3bca1b17ea21f2949e408cca770fb3d49549c5d85ff647538e7",
+  "rc4SchemaFile": "director-plan.schema.v0-rc4.json",
+  "rc4SourceSha256": "338af8b84d2b799364d3568b67559ca422ec074398487fec9811e0bff4ab6ee8",
+  "rc4GoldenSourceSha256": "20c8457fabe9d70d2185b8dd2b18b917c2a60427b1c8a188a64650ef1ae81390",
+  "preflightBaselineGit": "6884eb6896815d6a2e1733abe29d0245ed850b7d",
+  "preflightReportSha256": "d6e8472552c529d34a81bedb2634b2e2ef32e6c24e606f326596d715ca524e34",
+  "stageAAcceptanceSha256": "c28e5ad4b8b0c109df300689a66108e7176b7cab5c77016e0937dac9589f90e3",
+  "stageBAcceptanceSha256": "d29a3177247fdfdb26712c92c40c48b293994ae3827035185b4c6a25d6fe74b5",
+  "planHashRule": "war35-plan-jcs8785-sha256/1",
+  "dependencyHashRule": "war35-dep-jcs8785-sha256/4",
+  "planHashPayload": "{contractVersion,plan}",
+  "approvedCarryForwardRule": "risk-free-unconditional-approved-intent-A-only",
+  "carryForwardPrerequisites": [
+    "sealed direct parent",
+    "unconditional risk-free approved source Intent A",
+    "no scope-specific executionTarget",
+    "fresh target/check proof",
+    "fresh derived Decision",
+    "all dependency fingerprints equal under /4"
+  ],
+  "shotBAutomaticCarryForward": false,
+  "fixtures": {
+    "no-action-beat.example.v0.1.0.json": {
+      "rc4Fixture": "no-action-beat.example.v0-rc4.json",
+      "fileSha256": "8611f32a702a40cac3093fe6f2fecdf59ce7167ee1d58691d9d017e72a4a36a6",
+      "planSha256": "c3a7e1b938fb16aedb0f3e28c6693223c80d3cab4c9a450adfe896778b33ef0e",
+      "canonicalBytes": 794,
+      "intentDependencySha256": "7043382336e1aad8fb6ac4b0e234cbb00dcef6ecb73bb8145178cd14e7c29d5a"
+    },
+    "cross-shot-once.example.v0.1.0.json": {
+      "rc4Fixture": "cross-shot-once.example.v0-rc4.json",
+      "fileSha256": "4b0b63811ad70e6c821f7aceb1016c7c1c37299d8e1863f62b32e58fdca03fe6",
+      "planSha256": "8b163c5db47ef392da2181b3801fef051eb63a0012f773021d434c036df261ac",
+      "canonicalBytes": 2679,
+      "intentDependencySha256": "69d960d6f2d6ac8350c17d59540deb4d570b86937dd7f127fc51fc305f8606f4"
+    }
+  },
+  "productionAuthorized": false,
+  "stageBTrustManifestImplemented": false,
+  "unimplemented": [
+    "authenticated complete immutable Risk/Decision manifest",
+    "current trusted PlanTarget and sealed Checks",
+    "real A/B human approval service",
+    "media bytes/source resolver",
+    "WAR-52/H3 public projection runtime adapter"
+  ],
+  "historicalEvidencePreserved": true,
+  "note": "Freeze only the public design Schema and Golden vectors; the whole Gate is not enforced by JSON Schema alone."
+}

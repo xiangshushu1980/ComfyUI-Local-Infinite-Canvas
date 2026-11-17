@@ -1291,3 +1291,47 @@ CheckSpec 的可信登记包括版本、全文、method、目标类型与来源�
 ### 32.4 冻结不代表生产准入
 
 Stage B 的完整 Decision/Risk manifest、当前可信 PlanTarget、直接父边与 seal 是合成受信输入；生产必须先有**权威不可变、完整、可验证的审阅记录与授权机制**，不能接受请求方自签证明。真实媒体 SHA/bytes、外部来源 resolver、真实人工 A/B 批准、WAR-52 投影/Join/phase 与 Canvas 集成验证均在发布的设计契约之外。冻结公共 Schema **允许下游以此开展适配设计**，不自动授权生产运行或解除 WAR-36/37 的实施审查条件。
+
+## 33. v0.1.0 公共设计契约正式冻结（2026-11-17）
+
+### 33.1 已批准的冻结决定
+
+用户已明确确认 §32.3 两项决定，并授权 ChatGPT 独立判断不涉及新增产品行为选择的工程实现细节：
+
+1. 公共设计 Schema 正式版本为 **`director-plan/0.1.0`**；稳定 `$id=urn:canvas-lab:director-plan:0.1.0`。后续改动不能覆盖该版本文件和 Golden，必须有新的版本与独立证据。
+2. **保守 Intent A 继承**：只允许此前无风险且无条件 `approved` 的完整 Intent A，在**真实可信直接父版本**、源 Check/Decision 封存、/4 完整依赖重算等所有条件成立时，由新的 Check 与新 Decision 记录 `verified_carry_forward`。条件批准需要新 `reviewed`；`rejected`、`changes_requested`、执行投影范围的 Decision、Shot B 不能自动继承或升级为整门批准。
+
+这里的“冻结”是 **DirectorPlan 公共数据契约的设计版本冻结**，不是审批平台、媒体验收、H3/CANVAS 生产 API 或任何真实视频生成的执行许可。
+
+### 33.2 发布文件与不可变 Golden
+
+在隔离的 `war-35-v0-freeze-preflight-20261117` Git 分支基于独立通过的阶段 B `baced88` 和预检 `6884eb6` 发布；RC4 原件及 A/B 独立验收材料均保持不变。
+
+| 产物 | 用途 | 发布 SHA-256 |
+| --- | --- | --- |
+| `director-plan.schema.v0.1.0.json` | 公共 Draft 2020-12 设计 Schema | `b14149c0bd79e3bca1b17ea21f2949e408cca770fb3d49549c5d85ff647538e7` |
+| `no-action-beat.example.v0.1.0.json` | 无显式 Action Beat 正例（逐字节复制 RC4） | `8611f32a702a40cac3093fe6f2fecdf59ce7167ee1d58691d9d017e72a4a36a6` |
+| `cross-shot-once.example.v0.1.0.json` | 跨 Shot 同一个 Action/StateDelta 正例（逐字节复制 RC4） | `4b0b63811ad70e6c821f7aceb1016c7c1c37299d8e1863f62b32e58fdca03fe6` |
+| `v0.1.0-freeze-golden.report.json` | 发布 Schema/RC4 SHA、两份 P/D Golden、决策边界及受信服务未实施标记 | `7490d3f77b336044a84bc40a594397f546fa9bcbe30301c260f849a13e67664b` |
+| `verify-v0.1.0-freeze.py` | 发布文件不可变性、Schema 元数据隔离、跨语言 P/D Golden 验证器 | `eecda5570df9ff4711893b5d9e4f6ada0f6994c632782972e872c1cbb2f45f80` |
+| `v0.1.0-freeze-verification-20261117.log` | 发布全回归原始执行证据 | `cb4a09ff9e14929851953456c69a1f729cdbaeae6d2d33b881467b6aa3ce279d` |
+
+| 正式示例 | P-JCS-1 SHA-256 | JCS bytes | D-JCS-1 /4 首个 Intent SHA-256 |
+| --- | --- | ---: | --- |
+| `no-action-beat` | `c3a7e1b938fb16aedb0f3e28c6693223c80d3cab4c9a450adfe896778b33ef0e` | 794 | `7043382336e1aad8fb6ac4b0e234cbb00dcef6ecb73bb8145178cd14e7c29d5a` |
+| `cross-shot-once` | `8b163c5db47ef392da2181b3801fef051eb63a0012f773021d434c036df261ac` | 2679 | `69d960d6f2d6ac8350c17d59540deb4d570b86937dd7f127fc51fc305f8606f4` |
+
+只允许 RC4 根级 `$id`、`title`、`description` 发生发布元数据变化；`contractVersion.const`、其余 Schema 键和原测试示例都保持不变。独立的 RC4 Golden 仍作为可核的来源，不覆盖、更不修改旧候选以伪造正式结果。
+
+### 33.3 校验边界与复现
+
+- `python3 docs/planning/WAR-35/verify-v0.1.0-freeze.py` 对正式发布对象执行 **29/29** 校验：发布 schema/Golden/历史版本 SHA、Draft 2020-12、旧版本拒绝、两份发布 fixture 与 RC4 字节一致、Python/Node JCS、P-JCS 与 D-JCS /4、Plan 内容和 Review 的指纹边界，以及“未授权生产”标记。
+- 原 13 组脚本与本轮冻结脚本组成 **14/14 发布回归**；原 13 组保留并再运行：`verify-fact-source-proof.py`、`verify-d-jcs1-schema.py`、`verify-media-check.py`、`verify-decision-gates.py`、`verify-raw-ijson.py`、`verify-v0-rc4.py`、`verify-checkspec-contract-rc4.py`、`verify-media-hash-rc4.py`、`verify-phase-a.py`、`verify-phase-b.py`、`verify-phase-b-raw.py`、`verify-d-jcs1.py` 及独立 JCS 向量 `verify_jcs.py`。日志 `v0.1.0-freeze-verification-20261117.log` 是本次发布的原始执行结果，不把旧 Astra 复核偷换为本轮新审阅。
+- 运行时以后需要依序执行 **原始字节 I-JSON 入口校验 → Schema 结构验证 → 受信完整 Gate/Risk/Decision/父版本语义检查 → 必需外部来源及真实媒体字节核验 → 真实授权**。这些语义门控不可能由 JSON Schema 自身完成，不能将示例通过视为生产批准。
+- WAR-35 设计范围内的无损数据传递/变更检查仍按 §20–21 的 Plan、共享 Action/StateDelta、type-ref、版本/差异规则与现有正反例为设计基线；H3 转换、WAR-52 的 Join/phase 与 Canvas 端实际映射验收属于后续任务，**未验证跨层真实无损转换**。
+
+### 33.4 本 Issue 收口及下游界面
+
+完成范围：独立 DirectorPlan 公共数据语义、Review 和 A/B 门的保守规则、版本化 JSON Schema、两个正例、Golden、研究性语义验证与独立设计验收。可将 WAR-35 标记 **Done（设计冻结）**；这不意味着整套 Director Skill、Canvas Agent 及其生产审阅闭环已完成。
+
+下游 WAR-36/37/38 可引用上述**固定设计版本**继续独立设计/静态映射，不应自行改动 `v0.1.0` 的语义、悄悄复用旧 Review pass，或假定 schema 通过即可自动审批。真实不可变 Review 账本与授权，Media/source resolver，WAR-52/H3 投影以及 Canvas 真实持久化/审批均属于独立待实现/待验收的集成工作；在存在受信根缺口时始终 **fail closed**。
