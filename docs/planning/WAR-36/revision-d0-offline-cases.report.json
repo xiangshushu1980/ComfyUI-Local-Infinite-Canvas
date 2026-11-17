@@ -1,0 +1,241 @@
+{
+  "scopeTestNature": "offline isolated design logic; NOT production code",
+  "productionSchemaUsed": "urn:canvas-lab:director-plan:0.1.0",
+  "schemaSha256": "b14149c0bd79e3bca1b17ea21f2949e408cca770fb3d49549c5d85ff647538e7",
+  "fixture": "cross-shot-once.example.v0.1.0.json",
+  "fixtureSha256": "4b0b63811ad70e6c821f7aceb1016c7c1c37299d8e1863f62b32e58fdca03fe6",
+  "baseRevision": "R2",
+  "rules": "stable ID, explicit scope, actual RFC6901 Plan diff, conservative neighbor/action recheck",
+  "limitations": [
+    "Context Builder not executed; simulated trusted base is a frozen example, not a real approved Plan",
+    "No true Check/Risk/Decision store or /4 D-JCS trust-manifest semantics in this harness",
+    "No full state-transition/causal timing/real media/human visual verification",
+    "No real Canvas plugin API, persistence or user approval executed",
+    "Only illustrative fox shared-action typed fixture; D key scene applied in manual design analysis"
+  ],
+  "tests": [
+    {
+      "case": "target-S02-visual-only",
+      "resultKind": "Candidate",
+      "reason": "isolated candidate; no real review decision",
+      "changedPaths": [
+        "/plan/shots/1/visualDesign/description"
+      ],
+      "unexpectedChanges": [],
+      "recheckTargets": [
+        "action:A-JUMP",
+        "shot:S01",
+        "shot:S02"
+      ],
+      "approved": false,
+      "media": "not_checked",
+      "passed": true
+    },
+    {
+      "case": "nochange-same-plan",
+      "resultKind": "NoChange",
+      "reason": "actual complete Plan diff empty",
+      "changedPaths": [],
+      "unexpectedChanges": [],
+      "recheckTargets": [],
+      "approved": false,
+      "media": "not_checked",
+      "passed": true
+    },
+    {
+      "case": "unauthorized-change-S01",
+      "resultKind": "Blocked",
+      "reason": "actual changes exceed explicitly authorized scope",
+      "changedPaths": [
+        "/plan/shots/0/primaryPurpose",
+        "/plan/shots/1/visualDesign/description"
+      ],
+      "unexpectedChanges": [
+        "/plan/shots/0/primaryPurpose"
+      ],
+      "recheckTargets": [],
+      "approved": false,
+      "media": "not_checked",
+      "passed": true
+    },
+    {
+      "case": "upstream-fact-change",
+      "resultKind": "NeedsUpstreamChange",
+      "reason": "approved upstream Story/Intent/Beat/Blocking change",
+      "changedPaths": [
+        "/plan/storyBasis/facts/0/statement"
+      ],
+      "unexpectedChanges": [],
+      "recheckTargets": [],
+      "approved": false,
+      "media": "not_checked",
+      "passed": true
+    },
+    {
+      "case": "stale-revision",
+      "resultKind": "Blocked",
+      "reason": "stale revision or source fingerprint",
+      "changedPaths": [],
+      "unexpectedChanges": [],
+      "recheckTargets": [],
+      "approved": false,
+      "media": "not_checked",
+      "passed": true
+    },
+    {
+      "case": "wrong-source-fingerprint",
+      "resultKind": "Blocked",
+      "reason": "stale revision or source fingerprint",
+      "changedPaths": [],
+      "unexpectedChanges": [],
+      "recheckTargets": [],
+      "approved": false,
+      "media": "not_checked",
+      "passed": true
+    },
+    {
+      "case": "unknown-target",
+      "resultKind": "Blocked",
+      "reason": "unknown Shot target",
+      "changedPaths": [],
+      "unexpectedChanges": [],
+      "recheckTargets": [],
+      "approved": false,
+      "media": "not_checked",
+      "passed": true
+    },
+    {
+      "case": "duplicate-shot-id",
+      "resultKind": "Blocked",
+      "reason": "duplicate stable semantic ID",
+      "changedPaths": [],
+      "unexpectedChanges": [],
+      "recheckTargets": [],
+      "approved": false,
+      "media": "not_checked",
+      "passed": true
+    },
+    {
+      "case": "reorder-without-scope",
+      "resultKind": "Blocked",
+      "reason": "actual changes exceed explicitly authorized scope",
+      "changedPaths": [
+        "/plan/shots"
+      ],
+      "unexpectedChanges": [
+        "/plan/shots"
+      ],
+      "recheckTargets": [],
+      "approved": false,
+      "media": "not_checked",
+      "passed": true
+    },
+    {
+      "case": "explicit-reorder-structural-scope",
+      "resultKind": "Candidate",
+      "reason": "isolated candidate; no real review decision",
+      "changedPaths": [
+        "/plan/shots"
+      ],
+      "unexpectedChanges": [],
+      "recheckTargets": [
+        "action:A-JUMP",
+        "shot:S01",
+        "shot:S02"
+      ],
+      "approved": false,
+      "media": "not_checked",
+      "passed": true
+    },
+    {
+      "case": "repeated-action-completion",
+      "resultKind": "Blocked",
+      "reason": "same Action completion delta referenced as completed twice",
+      "changedPaths": [
+        "/plan/shots/0/actionCoverage/0/completionDeltaRef"
+      ],
+      "unexpectedChanges": [],
+      "recheckTargets": [],
+      "approved": false,
+      "media": "not_checked",
+      "passed": true
+    },
+    {
+      "case": "two-field-proposal",
+      "resultKind": "Candidate",
+      "reason": "isolated candidate; no real review decision",
+      "changedPaths": [
+        "/plan/shots/1/primaryPurpose",
+        "/plan/shots/1/visualDesign/description"
+      ],
+      "unexpectedChanges": [],
+      "recheckTargets": [
+        "action:A-JUMP",
+        "shot:S01",
+        "shot:S02"
+      ],
+      "approved": false,
+      "media": "not_checked",
+      "passed": true
+    },
+    {
+      "case": "partial-accept-rederived",
+      "resultKind": "Candidate",
+      "reason": "isolated candidate; no real review decision",
+      "changedPaths": [
+        "/plan/shots/1/visualDesign/description"
+      ],
+      "unexpectedChanges": [],
+      "recheckTargets": [
+        "action:A-JUMP",
+        "shot:S01",
+        "shot:S02"
+      ],
+      "approved": false,
+      "media": "not_checked",
+      "passed": true
+    },
+    {
+      "case": "nochange-ui-layout-is-not-plan",
+      "resultKind": "NoChange",
+      "reason": "actual complete Plan diff empty",
+      "changedPaths": [],
+      "unexpectedChanges": [],
+      "recheckTargets": [],
+      "approved": false,
+      "media": "not_checked",
+      "passed": true
+    },
+    {
+      "case": "unknown-media-stays-not-checked",
+      "resultKind": "Candidate",
+      "reason": "isolated candidate; no real review decision",
+      "changedPaths": [
+        "/plan/shots/1/evidenceCriteria/0/statement"
+      ],
+      "unexpectedChanges": [],
+      "recheckTargets": [
+        "action:A-JUMP",
+        "shot:S01",
+        "shot:S02"
+      ],
+      "approved": false,
+      "media": "not_checked",
+      "passed": true
+    },
+    {
+      "case": "wrong-plan-identity",
+      "resultKind": "Blocked",
+      "reason": "base identity or revision mismatch",
+      "changedPaths": [],
+      "unexpectedChanges": [],
+      "recheckTargets": [],
+      "approved": false,
+      "media": "not_checked",
+      "passed": true
+    }
+  ],
+  "passed": 16,
+  "total": 16,
+  "productionApproved": false
+}
