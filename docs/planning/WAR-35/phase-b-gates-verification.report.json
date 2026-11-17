@@ -1,0 +1,194 @@
+{
+  "task": "WAR-35",
+  "scope": "Phase B candidate research semantic Gate/risk/direct-parent",
+  "sourceSchema": "urn:canvas-lab:director-plan:0.1.0-rc4",
+  "passed": 26,
+  "total": 26,
+  "cases": [
+    {
+      "case": "B-P01-direct-parent-A-carry-full-B-text-coverage",
+      "expected": true,
+      "observed": true,
+      "passed": true,
+      "reason": null
+    },
+    {
+      "case": "B-N01-added-intent-missing-A-check",
+      "expected": false,
+      "observed": false,
+      "passed": true,
+      "reason": "whole gate member/check coverage incomplete"
+    },
+    {
+      "case": "B-N02-added-shot-missing-B-check",
+      "expected": false,
+      "observed": false,
+      "passed": true,
+      "reason": "whole gate member/check coverage incomplete"
+    },
+    {
+      "case": "B-N03-omitted-required-shot-B-check",
+      "expected": false,
+      "observed": false,
+      "passed": true,
+      "reason": "whole gate member/check coverage incomplete"
+    },
+    {
+      "case": "B-N04-B-check-target-wrong-kind",
+      "expected": false,
+      "observed": false,
+      "passed": true,
+      "reason": "uncovered or incorrectly typed member"
+    },
+    {
+      "case": "B-N05-B-check-forged-geometry-method",
+      "expected": false,
+      "observed": false,
+      "passed": true,
+      "reason": "method/spec/gate spoofing"
+    },
+    {
+      "case": "B-N06-A-check-dependent-on-unbound-external-evidence",
+      "expected": false,
+      "observed": false,
+      "passed": true,
+      "reason": "unresolved external evidence"
+    },
+    {
+      "case": "B-N07-hard-conflict-omitted-from-approval",
+      "expected": false,
+      "observed": false,
+      "passed": true,
+      "reason": "open hard conflict"
+    },
+    {
+      "case": "B-N08-open-unknown-risk-not-accepted",
+      "expected": false,
+      "observed": false,
+      "passed": true,
+      "reason": "unaccepted applicable risk"
+    },
+    {
+      "case": "B-P02-conditional-accept-all-current-unknown-risks",
+      "expected": true,
+      "observed": true,
+      "passed": true,
+      "reason": null
+    },
+    {
+      "case": "B-N09-conditional-omits-second-relevant-risk",
+      "expected": false,
+      "observed": false,
+      "passed": true,
+      "reason": "incomplete applicable risk coverage"
+    },
+    {
+      "case": "B-N10-conflicting-same-target-reviewed-decisions",
+      "expected": false,
+      "observed": false,
+      "passed": true,
+      "reason": "missing/ambiguous current gate decision"
+    },
+    {
+      "case": "B-N11-projection-scoped-B-not-whole-Plan",
+      "expected": false,
+      "observed": false,
+      "passed": true,
+      "reason": "projection-scoped approval is not whole Plan approval"
+    },
+    {
+      "case": "B-N12-identical-revision-ID-different-content",
+      "expected": false,
+      "observed": false,
+      "passed": true,
+      "reason": "duplicate record: ('P-FOX', 'R2')"
+    },
+    {
+      "case": "B-N13-direct-parent-skipped",
+      "expected": false,
+      "observed": false,
+      "passed": true,
+      "reason": "carry skips direct parent revision"
+    },
+    {
+      "case": "B-N14-missing-direct-parent-candidate",
+      "expected": false,
+      "observed": false,
+      "passed": true,
+      "reason": "missing or ambiguous revision parent"
+    },
+    {
+      "case": "B-N15-unsealed-current-Plan-revision",
+      "expected": false,
+      "observed": false,
+      "passed": true,
+      "reason": "untrusted or changed plan revision"
+    },
+    {
+      "case": "B-N16-tampered-trusted-ancestor",
+      "expected": false,
+      "observed": false,
+      "passed": true,
+      "reason": "untrusted or changed plan revision"
+    },
+    {
+      "case": "B-N17-stale-approvedPlan-pointer",
+      "expected": false,
+      "observed": false,
+      "passed": true,
+      "reason": "approvedPlan pointer mismatch"
+    },
+    {
+      "case": "B-N18-two-current-risk-versions-ambiguous",
+      "expected": false,
+      "observed": false,
+      "passed": true,
+      "reason": "ambiguous current risk versions"
+    },
+    {
+      "case": "B-N19-unprovable-risk-applicability",
+      "expected": false,
+      "observed": false,
+      "passed": true,
+      "reason": "risk applicability cannot be proved"
+    },
+    {
+      "case": "B-N20-current-B-not-approved",
+      "expected": false,
+      "observed": false,
+      "passed": true,
+      "reason": "current gate not approved"
+    },
+    {
+      "case": "B-N21-inherited-source-check-unsealed",
+      "expected": false,
+      "observed": false,
+      "passed": true,
+      "reason": "source check missing or tampered"
+    },
+    {
+      "case": "B-N22-inherited-source-decision-unsealed",
+      "expected": false,
+      "observed": false,
+      "passed": true,
+      "reason": "source decision untrusted"
+    },
+    {
+      "case": "B-N23-caller-omits-trusted-risk-ledger-entry",
+      "expected": false,
+      "observed": false,
+      "passed": true,
+      "reason": "risk manifest incomplete or untrusted"
+    },
+    {
+      "case": "B-N24-parent-edge-seal-missing",
+      "expected": false,
+      "observed": false,
+      "passed": true,
+      "reason": "direct parent edge not in trusted history"
+    }
+  ],
+  "productionApprovalServiceImplemented": false,
+  "trustedHistory": "synthetic immutable seals, not authenticated storage",
+  "realMediaVerified": false
+}

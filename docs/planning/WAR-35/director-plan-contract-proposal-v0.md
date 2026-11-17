@@ -1174,3 +1174,55 @@ ChatGPT 主流程在隔离 Git archive 中形成 RC4：严格检查媒体投影�
 ### 28.4 原 Astra 对固定 RC4 的独立定向再验收（2026-11-17）
 
 原 Astra 审阅会话针对冻结 Git `0dcdadf1237e6f0442e17684637d22da8488269c` 已正式判定 **阶段 A Accepted**：对媒体投影 SHA、内容 SHA、可选条件 SHA 各自构造 10 个异常值，30/30 均被完整 RC4 Schema 和直接 D-JCS 拒绝；合法媒体、旧 CheckSpec 伪装负例、Fact 来源承接均符合预期；两份 P/D Golden 由独立 Node JCS 复算保持不变。确认 RC3/RC4 为未发布候选，D-JCS /4 可沿用，但旧摘要不得跳过 RC4 复算。独立原始输出依据及具体边界见 [阶段 A 独立验收](phase-a-rc4-astra-independent-acceptance-20261117.md)。**WAR-35 整体仍 Not ready，阶段 B 未启动，公共 Schema 尚未正式冻结。**
+
+
+## 29. 阶段 B｜整门 Gate、风险/Decision、直接父修订与 raw 往返（2026-11-17）
+
+### 29.1 基线与结论
+
+- 基线：阶段 A Accepted 的 RC4，固定提交 0dcdadf1237e6f0442e17684637d22da8488269c；验收交付 d3246c5。按 RC1 独立复核报告 Blocking 2–5 推进。
+- 在独立 worktree 中研究，**原 RC4 Schema、两份 RC4 fixture、固定 P/D Golden、WAR-52 design-0.2 均未修改**。
+- **阶段 B 仅完成研究候选与回归，尚未独立验收；公共 Schema 未冻结，生产审批服务未实现。**
+
+### 29.2 Gate 全体成员覆盖（B-G1）
+
+由当前 Plan **重新派生成员**，而不是由 Decision 自报的 checkIds 推断已审对象：
+
+| Gate | 必审成员 | 正确 Check 的最低规则 |
+| --- | --- | --- |
+| Intent A | 全部 intents 的 ID | 每个 intent:id 对应一个当前版本 pass/valid 的 intentA/2 Check，method=text；D-JCS /4 依赖证明完整，错类型、漏项或额外项拒绝；新增无关 Shot 不自动使 Intent 失效 |
+| Shot B | 全部 shots 的 ID | 每个 shot:id 对应一个当前版本 pass/valid 的 shotB/1 Check，method=text；每个 Shot 都有非空、唯一标识的 evidenceCriteria；Check 指纹绑定 Shot 全部内容 |
+
+CheckSpec 的可信登记包括版本、全文、method、目标类型与来源政策。外部 human/geometry_proxy 观测及任何未绑定 evidenceRefs 在现阶段一律 fail closed，不借文本 Check 冒充真实观测。单 Check 通过绝不等于完整 A/B Gate 通过。Plan 批准须同时通过当前 Intent A 与 Shot B；媒体效果仍为未知。
+
+### 29.3 风险与 Decision 有效性（B-R1 / B-D1）
+
+- 必须从可信**完整风险清单**发现当前修订的全部风险与风险版本，重算不可变内容封存；不能只遍历 acceptedRisks。省略风险、同风险多个当前版本、未证作用域均返回 unresolved。
+- 当前 Gate 中 open + hard_conflict 一律阻止批准。无条件 approved 不得有未解决的适用 open 风险；conditionally_approved 须为新的 reviewed Decision，完整接受所有适用 open 非硬冲突风险，保留 rationale 与每个风险的准确版本。Closed 版本不能替代新开放版本。
+- 同 gate、同 PlanTarget 有多个冲突 Decision，尚无可信取代链时**保守拒绝批准**，不依赖数组位置或旧指针；需要重复审批时须另设计可信的 supersession。
+- approvedPlan 只允许当前真实 PlanTarget 的整 Plan 范围 reviewed Shot B Decision；单独携带 executionTarget 的投影审批不代表整 Plan。真实用户授权、媒体 bytes resolver 和不可变记录服务均未验证。
+
+### 29.4 直接父版本与继承（B-V1）
+
+- 可信历史要求同一 planId + revisionId 对应唯一 Plan SHA；同 ID 异内容、缺少封存记录一律拒绝。
+- verified_carry_forward 仅能从**直接父修订**向当前 Intent A 承接。candidate 的 basedOnRevisionId 必须匹配受信历史封存的 parent/child PlanTarget 边，来源 Decision Target 必须等于这个父目标；不能跳过中间修订、跨分支、同版异内容或只据 revision 字符串排序。
+- 源 Check、源 Decision 均须有可信封存，所有被继承 Check 一对一映射并重算相同 /4 D-JCS。保留 §25 的保守政策：仅先前无风险、无条件 approved 的 Intent A 可承接；Shot B 不自动承接。
+- 重点边界：revisionControl.candidates 位于 Plan SHA 之外，**自身不是可信版本证明**。研究脚本模拟了外部 sealedPlans 与 sealedParentEdges；这些是预先受信历史输入，而不是让调用方自填 seal 便获得信任。
+
+### 29.5 raw I-JSON 规范化接受域封闭（B-J1）
+
+- 保留 §26 的 WAR-35 安全整数 ±(2^53−1) 约束，同时检查解析得到的 binary64 是否已被舍入为超范围整数。旧参考解析器会接受 9007199254740991.9，JCS 输出变为 9007199254740992，随后 raw gate 又会拒绝；阶段 B 参考实现现在从入口拒绝该值及负值对称反例。
+- 对超大指数但数学值为零的 JSON 数字加入确定处理；其他非有限值及非零下溢继续拒绝。
+- 验证性质：**任何已接受的测试输入，raw parse → JCS → raw parse 仍接受，且两次 JCS 字节相同**。这属于所列样本验证，不冒充穷举形式证明。
+
+### 29.6 实施位置、结果与待证
+
+- 研究 Gate 参考判定器：docs/planning/WAR-35/phase_b_gate_rules.py，验证：verify-phase-b.py，证据：phase-b-gates-verification.report.json。R2→R3 合法承接、增加成员漏审、漏风险、冲突 Decision、错方法/目标、直接父修订、历史 seal 负例等 **26/26** 通过。
+- raw 接受域参考解析器：raw_ijson_gate.py，新增专项 verify-phase-b-raw.py，证据 phase-b-raw-verification.report.json。边界数值、两个原始 RC4 Package 往返及 Package 内恶意数值注入 **26/26** 通过。
+- 既有专项也回归：CheckSpec 74/74，Media SHA 57/57，Media 20/20，Decision 37/37，raw 34/34，D-Schema 9/9，D-JCS 14/14（独立 venv），RC4/Golden 23/23，Phase A 与 Fact source 通过。任何新运行报告不覆盖 RC4 历史证据。
+- **未证与不包含**：真实不可变审阅历史/完整风险目录、用户授权、媒体证据真实字节、生产 API/Gateway、跨 WAR-52 H3 执行。研究脚本的 sealedRiskManifests、sealedPlans、sealedParentEdges、sealedChecks、sealedDecisions 是外部受信目录的合成替身。缺真实受信来源时应拒绝批准，不是允许运行时默认信任调用方。
+
+### 29.7 阶段 B 独立审阅门槛
+
+- 重点审计 Gate 全覆盖的反例、风险适用性与版本替代、冲突 Decision 的可信生效机制、可信父边来源及分叉、raw I-JSON 更广输入与固定 Golden 的稳定性。
+- 如发现阻塞，继续在 B 中定向修复并保留红绿证据；独立 Accepted 后才决定 RC5/正式 v0.1.0 Schema ID 与最终冻结 commit。不得将本候选的 26/26 当作生产审阅或用户 A/B 批准；不修改 WAR-52、原始 Skill、生产与 GPU/H3。

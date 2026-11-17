@@ -1,0 +1,142 @@
+{
+  "task": "WAR-35",
+  "scope": "Phase B raw I-JSON fixed point closure (research)",
+  "schemaId": "urn:canvas-lab:director-plan:0.1.0-rc4",
+  "passed": 26,
+  "total": 26,
+  "cases": [
+    {
+      "case": "raw-B-N01-9007199254740991.9",
+      "expectedAccepted": false,
+      "passed": true
+    },
+    {
+      "case": "raw-B-N02--9007199254740991.9",
+      "expectedAccepted": false,
+      "passed": true
+    },
+    {
+      "case": "raw-B-N03-9.0071992547409919e15",
+      "expectedAccepted": false,
+      "passed": true
+    },
+    {
+      "case": "raw-B-N04--9.0071992547409919e15",
+      "expectedAccepted": false,
+      "passed": true
+    },
+    {
+      "case": "raw-B-N05-9007199254740992.0000001",
+      "expectedAccepted": false,
+      "passed": true
+    },
+    {
+      "case": "raw-B-N06--9007199254740992.0000001",
+      "expectedAccepted": false,
+      "passed": true
+    },
+    {
+      "case": "raw-B-N07-9007199254740993.0",
+      "expectedAccepted": false,
+      "passed": true
+    },
+    {
+      "case": "raw-B-N08-1e400",
+      "expectedAccepted": false,
+      "passed": true
+    },
+    {
+      "case": "raw-B-N09-1e-400",
+      "expectedAccepted": false,
+      "passed": true
+    },
+    {
+      "case": "raw-B-N10-9007199254740992",
+      "expectedAccepted": false,
+      "passed": true
+    },
+    {
+      "case": "raw-B-N11--9007199254740992",
+      "expectedAccepted": false,
+      "passed": true
+    },
+    {
+      "case": "raw-B-P01-9007199254740991",
+      "expectedAccepted": true,
+      "passed": true
+    },
+    {
+      "case": "raw-B-P02--9007199254740991",
+      "expectedAccepted": true,
+      "passed": true
+    },
+    {
+      "case": "raw-B-P03-9007199254740991.0",
+      "expectedAccepted": true,
+      "passed": true
+    },
+    {
+      "case": "raw-B-P04--9007199254740991.0",
+      "expectedAccepted": true,
+      "passed": true
+    },
+    {
+      "case": "raw-B-P05-9007199254740990.1",
+      "expectedAccepted": true,
+      "passed": true
+    },
+    {
+      "case": "raw-B-P06--9007199254740990.1",
+      "expectedAccepted": true,
+      "passed": true
+    },
+    {
+      "case": "raw-B-P07-1e-300",
+      "expectedAccepted": true,
+      "passed": true
+    },
+    {
+      "case": "raw-B-P08-0e999999999999999999999",
+      "expectedAccepted": true,
+      "passed": true
+    },
+    {
+      "case": "raw-B-P09--0.0",
+      "expectedAccepted": true,
+      "passed": true
+    },
+    {
+      "case": "raw-B-P10-5e-324",
+      "expectedAccepted": true,
+      "passed": true
+    },
+    {
+      "case": "raw-B-P11-0.1",
+      "expectedAccepted": true,
+      "passed": true
+    },
+    {
+      "case": "raw-B-P12-{\"nested\":[1.25,0.0,9007199254740991],\"safe\":\"value\"}",
+      "expectedAccepted": true,
+      "passed": true
+    },
+    {
+      "case": "raw-B-package-no-action-beat.example.v0-rc4.json",
+      "expectedAccepted": true,
+      "passed": true
+    },
+    {
+      "case": "raw-B-package-cross-shot-once.example.v0-rc4.json",
+      "expectedAccepted": true,
+      "passed": true
+    },
+    {
+      "case": "raw-B-bad-package-boundary-cross-shot-once.example.v0-rc4.json",
+      "expectedAccepted": false,
+      "passed": true
+    }
+  ],
+  "property": "accepted raw -> JCS -> raw accepted and JCS bytes identical",
+  "runtimeIntegrated": false,
+  "productionParserVerified": false
+}

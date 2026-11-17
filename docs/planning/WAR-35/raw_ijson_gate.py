@@ -6,7 +6,8 @@ input constraints plus WAR-35's conservative exact-integer application rule.
 """
 import json
 import math
-from decimal import Decimal
+import re
+from decimal import Decimal, InvalidOperation
 
 MAX_SAFE_INTEGER = (1 << 53) - 1
 
@@ -32,14 +33,28 @@ def _binary64_number(token):
     # Prevent silent conversion of an exact *integer-valued* decimal/exponent
     # to an unsafe integer, including e.g. 9007199254740993.0 and 9.007...e15.
     # This is a conservative WAR-35 restriction stronger than RFC 7493 SHOULD.
-    exact = Decimal(token)
-    if exact == exact.to_integral_value() and abs(exact) > MAX_SAFE_INTEGER:
-        raise RawIJsonError("unsafe integer-valued JSON number: use string for exact identity")
-    value = float(token)
+    try:
+        value = float(token)
+        exact = Decimal(token)
+    except (InvalidOperation, ValueError, OverflowError) as exc:
+        # Decimal may reject an extreme exponent even when the mantissa is
+        # mathematically zero. Such JSON numbers have an unambiguous binary64
+        # representation, and canonicalize back to safe integer zero.
+        if re.fullmatch(r"-?0(?:\.0+)?[eE][+-]?\d+", token):
+            return float(token)
+        raise RawIJsonError("unrepresentable JSON number") from exc
     if not math.isfinite(value):
         raise RawIJsonError("non-finite JSON numeric overflow")
     if value == 0 and exact != 0:
         raise RawIJsonError("nonzero JSON number underflows to zero")
+    # Test the exact token and ALSO the parsed binary64. A fractional source
+    # such as 9007199254740991.9 can round to unsafe integer 2^53, which JCS
+    # emits as integer token 9007199254740992: accepted inputs must remain
+    # acceptable after canonicalization and fresh raw parsing.
+    if exact != 0 and exact == exact.to_integral_value() and abs(exact) > MAX_SAFE_INTEGER:
+        raise RawIJsonError("unsafe integer-valued JSON number: use string for exact identity")
+    if value.is_integer() and abs(value) > MAX_SAFE_INTEGER:
+        raise RawIJsonError("unsafe rounded binary64 integer: use string for exact identity")
     return value
 
 def _no_non_json_constants(token):
