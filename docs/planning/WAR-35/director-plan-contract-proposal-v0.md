@@ -1252,3 +1252,15 @@ CheckSpec 的可信登记包括版本、全文、method、目标类型与来源�
 - 研究参考文件：phase_b_gate_rules.py、verify-phase-b.py；保留原 raw_ijson_gate.py 与 verify-phase-b-raw.py。
 - Gate/风险/Revision/批准范围：原 26 项加 9 个定向反例，**35/35** 自测通过。raw 仍为 **26/26**；其他 RC4 回归需在此候选固定后复跑。
 - **RC2 仍是候选，等待独立只读验收，不发布 Schema、不标记 WAR-35 Done。** 独立审查必须固定 Git/SHA 并专门复测四项原阻塞及新增 manifest 信任边界。任何通过不等于 Canvas 真实审阅授权、生产接口、媒体字节验证或 WAR-52 跨层执行。
+
+
+## 31. 阶段 B RC2 Astra 独立验收（2026-11-17）
+
+**判定：Accepted，仅针对 Stage B RC2 研究性设计候选，不是公共 Schema 已冻结或生产审批授权。**
+
+- 固定验收 Git：adc71b5a9e000cf21fa5c4c0763044e71fc5af72。Astra 完全只读，HEAD 未移动，未修改任何文件；原始接受报告 phase-b-rc2-astra-independent-acceptance-20261117.md（SHA-256 d29a3177247fdfdb26712c92c40c48b293994ae3827035185b4c6a25d6fe74b5），与初版 Not Accepted 报告均独立保存。
+- 原四类问题（遗漏冲突或篡改当前 Decision；来源/当前 Intent A 的 executionTarget 升级；非法 Risk.status；Inheritance 缺 basis）均有新鲜内存复现，已正确拒绝，且通过了隔离“合法改动 + 更新可信证明”的正向对照。
+- 门控测试 35/35，Astra 额外独立 39/39，合计 74/74 个断言；raw 26/26；两份 RC4 fixture 的 P/D 固定 Golden 完整重算吻合。RC4 Schema、原 fixture、Golden、D-JCS 与阶段 A 固定 commit 0dcdadf 无差异。本轮 Astra 没有重复 Node 校验或旧 10,007 数值扩展采样，不得记为本轮再次运行。
+- 已确认的语义要求：全 Gate Check 覆盖；可信完整的 Risk/Decision 清单；版本化内容封存；风险版本和条件批准；直接父修订；执行范围不可偷换；当前 PlanTarget 与 Check 封存；raw I-JSON 保守整数闭包。
+- 未实施：真实不可变审阅账本/可信目录/防回滚、用户授权、生产中的审批存储和 API、媒体 resolver、WAR-52 H3 投影执行。合成可信封存只证明**若外部真实提供可信完整记录**，候选语义判断不会接受目前复现的绕过。生产不能让提交人自签可信记录。
+- **阶段 B 设计候选验收完成；WAR-35 整体维持 In Progress/Not frozen。** 下一步单独整理公共 0.1.0 release gate：正式 Schema ID、不可变 Golden、发布/实施的边界与所需真实可信存储适配。未经用户明确批准，不发布正式 Schema、不更改生产、不声明真实 A/B 权限校验。
