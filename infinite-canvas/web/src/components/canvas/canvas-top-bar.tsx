@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { BookOpen, Bot, Compass, Download, Home, Images, Menu, PanelLeftClose, PanelLeftOpen, Plus, Redo2, Trash2, Undo2, Upload } from "lucide-react";
+import { BookOpen, Bot, Compass, Download, Home, Images, Menu, PanelLeftClose, PanelLeftOpen, PencilLine, Plus, Redo2, Trash2, Undo2, Upload } from "lucide-react";
 import { Button, Dropdown, Modal, Tooltip } from "antd";
 import { useTranslation } from "react-i18next";
 
@@ -137,6 +137,18 @@ export function CanvasTopBar({
                                 {title}
                             </button>
                         )}
+                        {!isTitleEditing ? (
+                            <button
+                                type="button"
+                                onClick={onStartTitleEditing}
+                                aria-label={t("canvas.renameAction")}
+                                title={t("canvas.renameAction")}
+                                className="grid size-7 shrink-0 place-items-center rounded-md opacity-65 transition hover:bg-black/10 hover:opacity-100 dark:hover:bg-white/10"
+                                style={{ color: theme.node.text }}
+                            >
+                                <PencilLine className="size-3.5" />
+                            </button>
+                        ) : null}
                     </div>
                     <CompactAgentStatus status={compactAgentStatus} onClick={onToggleAgent} />
                 </div>
@@ -180,6 +192,7 @@ export function CanvasTopBar({
                     <Shortcut keys={["Shift / Cmd", t("canvas.shortcut.click")]} value={t("canvas.shortcut.addSelection")} />
                     <Shortcut keys={["Ctrl / Cmd", "A"]} value={t("canvas.shortcut.selectAll")} />
                     <Shortcut keys={["Ctrl / Cmd", "C / V"]} value={t("canvas.shortcut.copyPaste")} />
+                    <Shortcut keys={["V"]} value={t("canvas.shortcut.previewImage")} />
                     <Shortcut keys={["Ctrl / Cmd", "G"]} value={t("canvas.shortcut.group")} />
                     <Shortcut keys={["Ctrl / Cmd", "Shift", "G"]} value={t("canvas.shortcut.ungroup")} />
                     <Shortcut keys={["Ctrl / Cmd", "Z"]} value={t("canvas.undo")} />

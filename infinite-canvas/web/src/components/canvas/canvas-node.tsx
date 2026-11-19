@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import type { ReactNode } from "react";
-import { ChevronRight, Copy, Download, Group, Image as ImageIcon, Music2, Pause, Play, Puzzle, RefreshCw, Sparkles, Star, Trash2, Video, Volume2, VolumeX } from "lucide-react";
+import { ChevronRight, Copy, Download, Group, Image as ImageIcon, Maximize2, Music2, Pause, PencilLine, Play, Puzzle, RefreshCw, Sparkles, Star, Trash2, Video, Volume2, VolumeX } from "lucide-react";
 
 import { canvasThemes, getCardBackground } from "@/lib/canvas-theme";
 import { useCanvasTheme, useEffectiveCardSkin } from "@/lib/canvas/use-canvas-theme";
@@ -30,6 +30,8 @@ type CanvasNodeProps = {
     isConnecting: boolean;
     referenceSelectionState?: "target" | "disabled" | "available";
     showPanel: boolean;
+    isTextEditing: boolean;
+    onTextEditingChange: (nodeId: string, editing: boolean) => void;
     showImageInfo: boolean;
     mentionReferences?: CanvasResourceReference[];
     pluginHost?: CanvasPluginHost;
@@ -41,6 +43,7 @@ type CanvasNodeProps = {
     batchExpanded?: boolean;
     onMouseDown: (event: React.MouseEvent, nodeId: string) => void;
     onOpenDetails?: (nodeId: string) => void;
+    onViewImage?: (node: CanvasNodeData, imageId?: string) => void;
     onSelectCapture?: (event: React.MouseEvent, nodeId: string) => void;
     onHoverStart: (nodeId: string) => void;
     onHoverEnd: (nodeId: string) => void;
@@ -85,6 +88,7 @@ type NodeContentRendererProps = {
     onRetryBatchImage?: (imageId: string) => void;
     onDeleteBatchImage?: (imageId: string) => void;
     onOpenDetails?: () => void;
+    onViewImage?: (imageId?: string) => void;
     groupChildCount: number;
 };
 
@@ -98,6 +102,8 @@ export const CanvasNode = React.memo(function CanvasNode({
     isConnecting,
     referenceSelectionState,
     showPanel,
+    isTextEditing,
+    onTextEditingChange,
     showImageInfo,
     mentionReferences = [],
     pluginHost,
@@ -144,7 +150,9 @@ export const CanvasNode = React.memo(function CanvasNode({
     const [hovered, setHovered] = useState(false);
     const definition = getNodeDefinition(data.type);
     const pluginContext = useMemo<CanvasNodeContext | null>(() => (pluginHost ? buildNodeContext(pluginHost, data, theme, scale, isSelected) : null), [pluginHost, data, theme, scale, isSelected]);
-    const [isEditingContent, setIsEditingContent] = useState(false);
+    // Keep the inline text editor in sync with the page-level V toggle.
+    const isEditingContent = isTextEditing;
+    const setIsEditingContent = (editing: boolean) => onTextEditingChange(data.id, editing);
     const [isEditingTitle, setIsEditingTitle] = useState(false);
     const [titleDraft, setTitleDraft] = useState(data.title || "");
     const hasImageContent = data.type === CanvasNodeType.Image && Boolean(data.metadata?.content);
@@ -342,7 +350,7 @@ export const CanvasNode = React.memo(function CanvasNode({
             }}
         >
             {!referenceSelectionState && (isSelected || hovered || isEditingTitle) && (
-                <div className="absolute left-3 top-[-28px] z-[65] max-w-[calc(100%-24px)]" onMouseDown={(event) => event.stopPropagation()} onPointerDown={(event) => event.stopPropagation()}>
+                <div className="absolute left-3 top-[-28px] z-[65] flex max-w-[calc(100%-24px)] items-center gap-1" onMouseDown={(event) => event.stopPropagation()} onPointerDown={(event) => event.stopPropagation()}>
                     {isEditingTitle ? (
                         <input
                             ref={titleInputRef}
@@ -374,6 +382,21 @@ export const CanvasNode = React.memo(function CanvasNode({
                             {data.title || t("canvas.node.untitled")}
                         </button>
                     )}
+                    {!isEditingTitle ? (
+                        <button
+                            type="button"
+                            className="grid size-6 shrink-0 place-items-center rounded-md opacity-70 transition hover:bg-black/10 hover:opacity-100 dark:hover:bg-white/10"
+                            style={{ color: titleTheme.text }}
+                            aria-label={t("canvas.node.renameAction")}
+                            title={t("canvas.node.renameAction")}
+                            onClick={(event) => {
+                                event.stopPropagation();
+                                setIsEditingTitle(true);
+                            }}
+                        >
+                            <PencilLine className="size-3" />
+                        </button>
+                    ) : null}
                 </div>
             )}
 
@@ -404,9 +427,31 @@ export const CanvasNode = React.memo(function CanvasNode({
                         return;
                     }
                     event.stopPropagation();
+                    // Double click retains the original node-details action.
+                    // Inline text editing and image preview use separate explicit controls.
                     onOpenDetails?.(data.id);
                 }}
             >
+                {!referenceSelectionState && !isEditingContent && (hovered || isSelected) && (data.type === CanvasNodeType.Text || hasImageContent) ? (
+                    <button
+                        type="button"
+                        className={`absolute right-2.5 z-[46] flex h-8 items-center gap-1.5 rounded-lg border px-2 text-xs font-medium shadow-md backdrop-blur-md transition hover:scale-[1.02] ${isBatchRoot ? "top-12" : "top-2.5"}`}
+                        style={{ background: theme.toolbar.panel, borderColor: theme.toolbar.border, color: theme.toolbar.activeText }}
+                        title={`${data.type === CanvasNodeType.Text ? t("canvas.node.editText") : t("canvas.imageTools.viewTitle")} (V)`}
+                        aria-label={t(data.type === CanvasNodeType.Text ? "canvas.node.editText" : "canvas.imageTools.viewTitle")}
+                        onMouseDown={(event) => event.stopPropagation()}
+                        onPointerDown={(event) => event.stopPropagation()}
+                        onDoubleClick={(event) => event.stopPropagation()}
+                        onClick={(event) => {
+                            event.stopPropagation();
+                            if (data.type === CanvasNodeType.Text) setIsEditingContent(true);
+                            else onViewImage?.(data);
+                        }}
+                    >
+                        {data.type === CanvasNodeType.Text ? <PencilLine className="size-3.5" /> : <Maximize2 className="size-3.5" />}
+                        {t(data.type === CanvasNodeType.Text ? "common.edit" : "canvas.imageTools.view")}
+                    </button>
+                ) : null}
                 {artSkin && !isGroup && !hasImageContent && !hasVideoContent && !transparentBg ? (
                     <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-[inherit]" aria-hidden="true">
                         <div
@@ -540,6 +585,7 @@ export const CanvasNode = React.memo(function CanvasNode({
                         onRetryBatchImage={(imageId) => onRetryBatchImage?.(data, imageId)}
                         onDeleteBatchImage={(imageId) => onDeleteBatchImage?.(data.id, imageId)}
                         onOpenDetails={() => onOpenDetails?.(data.id)}
+                        onViewImage={(imageId) => onViewImage?.(data, imageId)}
                         groupChildCount={groupChildCount}
                     />
                 </div>
@@ -808,7 +854,7 @@ function TextContent({ node, theme, isEditingContent, textareaRef, mentionRefere
                     <TextSlotStatus text={primaryText} />
                 ) : (
                     <div className="p-4 font-mono" style={{ color: theme.node.placeholder }}>
-                        {t("canvas.node.editText")}
+                        {t("canvas.node.editTextHint")}
                     </div>
                 )}
             </div>
@@ -908,7 +954,7 @@ function ImageNodeContent(props: NodeContentRendererProps) {
             onDownloadBatchImage={props.onDownloadBatchImage}
             onRetryBatchImage={props.onRetryBatchImage}
             onDeleteBatchImage={props.onDeleteBatchImage}
-            onOpenDetails={props.onOpenDetails}
+            onViewImage={props.onViewImage}
         />
     );
 }
@@ -1057,7 +1103,7 @@ function ImageContent({
     onDownloadBatchImage,
     onRetryBatchImage,
     onDeleteBatchImage,
-    onOpenDetails,
+    onViewImage,
 }: {
     node: CanvasNodeData;
     batchExpanded: boolean;
@@ -1068,7 +1114,7 @@ function ImageContent({
     onDownloadBatchImage?: (imageId: string) => void;
     onRetryBatchImage?: (imageId: string) => void;
     onDeleteBatchImage?: (imageId: string) => void;
-    onOpenDetails?: () => void;
+    onViewImage?: (imageId?: string) => void;
 }) {
     const theme = useCanvasTheme();
     const { t } = useTranslation();
@@ -1097,7 +1143,7 @@ function ImageContent({
             {batchExpanded
                 ? images
                       .filter((image) => image.id !== primaryImageId)
-                      .map((image, index) => <ExpandedImageCard key={image.id} node={node} image={image} index={index} scale={scale} onOpenDetails={() => onOpenDetails?.()} onSetPrimary={() => onSetBatchPrimary?.(image.id)} onDuplicate={() => onDuplicateBatchImage?.(image.id)} onDownload={() => onDownloadBatchImage?.(image.id)} onRetry={() => onRetryBatchImage?.(image.id)} onDelete={() => onDeleteBatchImage?.(image.id)} />)
+                      .map((image, index) => <ExpandedImageCard key={image.id} node={node} image={image} index={index} scale={scale} onViewImage={() => onViewImage?.(image.id)} onSetPrimary={() => onSetBatchPrimary?.(image.id)} onDuplicate={() => onDuplicateBatchImage?.(image.id)} onDownload={() => onDownloadBatchImage?.(image.id)} onRetry={() => onRetryBatchImage?.(image.id)} onDelete={() => onDeleteBatchImage?.(image.id)} />)
                 : null}
             <div className="h-full w-full overflow-hidden rounded-3xl">
                 {primaryContent ? (
@@ -1140,7 +1186,7 @@ function ImageContent({
     );
 }
 
-function ExpandedImageCard({ node, image, index, scale, onOpenDetails, onSetPrimary, onDuplicate, onDownload, onRetry, onDelete }: { node: CanvasNodeData; image: CanvasNodeImage; index: number; scale: number; onOpenDetails: () => void; onSetPrimary: () => void; onDuplicate: () => void; onDownload: () => void; onRetry: () => void; onDelete: () => void }) {
+function ExpandedImageCard({ node, image, index, scale, onViewImage, onSetPrimary, onDuplicate, onDownload, onRetry, onDelete }: { node: CanvasNodeData; image: CanvasNodeImage; index: number; scale: number; onViewImage: () => void; onSetPrimary: () => void; onDuplicate: () => void; onDownload: () => void; onRetry: () => void; onDelete: () => void }) {
     const theme = useCanvasTheme();
     const { t } = useTranslation();
     useSyncExternalStore(subscribeImagePreviews, getImagePreviewRevision);
@@ -1184,15 +1230,14 @@ function ExpandedImageCard({ node, image, index, scale, onOpenDetails, onSetPrim
             }
             onMouseDown={(event) => event.stopPropagation()}
             onPointerDown={(event) => event.stopPropagation()}
-            onDoubleClick={(event) => {
-                if (!image.content || (event.target instanceof Element && event.target.closest("button"))) return;
-                event.stopPropagation();
-                onOpenDetails();
-            }}
+            data-batch-image-id={image.id}
         >
             {image.content ? <img src={source} alt={node.title} draggable={false} className="pointer-events-none h-full w-full select-none object-contain" /> : <ImageSlotStatus image={image} />}
             {image.content ? (
                 <div className="pointer-events-none absolute inset-x-2 top-2 flex items-center gap-1 opacity-0 transition-opacity duration-150 group-hover/node:pointer-events-auto group-hover/node:opacity-100">
+                    <button type="button" className="grid size-8 shrink-0 place-items-center rounded-lg border shadow-[0_6px_18px_rgba(15,23,42,.16)] backdrop-blur-md transition hover:scale-[1.02]" style={{ background: theme.toolbar.panel, borderColor: theme.toolbar.border, color: theme.toolbar.activeText }} title={`${t("canvas.imageTools.viewTitle")} (V)`} aria-label={t("canvas.imageTools.viewTitle")} onClick={(event) => (event.stopPropagation(), onViewImage())}>
+                        <Maximize2 className="size-3.5" />
+                    </button>
                     <button type="button" className="flex h-8 min-w-0 flex-1 items-center justify-center gap-1 rounded-lg border px-1.5 text-[10px] font-medium shadow-[0_6px_18px_rgba(15,23,42,.16)] backdrop-blur-md transition hover:scale-[1.02]" style={{ background: theme.toolbar.panel, borderColor: theme.toolbar.border, color: theme.toolbar.activeText }} title={t("common.download")} onClick={(event) => (event.stopPropagation(), onDownload())}>
                         <Download className="size-3 shrink-0" />
                         <span className="truncate">{t("common.download")}</span>

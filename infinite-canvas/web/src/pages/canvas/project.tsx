@@ -292,6 +292,12 @@ function InfiniteCanvasPage() {
     const [toolbarNodeId, setToolbarNodeId] = useState<string | null>(null);
     const [nodeImageSettingsOpen, setNodeImageSettingsOpen] = useState(false);
     const [dialogNodeId, setDialogNodeId] = useState<string | null>(null);
+    const [editingTextNodeId, setEditingTextNodeId] = useState<string | null>(null);
+    // Track the surface opened by V so the next V closes it, even when focus moved.
+    const vToggleRef = useRef<{ kind: "text" | "image" | "details"; nodeId: string } | null>(null);
+    // In a newly V-opened text editor, the immediate second V closes it.
+    // Once typing starts, V is a normal character; Escape remains the close shortcut.
+    const vTextPristineRef = useRef(false);
     const [onboardingOpen, setOnboardingOpen] = useState(false);
     const [infoNodeId, setInfoNodeId] = useState<string | null>(null);
     const [pluginManagerOpen, setPluginManagerOpen] = useState(false);
@@ -1765,20 +1771,92 @@ function InfiniteCanvasPage() {
             const target = event.target instanceof Element ? event.target : null;
             const media = target?.closest("video,audio");
             const noZoom = target?.closest("[data-canvas-no-zoom]");
+            const key = event.key.toLowerCase();
+            const isModifierShortcut = event.metaKey || event.ctrlKey;
+
+            if (isModifierShortcut && key === "c" && window.getSelection()?.toString()) return;
+
+            // A single V toggles the active node action: inline edit, image preview, or details.
+            // Do not hijack paste (Ctrl/Cmd+V) or ordinary typing in input fields.
+            const unmodifiedV = key === "v" && !isModifierShortcut && !event.altKey && !event.shiftKey && !event.repeat && !event.isComposing;
+            const inInlineTextEditor = target?.closest("[data-node-id]")?.getAttribute("data-node-id") === editingTextNodeId
+                && event.target instanceof HTMLTextAreaElement;
+            if (inInlineTextEditor && (event.isComposing || (event.key.length === 1 && key !== "v"))) vTextPristineRef.current = false;
+            if (unmodifiedV) {
+                const textInput = event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement
+                    || event.target instanceof HTMLSelectElement || Boolean(target?.closest("[contenteditable='true']"));
+                // The immediate second V exits an editor opened with V. During actual editing,
+                // V keeps working as a character, with Escape/blur for closing.
+                if (!textInput || (inInlineTextEditor && vTextPristineRef.current)) {
+                    const active = vToggleRef.current;
+                    const activeOpen = active?.kind === "text" ? editingTextNodeId === active.nodeId
+                        : active?.kind === "image" ? previewNodeId === active.nodeId
+                        : active?.kind === "details" ? dialogNodeId === active.nodeId : false;
+                    if (activeOpen) {
+                        event.preventDefault();
+                        if (active?.kind === "text") setEditingTextNodeId(null);
+                        else if (active?.kind === "image") { setPreviewNodeId(null); setPreviewImageId(null); }
+                        else setDialogNodeId(null);
+                        vToggleRef.current = null;
+                        vTextPristineRef.current = false;
+                        return;
+                    }
+                    if (!textInput && previewNodeId) {
+                        event.preventDefault();
+                        setPreviewNodeId(null);
+                        setPreviewImageId(null);
+                        vToggleRef.current = null;
+                        return;
+                    }
+                    if (!textInput && editingTextNodeId) {
+                        event.preventDefault();
+                        setEditingTextNodeId(null);
+                        vToggleRef.current = null;
+                        return;
+                    }
+
+                    if (!textInput && !target?.closest("[data-canvas-shortcuts-ignore]")) {
+                        const hoveredBatchImage = document.querySelector<HTMLElement>("[data-batch-image-id]:hover");
+                        const hoveredBatchNodeId = hoveredBatchImage?.closest<HTMLElement>("[data-node-id]")?.dataset.nodeId;
+                        const hoveredElementId = document.querySelector<HTMLElement>("[data-node-id]:hover")?.dataset.nodeId;
+                        const hovered = nodesRef.current.find((node) => node.id === (hoveredBatchNodeId || hoveredElementId || hoveredNodeId));
+                        const selectedId = selectedNodeIdsRef.current.size === 1 ? selectedNodeIdsRef.current.values().next().value : null;
+                        const node = hovered || (selectedId ? nodesRef.current.find((item) => item.id === selectedId) : undefined);
+                        if (node && !referencePickerNodeId) {
+                            if (node.type === CanvasNodeType.Text) {
+                                event.preventDefault();
+                                setDialogNodeId(null);
+                                setEditingTextNodeId(node.id);
+                                vToggleRef.current = { kind: "text", nodeId: node.id };
+                                vTextPristineRef.current = true;
+                                return;
+                            }
+                            if (node.type === CanvasNodeType.Image && node.metadata?.content) {
+                                event.preventDefault();
+                                setPreviewImageId(hoveredBatchNodeId === node.id ? hoveredBatchImage?.dataset.batchImageId || null : null);
+                                setPreviewNodeId(node.id);
+                                vToggleRef.current = { kind: "image", nodeId: node.id };
+                                return;
+                            }
+                            if (node.type !== CanvasNodeType.Group && !getNodeDefinition(node.type)?.hidePanel) {
+                                event.preventDefault();
+                                if (dialogNodeId === node.id) setDialogNodeId(null);
+                                else setDialogNodeId(node.id);
+                                vToggleRef.current = dialogNodeId === node.id ? null : { kind: "details", nodeId: node.id };
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+
             if (
                 event.target instanceof HTMLInputElement ||
                 event.target instanceof HTMLTextAreaElement ||
                 event.target instanceof HTMLSelectElement ||
                 target?.closest("[contenteditable='true'],[data-canvas-shortcuts-ignore],button,a,[role='button']") ||
                 (noZoom && !media)
-            ) {
-                return;
-            }
-
-            const key = event.key.toLowerCase();
-            const isModifierShortcut = event.metaKey || event.ctrlKey;
-
-            if (isModifierShortcut && key === "c" && window.getSelection()?.toString()) return;
+            ) return;
 
             if (isModifierShortcut && !event.altKey && key === "z") {
                 event.preventDefault();
@@ -1849,6 +1927,9 @@ function InfiniteCanvasPage() {
                 setHoveredNodeId(null);
                 setToolbarNodeId(null);
                 setDialogNodeId(null);
+                setEditingTextNodeId(null);
+                vToggleRef.current = null;
+                vTextPristineRef.current = false;
                 setInfoNodeId(null);
                 setCropNodeId(null);
                 setMaskEditNodeId(null);
@@ -1858,7 +1939,7 @@ function InfiniteCanvasPage() {
 
         window.addEventListener("keydown", handleKeyDown);
         return () => window.removeEventListener("keydown", handleKeyDown);
-    }, [copySelectedNodes, deleteConnection, deleteNodes, groupSelection, pasteCopiedNodes, pasteSystemClipboard, redoCanvas, selectedConnectionId, setConnecting, undoCanvas, ungroupSelection]);
+    }, [copySelectedNodes, deleteConnection, deleteNodes, dialogNodeId, editingTextNodeId, groupSelection, hoveredNodeId, pasteCopiedNodes, pasteSystemClipboard, previewNodeId, redoCanvas, referencePickerNodeId, selectedConnectionId, setConnecting, undoCanvas, ungroupSelection]);
 
     const handleConnectStart = useCallback(
         (event: ReactMouseEvent, nodeId: string, handleType: "source" | "target") => {
@@ -1895,6 +1976,7 @@ function InfiniteCanvasPage() {
     }, []);
 
     const handleNodeContentChange = useCallback((nodeId: string, content: string) => {
+        if (vToggleRef.current?.kind === "text" && vToggleRef.current.nodeId === nodeId) vTextPristineRef.current = false;
         setNodes((prev) =>
             prev.map((node) =>
                 node.id === nodeId
@@ -3847,6 +3929,13 @@ function InfiniteCanvasPage() {
     const handleNodeHoverEnd = useCallback((nodeId: string) => {
         setHoveredNodeId((current) => (current === nodeId ? null : current));
     }, []);
+    const handleTextEditingChange = useCallback((nodeId: string, editing: boolean) => {
+        setEditingTextNodeId((current) => editing ? nodeId : current === nodeId ? null : current);
+        if (!editing && vToggleRef.current?.kind === "text" && vToggleRef.current.nodeId === nodeId) {
+            vToggleRef.current = null;
+            vTextPristineRef.current = false;
+        }
+    }, []);
     const handleNodeViewImage = useCallback((node: CanvasNodeData, imageId?: string) => {
         setPreviewNodeId(node.id);
         setPreviewImageId(imageId || null);
@@ -4091,6 +4180,8 @@ function InfiniteCanvasPage() {
                             isConnecting={Boolean(connectingParams)}
                             referenceSelectionState={!referencePickerNodeId ? undefined : node.id === referencePickerNodeId ? "target" : referenceConnectedNodeIds.has(node.id) || !isCanvasReferenceNode(node, nodes) ? "disabled" : "available"}
                             showPanel={!isNodeResizing && dialogNodeId === node.id && !selectionBox && !getNodeDefinition(node.type)?.hidePanel}
+                            isTextEditing={editingTextNodeId === node.id}
+                            onTextEditingChange={handleTextEditingChange}
                             groupChildCount={groupChildCountById.get(node.id) || 0}
                             isGroupDropTarget={dropTargetGroupId === node.id}
                             batchExpanded={expandedBatchNodeIds.has(node.id)}
@@ -4102,6 +4193,7 @@ function InfiniteCanvasPage() {
                             renderNodeContent={renderNodeContentPanel}
                             onMouseDown={handleNodeMouseDown}
                             onOpenDetails={handleNodeOpenDetails}
+                            onViewImage={handleNodeViewImage}
                             onSelectCapture={handleNodeSelectCapture}
                             onHoverStart={handleNodeHoverStart}
                             onHoverEnd={handleNodeHoverEnd}

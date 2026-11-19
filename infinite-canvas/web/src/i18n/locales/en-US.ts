@@ -270,7 +270,7 @@ export default {
         undo: "Undo",
         redo: "Redo",
         openMenu: "Open canvas menu",
-        renameHint: "Double-click to rename the canvas",
+        renameHint: "Double-click the title or use the pencil to rename canvas", renameAction: "Rename canvas",
         shortcuts: "Keyboard shortcuts",
         miniMapOpen: "Open minimap",
         miniMapClose: "Close minimap",
@@ -329,7 +329,7 @@ export default {
         },
         node: {
             node: "Node",
-            untitled: "Untitled node", renameHint: "Double-click to rename the node", group: "Group", nodeCount: "{{count}} nodes", generating: "Generating", failed: "Generation failed", retry: "Retry", missingPlugin: "Plugin missing", missingPluginDescription: "The plugin for node type “{{type}}” is not installed or enabled", generateImage: "Generate image from text", generate: "Generate", editText: "Double-click to edit text", emptyImage: "Empty image node", emptyVideo: "Empty video node", emptyAudio: "Empty audio node", audio: "Audio", batchExpanded: "Image group expanded", batchCollapsed: "Image group collapsed", textBatchExpanded: "Text alternatives expanded", textBatchCollapsed: "Text alternatives collapsed", createCopy: "Create copy", setPrimary: "Set as primary", setPrimaryText: "Set as primary",
+            untitled: "Untitled node", renameHint: "Double-click the title or use the pencil to rename node", renameAction: "Rename node", group: "Group", nodeCount: "{{count}} nodes", generating: "Generating", failed: "Generation failed", retry: "Retry", missingPlugin: "Plugin missing", missingPluginDescription: "The plugin for node type “{{type}}” is not installed or enabled", generateImage: "Generate image from text", generate: "Generate", editText: "Click to edit text", editTextHint: "Press V to edit text", emptyImage: "Empty image node", emptyVideo: "Empty video node", emptyAudio: "Empty audio node", audio: "Audio", batchExpanded: "Image group expanded", batchCollapsed: "Image group collapsed", textBatchExpanded: "Text alternatives expanded", textBatchCollapsed: "Text alternatives collapsed", createCopy: "Create copy", setPrimary: "Set as primary", setPrimaryText: "Set as primary",
         },
         videoFrames: { first: "Capture first frame", last: "Capture last frame", current: "Capture current frame", firstTitle: "{{name}} first frame", lastTitle: "{{name}} last frame", currentTitle: "{{name}} current frame", captured: "Image node created", failed: "Could not capture this frame. Try again." },
         sidePanel: {
@@ -379,6 +379,7 @@ export default {
             addSelection: "Add nodes to selection",
             selectAll: "Select all nodes",
             copyPaste: "Copy/paste nodes or paste clipboard text/images",
+            previewImage: "Toggle image preview, text editor, or node details",
             copyPasteNodes: "Copy/paste nodes",
             delete: "Delete selection",
             group: "Group selected nodes",

@@ -136,7 +136,7 @@ export const imageToolDefinitions: ImageToolDefinition[] = [
         id: "view",
         defaultVisible: true,
         label: () => i18n.t("canvas.imageTools.view"),
-        title: () => i18n.t("canvas.imageTools.viewTitle"),
+        title: () => `${i18n.t("canvas.imageTools.viewTitle")} (V)`,
         icon: () => <Maximize2 className="size-4" />,
         run: (node, handlers) => handlers.onViewImage(node),
     },
