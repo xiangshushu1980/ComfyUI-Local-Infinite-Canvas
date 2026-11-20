@@ -117,3 +117,12 @@
 - 依据：Eric `/tmp/war97-v-text-toggle.js`、`/tmp/war97-v-image-toggle.js`、`/tmp/war97-v-details-toggle.js`。图片组逐图快捷键的真实样本 UI 验证仍待完成。
 - `tsc --noEmit` 成功，Vite `build --outDir /tmp/canvas-lab-war97-v-toggle-build` 成功（8396 modules），`git diff --check` 成功；构建输出在 `/tmp`，没有覆盖既有 `dist` 差异。
 - 服务 `canvas.localhost` 使用 Vite 热更新，无需重启；本次不提交可能混有其他任务内容的 Git 工作区。
+
+## 2026-11-20 收口验证：真实 React 画布的三图批量节点，逐张 V 预览
+
+- **测试方式**：Eric 的 Chromium / Playwright 独立无痕 Browser Context，在 `127.0.0.1:3000` 当前 Vite 页面创建隔离 IndexedDB 项目 `war97-isolated-multibatch-20261120`。为避免 GPU、图片生成及触碰用户画布，向隔离项目注入包含三张颜色不同的本地 SVG 数据 URI 的标准 `metadata.images[]` 与 `primaryImageId`，由**真实 Canvas React 页面**渲染并展开图片组。**这不是线上生成结果质量测试**。
+- **测试文件**：`docs/validation/WAR-97/test-multi-image-isolated-20261120.py`；完整运行输出 `docs/validation/WAR-97/multi-image-ui-test-20261120.log`。
+- **运行结果**：展开的两个子图 `img-green`、`img-blue` 均可通过鼠标悬停 + `V` 正确打开对应的原图（Modal `img.src` 与各自实例的 `content` 完全相等）；再次 `V` 后 650ms 内弹窗不可见。两组均通过，页面 JS 错误 **0**，脚本 exit code **0**。
+- **截图证据**：`20261120-img-green-preview.png`、`20261120-img-blue-preview.png`、`20261120-expanded-batch.png`。均为隔离的三色测试图，不含用户的真实画布或素材。
+- **代码与发布边界**：此项验收发生于当日正在运行的 Eric Vite Web 代码；本地文件 `canvas-node.tsx` SHA-256 `34447902b79ee426e94e400e91391cba80fc4383d0324e7124ed11934017659f`，`project.tsx` SHA-256 `4a7506a9686795bd5e21ffe2d60787b654c96ab16b06cd19624c236515b56ced`。先前修复提交 `5d896c8d89587778913b8e7c85f92721feba12e2` 已推至 `war-97-canvas-v-toggle-20261119`；与当前工作区相比，`project.tsx` 另含后续其他任务的改动，**不可把此浏览器测试表述为对远端 WAR-97 分支的独立构建测试**。目前该修复提交尚未合并至 `main`。
+- **结论**：补齐原任务唯一明确未完成的图片组逐张操作 UI 验证；原有文本、图片、详情、改名与双击行为已有 2026-11-19 的隔离浏览器回归和编译证据。按本 Issue 定义的功能修复/交互回归/分支保存验收可收口。进入 `main` 的合并需按后续集成时机单独执行，不以“已完成修复研究和分支交付”暗示已合并/发布。
