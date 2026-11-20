@@ -1,0 +1,11 @@
+seed seeded
+url http://127.0.0.1:3000/canvas/war97-isolated-multibatch-20261120
+root 1 buttons [{'text': '下载', 'aria': None, 'title': '下载'}, {'text': '3 张', 'aria': '图片组已收起', 'title': None}]
+batch matched 1
+children [{'id': 'img-green', 'rect': {'x': 781, 'y': 262, 'width': 280, 'height': 193, 'top': 262, 'right': 1061, 'bottom': 455, 'left': 781}}, {'id': 'img-blue', 'rect': {'x': 1079, 'y': 262, 'width': 280, 'height': 193, 'top': 262, 'right': 1359, 'bottom': 455, 'left': 1079}}]
+V preview img-green modal 1 correct True
+V close img-green closed True
+V preview img-blue modal 1 correct True
+V close img-blue closed True
+JS_ERRORS []
+RESULT [{"image": "img-green", "previewCorrect": true, "modalCount": 1}, {"image": "img-blue", "previewCorrect": true, "modalCount": 1}]
